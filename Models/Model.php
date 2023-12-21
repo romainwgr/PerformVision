@@ -34,4 +34,19 @@ class Model
         return self::$instance;
     }
 
+    public function mailExists($mail){
+        $req = $this->bd->prepare('SELECT email FROM PERSONNE WHERE email = :mail;');
+        $req->bindValue(':mail', $mail);
+        $req->execute();
+        $email = $req->fetch(PDO::FETCH_ASSOC);
+        return sizeof($email) != 0;
+    }
+
+    public function checkMailPassword($mail, $password){
+        $req = $this->bd->prepare('SELECT mdp FROM PERSONNE WHERE email = :mail');
+        $req->bindValue(':mail', $mail);
+        $req->execute();
+        $realPassword = $req->fetch(PDO::FETCH_ASSOC);
+        return $realPassword['mdp'] == $password;
+    }
 }
