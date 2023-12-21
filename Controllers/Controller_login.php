@@ -10,6 +10,7 @@ class Controller_login extends Controller
     {
         $this->action_login_form();
     }
+
     public function action_login_form(){
         $this->render("login");
     }
@@ -21,4 +22,25 @@ class Controller_login extends Controller
         }
     }
 
+
+
+
+    /**
+     * @param $mail
+     * @return bool
+     */
+    public function action_check_mail(){
+        $mailExisting = false;
+
+        if(isset($_POST['mail'])){
+            $mail = $_POST['mail'];
+            //à chiffrer
+            $bd = Model::getModel();
+            $mailExisting = $bd->mailExists($mail);
+        }
+
+        return $mailExisting;
+    }
+
 }
+
