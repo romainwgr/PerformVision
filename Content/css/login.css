@@ -1,0 +1,202 @@
+* {
+	outline: none;
+	padding: 0;
+	margin: 0;
+}
+a {
+	outline: none !important;
+}
+/* */
+body {
+	background-color: #F5F5F5;
+	color: #555;
+	font-size: 1.1em;
+	font-family: Regular, Arial, Helvetica, sans-serif;
+	outline: none;
+	padding: 0;
+	margin: 0;
+}
+
+.header{
+	background:#4F74B1;
+}
+/* bouton */
+.button a, .button button {
+    display: block;
+    margin: 0 auto; /* Pour centrer le bouton horizontalement */
+    margin-top: 5px;
+    padding: 10px 40px; /* Ajustez la taille du bouton ici */
+    background-color: #4F74B1;
+    color: #fff;
+    text-decoration: none; !important;
+    border-radius: 10px; /* Augmentation du rayon pour un look plus arrondi */
+    text-align: center;
+    transition: background-color 0.3s ease;
+    font-size: 16px; /* Ajustez la taille de la police ici */
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+/* Style du bouton au survol */
+.button a:hover, .button button:hover {
+    background: rgb(206, 206, 206);
+    color: #4F74B1;
+}
+
+/*fin du bouton*/
+
+/* Clearfix */
+.cf:after, .cf:before {
+	content: "";
+	display: table;
+}
+.cf:after {
+	clear: both;
+}
+
+/** code **/
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    margin-top: 3%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 45%;
+    height: 80%;
+    background-color: #ffffff;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Ajustez l'espacement vertical entre les éléments */
+    padding: 20px; /* Ajustez la marge intérieure */
+    border-radius: 5%;
+}
+
+.pic {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-image: url("../images/imgfond.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+
+.inp {
+    width: 270px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+label {
+    position: absolute;
+    left: 20px;
+    color: #a0a0a0;
+    height: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+    transition: .2s;
+    font-family: Regular, Arial, Helvetica, sans-serif;
+
+    font-size: 12px;
+}
+
+#oublie {
+    text-decoration: none;
+    font-size: 10px;
+    margin-bottom: 20%;
+}
+
+input {
+    width: 100%;
+    /*height: 90%;*/
+    background-color: transparent;
+    border: 1px solid #9d9d9e;
+    border-radius: 10px;
+    outline: none;
+    transition: .4s;
+    color: #fff;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    height: 45px;
+    font-size: 14px;
+}
+
+input:focus {
+    border: 2px solid #1f1fff;
+    box-shadow: #6767ff 0px 1px 1px, #6767ff 0px 0px 0px 1px;
+}
+
+input:focus + label {
+    left: 20px;
+    transform: translateY(-22px);
+    font-size: 12px;
+    background-color: #24242c;
+}
+
+.up {
+    left: 20px;
+    transform: translateY(-22px);
+    font-size: 12px;
+    background-color: #24242c;
+}
+
+
+h1 {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-family: 'Figtree', sans-serif;
+    color: rgb(0, 0, 0);
+    /*margin-bottom: 20px; */
+    font-size: 25px;
+    margin-bottom: 2px;
+}
+
+h3 {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-family: 'Figtree', sans-serif;
+    color: rgb(171, 171, 171);
+    /*margin-bottom: 20px; */
+
+    font-size: 16px;
+    margin-bottom: 40px;
+}
+
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    width: 70px;
+    border-radius: 10px;
+    border: 1px solid #494954;
+}
+
+@media only screen and (max-width: 750px) {
+    .pic {
+      display: none;
+    }
+
+    /* .pic2 {
+        display: block;
+    } */
+
+    .container {
+        width: 100%;
+    }
+}
