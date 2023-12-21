@@ -34,7 +34,11 @@ class Model
         return self::$instance;
     }
 
-    public function mailExists($mail){
+    /*
+     * Méthode permettant de vérifier que le mail saisi existe bien.
+     */
+    public function mailExists($mail)
+    {
         $req = $this->bd->prepare('SELECT email FROM PERSONNE WHERE email = :mail;');
         $req->bindValue(':mail', $mail);
         $req->execute();
@@ -42,11 +46,73 @@ class Model
         return sizeof($email) != 0;
     }
 
-    public function checkMailPassword($mail, $password){
-        $req = $this->bd->prepare('SELECT mdp FROM PERSONNE WHERE email = :mail');
+    /*
+     * Vérifie que le mot de passe correspond bien au mail. Si ils correspondent, une session avec les informations de la personne lié au mail débute.
+     */
+    public function checkMailPassword($mail, $password)
+    {
+        $req = $this->bd->prepare('SELECT * FROM PERSONNE WHERE email = :mail');
         $req->bindValue(':mail', $mail);
         $req->execute();
-        $realPassword = $req->fetch(PDO::FETCH_ASSOC);
-        return $realPassword['mdp'] == $password;
+        $realPassword = $req->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($realPassword) {
+            if ($realPassword[0]['mdp'] == $password) {
+                session_start();
+                $_SESSION['id'] = $realPassword[0]['id_personne'];
+                $_SESSION['email'] = $realPassword[0]['email'];
+                $_SESSION['tel'] = $realPassword[0]['tel'];
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /*
+     * Méthode vérifiant les rôles de la personne. Si il n'y a qu'un seul rôle elle retourne simplement le nom de ce rôle. Si il y a plusieurs rôles, une liste des rôles sous forme de tableau.
+     */
+    public function hasSeveralRoles()
+    {
+        $roles = [];
+        $req = $this->bd->prepare('SELECT * FROM PRESTATAIRE WHERE id_personne = :id');
+        $req->bindValue(':id', $_SESSION['id']);
+        $req->execute();
+        if ($req->fetch(PDO::FETCH_ASSOC)) {
+            $roles[] = 'prestataire';
+        }
+
+        $req = $this->bd->prepare('SELECT * FROM GESTIONNAIRE WHERE id_personne = :id');
+        $req->bindValue(':id', $_SESSION['id']);
+        $req->execute();
+        if ($req->fetch(PDO::FETCH_ASSOC)) {
+            $roles[] = 'gestionnaire';
+        }
+
+        $req = $this->bd->prepare('SELECT * FROM COMMERCIAL WHERE id_personne = :id');
+        $req->bindValue(':id', $_SESSION['id']);
+        $req->execute();
+        if ($req->fetch(PDO::FETCH_ASSOC)) {
+            $roles[] = 'commercial';
+        }
+
+        $req = $this->bd->prepare('SELECT * FROM INTERLOCUTEUR WHERE id_personne = :id');
+        $req->bindValue(':id', $_SESSION['id']);
+        $req->execute();
+        if ($req->fetch(PDO::FETCH_ASSOC)) {
+            $roles[] = 'interlocuteur';
+        }
+
+        $req = $this->bd->prepare('SELECT * FROM ADMINISTRATEUR WHERE id_personne = :id');
+        $req->bindValue(':id', $_SESSION['id']);
+        $req->execute();
+        if ($req->fetch(PDO::FETCH_ASSOC)) {
+            $roles[] = 'administrateur';
+        }
+
+        if(sizeof($roles) > 1){
+            return ['roles' => $roles];
+        }
+
+        return $roles[0];
     }
 }
