@@ -28,15 +28,12 @@ class Controller_login extends Controller
             if (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $_POST['mail'])) {
                 $msg = "Ce n'est pas un email correcte !";
             } else {
-                $msg = "L'identifiant ou le mot de passe est incorrecte !";
+                $msg = "L'identifiant ou le mot de passe est incorrect !";
 
-                if ($db->checkMailPassword($_POST['mail'], $_POST['password'])) {
+                if ($db->checkMailPassword(e($_POST['mail']), e($_POST['password']))) {
                     $role = $db->hasSeveralRoles();
                     if (isset($role['roles'])) {
-                        $msg = 'Vos rôles sont: ';
-                        foreach ($role['roles'] as $name) {
-                            $msg .= $name . ' ';
-                        }
+                        $msg = $role;
                     } else {
                         $this->render($role);
                         return;
@@ -60,7 +57,7 @@ class Controller_login extends Controller
         $mailExisting = false;
 
         if (isset($_POST['mail'])) {
-            $mail = $_POST['mail'];
+            $mail = e($_POST['mail']);
             //à chiffrer
             $bd = Model::getModel();
             $mailExisting = $bd->mailExists($mail);

@@ -17,7 +17,7 @@ body {
     background-color: #F5F5F5;
     color: #555;
     font-size: 1.1em;
-    font-family: Regular, Arial, Helvetica, sans-serif;
+    font-family: Montserrat, Regular, Arial, Helvetica, sans-serif;
     outline: none;
     background-image: url("../images/imgfond.jpg");
     background-size: cover;
@@ -32,7 +32,6 @@ body {
 .button {
     display: block;
     margin: 0 auto; /* Pour centrer le bouton horizontalement */
-    margin-top: 5px;
     padding: 10px 40px; /* Ajustez la taille du bouton ici */
     background-color: #4F74B1;
     color: #fff;
@@ -75,12 +74,16 @@ body {
     gap: 10px; /* Ajustez l'espacement vertical entre les éléments */
     padding: 20px; /* Ajustez la marge intérieure */
     border-radius: 5%;
+    position: relative;
+    box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.25);
+}
+
+.background-blur > *:not(.popup-roles) {
+    filter: blur(1px);
 }
 
 .input-login{
-    width: 270px;
-    height: 50px;
-    margin-bottom: 5px;
+    width: 100%;
 }
 
 label {
@@ -99,7 +102,18 @@ label {
 .oublie {
     text-decoration: none;
     font-size: 10px;
-    margin-bottom: 20%;
+}
+
+.login-form{
+    height: 60%;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.login-form button {
+    margin-top: 15px; /* Ajouter une marge en haut au bouton */
 }
 
 input {
@@ -110,11 +124,9 @@ input {
     border-radius: 10px;
     outline: none;
     transition: .4s;
-    padding-left: 20px;
-    padding-right: 20px;
-
     height: 45px;
     font-size: 14px;
+    text-indent: 10px;
 }
 
 input:focus {
@@ -138,24 +150,35 @@ input:focus + label {
 
 
 h1 {
-    font-family: 'Be Vietnam Pro', sans-serif;
-    font-family: 'Figtree', sans-serif;
-    color: rgb(0, 0, 0);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: normal ;
+    color: #1B1919;
     /*margin-bottom: 20px; */
     font-size: 25px;
     margin-bottom: 2px;
 }
 
 h3 {
-    font-family: 'Be Vietnam Pro', sans-serif;
-    font-family: 'Figtree', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     color: rgb(171, 171, 171);
     /*margin-bottom: 20px; */
-
+    font-weight: lighter;
     font-size: 16px;
     margin-bottom: 40px;
 }
 
+.popup-roles{
+    list-style: none;
+    width: 110%;
+    height: 80%;
+    position: absolute;
+    background: #ffffff;
+    border-radius: 5%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1;
+}
 
 a:hover {
     text-decoration: underline;
@@ -165,6 +188,11 @@ img {
     width: 70px;
     border-radius: 10px;
     border: 1px solid #494954;
+}
+
+.alert{
+    color: red;
+    font-size: 15px;
 }
 
 @media only screen and (max-width: 750px) {
