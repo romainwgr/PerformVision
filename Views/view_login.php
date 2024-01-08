@@ -2,12 +2,12 @@
 require 'view_begin.php';
 ?>
 
-<div class="container" <?= (isset($data['response']['roles'])) ? "background-blur" : "" ?>
+<div class="container" <?= (isset($data['response']['roles'])) ? "background-blur" : "" ?> >
 
     <h1>Connectez-vous !</h1>
     <h3>Accéder au site de Perform Vision</h3>
 
-    <!---->
+    
     <?php if (isset($data['response'])) :
         if (isset($data['response']['roles'])): ?>
             <ul class="popup-roles">
@@ -37,7 +37,7 @@ require 'view_begin.php';
         </button>
     </form>
 </div>
-<!---->
+
 
 <footer>
     <div class="nom-entreprise"><p>Perform Vision</p></div>
