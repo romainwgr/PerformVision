@@ -34,6 +34,21 @@ class Model
         return self::$instance;
     }
 
+    public function getClientContactData(){
+        $req = $this->bd->prepare('');
+        $req->execute();
+        return $req->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getComponentCommercial($id){
+        $req = $this->bd->prepare('');
+        $req->bindValue(':id', $id);
+    }
+
+    function getEmailById($id){
+        $req = $this->bd->prepare('');
+        $req->bindValue(':id', $id);
+    }
     /*
      * Méthode permettant de vérifier que le mail saisi existe bien.
      */
