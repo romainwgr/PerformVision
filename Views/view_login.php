@@ -2,7 +2,7 @@
 require 'view_begin.php';
 ?>
 
-<div class="container <?= (isset($data['response']['roles'])) ? "background-blur" : "" ?>
+<div class="container" <?= (isset($data['response']['roles'])) ? "background-blur" : "" ?>
 
     <h1>Connectez-vous !</h1>
     <h3>Accéder au site de Perform Vision</h3>
