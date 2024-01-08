@@ -34,24 +34,44 @@ class Model
         return self::$instance;
     }
 
+    /**
+     * @return array|false
+     */
     public function getClientContactData(){
         $req = $this->bd->prepare('');
         $req->execute();
         return $req->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getComponentCommercial($id){
+    /**
+     * Renvoie la liste des emails des commerciaux assignées à la mission de l'interlocuteur client
+     * @param $idClientContact
+     * @return void
+     */
+    public function getComponentCommercialsEmails($idClientContact){
         $req = $this->bd->prepare('');
-        $req->bindValue(':id', $id);
+        $req->bindValue(':id', $idClientContact);
+        $req->execute();
+        $req->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Récupère le mail dans la base de données grâce à l'identifiant de la personne
+     * @param $id
+     * @return void
+     */
     function getEmailById($id){
         $req = $this->bd->prepare('');
         $req->bindValue(':id', $id);
+        $req->execute();
+        $req->fetch(PDO::FETCH_ASSOC);
     }
-    /*
+
+    /**
      * Méthode permettant de vérifier que le mail saisi existe bien.
-     */
+     * @param $mail
+     * @return integer
+     **/
     public function mailExists($mail)
     {
         $req = $this->bd->prepare('SELECT email FROM PERSONNE WHERE email = :mail;');
@@ -61,9 +81,9 @@ class Model
         return sizeof($email) != 0;
     }
 
-    /*
+    /**
      * Vérifie que le mot de passe correspond bien au mail. Si ils correspondent, une session avec les informations de la personne lié au mail débute.
-     */
+     **/
     public function checkMailPassword($mail, $password)
     {
         $req = $this->bd->prepare('SELECT * FROM PERSONNE WHERE email = :mail');
@@ -83,9 +103,9 @@ class Model
         return false;
     }
 
-    /*
+    /**
      * Méthode vérifiant les rôles de la personne. Si il n'y a qu'un seul rôle elle retourne simplement le nom de ce rôle. Si il y a plusieurs rôles, une liste des rôles sous forme de tableau.
-     */
+     **/
     public function hasSeveralRoles()
     {
         $roles = [];
@@ -130,10 +150,4 @@ class Model
 
         return $roles[0];
     }
-    public function pagination($npage){
-        $req=$this->prepare('');
-        $req->execute();
-        return $req->fetchALL(PDO::FETCH_ASSOC);
-    }
-
 }

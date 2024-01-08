@@ -11,20 +11,25 @@ class Controller_interlocuteur_client extends Controller
         $this->action_dashboard();
     }
 
-    public function action_dashboard(){
-        if(isset($_SESSION['id'])){
+    public function action_dashboard()
+    {
+        if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $data = ['dashboard' => $bd->getClientContactData()];
             return $this->render('interlocuteur_client', $data);
-        }else{
+        } else {
             error_log('Une erreur est survenue lors du chargement du tableau de bord');
         }
     }
 
-    public function action_envoyer_email(){
+    public function action_envoyer_email()
+    {
         $bd = Model::getModel();
-        $destinataireId = $bd->getComponentCommercial($_SESSION['id']);
-        $destinataireEmail = $bd->getEmailById($destinataireId);
+        $destinatairesEmails = '';
+        foreach ($bd->getComponentCommercial($_SESSION['id']) as $v){
+            $destinatairesEmails .= $v['email'] . ', ';
+        }
+
         $emetteur = $bd->getEmailById($_SESSION['id']);
         $objet = $_POST['objet'];
         $message = e($_POST['message']);
@@ -34,10 +39,11 @@ class Controller_interlocuteur_client extends Controller
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
         $headers .= 'From: <' . $emetteur . '>' . "\r\n";
 
-        mail($destinataireEmail, $objet, $message, $headers);
+        mail($destinatairesEmails, $objet, $message, $headers);
     }
 
-    public function telecharger_bdl(){
+    public function telecharger_bdl()
+    {
         $cheminFichier = $cheminBdl . $_GET['id'];
 
         // Vérifiez si le fichier existe
@@ -60,16 +66,12 @@ class Controller_interlocuteur_client extends Controller
         }
     }
 
-    public function action_bdl(){
-
-    }
-        public function action_pagination(){
-        $db=Model::getModel();
-        if(isset($POST["page"])){
-            $this->render("interlocuteur_client",$data=[
-                "prestataires"=>$db->pagination($POST["page"])
-            ]);
-
+    public function action_bdl()
+    {
+        if (isset($_GET['idBdl'])) {
+            $bd = Model::getModel();
+            $data = ['bdl' => $bd->getBdlInfos($_GET['idBdl'])];
+            $this->render('bdl', $data);
         }
     }
 }
