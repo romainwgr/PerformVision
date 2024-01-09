@@ -1,7 +1,7 @@
 <?php
 require '../Utils/configuration.php';
 
-class Controller_interlocuteur_client extends Controller
+class Controller_interlocuteur_ extends Controller
 {
     /**
      * @inheritDoc

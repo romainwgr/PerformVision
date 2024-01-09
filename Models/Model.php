@@ -50,7 +50,7 @@ class Model
      * @return void
      */
     public function getComponentCommercialsEmails($idClientContact){
-        $req = $this->bd->prepare('');
+        $req = $this->bd->prepare('SELECT email FROM dirige d JOIN estDans ed USING(id_composante) JOIN personne com ON ed.id_personne = com.id_personne WHERE d.id_personne = :id;');
         $req->bindValue(':id', $idClientContact);
         $req->execute();
         $req->fetchAll(PDO::FETCH_ASSOC);
@@ -62,7 +62,7 @@ class Model
      * @return void
      */
     function getEmailById($id){
-        $req = $this->bd->prepare('');
+        $req = $this->bd->prepare('SELECT email FROM personne WHERE id_personne = :id;');
         $req->bindValue(':id', $id);
         $req->execute();
         $req->fetch(PDO::FETCH_ASSOC);
