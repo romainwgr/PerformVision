@@ -1,8 +1,8 @@
 <?php
-require '../Utils/configuration.php';
 
-class Controller_interlocuteur_ extends Controller
+class Controller_interlocuteur extends Controller
 {
+
     /**
      * @inheritDoc
      */
@@ -20,7 +20,7 @@ class Controller_interlocuteur_ extends Controller
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $data = ['dashboard' => $bd->getClientContactDashboardData()];
-            return $this->render('interlocuteur_client', $data);
+            return $this->render('interlocuteur', $data);
         } else {
             error_log('Une erreur est survenue lors du chargement du tableau de bord');
         }
@@ -34,7 +34,7 @@ class Controller_interlocuteur_ extends Controller
     {
         $bd = Model::getModel();
         $destinatairesEmails = '';
-        foreach ($bd->getComponentCommercial($_SESSION['id']) as $v){
+        foreach ($bd->getComponentCommercialsEmails($_SESSION['id']) as $v) {
             $destinatairesEmails .= $v['email'] . ', ';
         }
 

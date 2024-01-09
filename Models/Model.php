@@ -39,7 +39,8 @@ class Model
      * @return array|false
      */
     public function getClientContactDashboardData(){
-        $req = $this->bd->prepare('');
+        $req = $this->bd->prepare('SELECT nom_mission, date_debut, nom, prenom, id_bdl FROM mission m JOIN travailleAvec USING(id_mission) JOIN personne p USING(id_personne) JOIN bon_de_livraison bdl ON m.id_mission= bdl.id_mission WHERE bdl.id_personne = :id;');
+        $req->bindValue(':id', $_SESSION['id']);
         $req->execute();
         return $req->fetchAll(PDO::FETCH_ASSOC);
     }

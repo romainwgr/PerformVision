@@ -36,7 +36,7 @@ class Controller_login extends Controller
                         $msg = $role;
                     } else {
                         $nom_classe = 'Controller_' . $role;
-                        $nom_fichier = 'Controllers/' . $nom_classe . '.php';
+                        $nom_fichier = $nom_classe . '.php';
                         require_once $nom_fichier;
                         new $nom_classe();
                         return;

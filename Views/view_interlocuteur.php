@@ -31,7 +31,7 @@ require 'view_begin.php';
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($data as $row): ?>
+            <?php foreach ($dashboard as $row): ?>
                 <tr>
                     <td><?= $row['nom_mission'] ?></td>
                     <td><?= $row['date_debut'] ?></td>
