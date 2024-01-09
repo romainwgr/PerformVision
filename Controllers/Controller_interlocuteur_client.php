@@ -11,17 +11,25 @@ class Controller_interlocuteur_client extends Controller
         $this->action_dashboard();
     }
 
+    /**
+     * Affiche le tableau de bord de l'interlocuteur client en récupérant les informations grâce à son id
+     * @return void
+     */
     public function action_dashboard()
     {
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
-            $data = ['dashboard' => $bd->getClientContactData()];
+            $data = ['dashboard' => $bd->getClientContactDashboardData()];
             return $this->render('interlocuteur_client', $data);
         } else {
             error_log('Une erreur est survenue lors du chargement du tableau de bord');
         }
     }
 
+    /**
+     * Envoie un email au(x) commercial/commerciaux assigné(s) à la mission de l'interlocuteur client
+     * @return void
+     */
     public function action_envoyer_email()
     {
         $bd = Model::getModel();
@@ -42,6 +50,10 @@ class Controller_interlocuteur_client extends Controller
         mail($destinatairesEmails, $objet, $message, $headers);
     }
 
+    /**
+     * Lecture du fichier correspondant au bon de livraison pour l'envoyer au client
+     * @return void
+     */
     public function telecharger_bdl()
     {
         $cheminFichier = $cheminBdl . $_GET['id'];
@@ -66,6 +78,10 @@ class Controller_interlocuteur_client extends Controller
         }
     }
 
+    /**
+     * Renvoie à la vue du bon de livraison
+     * @return void
+     */
     public function action_bdl()
     {
         if (isset($_GET['idBdl'])) {

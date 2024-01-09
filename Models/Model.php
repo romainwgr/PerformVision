@@ -35,9 +35,10 @@ class Model
     }
 
     /**
+     * Récupère les informations de l'interlocuteur client par rapport à sa mission
      * @return array|false
      */
-    public function getClientContactData(){
+    public function getClientContactDashboardData(){
         $req = $this->bd->prepare('');
         $req->execute();
         return $req->fetchAll(PDO::FETCH_ASSOC);
