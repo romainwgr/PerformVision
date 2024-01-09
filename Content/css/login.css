@@ -1,0 +1,241 @@
+* {
+    outline: none;
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    outline: none !important;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100vw;
+    background-color: #F5F5F5;
+    color: #555;
+    font-size: 1.1em;
+    font-family: 'Montserrat', Regular, Arial, Helvetica, sans-serif;
+    background-image: url("../images/imgfond.jpg"); /* Chemin modifié */
+    background-size: cover;
+    background-position: center;
+}
+
+
+.header {
+    background: #4F74B1;
+}
+
+/* bouton */
+.button {
+    display: block;
+    margin: 0 auto; /* Pour centrer le bouton horizontalement */
+    padding: 10px 40px; /* Ajustez la taille du bouton ici */
+    background-color: #4F74B1;
+    color: #fff;
+    border-radius: 10px; /* Augmentation du rayon pour un look plus arrondi */
+    text-align: center;
+    transition: background-color 0.3s ease;
+    font-size: 16px; /* Ajustez la taille de la police ici */
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+/* Style du bouton au survol */
+.button:hover, .button button:hover {
+    background: rgb(206, 206, 206);
+    color: #4F74B1;
+}
+
+/*fin du bouton*/
+
+/* Clearfix */
+.cf:after, .cf:before {
+    content: "";
+    display: table;
+}
+
+.cf:after {
+    clear: both;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+    height: 450px;
+    background-color: #ffffff;
+    gap: 10px; /* Ajustez l'espacement vertical entre les éléments */
+    padding-top: 50px; /* Ajustez la marge intérieure */
+    border-radius: 5%;
+    position: relative;
+    box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.25);
+    margin: auto; /* Centrer horizontalement */
+}
+
+.background-blur > *:not(.popup-roles) {
+    filter: blur(1px);
+}
+
+.input-login {
+    width: 100%;
+}
+
+label {
+    position: absolute;
+    left: 20px;
+    color: #a0a0a0;
+    height: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+    transition: .2s;
+    font-family: Regular, Arial, Helvetica, sans-serif;
+
+    font-size: 12px;
+}
+
+.oublie {
+    text-decoration: none;
+    font-size: 10px;
+}
+
+.login-form {
+    height: 60%;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.login-form button {
+    margin-top: 15px; /* Ajouter une marge en haut au bouton */
+    margin-bottom: 5px; /* Ajuster la marge en bas du bouton */
+}
+
+input {
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid #9d9d9e;
+    border-radius: 10px;
+    outline: none;
+    transition: .4s;
+    height: 45px;
+    font-size: 14px;
+    text-indent: 10px;
+}
+
+input:focus {
+    border: 2px solid #1f1fff;
+    box-shadow: #6767ff 0px 1px 1px, #6767ff 0px 0px 0px 1px;
+}
+
+input:focus + label {
+    left: 20px;
+    transform: translateY(-22px);
+    font-size: 12px;
+    background-color: #24242c;
+}
+
+.up {
+    left: 20px;
+    transform: translateY(-22px);
+    font-size: 12px;
+    background-color: #24242c;
+}
+
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: normal ;
+    color: #1B1919;
+    /*margin-bottom: 20px; */
+    font-size: 25px;
+    margin-bottom: 2px;
+}
+
+h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: rgb(171, 171, 171);
+    /*margin-bottom: 20px; */
+    font-weight: lighter;
+    font-size: 16px;
+    margin-bottom: 40px;
+}
+
+.popup-roles{
+    list-style: none;
+    width: 110%;
+    height: 80%;
+    position: absolute;
+    background: #ffffff;
+    border-radius: 5%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    width: 70px;
+    border-radius: 10px;
+    border: 1px solid #494954;
+}
+
+.alert{
+    color: red;
+    font-size: 15px;
+}
+
+@media only screen and (max-width: 750px) {
+    body {
+        display: none;
+    }
+
+    /* .pic2 {
+        display: block;
+    } */
+    .container {
+        width: 100%;
+    }
+}
+
+
+footer {
+    background-color: #4F74B1;
+    color: #fff;
+    padding: 10px 0;
+    margin-top: auto; /* Met le footer tout en bas de la page */
+    width: 100%;
+    display: flex;
+}
+
+
+.nom-entreprise{
+
+    flex: 0.25; /* Chaque partie prendra une part égale de l'espace disponible */
+    /*border: 1px solid #000;  Ajoute une bordure pour mieux visualiser la division */
+    text-align: center;
+    padding: 20px;
+}
+.nom-entreprise p {
+    font-size: 25px;
+}
+.info-entreprise {
+    flex: 0.25; /* Chaque partie prendra une part égale de l'espace disponible */
+    /*border: 1px solid #000;  Ajoute une bordure pour mieux visualiser la division */
+    text-align: center;
+    padding: 20px;
+}
+.info-entreprise a {
+    font-size: 15px;
+    color: #fff;
+}

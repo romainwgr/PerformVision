@@ -14,4 +14,3 @@
     <link rel="stylesheet" href="/Content/css/page.css">
 </head>
 <body>
-<body>
