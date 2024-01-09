@@ -97,7 +97,6 @@ class Model
                 session_start();
                 $_SESSION['id'] = $realPassword[0]['id_personne'];
                 $_SESSION['email'] = $realPassword[0]['email'];
-                $_SESSION['tel'] = $realPassword[0]['tel'];
                 return true;
             }
         }

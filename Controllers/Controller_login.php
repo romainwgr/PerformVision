@@ -35,7 +35,10 @@ class Controller_login extends Controller
                     if (isset($role['roles'])) {
                         $msg = $role;
                     } else {
-                        $this->render($role);
+                        $nom_classe = 'Controller_' . $role;
+                        $nom_fichier = 'Controllers/' . $nom_classe . '.php';
+                        require_once $nom_fichier;
+                        new $nom_classe();
                         return;
                     }
                 }
