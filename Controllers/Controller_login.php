@@ -30,7 +30,6 @@ class Controller_login extends Controller
                 $msg = "L'identifiant ou le mot de passe est incorrect !";
 
                 if ($db->checkMailPassword(e($_POST['mail']), e($_POST['password']))) {
-                    session_start();
                     $role = $db->hasSeveralRoles();
                     if (isset($role['roles'])) {
                         $msg = $role;

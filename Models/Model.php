@@ -54,7 +54,7 @@ class Model
         $req = $this->bd->prepare('SELECT email FROM dirige d JOIN estDans ed USING(id_composante) JOIN personne com ON ed.id_personne = com.id_personne WHERE d.id_personne = :id;');
         $req->bindValue(':id', $idClientContact);
         $req->execute();
-        $req->fetchAll(PDO::FETCH_ASSOC);
+        return $req->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -95,6 +95,15 @@ class Model
 
         if ($realPassword) {
             if ($realPassword[0]['mdp'] == $password) {
+                if (isset($_SESSION)) {
+                    session_destroy();
+                }
+                if (session_status() == PHP_SESSION_NONE) {
+                    session_start();
+                }
+                if (isset($_SESSION['id'])) {
+                    unset($_SESSION['id']);
+                }
                 $_SESSION['id'] = $realPassword[0]['id_personne'];
                 $_SESSION['email'] = $realPassword[0]['email'];
                 return true;

@@ -21,7 +21,7 @@ class Controller_interlocuteur extends Controller
             $data = ['dashboard' => $bd->getClientContactDashboardData()];
             return $this->render('interlocuteur', $data);
         } else {
-            error_log('Une erreur est survenue lors du chargement du tableau de bord');
+            echo 'Une erreur est survenue lors du chargement du tableau de bord';
         }
     }
 
@@ -33,12 +33,8 @@ class Controller_interlocuteur extends Controller
     {
         session_start();
         $bd = Model::getModel();
-        $destinatairesEmails = '';
         if (isset($_SESSION['id']) && $bd->getComponentCommercialsEmails($_SESSION['id'])) {
-            echo var_dump($bd->getComponentCommercialsEmails($_SESSION['id']));
-            foreach ($bd->getComponentCommercialsEmails($_SESSION['id']) as $v) {
-                $destinatairesEmails .= $v['email'] . ', ';
-            }
+            $destinatairesEmails = implode(', ', array_column($bd->getComponentCommercialsEmails($_SESSION['id']), 'email'));
             $emetteur = $_SESSION['email'];
             $objet = $_POST['objet'];
             $message = e($_POST['message']);
@@ -48,11 +44,12 @@ class Controller_interlocuteur extends Controller
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
             $headers .= 'From: <' . $emetteur . '>' . "\r\n";
 
-            mail($destinatairesEmails, $objet, $message, $headers);
-            echo "Le mail a été envoyé !";
-            return;
+            if (mail($destinatairesEmails, $objet, $message, $headers)) {
+                echo "Le mail a été envoyé !";
+            } else {
+                echo "Erreur lors de l'envoi de l'e-mail : " . error_get_last()['message'];
+            }
         }
-        echo "Le mail n'a pas été envoyé !";
     }
 
     /**
