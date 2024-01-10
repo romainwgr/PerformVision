@@ -23,7 +23,6 @@ class Controller_login extends Controller
     public function action_check_pswd()
     {
         $db = Model::getModel();
-
         if (isset($_POST['mail']) && isset($_POST['password'])) {
             if (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $_POST['mail'])) {
                 $msg = "Ce n'est pas un email correcte !";
@@ -31,6 +30,7 @@ class Controller_login extends Controller
                 $msg = "L'identifiant ou le mot de passe est incorrect !";
 
                 if ($db->checkMailPassword(e($_POST['mail']), e($_POST['password']))) {
+                    session_start();
                     $role = $db->hasSeveralRoles();
                     if (isset($role['roles'])) {
                         $msg = $role;

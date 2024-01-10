@@ -2,7 +2,6 @@
 
 class Controller_interlocuteur extends Controller
 {
-
     /**
      * @inheritDoc
      */
@@ -32,22 +31,28 @@ class Controller_interlocuteur extends Controller
      */
     public function action_envoyer_email()
     {
+        session_start();
         $bd = Model::getModel();
         $destinatairesEmails = '';
-        foreach ($bd->getComponentCommercialsEmails($_SESSION['id']) as $v) {
-            $destinatairesEmails .= $v['email'] . ', ';
+        if (isset($_SESSION['id']) && $bd->getComponentCommercialsEmails($_SESSION['id'])) {
+            echo var_dump($bd->getComponentCommercialsEmails($_SESSION['id']));
+            foreach ($bd->getComponentCommercialsEmails($_SESSION['id']) as $v) {
+                $destinatairesEmails .= $v['email'] . ', ';
+            }
+            $emetteur = $_SESSION['email'];
+            $objet = $_POST['objet'];
+            $message = e($_POST['message']);
+
+            //header pour l'envoie du mail
+            $headers = "MIME-Version: 1.0" . "\r\n";
+            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+            $headers .= 'From: <' . $emetteur . '>' . "\r\n";
+
+            mail($destinatairesEmails, $objet, $message, $headers);
+            echo "Le mail a été envoyé !";
+            return;
         }
-
-        $emetteur = $bd->getEmailById($_SESSION['id']);
-        $objet = $_POST['objet'];
-        $message = e($_POST['message']);
-
-        //header pour l'envoie du mail
-        $headers = "MIME-Version: 1.0" . "\r\n";
-        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        $headers .= 'From: <' . $emetteur . '>' . "\r\n";
-
-        mail($destinatairesEmails, $objet, $message, $headers);
+        echo "Le mail n'a pas été envoyé !";
     }
 
     /**

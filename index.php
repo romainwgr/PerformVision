@@ -6,6 +6,8 @@ require_once "Utils/functions.php";
 require_once "Models/Model.php";
 //Inclusion de la classe Controller
 require_once "Controllers/Controller.php";
+//Inclusion du fichier de configuration
+require_once "Utils/configuration.php";
 
 //Liste des contrôleurs
 $controllers = ['login', 'commercial', 'prestataire', 'interlocuteur'];

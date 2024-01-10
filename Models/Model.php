@@ -95,7 +95,6 @@ class Model
 
         if ($realPassword) {
             if ($realPassword[0]['mdp'] == $password) {
-                session_start();
                 $_SESSION['id'] = $realPassword[0]['id_personne'];
                 $_SESSION['email'] = $realPassword[0]['email'];
                 return true;
