@@ -27,14 +27,12 @@
 
                 <td style="display: flex; justify-content: space-around;">
                     <div style="text-align: center;">
-                        <a href="#"><img src="Content/images/visibility.svg"
-                                         style="padding-bottom: 5px;"></a>
+                        <a href="#"><i class="fa fa-eye" aria-hidden="true"></i></a>
                         <p>Consulter</p>
                     </div>
 
                     <div style="text-align: center;">
-                        <a href="#"><img src="/Content/images/download.svg"
-                                         style="padding-bottom: 5px;"></a>
+                        <a href="#"><i class="fa fa-download" aria-hidden="true"></i></a>
                         <p>Télécharger</p>
                     </div>
                 </td>
