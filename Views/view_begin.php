@@ -18,5 +18,6 @@
     <link rel="stylesheet" href="/Content/css/gestionnaire/missions.css">
     <link rel="stylesheet" href="/Content/css/gestionnaire/prestataire.css">
     <link rel="stylesheet" href="/Content/css/header.css">
+    <link rel="stylesheet" href="/Content/css/footer.css">
 </head>
 <body>

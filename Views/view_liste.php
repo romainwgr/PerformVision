@@ -2,6 +2,7 @@
 require 'view_begin.php';
 
 require 'view_header.php';
+$title = 'Prestataire';
 $prestataire = [['nom'=>'Dupont', 'prenom' => 'Jean', 'interne'=>'t'],
     ['nom'=>'Dupont', 'prenom' => 'Jean', 'interne'=>'f'],
     ['nom'=>'Dupont', 'prenom' => 'Jean', 'interne'=>'t'],
@@ -10,10 +11,10 @@ $prestataire = [['nom'=>'Dupont', 'prenom' => 'Jean', 'interne'=>'t'],
     ['nom'=>'Dupont', 'prenom' => 'Jean', 'interne'=>'t']];
 ?>
 <div class='liste-prestataire-contrainer'>
-    <h1> Prestataire </h1>
+    <h1><?= $title ?> </h1>
     <div class="element-recherche">
         <input type="text" id="recherche" name="recherche" placeholder="Rechercher un Prestataire...">
-        <button type="submit" id="ajouter">Ajouter prestataire</button>
+        <button type="submit" id="ajouter">Ajouter <?= $title ?></button>
         <button type="submit" id="supprimer">Supprimer</button>
     </div>
 

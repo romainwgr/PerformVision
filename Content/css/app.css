@@ -93,34 +93,6 @@ input {
     box-shadow: var(--shadow-regular);
 }
 
-footer {
-    display: flex;
-    align-items: center;
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-    width: 100%;
-    height: 10vh;
-    font-size: ;
-}
-.nom-entreprise {
-    flex: 0.25; /* Chaque partie prendra une part égale de l'espace disponible */
-    text-align: center;
-}
-
-.nom-entreprise p {
-    font-size: 25px;
-}
-
-.info-entreprise {
-    flex: 0.25; /* Chaque partie prendra une part égale de l'espace disponible */
-    text-align: center;
-}
-
-.info-entreprise a {
-    font-size: 15px;
-    color: #fff;
-}
-
 button{
     transition: background-color 0.3s ease;
     padding: var(--spacer-2) var(--spacer-5); /* Ajustez la taille du bouton ici */
