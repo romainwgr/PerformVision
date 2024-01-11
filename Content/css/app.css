@@ -40,6 +40,7 @@ h1 {
     color: white;
     font-size: var(--font-size--huge);
     margin-bottom: var(--spacer-5);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 table {
@@ -132,6 +133,7 @@ button{
     border: none;
     cursor: pointer;
     outline: none;
+    box-shadow: var(--shadow-regular);
 }
 
 /* Style du bouton au survol */

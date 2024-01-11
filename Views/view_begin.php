@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/Content/css/login.css">
     <link rel="stylesheet" href="/Content/css/interlocuteur.css">
     <link rel="stylesheet" href="/Content/css/gestionnaire/missions.css">
+    <link rel="stylesheet" href="/Content/css/gestionnaire/prestataire.css">
     <link rel="stylesheet" href="/Content/css/header.css">
 </head>
 <body>

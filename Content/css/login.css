@@ -6,6 +6,9 @@
     align-items: center;
 }
 
+.login-container h1{
+    text-shadow: none;
+}
 
 .container {
     display: flex;
@@ -108,8 +111,7 @@ input:focus + label {
 h3 {
     color: rgb(171, 171, 171);
     font-weight: lighter;
-    font-size: 16px;
-    margin-bottom: 40px;
+    font-size: var(--font-size--normal);
 }
 
 .popup-roles {
