@@ -10,7 +10,9 @@
 
     <title>Perform vision Login</title>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/Content/css/variables.css">
+    <link rel="stylesheet" href="/Content/css/app.css">
     <link rel="stylesheet" href="/Content/css/login.css">
-    <link rel="stylesheet" href="/Content/css/page.css">
+    <link rel="stylesheet" href="/Content/css/interlocuteur.css">
 </head>
 <body>

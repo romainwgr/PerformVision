@@ -1,0 +1,101 @@
+.main-contrainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    gap: var(--spacer-10);
+    padding: 10% 0 10% 0;
+}
+
+.dashboard-container {
+    width: 80%;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.logo {
+    font-size: var(--font-size--huge);
+    font-weight: bold;
+    font-family: 'Judson', regular;
+
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: var(--spacer-4);
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.form-email{
+    width: 70%;
+}
+
+.demande {
+    display: flex;
+    flex-direction: column;
+}
+
+nav ul li a:hover {
+    color: #c1faff; /* Couleur au survol */
+}
+
+th, td {
+
+    padding: 8px;
+    text-align: center;
+}
+
+.statut {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+    color: #fff;
+    font: bolder;
+    padding: 3px;
+    font-size: 15px;
+
+}
+
+.vert { background-color: #4CAF50; }
+.orange { background-color: #FFA500; }
+
+#bouton-envoyer {
+    display: block;
+    margin: 0 auto; /* Pour centrer le bouton horizontalement */
+    padding: 10px 40px; /* Ajustez la taille du bouton ici */
+    background-color: #4F74B1;
+    color: #fff;
+    border-radius: 7px; /* Augmentation du rayon pour un look plus arrondi */
+    text-align: center;
+    transition: background-color 0.3s ease;
+    font-size: 16px; /* Ajustez la taille de la police ici */
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+#bouton-envoyer:hover {
+    background: rgb(206, 206, 206);
+    color: #4F74B1;
+}
+
+#table-container {
+    max-height: 10px;  /*Hauteur fixe du conteneur */
+    overflow-y: auto;  /*Activation de la barre de défilement vertical */
+}
