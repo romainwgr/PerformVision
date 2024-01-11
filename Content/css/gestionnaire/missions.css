@@ -118,3 +118,22 @@ img {
     margin-top:0.5rem;
     margin-bottom:0.5rem;
 }
+.creer_mission {
+    text-align: center; /* Adjust as needed */
+    margin-top: 20px;   /* Adjust the margin as needed */
+    margin: auto;
+    background-color: #4F74B1;
+    margin-right: 10%;
+    width: 10rem;
+    border-radius: 10px;
+    height: 1rem;
+    padding:0.8rem;
+
+}
+
+.creer_mission a {
+
+    text-decoration: none;
+    color: white;     /* Adjust the color as needed */
+    border-bottom: 2px solid #4F74B1; /* Add a border to the link */
+}

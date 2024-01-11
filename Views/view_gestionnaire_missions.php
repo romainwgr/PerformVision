@@ -20,44 +20,24 @@ require 'view_begin.php';
 
     <table id="table-container" >
         <thead>
-            <tr>
-                <th>Nom projet/société</th>
-                <th>Date</th>
-                <th>Préstataire assigné</th>
-                <th>Statut</th>
-                <th>Bon de livraison</th>
-            </tr>
+            <?php
+            foreach ($_POST["header"] as $cle => $colonnes) {
+                echo "<tr>";
+                foreach ($colonnes as $valeurs){
+                    echo "<th>$valeurs</th>";
+                }
+
+                echo "</tr>";
+            }?>
         </thead>
         <tbody>
-            <tr>
-                <td>Nom de mission</td>
-                <td>01/01/2024</td>
-                <td>David Dupont</td>
-
-                <td>
-                    <div class="statut vert">L</div>
-                    <div class="statut orange">M</div>
-                    <div class="statut vert">M</div>
-                    <div class="statut orange">J</div>
-                    <div class="statut vert">V</div>
-                </td>
-                <td class="images">
-                    <div class="">
-                        <a href="#"><img src="images/icons8-visible-50.png" ></a>
-                        <p>Consulter</p>
-                    </div>
-
-                    <div >
-                        <a href="#"><img src="images/icons8-install-58.png" ></a>
-                        <p>Télécharger</p>
-                    </div>
-                </td>
-
-            </tr>
-            <tr>
-                <td>Nom de mission</td>
-                <td>02/01/2024</td>
-                <td>Jean Dupont</td>
+            <?php
+            foreach ($_POST["tableau"] as $cle => $colonnes) {
+                echo "<tr>";
+                foreach ($colonnes as $valeurs){
+                    echo "<td>$valeurs</td>";
+                }
+                echo '
                 <td>
                     <div class="statut orange">L</div>
                     <div class="statut vert">M</div>
@@ -65,21 +45,24 @@ require 'view_begin.php';
                     <div class="statut orange">J</div>
                     <div class="statut vert">V</div>
                 </td>
-                <td class="images" >
+                <td class="images">
                     <div>
                         <a href="#"><img src="images/icons8-visible-50.png" ></a>
-                        <p>Consulter</p>
+                <p>Consulter</p>
                     </div>
-
                     <div>
                         <a href="#"><img src="images/icons8-install-58.png" ></a>
                         <p>Télécharger</p>
                     </div>
-                </td>
-            </tr>
-            <!-- Ajoutez d'autres lignes -->
+                </td>';
+                echo "</tr>";
+            }
+            ?>
         </tbody>
     </table>
+</div>
+<div class="creer_mission">
+    <a href="Controllers_mission"> + Créer Mission</a>
 </div>
 
 
