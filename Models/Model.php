@@ -118,10 +118,44 @@ class Model
         $requete = $this->bd->prepare("INSERT INTO travailleAvec (id_personne, id_mission) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT m.id_mission FROM MISSION m JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :nom_mission");
         $requete->bindValue(':nom_mission', $mission, PDO::PARAM_STR);
         $requete->execute();
-         $requete->bindValue(':email', $mail, PDO::PARAM_STR);
+        $requete->bindValue(':email', $mail, PDO::PARAM_STR);
         $requete->execute();
         return (bool) $requete->rowCount();
     }
+
+    public function addClientForGestionnaire($client,$tel,$composante,$id_adresse,$email)
+    {
+        $requete = $this->bd->prepare("INSERT INTO client(nom_client, telephone_client) VALUES( :nom_client, :tel)");
+        $requete->bindValue(':nom_client', $client, PDO::PARAM_STR);
+        $requete->bindValue(':tel', $tel, PDO::PARAM_STR);
+        $requete->execute();
+        $requete = $this->bd->prepare("INSERT INTO COMPOSANTE (id_client, nom_composante, id_adresse) SELECT (SELECT id_client FROM client ORDER BY id_client DESC LIMIT 1),:nom_compo, :id_adresse");
+        $requete->bindValue(':nom_compo', $composante, PDO::PARAM_STR);
+        $requete->bindValue(':id_adresse', $id_adresse, PDO::PARAM_INT);
+        $requete->execute();
+        $requete = $this->bd->prepare("INSERT INTO estDans(id_personne, id_composante) SELECT (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email'),  (SELECT id_composante FROM composante ORDER BY id_composante DESC LIMIT 1)");
+        $requete->bindValue(':email', $email, PDO::PARAM_STR);
+        $requete->execute();
+        return (bool) $requete->rowCount();
+    }
+
+    public function assignerPrestataire($email, $composante)
+    {
+        $requete = $this->bd->prepare("INSERT INTO travailleAvec (id_personne, id_mission) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT m.id_mission FROM MISSION m JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :nom_mission')");
+        $requete->bindValue(':email', $email, PDO::PARAM_STR);
+        $requete->bindValue(':nom_mission', $composante, PDO::PARAM_STR);
+        $requete->execute();
+        return (bool) $requete->rowCount();
+    }
+    
+      public function getBdlPrestaForGestionnaire($id_pr)
+    {
+        $requete = $this->bd->prepare("SELECT id_bdl, mois, nom_mission FROM BON_DE_LIVRAISON bdl JOIN MISSION m USING(id_mission) JOIN travailleAvec ta USING(id_mission) WHERE ta.id_personne = :id");
+        $requete->bindValue(':id', $id_pr, PDO::PARAM_INT);
+        $requete->execute();
+        return $req->fetchall();
+    }
+
 
     
 
