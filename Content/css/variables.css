@@ -2,7 +2,7 @@
     /* Colors */
     --primary-color: #4F74B1;
     --secondary-color: #FFFFFF;
-    --tertiary-color: rgb(0, 57, 52);
+    --tertiary-color: rgb(206, 206, 206);
     --main-background-color: rgba(56, 158, 143, 0.4);
     --border-color: rgba(56, 158, 143, 0.2);
 
@@ -38,6 +38,7 @@
     --height-thead: 5rem;
     --height-input: 3rem;
     --height-textarea: 20rem;
+    --height-button: 3rem;
 
     /* Shadow */
     --shadow-regular: 0px 3px 5px 0px rgba(0,0,0,0.25);

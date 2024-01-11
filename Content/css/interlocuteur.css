@@ -12,32 +12,11 @@
     width: 80%;
 }
 
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 90%;
-    margin: 0 auto;
-}
-
 .logo {
     font-size: var(--font-size--huge);
     font-weight: bold;
     font-family: 'Judson', regular;
 
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: var(--spacer-4);
-}
-
-nav ul li a {
-    text-decoration: none;
-    color: #fff;
-    font-weight: bold;
-    transition: color 0.3s ease;
 }
 
 .form-email{

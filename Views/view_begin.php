@@ -14,5 +14,7 @@
     <link rel="stylesheet" href="/Content/css/app.css">
     <link rel="stylesheet" href="/Content/css/login.css">
     <link rel="stylesheet" href="/Content/css/interlocuteur.css">
+    <link rel="stylesheet" href="/Content/css/gestionnaire/missions.css">
+    <link rel="stylesheet" href="/Content/css/header.css">
 </head>
 <body>

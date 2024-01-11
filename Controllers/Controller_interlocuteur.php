@@ -18,7 +18,8 @@ class Controller_interlocuteur extends Controller
     {
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
-            $data = ['dashboard' => $bd->getClientContactDashboardData()];
+            $headerDashboard = ['Nom projet/société', 'Date', 'Préstataire assigné', 'Statut', 'Bon de livraison'];
+            $data = ['header' => $headerDashboard, 'dashboard' => $bd->getClientContactDashboardData()];
             return $this->render('interlocuteur', $data);
         } else {
             echo 'Une erreur est survenue lors du chargement du tableau de bord';
@@ -45,9 +46,9 @@ class Controller_interlocuteur extends Controller
             $headers .= 'From: <' . $emetteur . '>' . "\r\n";
 
             if (mail($destinatairesEmails, $objet, $message, $headers)) {
-                echo "Le mail a été envoyé !";
+                $this->render('message', [$title => 'Email', $message => 'Le mail a été envoyé !']);
             } else {
-                echo "Erreur lors de l'envoi de l'e-mail : " . error_get_last()['message'];
+                $this->render('message', [$title => 'Email', $message => "Une erreur est survenue lors de l'envoie du mail !"]);
             }
         }
     }

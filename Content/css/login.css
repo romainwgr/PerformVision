@@ -34,25 +34,7 @@ a {
 .button {
     display: block;
     margin: 0 auto; /* Pour centrer le bouton horizontalement */
-    padding: 10px 40px; /* Ajustez la taille du bouton ici */
-    background-color: #4F74B1;
-    color: #fff;
-    border-radius: 10px; /* Augmentation du rayon pour un look plus arrondi */
-    text-align: center;
-    transition: background-color 0.3s ease;
-    font-size: 16px; /* Ajustez la taille de la police ici */
-    border: none;
-    cursor: pointer;
-    outline: none;
 }
-
-/* Style du bouton au survol */
-.button:hover, .button button:hover {
-    background: rgb(206, 206, 206);
-    color: #4F74B1;
-}
-
-/*fin du bouton*/
 
 /* Clearfix */
 .cf:after, .cf:before {

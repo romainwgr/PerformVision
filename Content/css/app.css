@@ -17,15 +17,6 @@ body {
     font-weight: lighter;
 }
 
-header {
-    background: #4F74B1;
-    height: 10vh;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    color: white;
-}
-
 img {
     width: var(--icon-height-small);
 }
@@ -121,11 +112,30 @@ footer {
 
 .info-entreprise {
     flex: 0.25; /* Chaque partie prendra une part égale de l'espace disponible */
-    /*border: 1px solid #000;  Ajoute une bordure pour mieux visualiser la division */
     text-align: center;
 }
 
 .info-entreprise a {
     font-size: 15px;
     color: #fff;
+}
+
+button{
+    transition: background-color 0.3s ease;
+    padding: var(--spacer-2) var(--spacer-5); /* Ajustez la taille du bouton ici */
+    background-color: #4F74B1;
+    height: var(--height-button);
+    color: #fff;
+    border-radius: 10px; /* Augmentation du rayon pour un look plus arrondi */
+    text-align: center;
+    font-size: 16px; /* Ajustez la taille de la police ici */
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+/* Style du bouton au survol */
+button:hover {
+    background: var(--tertiary-color);
+    color: var(--primary-color);
 }

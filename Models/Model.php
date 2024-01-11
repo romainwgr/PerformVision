@@ -105,6 +105,8 @@ class Model
                     unset($_SESSION['id']);
                 }
                 $_SESSION['id'] = $realPassword[0]['id_personne'];
+                $_SESSION['nom'] = $realPassword[0]['nom'];
+                $_SESSION['prenom'] = $realPassword[0]['prenom'];
                 $_SESSION['email'] = $realPassword[0]['email'];
                 return true;
             }
