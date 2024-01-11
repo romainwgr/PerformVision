@@ -9,7 +9,7 @@
             </ul>
         <?php endif; ?>
         <ul>
-            <li><a href="#"><img src="Content/images/profile-simple-svgrepo-com.svg"></a></li>
+            <li><a href="#"><img src="Content/images/profile.svg"></a></li>
             <li><a href="#"><?php if(isset($_SESSION)): echo $_SESSION['nom']; endif; ?> <br> <?php if(isset($_SESSION)): echo $_SESSION['prenom']; endif; ?></a></li>
             <li><a href="#"><img src="Content/images/door.svg"></a></li>
         </ul>
