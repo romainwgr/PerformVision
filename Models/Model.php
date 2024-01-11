@@ -34,4 +34,70 @@ class Model
         return self::$instance;
     }
 
+/* Fonction Gestionnaire*/
+    public function dashboardGestionnaire()
+    {
+        $req = $this->bd->prepare('SELECT nom_client, nom_composante, nom_mission, nom, prenom FROM client JOIN composante USING(id_client) JOIN mission USING(id_composante) JOIN travailleavec ta USING(id_mission) JOIN PERSONNE p ON ta.id_personne = p.id_personne');
+        $req->execute();
+        return $req->fetchall();
+    }
+
+    public function getInterlocuteurForGestionnaire()
+    {
+        $req = $this->bd->prepare('SELECT nom, prenom, nom_client FROM dirige JOIN composante USING(id_composante) JOIN client USING(id_client) JOIN personne USING(id_personne)
+');
+        $req->execute();
+        return $req->fetchall();
+    }
+
+     public function getCommercialForGestionnaire()
+    {
+        $req = $this->bd->prepare('SELECT nom, prenom, nom_composante FROM estdans JOIN composante USING(id_composante) JOIN personne USING(id_personne)
+');
+        $req->execute();
+        return $req->fetchall();
+    }
+
+    public function removePrestataireForGestionnaire($id_pr)
+    {
+        $requete = $this->bd->prepare("DELETE FROM ACTIVITE WHERE id_personne = :id");
+        $requete->bindValue(':id', (int) $id_pr, PDO::PARAM_INT);
+        $requete->execute();
+        $requete = $this->bd->prepare("DELETE FROM travailleAvec WHERE id_personne = :id");
+        $requete->bindValue(':id', (int) $id_pr, PDO::PARAM_INT);
+        $requete->execute();
+        $requete = $this->bd->prepare("DELETE FROM PRESTATAIRE WHERE id_personne = :id");
+        $requete->bindValue(':id', (int) $id_pr, PDO::PARAM_INT);
+        $requete->execute();
+        return (bool) $requete->rowCount();
+    }
+
+    public function removeInterlocuteurForGestionnaire($id_in)
+    {
+        $requete = $this->bd->prepare("DELETE FROM BON_DE_LIVRAISON WHERE id_personne = :id");
+        $requete->bindValue(':id', (int) $id_in, PDO::PARAM_INT);
+        $requete->execute();
+        $requete = $this->bd->prepare("DELETE FROM dirige WHERE id_personne = :id");
+        $requete->bindValue(':id', (int) $id_in, PDO::PARAM_INT);
+        $requete->execute();
+        $requete = $this->bd->prepare("DELETE FROM INTERLOCUTEUR WHERE id_personne = :id");
+        $requete->bindValue(':id', (int) $id_in, PDO::PARAM_INT);
+        $requete->execute();
+        return (bool) $requete->rowCount();
+    }
+
+    public function removeCommercialForGestionnaire($id_co)
+    {
+        $requete = $this->bd->prepare("DELETE FROM estDans WHERE id_personne = :id_personne");
+        $requete->bindValue(':id', (int) $id_co, PDO::PARAM_INT);
+        $requete->execute();
+        $requete = $this->bd->prepare("DELETE FROM COMMERCIAL WHERE id_personne = :id_personne");
+        $requete->bindValue(':id', (int) $id_co, PDO::PARAM_INT);
+        $requete->execute();
+        return (bool) $requete->rowCount();
+    }
+
+
+
+
 }
