@@ -111,12 +111,14 @@ class Model
         return (bool) $requete->rowCount();
     }
 
-    public function addPrestataireForGestionnaire($mission)
+    public function addPrestataireForGestionnaire($mission,$mail)
     {
         $requete = $this->bd->prepare("INSERT INTO prestataire (id_personne) SELECT id_personne FROM personne ORDER BY id_personne DESC LIMIT 1");
         $requete->execute();
-        $requete = $this->bd->prepare("INSERT INTO travailleAvec (id_personne, id_mission) SELECT  (SELECT id_personne FROM prestataire ORDER BY id_personne DESC LIMIT 1), (SELECT m.id_mission FROM MISSION m JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :nom_mission");
+        $requete = $this->bd->prepare("INSERT INTO travailleAvec (id_personne, id_mission) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT m.id_mission FROM MISSION m JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :nom_mission");
         $requete->bindValue(':nom_mission', $mission, PDO::PARAM_STR);
+        $requete->execute();
+         $requete->bindValue(':email', $mail, PDO::PARAM_STR);
         $requete->execute();
         return (bool) $requete->rowCount();
     }
