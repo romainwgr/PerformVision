@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="fr">
-	<head>
-		<meta charset="utf-8"/>
-		<title> Extranet </title>
-		<link rel="stylesheet" href="Content/css/..."/>
-	</head>
-	<body>
-		<nav>
-		</nav>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@700&family=Figtree:wght@700&display=swap"
+          rel="stylesheet">
 
-		<header>
-		</header>
+    <title>Perform vision Login</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/Content/css/gestionnaire/missions.css">
+</head>
+<body>
 
-		<main>
