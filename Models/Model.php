@@ -34,7 +34,10 @@ class Model
         return self::$instance;
     }
 
-/* Fonction Gestionnaire*/
+/* -------------------------------------------------------------------------
+                        Fonction Gestionnaire   |   |   |   |   |   |   |
+    ------------------------------------------------------------------------*/
+
     public function dashboardGestionnaire()
     {
         $req = $this->bd->prepare('SELECT nom_client, nom_composante, nom_mission, nom, prenom FROM client JOIN composante USING(id_client) JOIN mission USING(id_composante) JOIN travailleavec ta USING(id_mission) JOIN PERSONNE p ON ta.id_personne = p.id_personne');
@@ -96,6 +99,31 @@ class Model
         $requete->execute();
         return (bool) $requete->rowCount();
     }
+
+    public function addInterlocuteurForGestionnaire($composante, $client)
+    {
+        $requete = $this->bd->prepare("INSERT INTO interlocuteur (id_personne) SELECT id_personne FROM personne ORDER BY id_personne DESC LIMIT 1");
+        $requete->execute();
+        $requete = $this->bd->prepare("INSERT INTO dirige (id_personne, id_composante) SELECT  (SELECT id_personne FROM interlocuteur ORDER BY id_personne DESC LIMIT 1), (SELECT c.id_composante FROM COMPOSANTE c JOIN CLIENT cl ON c.id_client = cl.id_client WHERE c.nom_composante = ':nom_compo'  AND cl.nom_client = ':nom_client')");
+        $requete->bindValue(':nom_compo', $composante, PDO::PARAM_INT);
+        $requete->bindValue(':nom_client', $client, PDO::PARAM_STR);
+        $requete->execute();
+        return (bool) $requete->rowCount();
+    }
+
+    public function addPrestataireForGestionnaire($mission)
+    {
+        $requete = $this->bd->prepare("INSERT INTO prestataire (id_personne) SELECT id_personne FROM personne ORDER BY id_personne DESC LIMIT 1");
+        $requete->execute();
+        $requete = $this->bd->prepare("INSERT INTO travailleAvec (id_personne, id_mission) SELECT  (SELECT id_personne FROM prestataire ORDER BY id_personne DESC LIMIT 1), (SELECT m.id_mission FROM MISSION m JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :nom_mission");
+        $requete->bindValue(':nom_mission', $mission, PDO::PARAM_STR);
+        $requete->execute();
+        return (bool) $requete->rowCount();
+    }
+
+    
+
+
 
 
 
