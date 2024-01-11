@@ -27,13 +27,13 @@
 
                 <td style="display: flex; justify-content: space-around;">
                     <div style="text-align: center;">
-                        <a href="#"><img src="Content/images/icons8-visible-50.png"
+                        <a href="#"><img src="Content/images/visibility.svg"
                                          style="padding-bottom: 5px;"></a>
                         <p>Consulter</p>
                     </div>
 
                     <div style="text-align: center;">
-                        <a href="#"><img src="/Content/images/icons8-install-58.png"
+                        <a href="#"><img src="/Content/images/download.svg"
                                          style="padding-bottom: 5px;"></a>
                         <p>Télécharger</p>
                     </div>
