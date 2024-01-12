@@ -54,14 +54,7 @@ class Model
     {
         $req = $this->bd->prepare('SELECT nom_client, nom_composante, nom_mission, nom, prenom FROM client JOIN composante USING(id_client) JOIN mission USING(id_composante) JOIN travailleavec ta USING(id_mission) JOIN PERSONNE p ON ta.id_personne = p.id_personne');
         $req->execute();
-        return $req->fetchall();
-    }
-
-    public function getPrestataireForGestionnaire()
-    {
-        $req = $this->bd->prepare('SELECT nom, prenom FROM PERSONNE p JOIN PRESTATAIRE pr WHERE p.id_personne =  pr.id_personne');
-        $req->execute();
-        return $req->fetchall();
+        return $req->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getInterlocuteurForGestionnaire()
@@ -72,7 +65,7 @@ class Model
         return $req->fetchall();
     }
 
-     public function getCommercialForGestionnaire()
+    public function getCommercialForGestionnaire()
     {
         $req = $this->bd->prepare('SELECT nom, prenom, nom_composante FROM estdans JOIN composante USING(id_composante) JOIN personne USING(id_personne)
 ');
@@ -166,8 +159,8 @@ class Model
         $req->execute();
         return (bool) $req->rowCount();
     }
-    
-      public function getBdlPrestaForGestionnaire($id_pr)
+
+    public function getBdlPrestaForGestionnaire($id_pr)
     {
         $req = $this->bd->prepare("SELECT id_bdl, mois, nom_mission FROM BON_DE_LIVRAISON bdl JOIN MISSION m USING(id_mission) JOIN travailleAvec ta USING(id_mission) WHERE ta.id_personne = :id");
         $req->bindValue(':id', $id_pr, PDO::PARAM_INT);
@@ -175,10 +168,9 @@ class Model
         return $req->fetchall();
     }
 
-    
-/* -------------------------------------------------------------------------
-                        Fonction Commercial   
-    ------------------------------------------------------------------------*/
+    /* -------------------------------------------------------------------------
+                            Fonction Commercial
+        ------------------------------------------------------------------------*/
 
     public function getDashboardCommercial($id_co)
     {
@@ -204,7 +196,7 @@ class Model
         return $req->fetchall();
     }
 
-     public function getBdlPrestaForCommercial($id_pr,$id_co)
+    public function getBdlPrestaForCommercial($id_pr, $id_co)
     {
         $req = $this->bd->prepare("SELECT id_bdl, mois, nom_mission FROM BON_DE_LIVRAISON bdl JOIN MISSION m USING(id_mission) JOIN travailleAvec ta USING(id_mission) JOIN COMPOSANTE USING(id_composante) JOIN estDans ed USING(id_composante) WHERE ta.id_personne = :id_pr AND ed.id_personne = :id_com");
         $req->bindValue(':id_pr', $id_pr, PDO::PARAM_INT);
@@ -227,9 +219,8 @@ class Model
     
 
     /* -------------------------------------------------------------------------
-                        Fonction Interlocuteur   
+                        Fonction Interlocuteur
     ------------------------------------------------------------------------*/
-
 
     public function dashboardInterlocuteur($id_in)
     {
@@ -247,6 +238,58 @@ class Model
         return $req->fetchall();
     }
 
+    /**
+     * Récupère les informations de l'interlocuteur client par rapport à sa mission
+     * @return array|false
+     */
+    public function getClientContactDashboardData()
+    {
+        $req = $this->bd->prepare('SELECT nom_mission, date_debut, nom, prenom, id_bdl FROM mission m JOIN travailleAvec USING(id_mission) JOIN personne p USING(id_personne) JOIN bon_de_livraison bdl ON m.id_mission= bdl.id_mission WHERE bdl.id_personne = :id;');
+        $req->bindValue(':id', $_SESSION['id']);
+        $req->execute();
+        return $req->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Renvoie la liste des emails des commerciaux assignées à la mission de l'interlocuteur client
+     * @param $idClientContact
+     * @return void
+     */
+    public function getComponentCommercialsEmails($idClientContact)
+    {
+        $req = $this->bd->prepare('SELECT email FROM dirige d JOIN estDans ed USING(id_composante) JOIN personne com ON ed.id_personne = com.id_personne WHERE d.id_personne = :id;');
+        $req->bindValue(':id', $idClientContact);
+        $req->execute();
+        return $req->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Récupère le mail dans la base de données grâce à l'identifiant de la personne
+     * @param $id
+     * @return void
+     */
+    function getEmailById($id)
+    {
+        $req = $this->bd->prepare('SELECT email FROM personne WHERE id_personne = :id;');
+        $req->bindValue(':id', $id);
+        $req->execute();
+        $req->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Méthode permettant de vérifier que le mail saisi existe bien.
+     * @param $mail
+     * @return integer
+     **/
+    public function mailExists($mail)
+    {
+        $req = $this->bd->prepare('SELECT email FROM PERSONNE WHERE email = :mail;');
+        $req->bindValue(':mail', $mail);
+        $req->execute();
+        $email = $req->fetch(PDO::FETCH_ASSOC);
+        return sizeof($email) != 0;
+    }
+
     public function getBdlPrestaForInterlocuteur($id_pr,$id_in)
     {
         $req = $this->bd->prepare("SELECT id_bdl, mois, nom_mission FROM BON_DE_LIVRAISON bdl JOIN MISSION m USING(id_mission) JOIN travailleAvec ta USING(id_mission) JOIN COMPOSANTE USING(id_composante) JOIN dirige d USING(id_composante) WHERE ta.id_personne = :id_pres AND d.id_personne = :id_inter");
@@ -256,15 +299,82 @@ class Model
         return $req->fetchall();
     }
 
-    
-     /* -------------------------------------------------------------------------
-                        Fonction prestataire   
-    ------------------------------------------------------------------------*/
-    
+    /**
+     * Vérifie que le mot de passe correspond bien au mail. Si ils correspondent, une session avec les informations de la personne lié au mail débute.
+     **/
+    public function checkMailPassword($mail, $password)
+    {
+        $req = $this->bd->prepare('SELECT * FROM PERSONNE WHERE email = :mail');
+        $req->bindValue(':mail', $mail);
+        $req->execute();
+        $realPassword = $req->fetchAll(PDO::FETCH_ASSOC);
 
+        if ($realPassword) {
+            if ($realPassword[0]['mdp'] == $password) {
+                if (isset($_SESSION)) {
+                    session_destroy();
+                }
+                if (session_status() == PHP_SESSION_NONE) {
+                    session_start();
+                }
+                if (isset($_SESSION['id'])) {
+                    unset($_SESSION['id']);
+                }
+                $_SESSION['id'] = $realPassword[0]['id_personne'];
+                $_SESSION['nom'] = $realPassword[0]['nom'];
+                $_SESSION['prenom'] = $realPassword[0]['prenom'];
+                $_SESSION['email'] = $realPassword[0]['email'];
+                return true;
+            }
+        }
+        return false;
+    }
 
+    /**
+     * Méthode vérifiant les rôles de la personne. Si il n'y a qu'un seul rôle elle retourne simplement le nom de ce rôle. Si il y a plusieurs rôles, une liste des rôles sous forme de tableau.
+     **/
+    public function hasSeveralRoles()
+    {
+        $roles = [];
+        $req = $this->bd->prepare('SELECT * FROM PRESTATAIRE WHERE id_personne = :id');
+        $req->bindValue(':id', $_SESSION['id']);
+        $req->execute();
+        if ($req->fetch(PDO::FETCH_ASSOC)) {
+            $roles[] = 'prestataire';
+        }
 
+        $req = $this->bd->prepare('SELECT * FROM GESTIONNAIRE WHERE id_personne = :id');
+        $req->bindValue(':id', $_SESSION['id']);
+        $req->execute();
+        if ($req->fetch(PDO::FETCH_ASSOC)) {
+            $roles[] = 'gestionnaire';
+        }
 
+        $req = $this->bd->prepare('SELECT * FROM COMMERCIAL WHERE id_personne = :id');
+        $req->bindValue(':id', $_SESSION['id']);
+        $req->execute();
+        if ($req->fetch(PDO::FETCH_ASSOC)) {
+            $roles[] = 'commercial';
+        }
 
+        $req = $this->bd->prepare('SELECT * FROM INTERLOCUTEUR WHERE id_personne = :id');
+        $req->bindValue(':id', $_SESSION['id']);
+        $req->execute();
+        if ($req->fetch(PDO::FETCH_ASSOC)) {
+            $roles[] = 'interlocuteur';
+        }
 
+        $req = $this->bd->prepare('SELECT * FROM ADMINISTRATEUR WHERE id_personne = :id');
+        $req->bindValue(':id', $_SESSION['id']);
+        $req->execute();
+        if ($req->fetch(PDO::FETCH_ASSOC)) {
+            $roles[] = 'administrateur';
+        }
+
+        if (sizeof($roles) > 1) {
+            return ['roles' => $roles];
+        }
+
+        return $roles[0];
+    }
 }

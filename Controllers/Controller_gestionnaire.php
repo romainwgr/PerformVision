@@ -22,6 +22,7 @@ class Controller_gestionnaire extends Controller
             echo 'Une erreur est survenue lors du chargement du tableau de bord';
         }
     }
+
     public function action_gestionnaire_interlocuteurs(){
         if (isset($_SESSION['id'])){
             $bd = Model::getModel();
@@ -29,6 +30,7 @@ class Controller_gestionnaire extends Controller
             $this->render("gestionnaire_interlocuteurs",$data);
         }
     }
+
     public function action_assigner_prestataire(){
         $bd = Model::getModel();
         if(isset($_POST['email'])){
@@ -36,6 +38,7 @@ class Controller_gestionnaire extends Controller
         }
         $this->action_dashboard();
     }
+
     public function action_assigner_commercial_interlocuteur(){
         $bd = Model::getModel();
         if(isset($_POST['email']) && isset($_POST['client'])){
@@ -60,8 +63,8 @@ class Controller_gestionnaire extends Controller
             ];
             $this->render("gestionnaire_prestataires",$data);
         }
-
     }
+
     public function action_gestionnaire_supprimer_prestataire(){
         $bd = Model::getModel();
         if(isset($_POST['supprimer'])){
@@ -69,6 +72,7 @@ class Controller_gestionnaire extends Controller
         }
         $this->render("gestionnarie_prestataires");
     }
+
     public function action_gestionnaire_supprimer_interlocuteur(){
         $bd = Model::getModel();
         if(isset($_POST['supprimer'])){
@@ -116,7 +120,5 @@ class Controller_gestionnaire extends Controller
         }
         $this->render("gestionnaire_clients");
     }
-
-
 }
 ?>
