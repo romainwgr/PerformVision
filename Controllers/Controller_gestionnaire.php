@@ -12,7 +12,9 @@ class Controller_gestionnaire extends Controller
 
     public function action_dashboard()
     {
-        session_start();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $headerDashboard = ['Société', 'Composante','Nom Mission' ,'Préstataire assigné', 'Statut', 'Bon de livraison'];
