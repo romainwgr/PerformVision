@@ -1,9 +1,8 @@
 .liste-prestataire-contrainer{
     display: flex;
     flex-direction: column;
-    min-height: 90vh;
+    min-height: 60vh;
     width: 80%;
-    padding: 10% 0 10% 0;
     gap: var(--spacer-3);
     margin: auto;
 }
@@ -35,15 +34,6 @@
     gap: var(--spacer-2);
 }
 
-#supprimer {
-    background-color: #D92727;
-}
-
-#supprimer:hover{
-    background: rgb(206, 206, 206);
-    color: #D92727;
-}
-
 .element-block {
     gap: var(--spacer-5);
     display: flex;
@@ -62,7 +52,7 @@
     cursor: pointer;
     outline: none;
     border-radius: var(--border-2);
-    background-color: var(--secondary-color); /* Couleur de fond pour une meilleure visibilité */
+    background-color: white;
     box-shadow: var(--shadow-regular);
     text-align: center; /* Centrer le texte à l'intérieur du bloc */
 }
@@ -76,6 +66,6 @@
     font-weight: 200;
 }
 
-#ajouter, #supprimer{
+element-recherche, button{
     width: var(--width-card);
 }

@@ -17,19 +17,26 @@ class Controller_gestionnaire extends Controller
         }
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
+            $nav = [['link' => '?controller=gestionnaire&action=missions', 'name' => 'Missions'],
+                ['link' => '?controller=gestionnaire&action=interlocuteurs', 'name' => 'Clients'],
+                ['link' => '?controller=gestionnaire&action=prestataires', 'name' => 'Prestataires'],
+                ['link' => '?controller=gestionnaire&action=commerciaux', 'name' => 'Commerciaux']];
             $headerDashboard = ['Société', 'Composante','Nom Mission' ,'Préstataire assigné', 'Statut', 'Bon de livraison'];
-            $data = ['header' => $headerDashboard, 'dashboard' => $bd->getDashboardGestionnaire()];
+            $data = ['menu' => $nav, 'header' => $headerDashboard, 'dashboard' => $bd->getDashboardGestionnaire()];
             return $this->render('gestionnaire_missions', $data);
         } else {
             echo 'Une erreur est survenue lors du chargement du tableau de bord';
         }
     }
 
-    public function action_gestionnaire_interlocuteurs(){
+    public function action_interlocuteurs(){
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
         if (isset($_SESSION['id'])){
             $bd = Model::getModel();
-            $data=[$bd->getInterlocuteurForGestionnaire()];
-            $this->render("gestionnaire_interlocuteurs",$data);
+            $data=['title' => 'Interlocuteurs','person' => $bd->getInterlocuteurForGestionnaire()];
+            $this->render("liste",$data);
         }
     }
 

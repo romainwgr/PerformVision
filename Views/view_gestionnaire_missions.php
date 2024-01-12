@@ -1,9 +1,5 @@
 <?php
 require 'view_begin.php';
-$menu = [['link' => '?controller=gestionnaire&action=missions', 'name' => 'Missions'],
-    ['link' => '?controller=gestionnaire&action=clients', 'name' => 'Clients'],
-    ['link' => '?controller=gestionnaire&action=prestataires', 'name' => 'Prestataires'],
-    ['link' => '?controller=gestionnaire&action=commerciaux', 'name' => 'Commerciaux']];
 require 'view_header.php';
 ?>
 

@@ -3,6 +3,7 @@
     --primary-color: #4F74B1;
     --secondary-color: rgb(206, 206, 206, 0.40);
     --tertiary-color: #FFFFFF;
+    --delete-color: #D92727;
     --main-background-color: rgba(56, 158, 143, 0.4);
     --border-color: rgba(56, 158, 143, 0.2);
 
@@ -32,6 +33,7 @@
     --border-4: 30px;
     --border-icon: 1px solid #494954;
     --border-button: 2px solid var(--primary-color);
+    --border-button-delete: 2px solid #D92727;
 
     /* Height */
     --height-logo: 0px /* à remplir */;
