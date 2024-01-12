@@ -3,8 +3,8 @@
         <div class="logo">Perform Vision</div>
         <?php if (isset($menu)): ?>
             <ul class="menu-list">
-                <?php foreach ($menu as $title): ?>
-                    <li><a href=<?= $title['link'] ?>><?= $title['name'] ?></li></a>
+                <?php foreach ($menu as $m): ?>
+                    <li><a href=<?= $m['link'] ?>><?= $m['name'] ?></li></a>
                 <?php endforeach; ?>
             </ul>
         <?php endif; ?>

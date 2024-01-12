@@ -37,18 +37,18 @@ class Model
     public function createPersonne($nom, $prenom, $email, $mdp)
     {
         $req = $this->bd->prepare('INSERT INTO PERSONNE(nom, prenom, email, mdp) VALUES(:nom, :prenom, :email, :mdp);');
-        $req->bindValue(':nom', (int) $nom, PDO::PARAM_STR);
-        $req->bindValue(':prenom', (int) $prenom, PDO::PARAM_STR);
-        $req->bindValue(':email', (int) $email, PDO::PARAM_STR);
-        $req->bindValue(':mdp', (int) $mdp, PDO::PARAM_STR);
+        $req->bindValue(':nom', (int)$nom, PDO::PARAM_STR);
+        $req->bindValue(':prenom', (int)$prenom, PDO::PARAM_STR);
+        $req->bindValue(':email', (int)$email, PDO::PARAM_STR);
+        $req->bindValue(':mdp', (int)$mdp, PDO::PARAM_STR);
         $req->execute();
-        return (bool) $req->rowCount();
+        return (bool)$req->rowCount();
 
     }
 
-/* -------------------------------------------------------------------------
-                        Fonction Gestionnaire
-    ------------------------------------------------------------------------*/
+    /* -------------------------------------------------------------------------
+                            Fonction Gestionnaire
+        ------------------------------------------------------------------------*/
 
     public function getDashboardGestionnaire()
     {
@@ -57,18 +57,23 @@ class Model
         return $req->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getInterlocuteurForGestionnaire()
+    public function getAllInterlocuteur()
     {
-        $req = $this->bd->prepare('SELECT nom, prenom, nom_client FROM dirige JOIN composante USING(id_composante) JOIN client USING(id_client) JOIN personne USING(id_personne)
-');
+        $req = $this->bd->prepare('SELECT nom, prenom, nom_client FROM dirige JOIN composante USING(id_composante) JOIN client USING(id_client) JOIN personne USING(id_personne);');
         $req->execute();
         return $req->fetchall();
     }
 
-    public function getCommercialForGestionnaire()
+    public function getAllCommercial()
     {
-        $req = $this->bd->prepare('SELECT nom, prenom, nom_composante FROM estdans JOIN composante USING(id_composante) JOIN personne USING(id_personne)
-');
+        $req = $this->bd->prepare('SELECT nom, prenom, nom_composante FROM estdans JOIN composante USING(id_composante) JOIN personne USING(id_personne);');
+        $req->execute();
+        return $req->fetchall();
+    }
+
+    public function getAllPrestataire()
+    {
+        $req = $this->bd->prepare('SELECT nom, prenom, interne FROM PERSONNE p JOIN PRESTATAIRE pr ON p.id_personne =  pr.id_personne;');
         $req->execute();
         return $req->fetchall();
     }
@@ -76,40 +81,40 @@ class Model
     public function removePrestataireForGestionnaire($id_pr)
     {
         $req = $this->bd->prepare("DELETE FROM ACTIVITE WHERE id_personne = :id");
-        $req->bindValue(':id', (int) $id_pr, PDO::PARAM_INT);
+        $req->bindValue(':id', (int)$id_pr, PDO::PARAM_INT);
         $req->execute();
         $req = $this->bd->prepare("DELETE FROM travailleAvec WHERE id_personne = :id");
-        $req->bindValue(':id', (int) $id_pr, PDO::PARAM_INT);
+        $req->bindValue(':id', (int)$id_pr, PDO::PARAM_INT);
         $req->execute();
         $req = $this->bd->prepare("DELETE FROM PRESTATAIRE WHERE id_personne = :id");
-        $req->bindValue(':id', (int) $id_pr, PDO::PARAM_INT);
+        $req->bindValue(':id', (int)$id_pr, PDO::PARAM_INT);
         $req->execute();
-        return (bool) $req->rowCount();
+        return (bool)$req->rowCount();
     }
 
     public function removeInterlocuteurForGestionnaire($id_in)
     {
         $req = $this->bd->prepare("DELETE FROM BON_DE_LIVRAISON WHERE id_personne = :id");
-        $req->bindValue(':id', (int) $id_in, PDO::PARAM_INT);
+        $req->bindValue(':id', (int)$id_in, PDO::PARAM_INT);
         $req->execute();
         $req = $this->bd->prepare("DELETE FROM dirige WHERE id_personne = :id");
-        $req->bindValue(':id', (int) $id_in, PDO::PARAM_INT);
+        $req->bindValue(':id', (int)$id_in, PDO::PARAM_INT);
         $req->execute();
         $req = $this->bd->prepare("DELETE FROM INTERLOCUTEUR WHERE id_personne = :id");
-        $req->bindValue(':id', (int) $id_in, PDO::PARAM_INT);
+        $req->bindValue(':id', (int)$id_in, PDO::PARAM_INT);
         $req->execute();
-        return (bool) $req->rowCount();
+        return (bool)$req->rowCount();
     }
 
     public function removeCommercialForGestionnaire($id_co)
     {
         $req = $this->bd->prepare("DELETE FROM estDans WHERE id_personne = :id_personne");
-        $req->bindValue(':id', (int) $id_co, PDO::PARAM_INT);
+        $req->bindValue(':id', (int)$id_co, PDO::PARAM_INT);
         $req->execute();
         $req = $this->bd->prepare("DELETE FROM COMMERCIAL WHERE id_personne = :id_personne");
-        $req->bindValue(':id', (int) $id_co, PDO::PARAM_INT);
+        $req->bindValue(':id', (int)$id_co, PDO::PARAM_INT);
         $req->execute();
-        return (bool) $req->rowCount();
+        return (bool)$req->rowCount();
     }
 
     public function addInterlocuteurForGestionnaire($composante, $client)
@@ -120,10 +125,10 @@ class Model
         $req->bindValue(':nom_compo', $composante, PDO::PARAM_INT);
         $req->bindValue(':nom_client', $client, PDO::PARAM_STR);
         $req->execute();
-        return (bool) $req->rowCount();
+        return (bool)$req->rowCount();
     }
 
-    public function addPrestataireForGestionnaire($mission,$mail)
+    public function addPrestataireForGestionnaire($mission, $mail)
     {
         $req = $this->bd->prepare("INSERT INTO prestataire (id_personne) SELECT id_personne FROM personne ORDER BY id_personne DESC LIMIT 1");
         $req->execute();
@@ -132,10 +137,10 @@ class Model
         $req->execute();
         $req->bindValue(':email', $mail, PDO::PARAM_STR);
         $req->execute();
-        return (bool) $req->rowCount();
+        return (bool)$req->rowCount();
     }
 
-    public function addClientForGestionnaire($client,$tel,$composante,$id_adresse,$email)
+    public function addClientForGestionnaire($client, $tel, $composante, $id_adresse, $email)
     {
         $req = $this->bd->prepare("INSERT INTO client(nom_client, telephone_client) VALUES( :nom_client, :tel)");
         $req->bindValue(':nom_client', $client, PDO::PARAM_STR);
@@ -148,7 +153,7 @@ class Model
         $req = $this->bd->prepare("INSERT INTO estDans(id_personne, id_composante) SELECT (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email'),  (SELECT id_composante FROM composante ORDER BY id_composante DESC LIMIT 1)");
         $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->execute();
-        return (bool) $req->rowCount();
+        return (bool)$req->rowCount();
     }
 
     public function assignerPrestataire($email, $composante)
@@ -157,7 +162,7 @@ class Model
         $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->bindValue(':nom_mission', $composante, PDO::PARAM_STR);
         $req->execute();
-        return (bool) $req->rowCount();
+        return (bool)$req->rowCount();
     }
 
     public function getBdlPrestaForGestionnaire($id_pr)
@@ -214,9 +219,9 @@ class Model
         $req->bindValue(':nom_compo', $composante, PDO::PARAM_INT);
         $req->bindValue(':nom_client', $client, PDO::PARAM_STR);
         $req->execute();
-        return (bool) $req->rowCount();
+        return (bool)$req->rowCount();
     }
-    
+
 
     /* -------------------------------------------------------------------------
                         Fonction Interlocuteur
@@ -290,7 +295,7 @@ class Model
         return sizeof($email) != 0;
     }
 
-    public function getBdlPrestaForInterlocuteur($id_pr,$id_in)
+    public function getBdlPrestaForInterlocuteur($id_pr, $id_in)
     {
         $req = $this->bd->prepare("SELECT id_bdl, mois, nom_mission FROM BON_DE_LIVRAISON bdl JOIN MISSION m USING(id_mission) JOIN travailleAvec ta USING(id_mission) JOIN COMPOSANTE USING(id_composante) JOIN dirige d USING(id_composante) WHERE ta.id_personne = :id_pres AND d.id_personne = :id_inter");
         $req->bindValue(':id_inter', $id_pr, PDO::PARAM_INT);
