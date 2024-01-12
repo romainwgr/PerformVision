@@ -9,35 +9,35 @@
         </thead>
         <tbody>
             <?php foreach ($dashboard as $row): ?>
-            <tr>
-                <?php foreach ($row as $cle => $value): ?>
-                <?php if ($cle == 'prenom' or $cle == 'nom'): ?>
-                    <td><?= $row['prenom'] . ' ' . $row['nom'] ?></td>
-                    <?php break; else: ?>
-                    <td><?= $value ?></td>
-                <?php endif; endforeach;?>
+                <tr>
+                    <?php foreach ($row as $cle => $value): ?>
+                        <?php if ($cle == 'prenom' or $cle == 'nom'): ?>
+                            <td><?= $row['prenom'] . ' ' . $row['nom'] ?></td>
+                            <?php break; else: ?>
+                            <td><?= $value ?></td>
+                        <?php endif; endforeach; ?>
 
-                <td>
-                    <div class="statut vert">L</div>
-                    <div class="statut orange">M</div>
-                    <div class="statut vert">M</div>
-                    <div class="statut orange">J</div>
-                    <div class="statut vert">V</div>
-                </td>
+                    <td>
+                        <div class="statut vert">L</div>
+                        <div class="statut orange">M</div>
+                        <div class="statut vert">M</div>
+                        <div class="statut orange">J</div>
+                        <div class="statut vert">V</div>
+                    </td>
 
-                <td style="display: flex; justify-content: space-around;">
-                    <div style="text-align: center;">
-                        <a href="#"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                        <p>Consulter</p>
-                    </div>
+                    <td style="display: flex; justify-content: space-around;">
+                        <div style="text-align: center;">
+                            <a href="#"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                            <p>Consulter</p>
+                        </div>
 
-                    <div style="text-align: center;">
-                        <a href="#"><i class="fa fa-download" aria-hidden="true"></i></a>
-                        <p>Télécharger</p>
-                    </div>
-                </td>
-            </tr>
-        <?php endforeach; ?>
+                        <div style="text-align: center;">
+                            <a href="#"><i class="fa fa-download" aria-hidden="true"></i></a>
+                            <p>Télécharger</p>
+                        </div>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
         </tbody>
     </table>
 </div>

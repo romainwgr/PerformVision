@@ -16,6 +16,7 @@ class Controller_interlocuteur extends Controller
      */
     public function action_dashboard()
     {
+        session_start();
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $headerDashboard = ['Nom projet/société', 'Date', 'Préstataire assigné', 'Statut', 'Bon de livraison'];

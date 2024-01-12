@@ -13,7 +13,7 @@ require 'view_begin.php';
                     <?php foreach ($data['response']['roles'] as $role) : ?>
                         <li>
                             <button class='button'
-                                    onclick="window.location='?controller_<?= $role ?>'"><?= $role ?></button>
+                                    onclick="window.location='?controller=<?= $role ?>&action=default'"><?= $role ?></button>
                         </li>
                     <?php endforeach; ?>
                 </ul>

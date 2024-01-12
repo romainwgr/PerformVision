@@ -42,7 +42,7 @@ class Model
     {
         $req = $this->bd->prepare('SELECT nom_client, nom_composante, nom_mission, nom, prenom FROM client JOIN composante USING(id_client) JOIN mission USING(id_composante) JOIN travailleavec ta USING(id_mission) JOIN PERSONNE p ON ta.id_personne = p.id_personne');
         $req->execute();
-        return $req->fetchall();
+        return $req->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getInterlocuteurForGestionnaire()

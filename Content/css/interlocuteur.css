@@ -8,10 +8,6 @@
     padding: 10% 0 10% 0;
 }
 
-.dashboard-container {
-    width: 80%;
-}
-
 .logo {
     font-size: var(--font-size--huge);
     font-weight: bold;

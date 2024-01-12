@@ -5,8 +5,6 @@ $menu = [['link' => '?controller=gestionnaire&action=missions', 'name' => 'Missi
     ['link' => '?controller=gestionnaire&action=prestataires', 'name' => 'Prestataires'],
     ['link' => '?controller=gestionnaire&action=commerciaux', 'name' => 'Commerciaux']];
 require 'view_header.php';
-$header = ['Société', 'Composante', 'Nom Mission', 'Prestataire assigné', 'Statut', 'Bon de livraison'];
-$dashboard = [];
 ?>
 
 <div class='main-contrainer'>

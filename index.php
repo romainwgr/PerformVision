@@ -10,7 +10,7 @@ require_once "Controllers/Controller.php";
 require_once "Utils/configuration.php";
 
 //Liste des contrôleurs
-$controllers = ['login', 'commercial', 'prestataire', 'interlocuteur'];
+$controllers = ['login', 'commercial', 'prestataire', 'interlocuteur', 'gestionnaire'];
 //Nom du contrôleur par défaut
 $controller_default = "login";
 

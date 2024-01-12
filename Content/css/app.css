@@ -29,6 +29,11 @@ img {
     background-color: var(--secondary-color);
     box-sizing: border-box;
     padding: var(--spacer-3);
+    overflow: scroll;
+}
+
+.dashboard-container {
+    width: 80%;
 }
 
 th {
@@ -46,7 +51,9 @@ h1 {
 table {
     margin: auto;
     width: 95%;
+    height: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
 tbody:before {

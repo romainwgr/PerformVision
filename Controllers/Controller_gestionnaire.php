@@ -1,5 +1,5 @@
 <?php
-class Controllers_gestionnaire extends Controller
+class Controller_gestionnaire extends Controller
 {
     /**
      * @inheritDoc
@@ -11,6 +11,7 @@ class Controllers_gestionnaire extends Controller
 
     public function action_dashboard()
     {
+        session_start();
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $headerDashboard = ['Société', 'Composante','Nom Mission' ,'Préstataire assigné', 'Statut', 'Bon de livraison'];
