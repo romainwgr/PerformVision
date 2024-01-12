@@ -24,14 +24,15 @@ class Controllers_gestionnaire extends Controller
     public function action_interlocuteurs(){
         if (isset($_SESSION['id'])){
             $bd = Model::getModel();
-            $data=["interlocuteurs"=>$bd->getInterlocuteurForGestionnaire()];
-            $this->render("gestionnaire_interlocuteurs",$data);
+            $data=['title' => 'Interlocuteurs','liste'=>$bd->getInterlocuteurForGestionnaire()];
+            $this->render("liste",$data);
         }
     }
+
     public function action_ajouter_prestataire($supplier){
         $bd = Model::getModel();
         $bd->add_supllier($supplier);
-        $this->render("gestionnaire_prestataire",$data);
+        $this->render("ajout_prestataire",$data);
     }
 }
 ?>
