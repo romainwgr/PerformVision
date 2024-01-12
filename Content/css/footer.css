@@ -1,4 +1,5 @@
 footer {
+    margin-top: 10vh;
     display: flex;
     align-items: center;
     background-color: var(--primary-color);
@@ -24,4 +25,8 @@ footer {
 .info-entreprise a {
     font-size: 15px;
     color: #fff;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/page-supplier

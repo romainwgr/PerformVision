@@ -44,7 +44,8 @@ h1 {
     font-weight: bold;
     color: white;
     font-size: var(--font-size--huge);
-    margin-bottom: var(--spacer-5);
+    margin-bottom: var(--spacer-7);
+    font-family: 'Montserrat',sans-serif;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
@@ -74,7 +75,7 @@ textarea{
     border-radius: var(--border-2);
     padding: var(--spacer-4);
     box-sizing: border-box;
-    background-color: var(--secondary-color);
+    background-color: #FFF;
     font-size: var(--font-size--normal);
     border: none;
     box-shadow: var(--shadow-regular);
@@ -95,7 +96,7 @@ input {
     height: var(--height-input);
     font-size: 24px;
     text-indent: var(--spacer-4);
-    background-color: var(--secondary-color);
+    background-color: #FFF;
     font-size: var(--font-size--normal);
     box-shadow: var(--shadow-regular);
 }
@@ -129,4 +130,26 @@ button:hover {
 }
 .fa-user-circle{
     color: white;
+}
+
+/* Style du bouton au survol */
+.button-secondary{
+    background-color: #FFF;
+    border: var(--border-button);
+    color: var(--primary-color);
+}
+
+.button-primary{
+    background-color: var(--primary-color);
+}
+
+.button-primary:hover {
+    background: var(--secondary-color);
+    color: var(--primary-color);
+    border: var(--border-button);
+}
+
+.button-secondary:hover{
+    background: var(--secondary-color);
+    color: var(--primary-color);
 }
