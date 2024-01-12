@@ -156,6 +156,57 @@ class Model
         return $req->fetchall();
     }
 
+    
+/* -------------------------------------------------------------------------
+                        Fonction Commercial   
+    ------------------------------------------------------------------------*/
+
+    public function getInterlocuteurForCommercial($id_co)
+    {
+        $req = $this->bd->prepare('SELECT nom, prenom, nom_client, nom_composante FROM dirige JOIN composante USING(id_composante) JOIN client USING(id_client) JOIN personne USING(id_personne) JOIN estDans ed USING(id_composante) WHERE ed.id_personne = :id');
+        $requete->bindValue(':id', $id_co, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall();
+    }
+
+    public function getPrestataireForCommercial($id_co)
+    {
+        $req = $this->bd->prepare('SELECT nom, prenom, nom_client, nom_composante, nom_mission FROM client JOIN composante USING(id_client) JOIN mission USING(id_composante) JOIN travailleavec ta USING(id_mission) JOIN PERSONNE p ON ta.id_personne = p.id_personne JOIN estDans ed USING(id_composante) WHERE ed.id_personne = :id');
+        $requete->bindValue(':id', $id_co, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall();
+    }
+
+     public function getBdlPrestaForCommercial($id_pr,$id_co)
+    {
+        $requete = $this->bd->prepare("SELECT id_bdl, mois, nom_mission FROM BON_DE_LIVRAISON bdl JOIN MISSION m USING(id_mission) JOIN travailleAvec ta USING(id_mission) JOIN COMPOSANTE USING(id_composante) JOIN estDans ed USING(id_composante) WHERE ta.id_personne = :id_pr AND ed.id_personne = :id_com");
+        $requete->bindValue(':id_pr', $id_pr, PDO::PARAM_INT);
+        $requete->bindValue(':id_com', $id_co, PDO::PARAM_INT);
+        $requete->execute();
+        return $req->fetchall();
+    }
+
+    /* -------------------------------------------------------------------------
+                        Fonction Interlocuteur   
+    ------------------------------------------------------------------------*/
+
+
+    public function dashboardInterlocuteur($id_in)
+    {
+        $requete = $this->bd->prepare("SELECT nom_mission, date_debut, nom, prenom, id_bdl FROM mission m JOIN travailleAvec USING(id_mission) JOIN personne p USING(id_personne) JOIN bon_de_livraison bdl ON m.id_mission= bdl.id_mission WHERE bdl.id_personne = :id");
+        $requete->bindValue(':id', $id_in, PDO::PARAM_INT);
+        $requete->execute();
+        return $req->fetchall();
+    }
+
+    public function getEmailCommercialForInterlocuteur($id_in)
+    {
+        $requete = $this->bd->prepare("SELECT email FROM dirige d JOIN estDans ed USING(id_composante) JOIN personne com ON ed.id_personne = com.id_personne WHERE d.id_personne = :id");
+        $requete->bindValue(':id', $id_in, PDO::PARAM_INT);
+        $requete->execute();
+        return $req->fetchall();
+    }
+
 
     
 
