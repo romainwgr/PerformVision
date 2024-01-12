@@ -35,10 +35,10 @@ class Model
     }
 
 /* -------------------------------------------------------------------------
-                        Fonction Gestionnaire   |   |   |   |   |   |   |
+                        Fonction Gestionnaire
     ------------------------------------------------------------------------*/
 
-    public function dashboardGestionnaire()
+    public function getDashboardGestionnaire()
     {
         $req = $this->bd->prepare('SELECT nom_client, nom_composante, nom_mission, nom, prenom FROM client JOIN composante USING(id_client) JOIN mission USING(id_composante) JOIN travailleavec ta USING(id_mission) JOIN PERSONNE p ON ta.id_personne = p.id_personne');
         $req->execute();
