@@ -32,7 +32,7 @@ class Controllers_gestionnaire extends Controller
     public function action_ajouter_prestataire($supplier){
         $bd = Model::getModel();
         $bd->add_supllier($supplier);
-        $this->render("ajout_prestataire",$data);
+        $this->render("ajout_prestataire", $data);
     }
 }
 ?>

@@ -34,6 +34,9 @@ class Controller_login extends Controller
                     if (isset($role['roles'])) {
                         $msg = $role;
                     } else {
+                        if($role == 'gestionnaire'){
+                            $role = 'gestionnaire_missions';
+                        }
                         $nom_classe = 'Controller_' . $role;
                         $nom_fichier = $nom_classe . '.php';
                         require_once $nom_fichier;
