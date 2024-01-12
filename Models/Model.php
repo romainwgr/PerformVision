@@ -180,6 +180,14 @@ class Model
                         Fonction Commercial   
     ------------------------------------------------------------------------*/
 
+    public function getDashboardCommercial($id_co)
+    {
+        $req = $this->bd->prepare('SELECT nom_client, nom_composante, nom_mission, nom, prenom FROM client JOIN composante c USING(id_client) JOIN mission USING(id_composante) JOIN travailleavec ta USING(id_mission) JOIN PERSONNE p ON ta.id_personne = p.id_personne JOIN estDans ed on ed.id_composante = c.id_composante WHERE ed.id_personne=:id');
+        $requete->bindValue(':id', $id_co, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall();
+    }
+
     public function getInterlocuteurForCommercial($id_co)
     {
         $req = $this->bd->prepare('SELECT nom, prenom, nom_client, nom_composante FROM dirige JOIN composante USING(id_composante) JOIN client USING(id_client) JOIN personne USING(id_personne) JOIN estDans ed USING(id_composante) WHERE ed.id_personne = :id');
