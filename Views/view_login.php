@@ -12,7 +12,7 @@ require 'view_begin.php';
                 <ul class="popup-roles">
                     <?php foreach ($data['response']['roles'] as $role) : ?>
                         <li>
-                            <button class='button'
+                            <button class='button button-primary'
                                     onclick="window.location='?controller=<?= $role ?>&action=default'"><?= $role ?></button>
                         </li>
                     <?php endforeach; ?>
@@ -31,7 +31,7 @@ require 'view_begin.php';
                 <input class="input-login" type="password" name="password" placeholder="Mot de passe">
                 <a class="oublie" href="#">Mot de passe oublié ?</a>
             </div>
-            <button class='button'
+            <button class='button button-primary'
                     type="submit">Connexion
             </button>
         </form>

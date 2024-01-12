@@ -1,13 +1,3 @@
-.main-contrainer{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    gap: var(--spacer-10);
-    padding: 10% 0 10% 0;
-}
-
 .logo {
     font-size: var(--font-size--huge);
     font-weight: bold;
@@ -54,20 +44,6 @@ th, td {
     display: block;
     margin: 0 auto; /* Pour centrer le bouton horizontalement */
     padding: 10px 40px; /* Ajustez la taille du bouton ici */
-    background-color: #4F74B1;
-    color: #fff;
-    border-radius: 7px; /* Augmentation du rayon pour un look plus arrondi */
-    text-align: center;
-    transition: background-color 0.3s ease;
-    font-size: 16px; /* Ajustez la taille de la police ici */
-    border: none;
-    cursor: pointer;
-    outline: none;
-}
-
-#bouton-envoyer:hover {
-    background: rgb(206, 206, 206);
-    color: #4F74B1;
 }
 
 #table-container {

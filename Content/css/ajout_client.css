@@ -1,9 +1,4 @@
-body {
-    background-image: url('pexels-plato-terentev-5827389.jpg');
-    background-position: center;
-    background-size: cover;
-}
-.container {
+.add-client-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -13,29 +8,27 @@ body {
     height: auto;
     display: flex;
     flex-direction: column;
+    gap: var(--spacer-6);
 }
-h1 {
+.add-client-container > h1 {
     text-align: center;
     color: white;
     font-family: 'Montserrat',sans-serif;
-    margin: 10%;
 }
-h2 {
+.add-client-container > h2 {
     color: white;
     font-family: 'Montserrat',sans-serif;
     grid-column: 1/3;
-    margin: 8% 0;
+    margin-bottom: 2%;
 }
-form {
+.add-client-container > form {
     width: 100%;
     margin: 0;padding: 0;
     display: grid;
     grid-template-columns: repeat(2, 3fr);
     grid-gap: var(--spacer-6);
 }
-form>h2 {
-    margin-bottom: 2%;
-}
+
 #mail-1 {
     grid-column: 1/3;
 }

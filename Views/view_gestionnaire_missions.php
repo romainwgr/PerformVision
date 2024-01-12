@@ -12,7 +12,7 @@ require 'view_header.php';
         <h1>Missions</h1>
         <?php require_once 'view_dashboard.php'; ?>
         <div class="add-mission-container">
-            <button type="button" onclick="">+ Créer Mission</button>
+            <button type="button" class="button-primary" onclick="">+ Créer Mission</button>
         </div>
     </div>
 </div>

@@ -15,7 +15,7 @@ require 'view_header.php';
 
             <textarea id="message" name="message" placeholder="Votre message..."></textarea>
 
-            <button type="submit" id="bouton-envoyer">Envoyer</button>
+            <button type="submit" class="button-primary" id="bouton-envoyer">Envoyer</button>
         </form>
     </div>
 </div>

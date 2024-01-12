@@ -5,14 +5,11 @@
 }
 
 body {
-    width: 100%;
+    width: 100vw;
     min-height: 100vh;
-    background-color: #F5F5F5;
     color: #555;
     font-family: 'Montserrat', Regular, Arial, Helvetica, sans-serif;
-    background-image: url("../images/imgfond.jpg"); /* Chemin modifié */
-    background-size: cover;
-    background-position: center;
+    background: center/cover url('https://images.pexels.com/photos/5827389/pexels-photo-5827389.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat #0000;
     font-size: var(--font-size--small);
     font-weight: lighter;
 }
@@ -21,12 +18,21 @@ img {
     width: var(--icon-height-small);
 }
 
+.main-contrainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    gap: var(--spacer-10);
+}
+
 .dashboard__table{
     box-shadow: var(--shadow-regular);
     height: 50vh;
     width: 100%;
     border-radius: var(--border-3);
-    background-color: var(--secondary-color);
+    background-color: #FFF;
     box-sizing: border-box;
     padding: var(--spacer-3);
     overflow: scroll;
