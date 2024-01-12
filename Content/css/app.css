@@ -1,1 +1,141 @@
+* {
+    outline: none;
+    padding: 0;
+    margin: 0;
+}
 
+body {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #F5F5F5;
+    color: #555;
+    font-family: 'Montserrat', Regular, Arial, Helvetica, sans-serif;
+    background-image: url("../images/imgfond.jpg"); /* Chemin modifié */
+    background-size: cover;
+    background-position: center;
+    font-size: var(--font-size--small);
+    font-weight: lighter;
+}
+
+img {
+    width: var(--icon-height-small);
+}
+
+.dashboard__table{
+    box-shadow: var(--shadow-regular);
+    height: 50vh;
+    width: 100%;
+    border-radius: var(--border-3);
+    background-color: var(--secondary-color);
+    box-sizing: border-box;
+    padding: var(--spacer-3);
+}
+
+th {
+    font-weight: bold;
+}
+
+h1 {
+    font-weight: bold;
+    color: white;
+    font-size: var(--font-size--huge);
+    margin-bottom: var(--spacer-5);
+}
+
+table {
+    margin: auto;
+    width: 95%;
+    border-collapse: collapse;
+}
+
+tbody:before {
+    content:"@";
+    display:block;
+    line-height:var(--spacer-5);
+    text-indent:-99999px;
+}
+
+thead{
+    border-bottom: var(--border-icon);
+    height: var(--height-thead);
+}
+
+textarea{
+    width: 100%;
+    height: var(--height-textarea);
+    border-radius: var(--border-2);
+    padding: var(--spacer-4);
+    box-sizing: border-box;
+    background-color: var(--secondary-color);
+    font-size: var(--font-size--normal);
+    border: none;
+    box-shadow: var(--shadow-regular);
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacer-5);
+}
+
+input {
+    width: 100%;
+    border: none;
+    border-radius: var(--border-2);
+    outline: none;
+    transition: .4s;
+    height: var(--height-input);
+    font-size: 24px;
+    text-indent: var(--spacer-4);
+    background-color: var(--secondary-color);
+    font-size: var(--font-size--normal);
+    box-shadow: var(--shadow-regular);
+}
+
+footer {
+    display: flex;
+    align-items: center;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    width: 100%;
+    height: 10vh;
+    font-size: 24px ;
+}
+.nom-entreprise {
+    flex: 0.25; /* Chaque partie prendra une part égale de l'espace disponible */
+    text-align: center;
+}
+
+.nom-entreprise p {
+    font-size: 25px;
+}
+
+.info-entreprise {
+    flex: 0.25; /* Chaque partie prendra une part égale de l'espace disponible */
+    text-align: center;
+}
+
+.info-entreprise a {
+    font-size: 15px;
+    color: #fff;
+}
+
+button{
+    transition: background-color 0.3s ease;
+    padding: var(--spacer-2) var(--spacer-5); /* Ajustez la taille du bouton ici */
+    background-color: #4F74B1;
+    height: var(--height-button);
+    color: #fff;
+    border-radius: 10px; /* Augmentation du rayon pour un look plus arrondi */
+    text-align: center;
+    font-size: 16px; /* Ajustez la taille de la police ici */
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+/* Style du bouton au survol */
+button:hover {
+    background: var(--tertiary-color);
+    color: var(--primary-color);
+}
