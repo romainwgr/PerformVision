@@ -16,8 +16,8 @@ require 'view_header.php';
 
         </form>
         <div class="buttons">
-            <button id="left-button">Enregistrer</button>
-            <button id="right-button">Télécharger</button>
+            <button class='button-primary'>Enregistrer</button>
+            <button class='button-secondary'>Télécharger</button>
         </div>
     </div>
 </div>

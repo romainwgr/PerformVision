@@ -1,8 +1,8 @@
 :root {
     /* Colors */
     --primary-color: #4F74B1;
-    --secondary-color: #FFFFFF;
-    --tertiary-color: rgb(206, 206, 206);
+    --secondary-color: rgb(206, 206, 206, 0.40);
+    --tertiary-color: #FFFFFF;
     --main-background-color: rgba(56, 158, 143, 0.4);
     --border-color: rgba(56, 158, 143, 0.2);
 
@@ -22,6 +22,7 @@
     --spacer-4: 1rem;
     --spacer-5: 1.5rem;
     --spacer-6: 2rem;
+    --spacer-7: 3rem;
     --spacer-10: 10rem;
 
     /* Border */
@@ -30,6 +31,7 @@
     --border-3: 20px;
     --border-4: 30px;
     --border-icon: 1px solid #494954;
+    --border-button: 2px solid var(--primary-color);
 
     /* Height */
     --height-logo: 0px /* à remplir */;
