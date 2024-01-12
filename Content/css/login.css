@@ -34,10 +34,6 @@
     margin-bottom: 3rem;
 }
 
-a {
-    outline: none !important;
-}
-
 /* bouton */
 .button {
     display: block;
@@ -132,9 +128,6 @@ h3 {
     z-index: 1;
 }
 
-a:hover {
-    text-decoration: underline;
-}
 
 .alert {
     color: red;
