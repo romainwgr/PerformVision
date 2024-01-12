@@ -151,7 +151,7 @@ button:hover {
 
 .button-primary:hover {
     background: var(--secondary-color);
-    color: white;
+    color: var(--primary-color);
     border: var(--border-button);
 }
 
