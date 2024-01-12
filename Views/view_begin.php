@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/Content/css/header.css">
     <link rel="stylesheet" href="/Content/css/footer.css">
     <link rel="stylesheet" href="/Content/css/declaration_absence.css">
+    <link rel="stylesheet" href="/Content/css/ajout_client.css">
 </head>
 <body>
 
