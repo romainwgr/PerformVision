@@ -34,6 +34,18 @@ class Model
         return self::$instance;
     }
 
+    public function createPersonne($nom, $prenom, $email, $mdp)
+    {
+        $req = $this->bd->prepare('INSERT INTO PERSONNE(nom, prenom, email, mdp) VALUES(:nom, :prenom, :email, :mdp);');
+        $requete->bindValue(':nom', (int) $nom, PDO::PARAM_STR);
+        $requete->bindValue(':prenom', (int) $prenom, PDO::PARAM_STR);
+        $requete->bindValue(':email', (int) $email, PDO::PARAM_STR);
+        $requete->bindValue(':mdp', (int) $mdp, PDO::PARAM_STR);
+        $req->execute();
+        return (bool) $requete->rowCount();
+
+    }
+
 /* -------------------------------------------------------------------------
                         Fonction Gestionnaire
     ------------------------------------------------------------------------*/
@@ -41,6 +53,13 @@ class Model
     public function getDashboardGestionnaire()
     {
         $req = $this->bd->prepare('SELECT nom_client, nom_composante, nom_mission, nom, prenom FROM client JOIN composante USING(id_client) JOIN mission USING(id_composante) JOIN travailleavec ta USING(id_mission) JOIN PERSONNE p ON ta.id_personne = p.id_personne');
+        $req->execute();
+        return $req->fetchall();
+    }
+
+    public function getPrestataireForGestionnaire()
+    {
+        $req = $this->bd->prepare('SELECT nom, prenom FROM PERSONNE p JOIN PRESTATAIRE pr WHERE p.id_personne =  pr.id_personne');
         $req->execute();
         return $req->fetchall();
     }
@@ -186,6 +205,19 @@ class Model
         return $req->fetchall();
     }
 
+    public function addInterlocuteurForCommercial($composante, $email, $client)
+    {
+        $requete = $this->bd->prepare("INSERT INTO interlocuteur (id_personne) SELECT id_personne FROM personne WHERE email=:email");
+        $requete->bindValue(':email', $email, PDO::PARAM_STR);
+        $requete->execute();
+        $requete = $this->bd->prepare("INSERT INTO dirige (id_personne, id_composante) SELECT  (SELECT id_personne FROM interlocuteur ORDER BY id_personne DESC LIMIT 1), (SELECT c.id_composante FROM COMPOSANTE c JOIN CLIENT cl ON c.id_client = cl.id_client WHERE c.nom_composante = ':nom_compo'  AND cl.nom_client = ':nom_client');");
+        $requete->bindValue(':nom_compo', $composante, PDO::PARAM_INT);
+        $requete->bindValue(':nom_client', $client, PDO::PARAM_STR);
+        $requete->execute();
+        return (bool) $requete->rowCount();
+    }
+    
+
     /* -------------------------------------------------------------------------
                         Fonction Interlocuteur   
     ------------------------------------------------------------------------*/
@@ -207,7 +239,19 @@ class Model
         return $req->fetchall();
     }
 
+    public function getBdlPrestaForInterlocuteur($id_pr,$id_in)
+    {
+        $requete = $this->bd->prepare("SELECT id_bdl, mois, nom_mission FROM BON_DE_LIVRAISON bdl JOIN MISSION m USING(id_mission) JOIN travailleAvec ta USING(id_mission) JOIN COMPOSANTE USING(id_composante) JOIN dirige d USING(id_composante) WHERE ta.id_personne = :id_pres AND d.id_personne = :id_inter");
+        $requete->bindValue(':id_inter', $id_pr, PDO::PARAM_INT);
+        $requete->bindValue(':id_pres', $id_in, PDO::PARAM_INT);
+        $requete->execute();
+        return $req->fetchall();
+    }
 
+    
+     /* -------------------------------------------------------------------------
+                        Fonction prestataire   
+    ------------------------------------------------------------------------*/
     
 
 
