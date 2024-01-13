@@ -362,6 +362,22 @@ class Model
         return $req->fetchall();
     }
 
+    
+    /* -------------------------------------------------------------------------
+                            Fonction Prestataire
+        ------------------------------------------------------------------------*/
+
+        public function getInterlocuteurForPrestataire($id_pr)
+    {
+        $req = $this->bd->prepare('SELECT nom, prenom, nom_client, nom_composante FROM dirige d JOIN composante USING(id_composante) JOIN client USING(id_client) JOIN personne p ON p.id_personne = d.id_personne  JOIN MISSION m USING(id_composante) JOIN travailleAvec ta USING(id_mission) WHERE ta.id_personne = :id');
+        $req->bindValue(':id', $id_pr, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall();
+    }
+
+    /* -------------------------------------------------------------------------
+                            AUTRE
+        ------------------------------------------------------------------------*/
     /**
      * Vérifie que le mot de passe correspond bien au mail. Si ils correspondent, une session avec les informations de la personne lié au mail débute.
      **/
