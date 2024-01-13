@@ -220,39 +220,61 @@ class Model
         return $req->fetchall();
     }
 
-    public function updatePersonne($email, $nom, $prenom, $mdp, $id)
+    public function setNomPersonne($id, $nom)
     {
-        $req = $this->bd->prepare("UPDATE PERSONNE SET prenom = :prenom, nom = :nom, email = :email, mdp = :mdp WHERE id_personne = :id");
-        $req->bindValue(':email', $email, PDO::PARAM_STR);
+        $req = $this->bd->prepare("UPDATE SET PERSONNE nom = :nom WHERE id_personne = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':nom', $nom, PDO::PARAM_STR);
+        $req->execute();
+        return $req->fetchall();
+    }
+
+    public function setPrenomPersonne($id, $prenom)
+    {
+        $req = $this->bd->prepare("UPDATE SET PERSONNE prenom = :prenom WHERE id_personne = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':prenom', $prenom, PDO::PARAM_STR);
+        $req->execute();
+        return $req->fetchall();
+    }
+
+    public function setEmailPersonne($id, $email)
+    {
+        $req = $this->bd->prepare("UPDATE SET PERSONNE email = :email WHERE id_personne = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':email', $email, PDO::PARAM_STR);
+        $req->execute();
+        return $req->fetchall();
+    }
+    
+    public function setMdpPersonne($id, $mdp)
+    {
+        $req = $this->bd->prepare("UPDATE SET PERSONNE mdp = :mdp WHERE id_personne = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':mdp', $mdp, PDO::PARAM_STR);
-        $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->execute();
-        return (bool)$req->rowCount();
+        return $req->fetchall();
     }
 
-    public function updateClient($nom, $tel, $id)
+    public function setNomClient($id, $nom)
     {
-        $req = $this->bd->prepare("UPDATE CLIENT SET nom_client = :nom, telephone_client = :tel, WHERE id_client = :id");
-        $req->bindValue(':tel', $tel, PDO::PARAM_STR);
+        $req = $this->bd->prepare("UPDATE SET CLIENT nom_client = :nom WHERE id_client = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':nom', $nom, PDO::PARAM_STR);
-        $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->execute();
-        return (bool)$req->rowCount();
+        return $req->fetchall();
     }
 
-    public function updateComposante($nom, $id_client, $id)
+    public function setTelClient($id, $tel)
     {
-        $req = $this->bd->prepare("UPDATE COMPOSANTE SET nom_composante = :nom,  = :tel, WHERE id_client = SELECT  ");
-        $req->bindValue(':tel', $tel, PDO::PARAM_STR);
-        $req->bindValue(':nom', $nom, PDO::PARAM_STR);        /* A FINIR */
+        $req = $this->bd->prepare("UPDATE SET CLIENT telephone_client = :tel WHERE id_client = :id");
         $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':tel', $tel, PDO::PARAM_STR);
         $req->execute();
-        return (bool)$req->rowCount();
+        return $req->fetchall();
     }
 
-
+    
 
 
     /* -------------------------------------------------------------------------
