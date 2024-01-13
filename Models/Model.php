@@ -190,9 +190,18 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function assignerPrestataire($email, $composante)
+    public function assignerPrestataire($email, $mission)
     {
         $req = $this->bd->prepare("INSERT INTO travailleAvec (id_personne, id_mission) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT m.id_mission FROM MISSION m JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :nom_mission')");
+        $req->bindValue(':email', $email, PDO::PARAM_STR);
+        $req->bindValue(':nom_mission', $mission, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+     public function assignerCommercial($email, $composante)
+    {
+        $req = $this->bd->prepare("INSERT INTO estDans (id_personne, id_composante) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT c.id_composante FROM COMPOSANTE WHERE nom_composante = :nom_composante')");
         $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->bindValue(':nom_mission', $composante, PDO::PARAM_STR);
         $req->execute();
