@@ -20,8 +20,9 @@ class Controller_gestionnaire extends Controller
         }
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
+            $buttonLink = '?controller=gestionnaire&action=ajout_mission_form';
             $headerDashboard = ['Société', 'Composante', 'Nom Mission', 'Préstataire assigné', 'Statut', 'Bon de livraison'];
-            $data = ['menu' => $this->action_getNavBar(), 'header' => $headerDashboard, 'dashboard' => $bd->getDashboardGestionnaire()];
+            $data = ['menu' => $this->action_getNavBar(), 'buttonLink' => $buttonLink, 'header' => $headerDashboard, 'dashboard' => $bd->getDashboardGestionnaire()];
             return $this->render('gestionnaire_missions', $data);
         } else {
             echo 'Une erreur est survenue lors du chargement du tableau de bord';
@@ -36,7 +37,7 @@ class Controller_gestionnaire extends Controller
     {
         return [['link' => '?controller=gestionnaire&action=clients', 'name' => 'Société'],
             ['link' => '?controller=gestionnaire&action=missions', 'name' => 'Missions'],
-            ['link' => '?controller=gestionnaire&action=interlocuteurs', 'name' => 'Clients'],
+            ['link' => '?controller=gestionnaire&action=interlocuteurs', 'name' => 'Composantes'],
             ['link' => '?controller=gestionnaire&action=prestataires', 'name' => 'Prestataires'],
             ['link' => '?controller=gestionnaire&action=commerciaux', 'name' => 'Commerciaux']];
     }
@@ -65,7 +66,8 @@ class Controller_gestionnaire extends Controller
         }
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
-            $data = ['title' => 'Société', 'person' => $bd->getAllClients(), 'menu' => $this->action_getNavBar()];
+            $buttonLink = '?controller=gestionnaire&action=ajout_mission_form';
+            $data = ['title' => 'Société', 'buttonLink' => $buttonLink, 'person' => $bd->getAllClients(), 'menu' => $this->action_getNavBar()];
             $this->render("liste", $data);
         }
     }
@@ -77,7 +79,8 @@ class Controller_gestionnaire extends Controller
         }
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
-            $data = ['title' => 'Prestataires', "person" => $bd->getAllPrestataires(), 'menu' => $this->action_getNavBar()];
+            $buttonLink = '?controller=gestionnaire&action=ajout_prestataire_form';
+            $data = ['title' => 'Prestataires', "buttonLink" => $buttonLink, "person" => $bd->getAllPrestataires(), 'menu' => $this->action_getNavBar()];
             $this->render("liste", $data);
         }
     }
@@ -89,7 +92,8 @@ class Controller_gestionnaire extends Controller
         }
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
-            $data = ['title' => 'Commerciaux', "person" => $bd->getAllCommerciaux(), 'menu' => $this->action_getNavBar()];
+            $buttonLink = '?controller=gestionnaire&action=ajout_commercial_form';
+            $data = ['title' => 'Commerciaux', 'buttonLink' => $buttonLink, "person" => $bd->getAllCommerciaux(), 'menu' => $this->action_getNavBar()];
             $this->render("liste", $data);
         }
     }
@@ -149,13 +153,43 @@ class Controller_gestionnaire extends Controller
     }
 
     /*--------------------------------------------------------------------------------------*/
-    /*                                Ajout des personnes                                   */
+    /*                                Formulaires d'ajout                                  */
     /*--------------------------------------------------------------------------------------*/
 
     public function action_ajout_interlocuteur_form()
     {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
         $data = ['menu' => $this->action_getNavBar()];
         $this->render('ajout_interlocuteur', $data);
+    }
+
+    public function action_ajout_prestataire_form()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        $data = ['menu' => $this->action_getNavBar()];
+        $this->render('ajout_prestataire', $data);
+    }
+
+    public function action_ajout_mission_form()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        $data = ['menu' => $this->action_getNavBar()];
+        $this->render('ajout_mission', $data);
+    }
+
+    public function action_ajout_commercial_form()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        $data = ['menu' => $this->action_getNavBar()];
+        $this->render('ajout_commercial', $data);
     }
 
     public function action_ajout_interlocuteur()
@@ -165,15 +199,6 @@ class Controller_gestionnaire extends Controller
             $bd->addInterlocuteurForGestionnaire($_POST['composante'], $_POST['client']);
         }
         $this->render("gestionnaire_clients");
-    }
-
-    public function action_ajout_prestataire()
-    {
-        $bd = Model::getModel();
-        if (isset($_POST['mission']) && isset($_POST['email'])) {
-            $bd->addPrestataireForGestionnaire($_POST['mission'], $_POST['email']);
-        }
-        $this->render("gestionnaire_prestataire");
     }
 
     public function action_ajout_commercial()

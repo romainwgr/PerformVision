@@ -131,9 +131,11 @@ button:hover {
 .fa {
     font-size: var(--icon-height-small);
 }
+
 .fa-eye, .fa-download{
     color: black;
 }
+
 .fa-user-circle{
     color: white;
 }

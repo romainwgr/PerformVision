@@ -37,8 +37,8 @@
 
     /* Height */
     --height-logo: 0px /* à remplir */;
-    --icon-height-small: 2rem;
-    --icon-height-medium: 5rem;
+    --icon-height-small: 1.5rem;
+    --icon-height-medium: 2rem;
     --height-thead: 5rem;
     --height-input: 3rem;
     --height-textarea: 20rem;
