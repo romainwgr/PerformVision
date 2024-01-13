@@ -141,7 +141,7 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function addPrestataire($mission, $mail)
+    public function addPrestataireMission($mission, $mail)
     {
         $req = $this->bd->prepare("INSERT INTO prestataire (id_personne) SELECT id_personne FROM personne ORDER BY id_personne DESC LIMIT 1");
         $req->execute();
@@ -149,6 +149,13 @@ class Model
         $req->bindValue(':nom_mission', $mission, PDO::PARAM_STR);
         $req->execute();
         $req->bindValue(':email', $mail, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function addPrestataire($mission, $mail)
+    {
+        $req = $this->bd->prepare("INSERT INTO prestataire (id_personne) SELECT id_personne FROM personne ORDER BY id_personne DESC LIMIT 1");
         $req->execute();
         return (bool)$req->rowCount();
     }
