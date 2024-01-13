@@ -156,6 +156,16 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    public function addMission($type, $nom, $date)
+    {
+        $req = $this->bd->prepare("INSERT INTO MISSION (type_bdl, nom_mission, date_debut) VALUES(:type, :nom, :date)");
+        $req->bindValue(':nom', $nom, PDO::PARAM_STR);
+        $req->bindValue(':type', $type, PDO::PARAM_STR);
+        $req->bindValue(':date', $date, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
     public function assignerPrestataire($email, $composante)
     {
         $req = $this->bd->prepare("INSERT INTO travailleAvec (id_personne, id_mission) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT m.id_mission FROM MISSION m JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :nom_mission')");
@@ -180,7 +190,17 @@ class Model
         $req->bindValue(':nom', $nom, PDO::PARAM_STR);
         $req->bindValue(':prenom', $prenom, PDO::PARAM_STR);
         $req->bindValue(':mdp', $mdp, PDO::PARAM_STR);
-        $req->bindValue(':id', $id, PDO::PARAM_STR);
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function updateClient($nom, $tel, $id)
+    {
+        $req = $this->bd->prepare("UPDATE CLIENT SET nom_client = :nom, telephone_client = :tel, WHERE id_client = :id");
+        $req->bindValue(':tel', $tel, PDO::PARAM_STR);
+        $req->bindValue(':nom', $nom, PDO::PARAM_STR);
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->execute();
         return (bool)$req->rowCount();
     }
