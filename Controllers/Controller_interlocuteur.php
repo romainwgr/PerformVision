@@ -96,4 +96,20 @@ class Controller_interlocuteur extends Controller
             $this->render('bdl', $data);
         }
     }
+
+    public function action_ajout_interlocuteur()
+    {
+        $bd = Model::getModel();
+        if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email'])) {
+            $mdp = genererMdp();
+            $bd->createPersonne($_POST['nom'], $_POST['prenom'], $_POST['email'], $mdp);
+            if ($bd->addInterlocuteur($_POST['email']) &&
+                $bd->addInterlocuteurDansComposante($_POST['email'], $_POST['client'], $_POST['composante'])) {
+                $data = ['title' => "Ajout d'un interlocuteur", 'message' => "L'interlocuteur a été ajouté !"];
+            } else {
+                $data = ['title' => "Ajout d'un interlocuteur", 'message' => "Echec lors de l'ajout de l'interlocuteur !"];
+            }
+            $this->return('message', $data);
+        }
+    }
 }

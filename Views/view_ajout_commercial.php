@@ -8,16 +8,16 @@ require 'view_header.php';
             <form action="?controller=prestataire&action=">
                 <h2>Informations personnelles</h2>
                 <div class="form-names">
-                    <input type="text" placeholder="Prénom" id="f-name" class="input-case">
-                    <input type="text" placeholder="Nom" id="l-name" class="input-case">
+                    <input type="text" placeholder="Prénom" name="prenom" class="input-case">
+                    <input type="text" placeholder="Nom" name="nom" class="input-case">
                 </div>
-                <input type="email" placeholder="Adresse email" id='mail-1' class="input-case">
+                <input type="email" placeholder="Adresse email" name='email' id='mail-1' class="input-case">
                 <h2>Informations professionnelles</h2>
-                <input type="text" placeholder="Société" id='sté' class="input-case">
+                <input type="text" placeholder="Société" name='client' id='sté' class="input-case">
+                <div class="buttons" id="create">
+                    <button type="submit">Créer client</button>
+                </div>
             </form>
-            <div class="buttons" id="create">
-                <button>Créer client</button>
-            </div>
         </div>
     </div>
 <?php

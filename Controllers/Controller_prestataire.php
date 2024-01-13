@@ -2,7 +2,6 @@
 
 class Controller_prestataire extends Controller
 {
-
     /**
      * @inheritDoc
      */
@@ -10,6 +9,7 @@ class Controller_prestataire extends Controller
     {
         $this->action_dashboard();
     }
+
     public function action_dashboard()
     {
         if (session_status() == PHP_SESSION_NONE) {
@@ -27,6 +27,7 @@ class Controller_prestataire extends Controller
             echo 'Une erreur est survenue lors du chargement du tableau de bord';
         }
     }
+
     public function action_prestataire_creer_absences(){
         $bd=Model::getModel();
         if(isset($_POST['prenom']) && isset($_POST['nom']) && isset($_POST['email']) && isset($_POST['Date']) && isset($_POST['motif'])){
@@ -88,5 +89,18 @@ class Controller_prestataire extends Controller
         }
     }
 
-
+    public function action_ajout_prestataire()
+    {
+        $bd = Model::getModel();
+        if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email'])) {
+            $mdp = genererMdp();
+            $bd->createPersonne($_POST['nom'], $_POST['prenom'], $_POST['email'], $mdp);
+            if($bd->addPrestataire($_POST['email'], $_POST['client'])){
+                $data = ['title' => "Ajout d'un prestataire", 'message' => "Le prestataire a été ajouté !"];
+            }else{
+                $data = ['title' => "Ajout d'un prestataire", 'message' => "Echec lors de l'ajout du prestataire !"];
+            }
+            $this->return('message', $data);
+        }
+    }
 }

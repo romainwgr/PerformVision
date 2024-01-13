@@ -15,7 +15,7 @@ class Controller_gestionnaire extends Controller
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        if(!array_key_exists('role', $_SESSION)){
+        if (!array_key_exists('role', $_SESSION)) {
             $_SESSION['role'] = 'gestionnaire';
         }
         if (isset($_SESSION['id'])) {
@@ -40,6 +40,17 @@ class Controller_gestionnaire extends Controller
             ['link' => '?controller=gestionnaire&action=interlocuteurs', 'name' => 'Composantes'],
             ['link' => '?controller=gestionnaire&action=prestataires', 'name' => 'Prestataires'],
             ['link' => '?controller=gestionnaire&action=commerciaux', 'name' => 'Commerciaux']];
+    }
+
+    public function action_infos(){
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        $this->render('infos', ['menu' => $this->action_getNavBar()]);
+    }
+
+    public function action_maj_infos(){
+        action_maj_infos();
     }
 
     /**
@@ -192,7 +203,22 @@ class Controller_gestionnaire extends Controller
         $this->render('ajout_commercial', $data);
     }
 
-    public function action_ajout_interlocuteur()
+    public function action_ajout_gestionnaire()
+    {
+        $bd = Model::getModel();
+        if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email'])) {
+            $mdp = genererMdp();
+            $bd->createPersonne($_POST['nom'], $_POST['prenom'], $_POST['email'], $mdp);
+            if ($bd->addGestionnaire($_POST['email'])) {
+                $data = ['title' => "Ajout d'un gestionnaire", 'message' => "Le gestionnaire a été ajouté !"];
+            } else {
+                $data = ['title' => "Ajout d'un gestionnaire", 'message' => "Echec lors de l'ajout du gestionnaire !"];
+            }
+            $this->return('message', $data);
+        }
+    }
+
+    public function action_ajout_interlocuteur_dans_composante()
     {
         $bd = Model::getModel();
         if (isset($_POST['composante']) && isset($_POST['client'])) {
@@ -201,7 +227,16 @@ class Controller_gestionnaire extends Controller
         $this->render("gestionnaire_clients");
     }
 
-    public function action_ajout_commercial()
+    public function action_ajout_prestataire_dans_mission()
+    {
+        $bd = Model::getModel();
+        if (isset($_POST['mission']) && isset($_POST['email'])) {
+            $bd->addPrestataireForGestionnaire($_POST['mission'], $_POST['email']);
+        }
+        $this->render("gestionnaire_prestataire");
+    }
+
+    public function action_ajout_commercial_dans_composante()
     {
         $bd = Model::getModel();
         if (isset($_POST['composante']) && isset($_POST['email'])) {
@@ -210,6 +245,7 @@ class Controller_gestionnaire extends Controller
         $this->render("gestionnaire_commerciaux");
     }
 
+    /* À mettre dans Controller_Client
     public function action_ajout_client()
     {
         $bd = Model::getModel();
@@ -218,6 +254,7 @@ class Controller_gestionnaire extends Controller
         }
         $this->render("gestionnaire_clients");
     }
+    */
 }
 
 ?>
