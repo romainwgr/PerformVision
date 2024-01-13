@@ -15,7 +15,7 @@ class Controller_prestataire extends Controller
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $headerDashboard = ['Société', 'Composante', 'Nom Mission', 'Statut', 'Bon de livraison'];
-            $data = ['header' => $headerDashboard, 'dashboard' => $bd->getDashboardPrestataire()];
+            $data = ['header' => $headerDashboard, 'dashboard' => $bd->getDashboardPrestataire($_SESSION['id'])/*ses missions*/];
             return $this->render('prestataire_missions', $data);
         } else {
             echo 'Une erreur est survenue lors du chargement du tableau de bord';
