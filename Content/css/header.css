@@ -40,10 +40,12 @@ nav ul li a {
 nav ul li a:hover {
     font-weight: bold;
 }
-a {
-    font-size: var(--font-size--medium);
+
+.header-navbar{
+    font-size: var(--font-size--small);
     font-family: 'Montserrat', sans-serif;
 }
+
 a:hover {
     border-bottom: 1px solid white;
     padding-bottom: var(--spacer-1);

@@ -57,23 +57,30 @@ class Model
         return $req->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getAllInterlocuteur()
+    public function getAllInterlocuteurs()
     {
         $req = $this->bd->prepare('SELECT nom, prenom, nom_client FROM dirige JOIN composante USING(id_composante) JOIN client USING(id_client) JOIN personne USING(id_personne);');
         $req->execute();
         return $req->fetchall();
     }
 
-    public function getAllCommercial()
+    public function getAllCommerciaux()
     {
         $req = $this->bd->prepare('SELECT nom, prenom, nom_composante FROM estdans JOIN composante USING(id_composante) JOIN personne USING(id_personne);');
         $req->execute();
         return $req->fetchall();
     }
 
-    public function getAllPrestataire()
+    public function getAllPrestataires()
     {
         $req = $this->bd->prepare('SELECT nom, prenom, interne FROM PERSONNE p JOIN PRESTATAIRE pr ON p.id_personne =  pr.id_personne;');
+        $req->execute();
+        return $req->fetchall();
+    }
+
+    public function getAllClients()
+    {
+        $req = $this->bd->prepare('SELECT nom_client, telephone_client FROM CLIENT;');
         $req->execute();
         return $req->fetchall();
     }

@@ -13,10 +13,15 @@ require 'view_header.php';
     <div class="element-block">
         <?php foreach ($person as $p): ?>
             <div class="block">
-                <h2><?= $p['nom'] . ' ' . $p['prenom'] ?></h2>
+                <h2><?php
+                    if (array_key_exists('nom', $p)): echo $p['nom'] . ' ' . $p['prenom']; endif;
+                    if (array_key_exists('nom_client', $p) and array_key_exists('telephone_client', $p)): echo $p['nom_client']; endif;
+                    ?></h2>
                 <h3><?php
-                    if (isset($p['interne'])): if($p['interne']): echo 'Interne'; else: echo 'Indépendant'; endif; endif;
-                    if (isset($p['nom_client'])): echo $p['nom_client']; endif;
+                    if (array_key_exists('interne', $p)): if($p['interne']): echo 'Interne'; else: echo 'Indépendant'; endif; endif;
+                    if (array_key_exists('nom_client', $p) and !array_key_exists('telephone_client', $p)): echo $p['nom_client']; endif;
+                    if (array_key_exists('nom_composante', $p)): echo $p['nom_composante']; endif;
+                    if(array_key_exists('telephone_client', $p)): echo $p['telephone_client']; endif;
                     ?></h3>
             </div>
         <?php endforeach; ?>

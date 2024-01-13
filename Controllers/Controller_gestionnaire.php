@@ -31,7 +31,8 @@ class Controller_gestionnaire extends Controller
      */
     public function action_getNavBar()
     {
-        return [['link' => '?controller=gestionnaire&action=missions', 'name' => 'Missions'],
+        return [['link' => '?controller=gestionnaire&action=clients', 'name' => 'Société'],
+            ['link' => '?controller=gestionnaire&action=missions', 'name' => 'Missions'],
             ['link' => '?controller=gestionnaire&action=interlocuteurs', 'name' => 'Clients'],
             ['link' => '?controller=gestionnaire&action=prestataires', 'name' => 'Prestataires'],
             ['link' => '?controller=gestionnaire&action=commerciaux', 'name' => 'Commerciaux']];
@@ -47,7 +48,19 @@ class Controller_gestionnaire extends Controller
         }
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
-            $data = ['title' => 'Interlocuteurs', 'person' => $bd->getAllInterlocuteur(), 'menu' => $this->action_getNavBar()];
+            $data = ['title' => 'Interlocuteurs Client', 'person' => $bd->getAllInterlocuteurs(), 'menu' => $this->action_getNavBar()];
+            $this->render("liste", $data);
+        }
+    }
+
+    public function action_clients()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (isset($_SESSION['id'])) {
+            $bd = Model::getModel();
+            $data = ['title' => 'Société', 'person' => $bd->getAllClients(), 'menu' => $this->action_getNavBar()];
             $this->render("liste", $data);
         }
     }
@@ -59,7 +72,7 @@ class Controller_gestionnaire extends Controller
         }
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
-            $data = ['title' => 'Prestataires', "person" => $bd->getAllPrestataire(), 'menu' => $this->action_getNavBar()];
+            $data = ['title' => 'Prestataires', "person" => $bd->getAllPrestataires(), 'menu' => $this->action_getNavBar()];
             $this->render("liste", $data);
         }
     }
@@ -71,7 +84,7 @@ class Controller_gestionnaire extends Controller
         }
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
-            $data = ['title' => 'Commerciaux', "person" => $bd->getAllCommercial(), 'menu' => $this->action_getNavBar()];
+            $data = ['title' => 'Commerciaux', "person" => $bd->getAllCommerciaux(), 'menu' => $this->action_getNavBar()];
             $this->render("liste", $data);
         }
     }
@@ -129,6 +142,10 @@ class Controller_gestionnaire extends Controller
         }
         $this->render("gestionnarie_commerciaux");
     }
+
+    /*--------------------------------------------------------------------------------------*/
+    /*                                Ajout des personnes                                   */
+    /*--------------------------------------------------------------------------------------*/
 
     public function action_gestionnaire_ajouter_interlocuteur()
     {
