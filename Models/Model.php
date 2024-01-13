@@ -47,7 +47,7 @@ class Model
     }
 
     /* -------------------------------------------------------------------------
-                            Fonction Gestionnaire
+                            Fonction Gestionnaire/Admin
         ------------------------------------------------------------------------*/
 
     public function getDashboardGestionnaire()
@@ -85,7 +85,7 @@ class Model
         return $req->fetchall();
     }
 
-    public function removePrestataireForGestionnaire($id_pr)
+    public function removePrestataire($id_pr)
     {
         $req = $this->bd->prepare("DELETE FROM ACTIVITE WHERE id_personne = :id");
         $req->bindValue(':id', (int)$id_pr, PDO::PARAM_INT);
@@ -99,7 +99,7 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function removeInterlocuteurForGestionnaire($id_in)
+    public function removeInterlocuteur($id_in)
     {
         $req = $this->bd->prepare("DELETE FROM BON_DE_LIVRAISON WHERE id_personne = :id");
         $req->bindValue(':id', (int)$id_in, PDO::PARAM_INT);
@@ -113,7 +113,7 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function removeCommercialForGestionnaire($id_co)
+    public function removeCommercial($id_co)
     {
         $req = $this->bd->prepare("DELETE FROM estDans WHERE id_personne = :id_personne");
         $req->bindValue(':id', (int)$id_co, PDO::PARAM_INT);
@@ -124,7 +124,7 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function addInterlocuteurForGestionnaire($composante, $client)
+    public function addInterlocuteur($composante, $client)
     {
         $req = $this->bd->prepare("INSERT INTO interlocuteur (id_personne) SELECT id_personne FROM personne ORDER BY id_personne DESC LIMIT 1");
         $req->execute();
@@ -135,7 +135,7 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function addPrestataireForGestionnaire($mission, $mail)
+    public function addPrestataire($mission, $mail)
     {
         $req = $this->bd->prepare("INSERT INTO prestataire (id_personne) SELECT id_personne FROM personne ORDER BY id_personne DESC LIMIT 1");
         $req->execute();
@@ -147,7 +147,7 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function addClientForGestionnaire($client, $tel, $composante, $id_adresse, $email)
+    public function addClient($client, $tel, $composante, $id_adresse, $email)
     {
         $req = $this->bd->prepare("INSERT INTO client(nom_client, telephone_client) VALUES( :nom_client, :tel)");
         $req->bindValue(':nom_client', $client, PDO::PARAM_STR);
@@ -172,13 +172,28 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function getBdlPrestaForGestionnaire($id_pr)
+    public function getBdlPresta($id_pr)
     {
         $req = $this->bd->prepare("SELECT id_bdl, mois, nom_mission FROM BON_DE_LIVRAISON bdl JOIN MISSION m USING(id_mission) JOIN travailleAvec ta USING(id_mission) WHERE ta.id_personne = :id");
         $req->bindValue(':id', $id_pr, PDO::PARAM_INT);
         $req->execute();
         return $req->fetchall();
     }
+
+    public function updatePersonne($email, $nom, $prenom, $mdp, $id)
+    {
+        $req = $this->bd->prepare("UPDATE PERSONNE SET prenom = :prenom, nom = :nom, email = :email, mdp = :mdp WHERE id_personne = :id");
+        $req->bindValue(':email', $email, PDO::PARAM_STR);
+        $req->bindValue(':nom', $nom, PDO::PARAM_STR);
+        $req->bindValue(':prenom', $prenom, PDO::PARAM_STR);
+        $req->bindValue(':mdp', $mdp, PDO::PARAM_STR);
+        $req->bindValue(':id', $id, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+
+
 
     /* -------------------------------------------------------------------------
                             Fonction Commercial
