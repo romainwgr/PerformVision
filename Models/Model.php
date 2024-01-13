@@ -85,6 +85,12 @@ class Model
         return $req->fetchall();
     }
 
+    public function getAllComposantes(){
+         $req = $this->bd->prepare('SELECT nom_composante, nom_client FROM CLIENT JOIN COMPOSANTE using(id_client)');
+        $req->execute();
+        return $req->fetchall();
+    }
+
     public function removePrestataire($id_pr)
     {
         $req = $this->bd->prepare("DELETE FROM ACTIVITE WHERE id_personne = :id");
@@ -163,9 +169,9 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function addMission($type, $nom, $date)
+    public function addMission($type, $nom, $date, $nom_compo)
     {
-        $req = $this->bd->prepare("INSERT INTO MISSION (type_bdl, nom_mission, date_debut) VALUES(:type, :nom, :date)");
+        $req = $this->bd->prepare("INSERT INTO MISSION (type_bdl, nom_mission, date_debut) VALUES(:type, :nom, :date, :id_compo)");
         $req->bindValue(':nom', $nom, PDO::PARAM_STR);
         $req->bindValue(':type', $type, PDO::PARAM_STR);
         $req->bindValue(':date', $date, PDO::PARAM_STR);
@@ -207,6 +213,16 @@ class Model
         $req = $this->bd->prepare("UPDATE CLIENT SET nom_client = :nom, telephone_client = :tel, WHERE id_client = :id");
         $req->bindValue(':tel', $tel, PDO::PARAM_STR);
         $req->bindValue(':nom', $nom, PDO::PARAM_STR);
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function updateComposante($nom, $id_client, $id)
+    {
+        $req = $this->bd->prepare("UPDATE COMPOSANTE SET nom_composante = :nom,  = :tel, WHERE id_client = SELECT  ");
+        $req->bindValue(':tel', $tel, PDO::PARAM_STR);
+        $req->bindValue(':nom', $nom, PDO::PARAM_STR);        /* A FINIR */
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->execute();
         return (bool)$req->rowCount();
