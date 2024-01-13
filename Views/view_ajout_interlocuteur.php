@@ -1,8 +1,5 @@
 <?php
 require 'view_begin.php';
-$menu = [['link' => '?controller=commercial&action=missions', 'name' => 'Missions'],
-    ['link' => '?controller=commercial&action=clients', 'name' => 'Clients'],
-    ['link' => '?controller=commercial&action=prestataire', 'name' => 'Prestataires']];
 require 'view_header.php';
 ?>
     <div class="add-client-container">

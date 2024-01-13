@@ -169,3 +169,7 @@ button:hover {
     background: var(--secondary-color);
     color: var(--delete-color);
 }
+
+input::placeholder{
+    font-size: var(--font-size--little);
+}

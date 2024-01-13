@@ -19,6 +19,6 @@
     <link rel="stylesheet" href="/Content/css/gestionnaire/prestataire.css">
     <link rel="stylesheet" href="/Content/css/header.css">
     <link rel="stylesheet" href="/Content/css/footer.css">
-    <link rel="stylesheet" href="/Content/css/ajout_client.css">
+    <link rel="stylesheet" href="/Content/css/ajout_interlocuteur.css">
 </head>
 <body>
