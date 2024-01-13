@@ -196,6 +196,10 @@ class Model
         $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->bindValue(':nom_mission', $mission, PDO::PARAM_STR);
         $req->execute();
+        $req = $this->bd->prepare("INSERT INTO BON_DE_LIVRAISON(id_personne, id_mission)  SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email),  (SELECT m.id_mission FROM MISSION m JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :nom_mission')");
+        $req->bindValue(':email', $email, PDO::PARAM_STR);
+        $req->bindValue(':nom_mission', $mission, PDO::PARAM_STR);
+        $req->execute();
         return (bool)$req->rowCount();
     }
 
