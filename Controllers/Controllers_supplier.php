@@ -22,5 +22,14 @@ class Controller_prestataire extends Controller
         }
     }
 
+    public function action_prestataire_creer_absences(){
+        $bd=Model::getModel();
+        if(isset($_POST['prenom']) && isset($_POST['nom']) && isset($_POST['email']) && isset($_POST['Date']) && isset($_POST['motif'])){
+            $bd->addAbsenceForPrestataire($_POST['prenom'],$_POST['nom'],$_POST['email'],$_POST['Date'],$_POST['motif']);
+        } else{
+            $this->action_error("données incomplètes");
+        }
+    }
+
 
 }
