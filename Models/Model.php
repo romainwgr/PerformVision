@@ -130,25 +130,36 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function addInterlocuteur($composante, $client)
+    public function assignerInterlocuteurComposante($composante, $client, $email)
     {
-        $req = $this->bd->prepare("INSERT INTO interlocuteur (id_personne) SELECT id_personne FROM personne ORDER BY id_personne DESC LIMIT 1");
-        $req->execute();
-        $req = $this->bd->prepare("INSERT INTO dirige (id_personne, id_composante) SELECT  (SELECT id_personne FROM interlocuteur ORDER BY id_personne DESC LIMIT 1), (SELECT c.id_composante FROM COMPOSANTE c JOIN CLIENT cl ON c.id_client = cl.id_client WHERE c.nom_composante = ':nom_compo'  AND cl.nom_client = ':nom_client')");
-        $req->bindValue(':nom_compo', $composante, PDO::PARAM_INT);
+        $req = $this->bd->prepare("INSERT INTO dirige (id_personne, id_composante) SELECT  (SELECT id_personne FROM PERSONNE WHERE email=:email), (SELECT c.id_composante FROM COMPOSANTE c JOIN CLIENT cl ON c.id_client = cl.id_client WHERE c.nom_composante = ':nom_compo'  AND cl.nom_client = ':nom_client')");
+        $req->bindValue(':nom_compo', $composante, PDO::PARAM_ST);
         $req->bindValue(':nom_client', $client, PDO::PARAM_STR);
+        $req->bindValue(':email', $client, PDO::PARAM_STR);
         $req->execute();
         return (bool)$req->rowCount();
     }
 
-    public function addPrestataire($mission, $mail)
+    public function addPrestataire($email)
     {
-        $req = $this->bd->prepare("INSERT INTO prestataire (id_personne) SELECT id_personne FROM personne ORDER BY id_personne DESC LIMIT 1");
+        $req = $this->bd->prepare("INSERT INTO PRESTATAIRE (id_personne) SELECT id_personne FROM personne WHERE email = :email");
+        $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->execute();
-        $req = $this->bd->prepare("INSERT INTO travailleAvec (id_personne, id_mission) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT m.id_mission FROM MISSION m JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :nom_mission");
-        $req->bindValue(':nom_mission', $mission, PDO::PARAM_STR);
+        return (bool)$req->rowCount();
+    }
+
+    public function addInterlocuteur($email)
+    {
+        $req = $this->bd->prepare("INSERT INTO INTERLOCUTEUR (id_personne) SELECT id_personne FROM personne WHERE email = :email");
+        $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->execute();
-        $req->bindValue(':email', $mail, PDO::PARAM_STR);
+        return (bool)$req->rowCount();
+    }
+
+    public function addCommercial($email)
+    {
+        $req = $this->bd->prepare("INSERT INTO COMMERCIAL (id_personne) SELECT id_personne FROM personne WHERE email = :email");
+        $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->execute();
         return (bool)$req->rowCount();
     }
@@ -179,9 +190,22 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function assignerPrestataire($email, $composante)
+    public function assignerPrestataire($email, $mission)
     {
         $req = $this->bd->prepare("INSERT INTO travailleAvec (id_personne, id_mission) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT m.id_mission FROM MISSION m JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :nom_mission')");
+        $req->bindValue(':email', $email, PDO::PARAM_STR);
+        $req->bindValue(':nom_mission', $mission, PDO::PARAM_STR);
+        $req->execute();
+        $req = $this->bd->prepare("INSERT INTO BON_DE_LIVRAISON(id_personne, id_mission)  SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email),  (SELECT m.id_mission FROM MISSION m JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :nom_mission')");
+        $req->bindValue(':email', $email, PDO::PARAM_STR);
+        $req->bindValue(':nom_mission', $mission, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+     public function assignerCommercial($email, $composante)
+    {
+        $req = $this->bd->prepare("INSERT INTO estDans (id_personne, id_composante) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT c.id_composante FROM COMPOSANTE WHERE nom_composante = :nom_composante')");
         $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->bindValue(':nom_mission', $composante, PDO::PARAM_STR);
         $req->execute();
@@ -362,6 +386,22 @@ class Model
         return $req->fetchall();
     }
 
+    
+    /* -------------------------------------------------------------------------
+                            Fonction Prestataire
+        ------------------------------------------------------------------------*/
+
+        public function getInterlocuteurForPrestataire($id_pr)
+    {
+        $req = $this->bd->prepare('SELECT nom, prenom, nom_client, nom_composante FROM dirige d JOIN composante USING(id_composante) JOIN client USING(id_client) JOIN personne p ON p.id_personne = d.id_personne  JOIN MISSION m USING(id_composante) JOIN travailleAvec ta USING(id_mission) WHERE ta.id_personne = :id');
+        $req->bindValue(':id', $id_pr, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall();
+    }
+
+    /* -------------------------------------------------------------------------
+                            AUTRE
+        ------------------------------------------------------------------------*/
     /**
      * Vérifie que le mot de passe correspond bien au mail. Si ils correspondent, une session avec les informations de la personne lié au mail débute.
      **/
