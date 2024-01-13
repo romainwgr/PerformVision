@@ -173,6 +173,21 @@ class Model
         return $req->fetchall();
     }
 
+    public function updatePersonne($email, $nom, $prenom, $mdp, $id)
+    {
+        $req = $this->bd->prepare("UPDATE PERSONNE SET prenom = :prenom, nom = :nom, email = :email, mdp = :mdp WHERE id_personne = :id");
+        $req->bindValue(':email', $email, PDO::PARAM_STR);
+        $req->bindValue(':nom', $nom, PDO::PARAM_STR);
+        $req->bindValue(':prenom', $prenom, PDO::PARAM_STR);
+        $req->bindValue(':mdp', $mdp, PDO::PARAM_STR);
+        $req->bindValue(':id', $id, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    
+
+
     /* -------------------------------------------------------------------------
                             Fonction Commercial
         ------------------------------------------------------------------------*/
