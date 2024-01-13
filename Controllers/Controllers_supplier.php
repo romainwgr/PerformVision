@@ -12,16 +12,21 @@ class Controller_prestataire extends Controller
     }
     public function action_dashboard()
     {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if(!array_key_exists('role', $_SESSION)){
+            $_SESSION['role'] = 'prestataire';
+        }
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $headerDashboard = ['Société', 'Composante', 'Nom Mission', 'Statut', 'Bon de livraison'];
-            $data = ['header' => $headerDashboard, 'dashboard' => $bd->getDashboardPrestataire($_SESSION['id'])/*ses missions*/];
+            $data = ['header' => $headerDashboard, 'dashboard' => $bd->getDashboardPrestataire($_SESSION['id'])];
             return $this->render('prestataire_missions', $data);
         } else {
             echo 'Une erreur est survenue lors du chargement du tableau de bord';
         }
     }
-
     public function action_prestataire_creer_absences(){
         $bd=Model::getModel();
         if(isset($_POST['prenom']) && isset($_POST['nom']) && isset($_POST['email']) && isset($_POST['Date']) && isset($_POST['motif'])){
@@ -30,6 +35,47 @@ class Controller_prestataire extends Controller
             $this->action_error("données incomplètes");
         }
     }
+
+    public function action_prestataire_Statut(){
+        $bd=Model::getModel();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (isset($_SESSION['id'])){
+            if (isset($_POST['jour']) && isset($_POST['mission'])){
+                $bd->setAbsenceForPrestataire($_POST['jour'],$_POST['mission'],$_SESSION['id']);
+            }
+        }else{
+            echo "Une erreur est survenue lors du chargement de l'absence de ce jour";
+        }
+    }
+
+    public function action_prestataire_clients(){
+        $bd=Model::getModel();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (isset($_SESSION['id'])){
+            $data=["tableau"=>$bd->getInterlocuteurForPrestataire($_SESSION['id'])];
+            $this->render("prestataire_interlocuteurs",$data);
+        }else{
+            echo 'Une erreur est survenue lors du chargement des interlocuteurs';
+        }
+    }
+
+    public function action_prestataire_bdl(){
+        $bd=Model::getModel();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (isset($_SESSION['id']) && isset($_POST['mission'])){
+            $data=["bdl"=>$bd->getBdlPrestaForPrestataire($_SESSION['id'],$_POST['mission'])];
+            $this->render("prestataire_interlocuteurs",$data);
+        }else{
+            echo 'Une erreur est survenue lors du chargement des interlocuteurs';
+        }
+    }
+
 
 
 }
