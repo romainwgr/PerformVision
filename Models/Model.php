@@ -173,6 +173,28 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    public function addComposante($libelle, $ville, $cp, $numVoie, $nomVoie, $nom_client, $nom_compo)
+    {
+        $req = $this->bd->prepare("INSERT INTO TYPEVOIE(libelle) VALUES(:libelle)");
+        $req->bindValue(':libelle', $libelle, PDO::PARAM_STR);
+        $req->execute();
+        $req = $this->bd->prepare("INSERT INTO LOCALITE(cp, ville) VALUES(:cp, :ville)");
+        $req->bindValue(':ville', $ville, PDO::PARAM_STR);
+        $req->bindValue(':cp', $cp, PDO::PARAM_STR);
+        $req->execute();
+        $req = $this->bd->prepare("INSERT INTO ADRESSE(numero, nomVoie, id, id_localite) SELECT :num, :nomVoie, (SELECT id_typevoie FROM TypeVoie ORDER BY id_typevoie DESC LIMIT 1), (SELECT id_localite FROM localite ORDER BY id_localite DESC LIMIT 1)");
+        $req->bindValue(':num', $numVoie, PDO::PARAM_STR);
+        $req->bindValue(':nomVoie', $nomVoie, PDO::PARAM_STR);
+        $req->execute();
+        $req = $this->bd->prepare("INSERT INTO COMPOSANTE(nom_composante, id_adresse, id_client) SELECT :nom_compo, (SELECT id_adresse FROM adresse ORDER BY id_adresse DESC LIMIT 1), (SELECT id_client FROM CLIENT WHERE nom_client = :nom_client)");
+        $req->bindValue(':nom_client', $nom_client, PDO::PARAM_STR);
+        $req->bindValue(':nom_compo', $nom_compo, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    
+
     public function addMission($type, $nom, $date, $nom_compo)
     {
         $req = $this->bd->prepare("INSERT INTO MISSION (type_bdl, nom_mission, date_debut) VALUES(:type, :nom, :date, :id_compo)");
