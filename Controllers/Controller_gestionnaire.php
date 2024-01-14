@@ -277,7 +277,7 @@ class Controller_gestionnaire extends Controller
     public function action_infos_composante(){
         if(isset($_GET['id'])){
             $bd = Model::getModel();
-            $data = ['infos' => ''/*$bd->getInfosComposante($id)*/, 'menu' =>$this->action_get_navbar()];
+            $data = ['infos' => $bd->getInfosComposante($_GET['id']), 'menu' =>$this->action_get_navbar()];
             $this->render('infos_composante', $data);
         }
     }
