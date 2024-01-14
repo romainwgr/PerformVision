@@ -85,6 +85,22 @@ class Model
         return $req->fetchall();
     }
 
+    public function getInfosPersonne($id)
+    {
+        $req = $this->bd->prepare('SELECT id_personne, nom, prenom, email FROM PERSONNE WHERE id_personne = :id');
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall();
+    }
+
+    public function getInfosPersonne($id)
+    {
+        $req = $this->bd->prepare('SELECT id_personne, nom, prenom, email FROM PERSONNE WHERE id_personne = :id');
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall();
+    }
+
     /* -------------------------------------------------------------------------
                             Fonction Composante
         ------------------------------------------------------------------------*/
@@ -471,18 +487,6 @@ class Model
         $req->bindValue(':id_com', $id_co, PDO::PARAM_INT);
         $req->execute();
         return $req->fetchall();
-    }
-
-    public function addInterlocuteurForCommercial($composante, $email, $client)
-    {
-        $req = $this->bd->prepare("INSERT INTO interlocuteur (id_personne) SELECT id_personne FROM personne WHERE email=:email");
-        $req->bindValue(':email', $email, PDO::PARAM_STR);
-        $req->execute();
-        $req = $this->bd->prepare("INSERT INTO dirige (id_personne, id_composante) SELECT  (SELECT id_personne FROM interlocuteur ORDER BY id_personne DESC LIMIT 1), (SELECT c.id_composante FROM COMPOSANTE c JOIN CLIENT cl ON c.id_client = cl.id_client WHERE c.nom_composante = ':nom_compo'  AND cl.nom_client = ':nom_client');");
-        $req->bindValue(':nom_compo', $composante, PDO::PARAM_INT);
-        $req->bindValue(':nom_client', $client, PDO::PARAM_STR);
-        $req->execute();
-        return (bool)$req->rowCount();
     }
 
 
