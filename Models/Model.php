@@ -192,9 +192,7 @@ class Model
         $req->execute();
         return (bool)$req->rowCount();
     }
-
     
-
     public function addMission($type, $nom, $date, $nom_compo)
     {
         $req = $this->bd->prepare("INSERT INTO MISSION (type_bdl, nom_mission, date_debut) VALUES(:type, :nom, :date, :id_compo)");
@@ -241,7 +239,7 @@ class Model
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':nom', $nom, PDO::PARAM_STR);
         $req->execute();
-        return $req->fetchall();
+        return (bool) $req->rowCount();
     }
 
     public function setPrenomPersonne($id, $prenom)
@@ -250,7 +248,7 @@ class Model
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':prenom', $prenom, PDO::PARAM_STR);
         $req->execute();
-        return $req->fetchall();
+        return (bool) $req->rowCount();
     }
 
     public function setEmailPersonne($id, $email)
@@ -259,7 +257,7 @@ class Model
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->execute();
-        return $req->fetchall();
+        return (bool) $req->rowCount();
     }
     
     public function setMdpPersonne($id, $mdp)
@@ -268,7 +266,7 @@ class Model
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':mdp', $mdp, PDO::PARAM_STR);
         $req->execute();
-        return $req->fetchall();
+        return (bool) $req->rowCount();
     }
 
     public function setNomClient($id, $nom)
@@ -277,7 +275,7 @@ class Model
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':nom', $nom, PDO::PARAM_STR);
         $req->execute();
-        return $req->fetchall();
+        return (bool) $req->rowCount();
     }
 
     public function setTelClient($id, $tel)
@@ -286,11 +284,62 @@ class Model
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':tel', $tel, PDO::PARAM_STR);
         $req->execute();
-        return $req->fetchall();
+        return (bool) $req->rowCount();
     }
 
-    
+    public function setNomComposante($id, $nom)
+    {
+        $req = $this->bd->prepare("UPDATE PERSONNE SET nom_composante = :nom WHERE id_composante = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':nom', $nom, PDO::PARAM_STR);
+        $req->execute();
+        return (bool) $req->rowCount();
+    }
 
+    public function setNumeroAdresse($id, $num)
+    {
+        $req = $this->bd->prepare("UPDATE ADRESSE SET numero = :num WHERE id_adresse = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':num', $num, PDO::PARAM_STR);
+        $req->execute();
+        return (bool) $req->rowCount();
+    }
+
+    public function setNomVoieAdresse($id, $nom)
+    {
+        $req = $this->bd->prepare("UPDATE ADRESSE SET nomVoie = :nom WHERE id_adresse = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':num', $num, PDO::PARAM_STR);
+        $req->execute();
+        return (bool) $req->rowCount();
+    }
+
+    public function setCpLocalite($id, $cp)
+    {
+        $req = $this->bd->prepare("UPDATE LOCALITE SET cp = :cp WHERE id_adresse = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':cp', $cp, PDO::PARAM_STR);
+        $req->execute();
+        return (bool) $req->rowCount();
+    }
+
+    public function setVilleLocalite($id, $ville)
+    {
+        $req = $this->bd->prepare("UPDATE LOCALITE SET ville = :ville WHERE id_adresse = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':ville', $ville, PDO::PARAM_STR);
+        $req->execute();
+        return (bool) $req->rowCount();
+    }
+
+    public function setLibelleTypevoie($id, $libelle)
+    {
+        $req = $this->bd->prepare("UPDATE TYPEVOIE SET libelle = :libelle WHERE id_adresse = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':libelle', $libelle, PDO::PARAM_STR);
+        $req->execute();
+        return (bool) $req->rowCount();
+    }
 
     /* -------------------------------------------------------------------------
                             Fonction Commercial
