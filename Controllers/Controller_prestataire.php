@@ -20,13 +20,22 @@ class Controller_prestataire extends Controller
         }
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
-            $headerDashboard = ['Missions','Clients','Bon de livraisons'];
-            $data = ['header' => $headerDashboard, 'dashboard' => $bd->getDashboardPrestataire($_SESSION['id'])];
+            $headerDashboard = ['Société', 'Composante', 'Nom Mission', 'Statut', 'Bon de livraison'];
+            $data = ['menu' => $this->action_getNavBar(),'header' => $headerDashboard, 'dashboard' => $bd->getDashboardPrestataire($_SESSION['id'])];
             return $this->render('prestataire_missions', $data);
         } else {
             echo 'Une erreur est survenue lors du chargement du tableau de bord';
         }
     }
+
+    public function action_getNavBar()
+    {
+        return [
+            ['link' => '?controller=prestataire&action=dashboard', 'name' => 'Missions'],
+            ['link' => '?controller=prestataire&action=prestataires_clients', 'name' => 'Clients'],
+            ['link' => '?controller=prestataire&action=bdl', 'name' => 'Bons de livraison']];
+    }
+
 
     public function action_prestataire_creer_absences(){
         $bd=Model::getModel();
@@ -36,6 +45,7 @@ class Controller_prestataire extends Controller
             $this->action_error("données incomplètes");
         }
     }
+    
 
     public function action_prestataire_Statut(){
         $bd=Model::getModel();
@@ -71,7 +81,7 @@ class Controller_prestataire extends Controller
         }
         if (isset($_SESSION['id']) && isset($_POST['mission'])){
             $data=["bdl"=>$bd->getBdlPrestaForPrestataire($_SESSION['id'],$_POST['mission'])];
-            $this->render("prestataire_interlocuteurs",$data);
+            $this->render("bdl",$data);
         }else{
             echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
         }

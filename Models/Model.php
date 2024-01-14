@@ -164,22 +164,35 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function addClient($client, $tel, $composante, $id_adresse, $email)
+    public function addClient($client, $tel)
     {
         $req = $this->bd->prepare("INSERT INTO client(nom_client, telephone_client) VALUES( :nom_client, :tel)");
         $req->bindValue(':nom_client', $client, PDO::PARAM_STR);
         $req->bindValue(':tel', $tel, PDO::PARAM_STR);
         $req->execute();
-        $req = $this->bd->prepare("INSERT INTO COMPOSANTE (id_client, nom_composante, id_adresse) SELECT (SELECT id_client FROM client ORDER BY id_client DESC LIMIT 1),:nom_compo, :id_adresse");
-        $req->bindValue(':nom_compo', $composante, PDO::PARAM_STR);
-        $req->bindValue(':id_adresse', $id_adresse, PDO::PARAM_INT);
-        $req->execute();
-        $req = $this->bd->prepare("INSERT INTO estDans(id_personne, id_composante) SELECT (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email'),  (SELECT id_composante FROM composante ORDER BY id_composante DESC LIMIT 1)");
-        $req->bindValue(':email', $email, PDO::PARAM_STR);
-        $req->execute();
         return (bool)$req->rowCount();
     }
 
+    public function addComposante($libelle, $ville, $cp, $numVoie, $nomVoie, $nom_client, $nom_compo)
+    {
+        $req = $this->bd->prepare("INSERT INTO TYPEVOIE(libelle) VALUES(:libelle)");
+        $req->bindValue(':libelle', $libelle, PDO::PARAM_STR);
+        $req->execute();
+        $req = $this->bd->prepare("INSERT INTO LOCALITE(cp, ville) VALUES(:cp, :ville)");
+        $req->bindValue(':ville', $ville, PDO::PARAM_STR);
+        $req->bindValue(':cp', $cp, PDO::PARAM_STR);
+        $req->execute();
+        $req = $this->bd->prepare("INSERT INTO ADRESSE(numero, nomVoie, id, id_localite) SELECT :num, :nomVoie, (SELECT id_typevoie FROM TypeVoie ORDER BY id_typevoie DESC LIMIT 1), (SELECT id_localite FROM localite ORDER BY id_localite DESC LIMIT 1)");
+        $req->bindValue(':num', $numVoie, PDO::PARAM_STR);
+        $req->bindValue(':nomVoie', $nomVoie, PDO::PARAM_STR);
+        $req->execute();
+        $req = $this->bd->prepare("INSERT INTO COMPOSANTE(nom_composante, id_adresse, id_client) SELECT :nom_compo, (SELECT id_adresse FROM adresse ORDER BY id_adresse DESC LIMIT 1), (SELECT id_client FROM CLIENT WHERE nom_client = :nom_client)");
+        $req->bindValue(':nom_client', $nom_client, PDO::PARAM_STR);
+        $req->bindValue(':nom_compo', $nom_compo, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+    
     public function addMission($type, $nom, $date, $nom_compo)
     {
         $req = $this->bd->prepare("INSERT INTO MISSION (type_bdl, nom_mission, date_debut) VALUES(:type, :nom, :date, :id_compo)");
@@ -226,7 +239,7 @@ class Model
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':nom', $nom, PDO::PARAM_STR);
         $req->execute();
-        return $req->fetchall();
+        return (bool) $req->rowCount();
     }
 
     public function setPrenomPersonne($id, $prenom)
@@ -235,7 +248,7 @@ class Model
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':prenom', $prenom, PDO::PARAM_STR);
         $req->execute();
-        return $req->fetchall();
+        return (bool) $req->rowCount();
     }
 
     public function setEmailPersonne($id, $email)
@@ -244,7 +257,7 @@ class Model
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->execute();
-        return $req->fetchall();
+        return (bool) $req->rowCount();
     }
     
     public function setMdpPersonne($id, $mdp)
@@ -253,7 +266,7 @@ class Model
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':mdp', $mdp, PDO::PARAM_STR);
         $req->execute();
-        return $req->fetchall();
+        return (bool) $req->rowCount();
     }
 
     public function setNomClient($id, $nom)
@@ -262,7 +275,7 @@ class Model
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':nom', $nom, PDO::PARAM_STR);
         $req->execute();
-        return $req->fetchall();
+        return (bool) $req->rowCount();
     }
 
     public function setTelClient($id, $tel)
@@ -271,11 +284,62 @@ class Model
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':tel', $tel, PDO::PARAM_STR);
         $req->execute();
-        return $req->fetchall();
+        return (bool) $req->rowCount();
     }
 
-    
+    public function setNomComposante($id, $nom)
+    {
+        $req = $this->bd->prepare("UPDATE PERSONNE SET nom_composante = :nom WHERE id_composante = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':nom', $nom, PDO::PARAM_STR);
+        $req->execute();
+        return (bool) $req->rowCount();
+    }
 
+    public function setNumeroAdresse($id, $num)
+    {
+        $req = $this->bd->prepare("UPDATE ADRESSE SET numero = :num WHERE id_adresse = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':num', $num, PDO::PARAM_STR);
+        $req->execute();
+        return (bool) $req->rowCount();
+    }
+
+    public function setNomVoieAdresse($id, $nom)
+    {
+        $req = $this->bd->prepare("UPDATE ADRESSE SET nomVoie = :nom WHERE id_adresse = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':num', $num, PDO::PARAM_STR);
+        $req->execute();
+        return (bool) $req->rowCount();
+    }
+
+    public function setCpLocalite($id, $cp)
+    {
+        $req = $this->bd->prepare("UPDATE LOCALITE SET cp = :cp WHERE id_adresse = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':cp', $cp, PDO::PARAM_STR);
+        $req->execute();
+        return (bool) $req->rowCount();
+    }
+
+    public function setVilleLocalite($id, $ville)
+    {
+        $req = $this->bd->prepare("UPDATE LOCALITE SET ville = :ville WHERE id_adresse = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':ville', $ville, PDO::PARAM_STR);
+        $req->execute();
+        return (bool) $req->rowCount();
+    }
+
+    public function setLibelleTypevoie($id, $libelle)
+    {
+        $req = $this->bd->prepare("UPDATE TYPEVOIE SET libelle = :libelle WHERE id_adresse = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':libelle', $libelle, PDO::PARAM_STR);
+        $req->execute();
+        return (bool) $req->rowCount();
+    }
 
     /* -------------------------------------------------------------------------
                             Fonction Commercial

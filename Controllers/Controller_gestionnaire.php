@@ -110,6 +110,15 @@ class Controller_gestionnaire extends Controller
             $this->render("liste", $data);
         }
     }
+    
+    public function action_bdl()
+    {
+        if (isset($_GET['idBdl'])) {
+            $bd = Model::getModel();
+            $data = ['bdl' => $bd->getBdlInfos($_GET['idBdl'])];
+            $this->render('bdl', $data);
+        }
+    }
 
     public function action_assigner_prestataire()
     {
@@ -144,7 +153,7 @@ class Controller_gestionnaire extends Controller
         if (isset($_POST['supprimer'])) {
             $bd->removePrestataireForGestionnaire($_POST['supprimer']);
         }
-        $this->render("gestionnarie_prestataires");
+        $this->action_prestataires();
     }
 
     public function action_gestionnaire_supprimer_interlocuteur()
@@ -153,7 +162,7 @@ class Controller_gestionnaire extends Controller
         if (isset($_POST['supprimer'])) {
             $bd->removeInterlocuteurForGestionnaire($_POST['supprimer']);
         }
-        $this->render("gestionnarie_clients");
+        $this->action_prestataires();
     }
 
     public function action_gestionnaire_supprimer_commercial()
@@ -162,7 +171,7 @@ class Controller_gestionnaire extends Controller
         if (isset($_POST['supprimer'])) {
             $bd->removeCommercialForGestionnaire($_POST['supprimer']);
         }
-        $this->render("gestionnarie_commerciaux");
+        $this->action_commerciaux();
     }
 
     /*--------------------------------------------------------------------------------------*/
@@ -244,7 +253,7 @@ class Controller_gestionnaire extends Controller
         if (isset($_POST['composante']) && isset($_POST['client'])) {
             $bd->addInterlocuteurForGestionnaire($_POST['composante'], $_POST['client']);
         }
-        $this->render("gestionnaire_clients");
+        $this->action_interlocuteurs();
     }
 
     public function action_ajout_prestataire_dans_mission()
@@ -253,7 +262,7 @@ class Controller_gestionnaire extends Controller
         if (isset($_POST['mission']) && isset($_POST['email'])) {
             $bd->addPrestataireForGestionnaire($_POST['mission'], $_POST['email']);
         }
-        $this->render("gestionnaire_prestataire");
+        $this->action_prestataires();
     }
 
     public function action_ajout_commercial_dans_composante()
@@ -262,7 +271,7 @@ class Controller_gestionnaire extends Controller
         if (isset($_POST['composante']) && isset($_POST['email'])) {
             $bd->addCommercialForGestionnaire($_POST['composante'], $_POST['email']);
         }
-        $this->render("gestionnaire_commerciaux");
+        $this->action_commerciaux();
     }
 
     public function action_infos_composante(){
