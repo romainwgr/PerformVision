@@ -108,6 +108,15 @@ class Controller_gestionnaire extends Controller
             $this->render("liste", $data);
         }
     }
+    
+    public function action_bdl()
+    {
+        if (isset($_GET['idBdl'])) {
+            $bd = Model::getModel();
+            $data = ['bdl' => $bd->getBdlInfos($_GET['idBdl'])];
+            $this->render('bdl', $data);
+        }
+    }
 
     public function action_assigner_prestataire()
     {
