@@ -151,7 +151,7 @@ class Controller_gestionnaire extends Controller
         if (isset($_POST['supprimer'])) {
             $bd->removePrestataireForGestionnaire($_POST['supprimer']);
         }
-        $this->render("gestionnarie_prestataires");
+        $this->action_prestataires();
     }
 
     public function action_gestionnaire_supprimer_interlocuteur()
@@ -160,7 +160,7 @@ class Controller_gestionnaire extends Controller
         if (isset($_POST['supprimer'])) {
             $bd->removeInterlocuteurForGestionnaire($_POST['supprimer']);
         }
-        $this->render("gestionnarie_clients");
+        $this->action_prestataires();
     }
 
     public function action_gestionnaire_supprimer_commercial()
@@ -169,7 +169,7 @@ class Controller_gestionnaire extends Controller
         if (isset($_POST['supprimer'])) {
             $bd->removeCommercialForGestionnaire($_POST['supprimer']);
         }
-        $this->render("gestionnarie_commerciaux");
+        $this->action_commerciaux();
     }
 
     /*--------------------------------------------------------------------------------------*/
