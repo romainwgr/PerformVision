@@ -164,18 +164,11 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function addClient($client, $tel, $composante, $id_adresse, $email)
+    public function addClient($client, $tel)
     {
         $req = $this->bd->prepare("INSERT INTO client(nom_client, telephone_client) VALUES( :nom_client, :tel)");
         $req->bindValue(':nom_client', $client, PDO::PARAM_STR);
         $req->bindValue(':tel', $tel, PDO::PARAM_STR);
-        $req->execute();
-        $req = $this->bd->prepare("INSERT INTO COMPOSANTE (id_client, nom_composante, id_adresse) SELECT (SELECT id_client FROM client ORDER BY id_client DESC LIMIT 1),:nom_compo, :id_adresse");
-        $req->bindValue(':nom_compo', $composante, PDO::PARAM_STR);
-        $req->bindValue(':id_adresse', $id_adresse, PDO::PARAM_INT);
-        $req->execute();
-        $req = $this->bd->prepare("INSERT INTO estDans(id_personne, id_composante) SELECT (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email'),  (SELECT id_composante FROM composante ORDER BY id_composante DESC LIMIT 1)");
-        $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->execute();
         return (bool)$req->rowCount();
     }
