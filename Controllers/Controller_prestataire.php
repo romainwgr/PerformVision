@@ -20,7 +20,7 @@ class Controller_prestataire extends Controller
         }
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
-            $headerDashboard = ['Missions','Clients','Bon de livraisons'];
+            $headerDashboard = ['Société', 'Composante', 'Nom Mission', 'Statut', 'Bon de livraison'];
             $data = ['header' => $headerDashboard, 'dashboard' => $bd->getDashboardPrestataire($_SESSION['id'])];
             return $this->render('prestataire_missions', $data);
         } else {
