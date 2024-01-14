@@ -296,12 +296,14 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function addMission($type, $nom, $date, $nom_compo)
+    public function addMission($type, $nom, $date, $nom_compo, $nom_client)
     {
-        $req = $this->bd->prepare("INSERT INTO MISSION (type_bdl, nom_mission, date_debut) VALUES(:type, :nom, :date, :id_compo)");
+        $req = $this->bd->prepare("INSERT INTO MISSION (type_bdl, nom_mission, date_debut, id_composante) SELECT :type, :nom, :date, (SELECT nom_composante FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_client = :nom_client and :nom_composante)");
         $req->bindValue(':nom', $nom, PDO::PARAM_STR);
         $req->bindValue(':type', $type, PDO::PARAM_STR);
         $req->bindValue(':date', $date, PDO::PARAM_STR);
+        $req->bindValue(':nom_compo', $nom_compo, PDO::PARAM_STR);
+        $req->bindValue(':nom_client', $nom_client, PDO::PARAM_STR);
         $req->execute();
         return (bool)$req->rowCount();
     }
@@ -319,11 +321,12 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function assignerCommercial($email, $composante)
+    public function assignerCommercial($email, $composante, $client)
     {
-        $req = $this->bd->prepare("INSERT INTO estDans (id_personne, id_composante) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT c.id_composante FROM COMPOSANTE WHERE nom_composante = :nom_composante')");
+        $req = $this->bd->prepare("INSERT INTO estDans (id_personne, id_composante) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT c.id_composante FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_composante = :composante AND nom_client = :client')");
         $req->bindValue(':email', $email, PDO::PARAM_STR);
-        $req->bindValue(':nom_mission', $composante, PDO::PARAM_STR);
+        $req->bindValue(':composante', $composante, PDO::PARAM_STR);
+        $req->bindValue(':client', $client, PDO::PARAM_STR);
         $req->execute();
         return (bool)$req->rowCount();
     }
@@ -656,5 +659,13 @@ class Model
         }
 
         return $roles[0];
+
+    public function checkPersonneExiste($email)
+    {
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM PERSONNE WHERE email = :email) AS personne_existe;');
+        $req->bindValue(':email', $email);
+        $req->execute(); 
+        return $req->fetchall()
+
     }
 }
