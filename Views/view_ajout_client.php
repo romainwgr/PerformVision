@@ -12,6 +12,15 @@ require 'view_header.php';
                 <h2>Informations composante</h2>
                 <input type="text" placeholder="Nom de la mission" name='mission' class="input-case">
                 <input type="text" placeholder="Composante" name='composante' id='cpt' class="input-case">
+                <div class="form-names">
+                    <select name="type-bdl">
+                        <option selected>Type de bon de livraison </option>
+                        <option value="journee">Journée </option>
+                        <option value="demi-journee">Demi-journée </option>
+                        <option value="heure">Heure </option>
+                    </select>
+                    <input type="date" placeholder="Date de début" name="date-mission" class="input-case">
+                </div>
                 <h4>Adresse</h4>
                 <div class="form-address">
                     <input type="number" placeholder="Numéro de voie" name="numero-voie"
@@ -32,8 +41,8 @@ require 'view_header.php';
                        class="input-case">
                 <h2>Informations commercial</h2>
                 <div class="form-names">
-                    <input type="text" placeholder="Prénom" name="prenom-name" class="input-case">
-                    <input type="text" placeholder="Nom" name="nom" class="input-case">
+                    <input type="text" placeholder="Prénom" name="prenom-commercial" class="input-case">
+                    <input type="text" placeholder="Nom" name="nom-commercial" class="input-case">
                 </div>
                 <input type="email" placeholder="Adresse email" name='email-commercial' id='mail-1' class="input-case">
                 <div class="buttons" id="create">

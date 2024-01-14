@@ -10,6 +10,15 @@ require 'view_header.php';
                 <input type="text" placeholder="Nom de la mission" name='mission' class="input-case">
                 <input type="text" placeholder="Société" id='sté' name='client' class="input-case">
                 <input type="text" placeholder="Composante" name='composante' id='cpt' class="input-case">
+                <div class="form-names">
+                    <select name="type-bdl">
+                        <option selected>Type de bon de livraison </option>
+                        <option value="journee">Journée </option>
+                        <option value="demi-journee">Demi-journée </option>
+                        <option value="heure">Heure </option>
+                    </select>
+                    <input type="date" placeholder="Date de début" name="date-mission" class="input-case">
+                </div>
                 <div class="buttons" id="create">
                     <button type="submit">Créer</button>
                 </div>

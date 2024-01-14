@@ -93,14 +93,6 @@ class Model
         return $req->fetchall();
     }
 
-    public function getInfosPersonne($id)
-    {
-        $req = $this->bd->prepare('SELECT id_personne, nom, prenom, email FROM PERSONNE WHERE id_personne = :id');
-        $req->bindValue(':id', $id, PDO::PARAM_INT);
-        $req->execute();
-        return $req->fetchall();
-    }
-
     /* -------------------------------------------------------------------------
                             Fonction Composante
         ------------------------------------------------------------------------*/

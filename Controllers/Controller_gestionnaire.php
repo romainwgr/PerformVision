@@ -116,17 +116,9 @@ class Controller_gestionnaire extends Controller
 
     public function action_bdl()/*utilisé sur la page missions pour montré les bdl de cette mission*/
     {
-        if (isset($_POST['mission'],$_POST['prestataire'])){
-            $data=["bdl"=>$bd->getBdlPrestaForGestionnaire($_POST['prestataire'],$_POST['mission'])];
-            $this->render("bdl",$data);
-        }
-    }
-
-    public function action_bdl()/*utilisé sur la page prestataires pour montré les bdl de ce prestataire*/
-    {
-        if ($_POST['prestataire'])){
-            $data=["bdl"=>$bd->getBdlPresta($_POST['prestataire'])];
-            $this->render("bdl",$data);
+        if (isset($_POST['mission'], $_POST['prestataire'])) {
+            $data = ["bdl" => $bd->getBdlPrestaForGestionnaire($_POST['prestataire'], $_POST['mission'])];
+            $this->render("bdl", $data);
         }
     }
 
@@ -149,15 +141,6 @@ class Controller_gestionnaire extends Controller
             $bd->assignerCommercial($_POST['email'], $_POST['client']);
         }
         $this->action_dashboard();
-    }
-
-    public function action_assigner_commecial_mission()
-    {
-        $bd = Model::getModel();
-        if (isset($_POST['email']) && isset($_POST['mission'])) {
-            $bd->assignerCommercial($_POST['email'], $_POST['mission']);
-        }
-        $this->action_interlocuteurs();
     }
 
     public function action_gestionnaire_supprimer_prestataire()
@@ -260,11 +243,76 @@ class Controller_gestionnaire extends Controller
         }
     }
 
+    public function action_ajout_client()
+    {
+        $bd = Model::getModel();
+        if (isset($_POST['nom-client']) &&
+            isset($_POST['tel']) &&
+            isset($_POST['mission']) &&
+            isset($_POST['type-bdl']) &&
+            isset($_POST['date-mission']) &&
+            isset($_POST['composante']) &&
+            isset($_POST['numero-voie']) &&
+            isset($_POST['type-voie']) &&
+            isset($_POST['nom-voie']) &&
+            isset($_POST['cp']) &&
+            isset($_POST['ville']) &&
+            isset($_POST['prenom-interlocuteur']) &&
+            isset($_POST['nom-interlocuteur']) &&
+            isset($_POST['email-interlocuteur']) &&
+            isset($_POST['prenom-commercial']) &&
+            isset($_POST['nom-commercial']) &&
+            isset($_POST['email-commercial'])) {
+
+            $bd->addClient($_POST['nom-client'], isset($_POST['tel']));
+            $this->action_ajout_composante();
+            $this->action_ajout_mission();
+            $this->action_ajout_interlocuteur();
+            $this->action_ajout_interlocuteur_dans_composante();
+            $this->action_ajout_commercial_dans_composante();
+        }
+    }
+
+    public function action_ajout_personne($nom, $prenom, $email)
+    {
+        $bd = Model::getModel();
+        if (!$bd->checkPersonneExiste($email)) {
+            $bd->createPersonne($nom, $prenom, $email, genererMdp());
+        }
+    }
+
+    public function action_ajout_interlocuteur()
+    {
+        $bd = Model::getModel();
+        $this->action_ajout_personne($_POST['nom-interlocuteur'], $_POST['prenom-interlocuteur'], $_POST['email-interlocuteur']);
+        $bd->addInterlocuteur($_POST['email-interlocuteur']);
+    }
+
+    public function action_ajout_composante(){
+        $bd = Model::getModel();
+        $bd->addComposante($_POST['type-voie'],
+            $_POST['ville'],
+            $_POST['cp'],
+            $_POST['numero-voie'],
+            $_POST['nom-voie'],
+            $_POST['nom-client'],
+            $_POST['composante']);
+    }
+
+    public function action_ajout_mission(){
+        $bd = Model::getModel();
+        $bd->addMission($_POST['type-bdl'],
+            $_POST['mission'],
+            $_POST['date-mission'],
+            $_POST['composante'],
+            $_POST['nom-client']);
+    }
+
     public function action_ajout_interlocuteur_dans_composante()
     {
         $bd = Model::getModel();
-        if (isset($_POST['composante']) && isset($_POST['client'])) {
-            $bd->addInterlocuteurForGestionnaire($_POST['composante'], $_POST['client']);
+        if (isset($_POST['composante']) && isset($_POST['nom-client']) && $_POST['email-interlocuteur']) {
+            $bd->assignerInterlocuteurComposante($_POST['composante'], $_POST['nom-client'], $_POST['email-interlocuteur']);
         }
         $this->action_interlocuteurs();
     }
@@ -281,8 +329,8 @@ class Controller_gestionnaire extends Controller
     public function action_ajout_commercial_dans_composante()
     {
         $bd = Model::getModel();
-        if (isset($_POST['composante']) && isset($_POST['email'])) {
-            $bd->addCommercialForGestionnaire($_POST['composante'], $_POST['email']);
+        if (isset($_POST['composante']) && isset($_POST['email-commercial']) && isset($_POST['nom-client'])) {
+            $bd->assignerCommercial($_POST['email-commercial'], $_POST['composante'], $_POST['nom-client']);
         }
         $this->action_commerciaux();
     }
@@ -298,7 +346,7 @@ class Controller_gestionnaire extends Controller
             $prestataires = $bd->getPrestatairesComposante($_GET['id']);
             $commerciaux = $bd->getCommerciauxComposante($_GET['id']);
             $interlocuteurs = $bd->getInterlocuteursComposante($_GET['id']);
-            $bdl  = $bd->getBdlComposante($_GET['id']);
+            $bdl = $bd->getBdlComposante($_GET['id']);
             $data = ['infos' => $infos,
                 'prestataires' => $prestataires,
                 'commerciaux' => $commerciaux,

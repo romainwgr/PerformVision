@@ -102,18 +102,26 @@ form{
     gap: var(--spacer-5);
 }
 
-input {
+input{
     width: 100%;
     border: none;
     border-radius: var(--border-2);
     outline: none;
     transition: .4s;
     height: var(--height-input);
-    font-size: 24px;
     text-indent: var(--spacer-4);
     background-color: #FFF;
-    font-size: var(--font-size--normal);
     box-shadow: var(--shadow-regular);
+    font-size: var(--font-size--little);
+    color: #757575 ;
+}
+
+select{
+    border: none;
+    border-radius: var(--border-2);
+    color: #757575 ;
+    box-shadow: var(--shadow-regular);
+    font-size: var(--font-size--little);
 }
 
 button{
