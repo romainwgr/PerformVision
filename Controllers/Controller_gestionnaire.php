@@ -42,14 +42,16 @@ class Controller_gestionnaire extends Controller
             ['link' => '?controller=gestionnaire&action=commerciaux', 'name' => 'Commerciaux']];
     }
 
-    public function action_infos(){
+    public function action_infos()
+    {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
         $this->render('infos', ['menu' => $this->action_get_navbar()]);
     }
 
-    public function action_maj_infos(){
+    public function action_maj_infos()
+    {
         action_maj_infos();
         $this->action_infos();
     }
@@ -66,7 +68,7 @@ class Controller_gestionnaire extends Controller
             $bd = Model::getModel();
             $buttonLink = '?controller=gestionnaire&action=ajout_composante_form';
             $title = 'Composantes';
-            $cardLink  = '?controller=gestionnaire&action=infos_composante';
+            $cardLink = '?controller=gestionnaire&action=infos_composante';
             $data = ['title' => $title, 'person' => $bd->getAllComposantes(), 'buttonLink' => $buttonLink, 'cardLink' => $cardLink, 'menu' => $this->action_get_navbar()];
             $this->render("liste", $data);
         }
@@ -110,7 +112,7 @@ class Controller_gestionnaire extends Controller
             $this->render("liste", $data);
         }
     }
-    
+
     public function action_bdl()
     {
         if (isset($_GET['idBdl'])) {
@@ -274,10 +276,21 @@ class Controller_gestionnaire extends Controller
         $this->action_commerciaux();
     }
 
-    public function action_infos_composante(){
-        if(isset($_GET['id'])){
+    public function action_infos_composante()
+    {
+        if (isset($_GET['id'])) {
             $bd = Model::getModel();
-            $data = ['infos' => $bd->getInfosComposante($_GET['id']), 'menu' =>$this->action_get_navbar()];
+            $infos = $bd->getInfosComposante($_GET['id']);
+            $prestataires = $bd->getPrestatairesComposante($_GET['id']);
+            $commerciaux = $bd->getCommerciauxComposante($_GET['id']);
+            $interlocuteurs = $bd->getInterlocuteursComposante($_GET['id']);
+            $bdl  = $bd->getBdlComposante($_GET['id']);
+            $data = ['infos' => $infos,
+                'prestataires' => $prestataires,
+                'commerciaux' => $commerciaux,
+                'interlocuteurs' => $interlocuteurs,
+                'bdl' => $bdl,
+                'menu' => $this->action_get_navbar()];
             $this->render('infos_composante', $data);
         }
     }

@@ -35,39 +35,39 @@ require 'view_header.php';
             <div class="infos__interlocuteurs">
                 <h2>Interlocuteurs</h2>
                 <a href=""><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
-                <?php for ($i = 0; $i < 3; $i++): ?>
+                <?php foreach($interlocuteurs as $i): ?>
                     <div class="block">
-                        <h3>Martin Dupont</h3>
+                        <h3><?= $i['nom'] . ' ' . $i['prenom'] ?></h3>
                     </div>
-                <?php endfor; ?>
+                <?php endforeach; ?>
             </div>
             <div class="infos__commerciaux">
                 <h2>Commerciaux</h2>
                 <a href=""><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
-                <?php for ($i = 0; $i < 3; $i++): ?>
+                <?php foreach($commerciaux as $c): ?>
                     <div class="block">
-                        <h3>Martin Dupont</h3>
+                        <h3><?= $c['nom'] . ' ' . $c['prenom'] ?></h3>
                     </div>
-                <?php endfor; ?>
+                <?php endforeach; ?>
             </div>
             <div class="infos__prestataires">
                 <h2>Prestataires</h2>
                 <a href=""><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
-                <?php for ($i = 0; $i < 3; $i++): ?>
+                <?php foreach($prestataires as $p): ?>
                     <div class="block">
-                        <h3>Martin Dupont</h3>
+                        <h3><?= $p['nom'] . ' ' . $p['prenom'] ?></h3>
                     </div>
-                <?php endfor; ?>
+                <?php endforeach; ?>
             </div>
             <div class="infos__bdl">
                 <h2>Bons de livraison</h2>
                 <a> &nbsp;</a>
-                <?php for ($i = 0; $i < 3; $i++): ?>
+                <?php foreach($bdl as $b): ?>
                     <div class="block">
-                        <h3>Martin Dupont</h3>
-                        <p>Janvier 2024</p>
+                        <h3><?= $b['nom'] . ' ' . $b['prenom'] ?></h3>
+                        <p><?= $b['mois'] ?></p>
                     </div>
-                <?php endfor; ?>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>

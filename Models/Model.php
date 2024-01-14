@@ -85,6 +85,61 @@ class Model
         return $req->fetchall();
     }
 
+    /* -------------------------------------------------------------------------
+                            Fonction Composante
+        ------------------------------------------------------------------------*/
+
+    public function getPrestatairesComposante($id)
+    {
+        $req = $this->bd->prepare('SELECT DISTINCT id_personne, nom, prenom
+       FROM PERSONNE JOIN PRESTATAIRE USING(id_personne) 
+           JOIN TRAVAILLEAVEC USING(id_personne) 
+           JOIN MISSION USING(id_mission)
+       WHERE id_composante = :id');
+
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall();
+    }
+
+    public function getCommerciauxComposante($id)
+    {
+        $req = $this->bd->prepare('SELECT DISTINCT id_personne, nom, prenom
+       FROM PERSONNE JOIN COMMERCIAL USING(id_personne) 
+           JOIN ESTDANS USING(id_personne) 
+       WHERE id_composante = :id');
+
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall();
+    }
+
+    public function getInterlocuteursComposante($id)
+    {
+        $req = $this->bd->prepare('SELECT DISTINCT id_personne, nom, prenom
+       FROM PERSONNE JOIN INTERLOCUTEUR USING(id_personne) 
+           JOIN DIRIGE USING(id_personne) 
+       WHERE id_composante = :id');
+
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall();
+    }
+
+    public function getBdlComposante($id)
+    {
+        $req = $this->bd->prepare('SELECT DISTINCT personne.id_personne, id_bdl, nom, prenom, mois
+       FROM PERSONNE JOIN PRESTATAIRE USING(id_personne) 
+           JOIN TRAVAILLEAVEC USING(id_personne)
+           JOIN MISSION USING(id_mission) 
+           JOIN BON_DE_LIVRAISON USING(id_mission)
+       WHERE id_composante = :id');
+
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall();
+    }
+
     public function getAllComposantes()
     {
         $req = $this->bd->prepare('SELECT id_composante, nom_composante, nom_client FROM CLIENT JOIN COMPOSANTE using(id_client)');
