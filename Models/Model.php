@@ -59,37 +59,46 @@ class Model
 
     public function getAllInterlocuteurs()
     {
-        $req = $this->bd->prepare('SELECT nom, prenom, nom_client FROM dirige JOIN composante USING(id_composante) JOIN client USING(id_client) JOIN personne USING(id_personne);');
+        $req = $this->bd->prepare('SELECT id_personne, nom, prenom, nom_client FROM dirige JOIN composante USING(id_composante) JOIN client USING(id_client) JOIN personne USING(id_personne);');
         $req->execute();
         return $req->fetchall();
     }
 
     public function getAllCommerciaux()
     {
-        $req = $this->bd->prepare('SELECT nom, prenom, nom_composante FROM estdans JOIN composante USING(id_composante) JOIN personne USING(id_personne);');
+        $req = $this->bd->prepare('SELECT id_personne, nom, prenom, nom_composante FROM estdans JOIN composante USING(id_composante) JOIN personne USING(id_personne);');
         $req->execute();
         return $req->fetchall();
     }
 
     public function getAllPrestataires()
     {
-        $req = $this->bd->prepare('SELECT nom, prenom, interne FROM PERSONNE p JOIN PRESTATAIRE pr ON p.id_personne =  pr.id_personne;');
+        $req = $this->bd->prepare('SELECT id_personne, nom, prenom, interne FROM PERSONNE p JOIN PRESTATAIRE pr ON p.id_personne =  pr.id_personne;');
         $req->execute();
         return $req->fetchall();
     }
 
     public function getAllClients()
     {
-        $req = $this->bd->prepare('SELECT nom_client, telephone_client FROM CLIENT;');
+        $req = $this->bd->prepare('SELECT id_client, nom_client, telephone_client FROM CLIENT;');
         $req->execute();
         return $req->fetchall();
     }
 
     public function getAllComposantes(){
-         $req = $this->bd->prepare('SELECT nom_composante, nom_client FROM CLIENT JOIN COMPOSANTE using(id_client)');
+         $req = $this->bd->prepare('SELECT id_composante, nom_composante, nom_client FROM CLIENT JOIN COMPOSANTE using(id_client)');
         $req->execute();
         return $req->fetchall();
     }
+
+    public function getInfosComposante($id){
+         $req = $this->bd->prepare('SELECT id_composante, nom_composante, nom_client FROM CLIENT JOIN COMPOSANTE using(id_client) WHERE id_composante = :id');
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall();
+    }
+
+
 
     public function removePrestataire($id_pr)
     {
@@ -235,7 +244,7 @@ class Model
 
     public function setNomPersonne($id, $nom)
     {
-        $req = $this->bd->prepare("UPDATE PERSONNE SET nom = :nom WHERE id_personne = :id");
+        $req = $this->bd->prepare("UPDATE SET PERSONNE nom = :nom WHERE id_personne = :id");
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':nom', $nom, PDO::PARAM_STR);
         $req->execute();
@@ -244,7 +253,7 @@ class Model
 
     public function setPrenomPersonne($id, $prenom)
     {
-        $req = $this->bd->prepare("UPDATE PERSONNE SET prenom = :prenom WHERE id_personne = :id");
+        $req = $this->bd->prepare("UPDATE SET PERSONNE prenom = :prenom WHERE id_personne = :id");
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':prenom', $prenom, PDO::PARAM_STR);
         $req->execute();
@@ -253,7 +262,7 @@ class Model
 
     public function setEmailPersonne($id, $email)
     {
-        $req = $this->bd->prepare("UPDATE PERSONNE SET email = :email WHERE id_personne = :id");
+        $req = $this->bd->prepare("UPDATE SET PERSONNE email = :email WHERE id_personne = :id");
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->execute();
@@ -262,7 +271,7 @@ class Model
     
     public function setMdpPersonne($id, $mdp)
     {
-        $req = $this->bd->prepare("UPDATE PERSONNE SET mdp = :mdp WHERE id_personne = :id");
+        $req = $this->bd->prepare("UPDATE SET PERSONNE mdp = :mdp WHERE id_personne = :id");
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':mdp', $mdp, PDO::PARAM_STR);
         $req->execute();
