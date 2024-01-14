@@ -32,16 +32,16 @@ function action_maj_infos()
         session_start();
     }
     $bd = Model::getModel();
-    if(isset($_POST['nom'])){
+    if(isset($_POST['nom']) && !preg_match('/^ *$/', $_POST['nom'])){
         $bd->setNomPersonne($_SESSION['id'], $_POST['nom']);
     }
-    if(isset($_POST['prenom'])){
+    if(isset($_POST['prenom']) && !preg_match('/^ *$/', $_POST['prenom'])){
         $bd->setPrenomPersonne($_SESSION['id'], $_POST['prenom']);
     }
-    if(isset($_POST['email'])){
+    if(isset($_POST['email']) && !preg_match('/^ *$/', $_POST['email'])){
         $bd->setEmailPersonne($_SESSION['id'], $_POST['email']);
     }
-    if(isset($_POST['mdp'])){
+    if(isset($_POST['mdp']) && !preg_match('/^ *$/', $_POST['mdp'])){
         $bd->setMdpPersonne($_SESSION['id'], $_POST['mdp']);
     }
 }

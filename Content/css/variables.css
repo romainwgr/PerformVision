@@ -24,6 +24,7 @@
     --spacer-5: 1.5rem;
     --spacer-6: 2rem;
     --spacer-7: 3rem;
+    --spacer-8: 5rem;
     --spacer-10: 10rem;
 
     /* Border */
@@ -50,4 +51,5 @@
 
     /* Shadow */
     --shadow-regular: 0px 3px 5px 0px rgba(0,0,0,0.25);
+    --shadow-text: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }

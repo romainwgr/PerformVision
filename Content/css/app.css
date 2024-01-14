@@ -52,7 +52,16 @@ h1 {
     font-size: var(--font-size--huge);
     margin-bottom: var(--spacer-7);
     font-family: 'Montserrat',sans-serif;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-shadow: var(--shadow-text);
+}
+
+h4 {
+    color: white;
+}
+
+a{
+    text-decoration: none;
+    color: black;
 }
 
 table {

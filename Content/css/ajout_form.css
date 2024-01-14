@@ -44,9 +44,25 @@ form h2{
     color: white;
 }
 
-.form-names{
+.form-names, .form-address, .form-infos-composante{
     display: flex;
     gap: var(--spacer-3);
+}
+
+.form-num-voie, .form-type-voie{
+    flex: 2;
+}
+
+.form-nom-voie{
+    flex: 6;
+}
+
+.form-cp{
+    flex: 2;
+}
+
+.form-ville{
+    flex: 8;
 }
 
 /* Media query pour les écrans de taille moyenne (iPhone 12/13 en mode portrait) */

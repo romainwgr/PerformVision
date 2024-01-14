@@ -222,7 +222,7 @@ class Model
 
     public function setNomPersonne($id, $nom)
     {
-        $req = $this->bd->prepare("UPDATE SET PERSONNE nom = :nom WHERE id_personne = :id");
+        $req = $this->bd->prepare("UPDATE PERSONNE SET nom = :nom WHERE id_personne = :id");
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':nom', $nom, PDO::PARAM_STR);
         $req->execute();
@@ -231,7 +231,7 @@ class Model
 
     public function setPrenomPersonne($id, $prenom)
     {
-        $req = $this->bd->prepare("UPDATE SET PERSONNE prenom = :prenom WHERE id_personne = :id");
+        $req = $this->bd->prepare("UPDATE PERSONNE SET prenom = :prenom WHERE id_personne = :id");
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':prenom', $prenom, PDO::PARAM_STR);
         $req->execute();
@@ -240,7 +240,7 @@ class Model
 
     public function setEmailPersonne($id, $email)
     {
-        $req = $this->bd->prepare("UPDATE SET PERSONNE email = :email WHERE id_personne = :id");
+        $req = $this->bd->prepare("UPDATE PERSONNE SET email = :email WHERE id_personne = :id");
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->execute();
@@ -249,7 +249,7 @@ class Model
     
     public function setMdpPersonne($id, $mdp)
     {
-        $req = $this->bd->prepare("UPDATE SET PERSONNE mdp = :mdp WHERE id_personne = :id");
+        $req = $this->bd->prepare("UPDATE PERSONNE SET mdp = :mdp WHERE id_personne = :id");
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':mdp', $mdp, PDO::PARAM_STR);
         $req->execute();

@@ -13,7 +13,7 @@ require 'view_header.php';
                 </div>
                 <input type="email" placeholder="<?= $_SESSION['email'] ?>" name='email' id='mail-1' class="input-case">
                 <h2>Mot de passe</h2>
-                <input type="text" placeholder='Changer de mot de passe' name='client' id='sté' class="input-case">
+                <input type="text" placeholder='Changer de mot de passe' name='mdp' id='sté' class="input-case">
                 <div class="buttons" id="create">
                     <button type="submit">Enregistrer</button>
                 </div>

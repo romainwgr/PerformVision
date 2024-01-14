@@ -15,7 +15,7 @@ require 'view_header.php';
                 <h2>Informations professionnelles</h2>
                 <input type="text" placeholder="Société" name='client' id='sté' class="input-case">
                 <div class="buttons" id="create">
-                    <button type="submit">Créer client</button>
+                    <button type="submit">Créer</button>
                 </div>
             </form>
         </div>
