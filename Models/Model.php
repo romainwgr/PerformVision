@@ -236,7 +236,7 @@ class Model
     public function assignerInterlocuteurComposante($composante, $client, $email)
     {
         $req = $this->bd->prepare("INSERT INTO dirige (id_personne, id_composante) SELECT  (SELECT id_personne FROM PERSONNE WHERE email=:email), (SELECT c.id_composante FROM COMPOSANTE c JOIN CLIENT cl ON c.id_client = cl.id_client WHERE c.nom_composante = ':nom_compo'  AND cl.nom_client = ':nom_client')");
-        $req->bindValue(':nom_compo', $composante, PDO::PARAM_ST);
+        $req->bindValue(':nom_compo', $composante, PDO::PARAM_STR);
         $req->bindValue(':nom_client', $client, PDO::PARAM_STR);
         $req->bindValue(':email', $client, PDO::PARAM_STR);
         $req->execute();
@@ -659,13 +659,13 @@ class Model
         }
 
         return $roles[0];
+    }
 
     public function checkPersonneExiste($email)
     {
         $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM PERSONNE WHERE email = :email) AS personne_existe;');
         $req->bindValue(':email', $email);
         $req->execute(); 
-        return $req->fetchall()
-
+        return $req->fetchall();
     }
 }
