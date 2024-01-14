@@ -52,35 +52,35 @@ class Model
 
     public function getDashboardGestionnaire()
     {
-        $req = $this->bd->prepare('SELECT nom_client, nom_composante, nom_mission, nom, prenom FROM client JOIN composante USING(id_client) JOIN mission USING(id_composante) JOIN travailleavec ta USING(id_mission) JOIN PERSONNE p ON ta.id_personne = p.id_personne');
+        $req = $this->bd->prepare('SELECT nom_client AS id, nom_composante, nom_mission, nom, prenom FROM client JOIN composante USING(id_client) JOIN mission USING(id_composante) JOIN travailleavec ta USING(id_mission) JOIN PERSONNE p ON ta.id_personne = p.id_personne');
         $req->execute();
         return $req->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getAllInterlocuteurs()
     {
-        $req = $this->bd->prepare('SELECT id_personne, nom, prenom, nom_client FROM dirige JOIN composante USING(id_composante) JOIN client USING(id_client) JOIN personne USING(id_personne);');
+        $req = $this->bd->prepare('SELECT id_personne AS id, nom, prenom, nom_client FROM dirige JOIN composante USING(id_composante) JOIN client USING(id_client) JOIN personne USING(id_personne);');
         $req->execute();
         return $req->fetchall();
     }
 
     public function getAllCommerciaux()
     {
-        $req = $this->bd->prepare('SELECT id_personne, nom, prenom, nom_composante FROM estdans JOIN composante USING(id_composante) JOIN personne USING(id_personne);');
+        $req = $this->bd->prepare('SELECT id_personne AS id, nom, prenom, nom_composante FROM estdans JOIN composante USING(id_composante) JOIN personne USING(id_personne);');
         $req->execute();
         return $req->fetchall();
     }
 
     public function getAllPrestataires()
     {
-        $req = $this->bd->prepare('SELECT id_personne, nom, prenom, interne FROM PERSONNE p JOIN PRESTATAIRE pr ON p.id_personne =  pr.id_personne;');
+        $req = $this->bd->prepare('SELECT id_personne AS id, nom, prenom, interne FROM PERSONNE p JOIN PRESTATAIRE pr ON p.id_personne =  pr.id_personne;');
         $req->execute();
         return $req->fetchall();
     }
 
     public function getAllClients()
     {
-        $req = $this->bd->prepare('SELECT id_client, nom_client, telephone_client FROM CLIENT;');
+        $req = $this->bd->prepare('SELECT id_client AS id, nom_client, telephone_client FROM CLIENT;');
         $req->execute();
         return $req->fetchall();
     }
@@ -91,7 +91,7 @@ class Model
 
     public function getPrestatairesComposante($id)
     {
-        $req = $this->bd->prepare('SELECT DISTINCT id_personne, nom, prenom
+        $req = $this->bd->prepare('SELECT DISTINCT id_personne AS id, nom, prenom
        FROM PERSONNE JOIN PRESTATAIRE USING(id_personne) 
            JOIN TRAVAILLEAVEC USING(id_personne) 
            JOIN MISSION USING(id_mission)
@@ -104,7 +104,7 @@ class Model
 
     public function getCommerciauxComposante($id)
     {
-        $req = $this->bd->prepare('SELECT DISTINCT id_personne, nom, prenom
+        $req = $this->bd->prepare('SELECT DISTINCT id_personne AS id, nom, prenom
        FROM PERSONNE JOIN COMMERCIAL USING(id_personne) 
            JOIN ESTDANS USING(id_personne) 
        WHERE id_composante = :id');
@@ -116,7 +116,7 @@ class Model
 
     public function getInterlocuteursComposante($id)
     {
-        $req = $this->bd->prepare('SELECT DISTINCT id_personne, nom, prenom
+        $req = $this->bd->prepare('SELECT DISTINCT id_personne AS id, nom, prenom
        FROM PERSONNE JOIN INTERLOCUTEUR USING(id_personne) 
            JOIN DIRIGE USING(id_personne) 
        WHERE id_composante = :id');
@@ -126,9 +126,20 @@ class Model
         return $req->fetchall();
     }
 
+    public function getInterlocuteursSociete($id)
+    {
+        $req = $this->bd->prepare('SELECT DISTINCT id_personne AS id, nom, prenom
+       FROM PERSONNE JOIN INTERLOCUTEUR USING(id_personne) 
+           JOIN DIRIGE USING(id_personne) JOIN COMPOSANTE USING(id_composante) JOIN CLIENT using(id_client) WHERE id_client = :id');
+
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall();
+    }
+
     public function getBdlComposante($id)
     {
-        $req = $this->bd->prepare('SELECT DISTINCT personne.id_personne, id_bdl, nom, prenom, mois
+        $req = $this->bd->prepare('SELECT DISTINCT personne.id_personne AS id, id_bdl, nom, prenom, mois
        FROM PERSONNE JOIN PRESTATAIRE USING(id_personne) 
            JOIN TRAVAILLEAVEC USING(id_personne)
            JOIN MISSION USING(id_mission) 
@@ -142,7 +153,7 @@ class Model
 
     public function getAllComposantes()
     {
-        $req = $this->bd->prepare('SELECT id_composante, nom_composante, nom_client FROM CLIENT JOIN COMPOSANTE using(id_client)');
+        $req = $this->bd->prepare('SELECT id_composante AS id, nom_composante, nom_client FROM CLIENT JOIN COMPOSANTE using(id_client)');
         $req->execute();
         return $req->fetchall();
     }
@@ -156,7 +167,7 @@ class Model
         return $req->fetchall()[0];
     }
 
-    public function getInfosClient($id)
+    public function getInfosSociete($id)
     {
         $req = $this->bd->prepare('SELECT id_client, nom_client, telephone_client FROM CLIENT WHERE id_client = :id');
         $req->bindValue(':id', $id, PDO::PARAM_INT);
@@ -166,7 +177,7 @@ class Model
 
     public function getComposantesSociete($id)
     {
-        $req = $this->bd->prepare('SELECT id_composante, nom_composante FROM COMPOSANTE JOIN CLIENT using(id_client) WHERE id_client = :id');
+        $req = $this->bd->prepare('SELECT id_composante AS id, nom_composante FROM COMPOSANTE JOIN CLIENT using(id_client) WHERE id_client = :id');
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->execute();
         return $req->fetchall();
