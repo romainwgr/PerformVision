@@ -50,11 +50,6 @@
     clear: both;
 }
 
-
-.background-blur > *:not(.popup-roles) {
-    filter: blur(1px);
-}
-
 .input-login {
     width: 100%;
 }
@@ -126,6 +121,78 @@ h3 {
     justify-content: space-around;
     align-items: center;
     z-index: 1;
+}
+
+.form-select {
+    width: 300px;
+    height: var(--height-button);
+    background-color: #D9D9D9;
+    background: center/contain url('fond-select.PNG');
+    border: 0px;
+    border-radius: 10px;
+    appearance: none;
+    padding-left: 2%;
+    font-family: 'Montserrat', sans-serif;
+    color: #2c2c2c;
+}
+
+.img-popup {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.img-popup>img {
+    height: 15rem;
+    width: 15rem;
+}
+.popup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35rem;
+    margin-top: 10%;
+    min-height: 80vh;
+}
+.container-popup {
+    border-radius: 10px;
+    width: 50rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    flex-direction: column;
+    position: relative;
+}
+.form-popup {
+    background-color: white;
+    border-radius: 10px;
+    width: 100%;
+    height: 30rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.popup-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 70%;
+    color: black;
+    text-shadow: none;
+    font-family: 'Montserrat', serif;
+    margin-top: 5%;
+}
+.background-blur {
+    display: inline;
+    backdrop-filter: blur(10px);
+    position: absolute;
 }
 
 

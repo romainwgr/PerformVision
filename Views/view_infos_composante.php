@@ -3,7 +3,7 @@ require 'view_begin.php';
 require 'view_header.php';
 ?>
     <div class="composante-container">
-        <form action="?controller=gestionnaire&action=" method="post">
+        <form action="?controller=<?= $_SESSION['role'] ?>&action=" method="post">
             <div class="infos-composante">
                 <h2>Informations composante</h2>
                 <div class="form-infos-composante">
@@ -32,34 +32,34 @@ require 'view_header.php';
         </form>
 
         <div class="infos-container">
-            <div class="infos__interlocuteurs">
+            <div class="infos__colonne">
                 <h2>Interlocuteurs</h2>
-                <a href=""><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
+                <a href="?controller=gestionnaire&action=ajout_interlocuteur_form"><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
                 <?php foreach($interlocuteurs as $i): ?>
                     <div class="block">
                         <h3><?= $i['nom'] . ' ' . $i['prenom'] ?></h3>
                     </div>
                 <?php endforeach; ?>
             </div>
-            <div class="infos__commerciaux">
+            <div class="infos__colonne">
                 <h2>Commerciaux</h2>
-                <a href=""><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
+                <a href="?controller=gestionnaire&action=ajout_commercial_form"><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
                 <?php foreach($commerciaux as $c): ?>
                     <div class="block">
                         <h3><?= $c['nom'] . ' ' . $c['prenom'] ?></h3>
                     </div>
                 <?php endforeach; ?>
             </div>
-            <div class="infos__prestataires">
+            <div class="infos__colonne">
                 <h2>Prestataires</h2>
-                <a href=""><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
+                <a href="?controller=gestionnaire&action=ajout_prestataire_form"><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
                 <?php foreach($prestataires as $p): ?>
                     <div class="block">
                         <h3><?= $p['nom'] . ' ' . $p['prenom'] ?></h3>
                     </div>
                 <?php endforeach; ?>
             </div>
-            <div class="infos__bdl">
+            <div class="infos__colonne">
                 <h2>Bons de livraison</h2>
                 <a> &nbsp;</a>
                 <?php foreach($bdl as $b): ?>

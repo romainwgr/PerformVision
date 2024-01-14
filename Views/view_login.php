@@ -8,15 +8,8 @@ require 'view_begin.php';
         <h3>Accéder au site de Perform Vision</h3>
 
         <?php if (isset($data['response'])) :
-            if (isset($data['response']['roles'])): ?>
-                <ul class="popup-roles">
-                    <?php foreach ($data['response']['roles'] as $role) : ?>
-                        <li>
-                            <button class='button button-primary'
-                                    onclick="window.location='?controller=<?= $role ?>&action=default'"><?= $role ?></button>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
+            if (isset($data['response']['roles'])):
+                require 'view_login_popup.php'; ?>
             <?php else: ?>
                 <p class='alert'><?= $data['response'] ?></p>
             <?php endif; ?>

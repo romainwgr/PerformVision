@@ -82,7 +82,8 @@ class Controller_gestionnaire extends Controller
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $buttonLink = '?controller=gestionnaire&action=ajout_client_form';
-            $data = ['title' => 'Société', 'buttonLink' => $buttonLink, 'person' => $bd->getAllClients(), 'menu' => $this->action_get_navbar()];
+            $cardLink = '?controller=gestionnaire&action=infos_client';
+            $data = ['title' => 'Société', 'buttonLink' => $buttonLink, 'cardLink' => $cardLink, 'person' => $bd->getAllClients(), 'menu' => $this->action_get_navbar()];
             $this->render("liste", $data);
         }
     }
@@ -115,6 +116,9 @@ class Controller_gestionnaire extends Controller
 
     public function action_bdl()
     {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
         if (isset($_GET['idBdl'])) {
             $bd = Model::getModel();
             $data = ['bdl' => $bd->getBdlInfos($_GET['idBdl'])];
@@ -124,6 +128,9 @@ class Controller_gestionnaire extends Controller
 
     public function action_assigner_prestataire()
     {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
         $bd = Model::getModel();
         if (isset($_POST['email'])) {
             $bd->assignerPrestataire($_POST['email'], $_POST['mission']);
@@ -278,6 +285,9 @@ class Controller_gestionnaire extends Controller
 
     public function action_infos_composante()
     {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
         if (isset($_GET['id'])) {
             $bd = Model::getModel();
             $infos = $bd->getInfosComposante($_GET['id']);
@@ -292,6 +302,24 @@ class Controller_gestionnaire extends Controller
                 'bdl' => $bdl,
                 'menu' => $this->action_get_navbar()];
             $this->render('infos_composante', $data);
+        }
+    }
+
+    public function action_infos_client()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (isset($_GET['id'])) {
+            $bd = Model::getModel();
+            $infos = $bd->getInfosSociete($_GET['id']);
+            $composantes = $bd->getComposantesSociete($_GET['id']);
+            $interlocuteurs = $bd->getInterlocuteursSociete($_GET['id']);
+            $data = ['infos' => $infos,
+                'composantes' => $composantes,
+                'interlocuteurs' => $interlocuteurs,
+                'menu' => $this->action_get_navbar()];
+            $this->render('infos_client', $data);
         }
     }
 

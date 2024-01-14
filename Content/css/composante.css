@@ -11,12 +11,12 @@
     height: 100%;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-wrap: wrap;
     gap: var(--spacer-5);
 }
 
-.infos__interlocuteurs, .infos__commerciaux, .infos__prestataires, .infos__bdl{
+.infos__colonne{
     display: flex;
     flex-direction: column;
     gap: var(--spacer-3);
