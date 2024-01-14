@@ -113,12 +113,19 @@ class Controller_gestionnaire extends Controller
         }
     }
 
-    public function action_bdl()
+    public function action_bdl()/*utilisé sur la page missions pour montré les bdl de cette mission*/
     {
-        if (isset($_GET['idBdl'])) {
-            $bd = Model::getModel();
-            $data = ['bdl' => $bd->getBdlInfos($_GET['idBdl'])];
-            $this->render('bdl', $data);
+        if (isset($_POST['mission'],$_POST['prestataire'])){
+            $data=["bdl"=>$bd->getBdlPrestaForGestionnaire($_POST['prestataire'],$_POST['mission'])];
+            $this->render("bdl",$data);
+        }
+    }
+    
+    public function action_bdl()/*utilisé sur la page prestataires pour montré les bdl de ce prestataire*/
+    {
+        if ($_POST['prestataire'])){
+            $data=["bdl"=>$bd->getBdlPresta($_POST['prestataire'])];
+            $this->render("bdl",$data);
         }
     }
 
