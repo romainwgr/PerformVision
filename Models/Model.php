@@ -666,5 +666,13 @@ class Model
         }
 
         return $roles[0];
+
+    public function checkPersonneExiste($email)
+    {
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM PERSONNE WHERE email = :email) AS personne_existe;');
+        $req->bindValue(':email', $email);
+        $req->execute(); 
+        return $req->fetchall()
+
     }
 }
