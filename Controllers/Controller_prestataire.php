@@ -71,7 +71,7 @@ class Controller_prestataire extends Controller
         }
         if (isset($_SESSION['id']) && isset($_POST['mission'])){
             $data=["bdl"=>$bd->getBdlPrestaForPrestataire($_SESSION['id'],$_POST['mission'])];
-            $this->render("prestataire_interlocuteurs",$data);
+            $this->render("bdl",$data);
         }else{
             echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
         }
