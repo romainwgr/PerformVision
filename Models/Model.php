@@ -156,6 +156,24 @@ class Model
         return $req->fetchall()[0];
     }
 
+    public function getInfosClient($id)
+    {
+        $req = $this->bd->prepare('SELECT id_client, nom_client, telephone_client FROM CLIENT WHERE id_client = :id');
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall();
+    }
+
+    public function getComposantesSociete($id)
+    {
+        $req = $this->bd->prepare('SELECT id_composante, nom_composante FROM COMPOSANTE JOIN CLIENT using(id_client) WHERE id_client = :id');
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall();
+    }
+
+    
+
 
     public function removePrestataire($id_pr)
     {
