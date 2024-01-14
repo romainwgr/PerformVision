@@ -5,7 +5,7 @@ require 'view_header.php';
     <div class="add-container">
         <div class="form-abs">
             <h1>Ajout Société</h1>
-            <form action="">
+            <form action="?controller=gestionnaire&action=ajout_client">
                 <h2>Informations société</h2>
                 <input type="text" placeholder="Société" id='sté' name='client' class="input-case">
                 <input type="tel" placeholder="Numéro de téléphone" name='tel' class="input-case">
