@@ -368,7 +368,7 @@ class Model
 
     public function assignerCommercial($email, $composante, $client)
     {
-        $req = $this->bd->prepare("INSERT INTO estDans (id_personne, id_composante) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT id_composante FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_composante = :composante AND nom_client = :client)");
+        $req = $this->bd->prepare("INSERT INTO estDans (id_personne, id_composante) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT c.id_composante FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_composante = :composante AND nom_client = :client')");
         $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->bindValue(':composante', $composante, PDO::PARAM_STR);
         $req->bindValue(':client', $client, PDO::PARAM_STR);
@@ -488,6 +488,97 @@ class Model
         $req = $this->bd->prepare("UPDATE TYPEVOIE SET libelle = :libelle WHERE id_type_voie = :id");
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':libelle', $libelle, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function setCommentaireActivite($id, $commentaire)
+    {
+        $req = $this->bd->prepare("UPDATE ACTIVITE SET commentaire = :commentaire WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':commentaire', $commentaire, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function setDateBdlActivite($id, $date)
+    {
+        $req = $this->bd->prepare("UPDATE ACTIVITE SET date_bdl = :date WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':date', $date, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+
+    public function setNbHeureNbHeure($id, $heure)
+    {
+        $req = $this->bd->prepare("UPDATE NB_HEURE SET nb_heure = :heure WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':heure', $heure, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function setDebutHeurePlageHoraire($id, $heure)
+    {
+        $req = $this->bd->prepare("UPDATE PLAGE_HORAIRE SET debut_heure = :heure WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':heure', $heure, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function setFinHeurePlageHoraire($id, $heure)
+    {
+        $req = $this->bd->prepare("UPDATE PLAGE_HORAIRE SET fin_heure = :heure WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':heure', $heure, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function setMatinDemiJour($id, $matin)
+    {
+        $req = $this->bd->prepare("UPDATE DEMI_JOUR SET matin = :matin WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':matin', $matin, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function setApres_midiDemiJour($id, $aprem)
+    {
+        $req = $this->bd->prepare("UPDATE DEMI_JOUR SET apres_midi = :aprem WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':aprem', $aprem, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function setJourneeJour($id, $jour)
+    {
+        $req = $this->bd->prepare("UPDATE JOUR SET journee = :jour WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':jour', $jour, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function setDebutHeureSuppJour($id, $debut)
+    {
+        $req = $this->bd->prepare("UPDATE JOUR SET debut_heure_supp = :debut WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':debut', $debut, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function setFinHeureSuppJour($id, $fin)
+    {
+        $req = $this->bd->prepare("UPDATE JOUR SET fin_heure_supp = :fin WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':fin', $fin, PDO::PARAM_STR);
         $req->execute();
         return (bool)$req->rowCount();
     }
@@ -716,10 +807,65 @@ class Model
 
     public function checkComposanteExiste($nom_compo, $nom_client)
     {
-        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_composante = :nom_composante AND nom_client = :nom_client) AS composante_existe;');
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_composante = :nom_composante AND nom_client = :nom_client) AS composante_existe');
         $req->bindValue(':nom_composante', $nom_compo);
         $req->bindValue(':nom_client', $nom_client);
-        $req->execute();
-        return $req->fetchall();
+        $req->execute(); 
+        return $req->fetch()[0] == 't';
     }
+
+    public function checkSocieteExiste($nom_client)
+    {
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM CLIENT WHERE nom_client = :nom_client) AS client_existe');
+        $req->bindValue(':nom_client', $nom_client);
+        $req->execute();
+        return $req->fetch()[0] == 't';
+    }
+
+    public function checkMissionExiste($nom_mission, $nom_compo)
+    {
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM MISSION JOIN COMPOSANTE USING(id_composante) WHERE nom_composante = :nom_compo AND nom_mission = :nom_mission) AS mission_existe');
+        $req->bindValue(':nom_composante', $nom_compo);
+        $req->bindValue(':nom_mission', $nom_mission);
+        $req->execute();
+        return $req->fetch()[0] == 't';
+    }
+
+    public function checkInterlocuteurExiste($email)
+    {
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM PERSONNE JOIN INTERLOCUTEUR USING(id_personne) WHERE email = :email) AS interlocuteur_existe');
+        $req->bindValue(':email', $email);
+        $req->execute();
+        return $req->fetch()[0] == 't';
+    }
+
+    public function checkCommercialExiste($email)
+    {
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM PERSONNE JOIN COMMERCIAL USING(id_personne) WHERE email = :email) AS commercial_existe');
+        $req->bindValue(':email', $email);
+        $req->execute();
+        return $req->fetch()[0] == 't';
+    }
+
+    public function checkPrestataireExiste($email)
+    {
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM PERSONNE JOIN PRESTATAIRE USING(id_personne) WHERE email = :email) AS prestataire_existe');
+        $req->bindValue(':email', $email);
+        $req->execute();
+        return $req->fetch()[0] == 't';
+    }
+
+    public function checkGestionnaireExiste($email)
+    {
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM PERSONNE JOIN GESTIONNAIRE USING(id_personne) WHERE email = :email) AS gestionnaire_existe');
+        $req->bindValue(':email', $email);
+        $req->execute();
+        return $req->fetch()[0] == 't';
+    }
+
+
+
+
+
+
 }
