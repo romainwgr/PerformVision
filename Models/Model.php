@@ -318,7 +318,7 @@ class Model
 
     public function assignerCommercial($email, $composante, $client)
     {
-        $req = $this->bd->prepare("INSERT INTO estDans (id_personne, id_composante) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT c.id_composante FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_composante = :composante AND nom_client = :client')");
+        $req = $this->bd->prepare("INSERT INTO estDans (id_personne, id_composante) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT id_composante FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_composante = :composante AND nom_client = :client)");
         $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->bindValue(':composante', $composante, PDO::PARAM_STR);
         $req->bindValue(':client', $client, PDO::PARAM_STR);

@@ -313,7 +313,6 @@ class Controller_gestionnaire extends Controller
         if (isset($_POST['composante']) && isset($_POST['client']) && $_POST['email-interlocuteur']) {
             $bd->assignerInterlocuteurComposante($_POST['composante'], $_POST['client'], $_POST['email-interlocuteur']);
         }
-        $this->action_interlocuteurs();
     }
 
     public function action_ajout_prestataire_dans_mission()
