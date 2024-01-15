@@ -50,10 +50,36 @@ class Controller_gestionnaire extends Controller
         $this->render('infos', ['menu' => $this->action_get_navbar()]);
     }
 
+    /*--------------------------------------------------------------------------------------*/
+    /*                                Fonctions de mise à jour                              */
+    /*--------------------------------------------------------------------------------------*/
+
     public function action_maj_infos()
     {
-        action_maj_infos();
+        maj_infos_personne(); // fonction dans Utils
         $this->action_infos();
+    }
+
+    public function action_maj_infos_client()
+    {
+        maj_infos_client();
+        $this->action_infos_client();
+    }
+
+    public function action_maj_infos_personne(){
+        maj_infos_personne();
+        $this->action_infos_personne();
+    }
+
+    public function action_infos_personne(){
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (isset($_GET['id'])) {
+            $bd = Model::getModel();
+            $data = ['person' => $bd->getInfosPersonne($_GET['id']), 'menu' => $this->action_get_navbar()];
+            $this->render("infos_personne", $data);
+        }
     }
 
     /**
@@ -266,8 +292,8 @@ class Controller_gestionnaire extends Controller
 
             $bd->addClient($_POST['client'], $_POST['tel']);
             $this->action_ajout_composante();
-            $this->action_ajout_mission();
         }
+        $this->action_ajout_client_form();
     }
 
     public function action_ajout_personne($nom, $prenom, $email)
@@ -296,6 +322,7 @@ class Controller_gestionnaire extends Controller
         $this->action_ajout_interlocuteur();
         $this->action_ajout_interlocuteur_dans_composante();
         $this->action_ajout_commercial_dans_composante();
+        $this->action_ajout_mission();
     }
 
     public function action_ajout_mission(){
@@ -330,7 +357,6 @@ class Controller_gestionnaire extends Controller
         if (isset($_POST['composante']) && isset($_POST['email-commercial']) && isset($_POST['client'])) {
             $bd->assignerCommercial($_POST['email-commercial'], $_POST['composante'], $_POST['client']);
         }
-        $this->action_commerciaux();
     }
 
     public function action_infos_composante()
@@ -372,17 +398,6 @@ class Controller_gestionnaire extends Controller
             $this->render('infos_client', $data);
         }
     }
-
-    /* À mettre dans Controller_Client
-    public function action_ajout_client()
-    {
-        $bd = Model::getModel();
-        if (isset($_POST['client']) && isset($_POST['telephone']) && isset($_POST['composante']) && isset($_POST['addresse']) && isset($_POST['email'])) {
-            $bd->addClientForGestionnaire($_POST['client'], $_POST['telephone'], $_POST['composante'], $_POST['addresse'], $_POST['email']);
-        }
-        $this->render("gestionnaire_clients");
-    }
-    */
 }
 
 ?>

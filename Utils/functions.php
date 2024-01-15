@@ -26,7 +26,7 @@ function genererMdp(){
     return substr($Chaine,0, 12);
 }
 
-function action_maj_infos()
+function maj_infos_personne()
 {
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
@@ -43,5 +43,18 @@ function action_maj_infos()
     }
     if(isset($_POST['mdp']) && !preg_match('/^ *$/', $_POST['mdp'])){
         $bd->setMdpPersonne($_SESSION['id'], $_POST['mdp']);
+    }
+}
+
+function maj_infos_client()
+{
+    $bd = Model::getModel();
+    if(isset($_GET['id'])){
+        if(isset($_POST['client']) && !preg_match('/^ *$/', $_POST['client'])){
+            $bd->setNomClient($_GET['id'], $_POST['client']);
+        }
+        if(isset($_POST['telephone-client']) && !preg_match('/^ *$/', $_POST['telephone-client'])){
+            $bd->setTelClient($_GET['id'], $_POST['telephone-client']);
+        }
     }
 }

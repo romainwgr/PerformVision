@@ -52,7 +52,12 @@ class Model
 
     public function getDashboardGestionnaire()
     {
-        $req = $this->bd->prepare('SELECT nom_client AS id, nom_composante, nom_mission, nom, prenom FROM client JOIN composante USING(id_client) JOIN mission USING(id_composante) JOIN travailleavec ta USING(id_mission) JOIN PERSONNE p ON ta.id_personne = p.id_personne');
+        $req = $this->bd->prepare("SELECT c.nom_client, co.nom_composante, m.nom_mission, COALESCE(p.nom, 'Aucun') AS nom, COALESCE(p.prenom, 'Aucun') AS prenom 
+        FROM mission m
+            JOIN composante co ON m.id_composante = co.id_composante 
+            JOIN client c ON co.id_client = c.id_client 
+            LEFT JOIN travailleavec ta ON m.id_mission = ta.id_mission 
+            LEFT JOIN personne p ON ta.id_personne = p.id_personne;");
         $req->execute();
         return $req->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -90,7 +95,7 @@ class Model
         $req = $this->bd->prepare('SELECT id_personne, nom, prenom, email FROM PERSONNE WHERE id_personne = :id');
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->execute();
-        return $req->fetchall();
+        return $req->fetchall()[0];
     }
 
     /* -------------------------------------------------------------------------
@@ -99,7 +104,7 @@ class Model
 
     public function getPrestatairesComposante($id)
     {
-        $req = $this->bd->prepare('SELECT DISTINCT id_personne AS id, nom, prenom
+        $req = $this->bd->prepare('SELECT DISTINCT id_personne, nom, prenom
        FROM PERSONNE JOIN PRESTATAIRE USING(id_personne) 
            JOIN TRAVAILLEAVEC USING(id_personne) 
            JOIN MISSION USING(id_mission)
@@ -112,7 +117,7 @@ class Model
 
     public function getCommerciauxComposante($id)
     {
-        $req = $this->bd->prepare('SELECT DISTINCT id_personne AS id, nom, prenom
+        $req = $this->bd->prepare('SELECT DISTINCT id_personne, nom, prenom
        FROM PERSONNE JOIN COMMERCIAL USING(id_personne) 
            JOIN ESTDANS USING(id_personne) 
        WHERE id_composante = :id');
@@ -124,7 +129,7 @@ class Model
 
     public function getInterlocuteursComposante($id)
     {
-        $req = $this->bd->prepare('SELECT DISTINCT id_personne AS id, nom, prenom
+        $req = $this->bd->prepare('SELECT DISTINCT id_personne, nom, prenom
        FROM PERSONNE JOIN INTERLOCUTEUR USING(id_personne) 
            JOIN DIRIGE USING(id_personne) 
        WHERE id_composante = :id');
@@ -136,7 +141,7 @@ class Model
 
     public function getInterlocuteursSociete($id)
     {
-        $req = $this->bd->prepare('SELECT DISTINCT id_personne AS id, nom, prenom
+        $req = $this->bd->prepare('SELECT DISTINCT id_personne, nom, prenom
        FROM PERSONNE JOIN INTERLOCUTEUR USING(id_personne) 
            JOIN DIRIGE USING(id_personne) JOIN COMPOSANTE USING(id_composante) JOIN CLIENT using(id_client) WHERE id_client = :id');
 
@@ -185,13 +190,11 @@ class Model
 
     public function getComposantesSociete($id)
     {
-        $req = $this->bd->prepare('SELECT id_composante AS id, nom_composante FROM COMPOSANTE JOIN CLIENT using(id_client) WHERE id_client = :id');
+        $req = $this->bd->prepare('SELECT id_composante, nom_composante FROM COMPOSANTE JOIN CLIENT using(id_client) WHERE id_client = :id');
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->execute();
         return $req->fetchall();
     }
-
-    
 
 
     public function removePrestataire($id_pr)
@@ -229,6 +232,53 @@ class Model
         $req->execute();
         $req = $this->bd->prepare("DELETE FROM COMMERCIAL WHERE id_personne = :id_personne");
         $req->bindValue(':id', (int)$id_co, PDO::PARAM_INT);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function removeCommercialFromComposante($id_commercial){
+        $req = $this->bd->prepare("DELETE FROM ESTDANS WHERE id_personne = :id");
+        $req->bindValue(':id', $id_commercial);
+        $req->execute();
+    }
+
+    public function removeMission($id_mission){
+        // On supprime le(s) prestataire(s) assigné(s) à la mission
+        $req = $this->bd->prepare("DELETE FROM TRAVAILLEAVEC WHERE id_mission = :id");
+        $req->bindValue(':id', $id_mission);
+        $req->execute();
+
+        //On cherche les
+    }
+
+    public function removeComposante($id_composante)
+    {
+        // On supprime le(s) commercial/commerciaux assigné(s) à la composante
+        $req = $this->bd->prepare("DELETE FROM ESTDANS WHERE id_composante = :id");
+        $req->bindValue(':id', $id_composante);
+        $req->execute();
+
+        // On cherche toutes les missions de la composante et on les supprime
+        $req = $this->bd->prepare('SELECT id_mission FROM mission JOIN composante USING(id_composante) WHERE id_composante = :id');
+        $req->bindValue(':id', $id_composante);
+        foreach ($req->fetchAll()['id_mission'] as $id){
+            $this->removeMission($id);
+        }
+        // Enfin, on supprime la composante
+        $req = $this->bd->prepare("DELETE FROM COMPOSANTE WHERE id_composante = :id");
+        $req->bindValue(':id', $id_composante);
+        $req->execute();
+    }
+
+    public function removeClient($id_client)
+    {
+        $req = $this->bd->prepare('SELECT id_composante FROM composante JOIN client USING(id_client) WHERE id_client = :id');
+        $req->bindValue(':id', $id_client);
+        foreach ($req->fetchAll()['id_composante'] as $id){
+            $this->removeComposante($id);
+        }
+        $req = $this->bd->prepare("DELETE FROM CLIENT WHERE id_client = :id");
+        $req->bindValue(':id', $id_client);
         $req->execute();
         return (bool)$req->rowCount();
     }
@@ -276,7 +326,7 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function addComposante($libelleVoie,$cp, $numVoie, $nomVoie, $nom_client, $nom_compo)
+    public function addComposante($libelleVoie, $cp, $numVoie, $nomVoie, $nom_client, $nom_compo)
     {
         $req = $this->bd->prepare("INSERT INTO ADRESSE(numero, nom_voie, id_type_voie, id_localite) SELECT :num, :nomVoie, (SELECT id_type_voie FROM TypeVoie WHERE libelle = :libelleVoie), (SELECT id_localite FROM localite WHERE cp = :cp)");
         $req->bindValue(':num', $numVoie, PDO::PARAM_STR);
@@ -293,12 +343,12 @@ class Model
 
     public function addMission($type, $nom, $date, $nom_compo, $nom_client)
     {
-        $req = $this->bd->prepare("INSERT INTO MISSION (type_bdl, nom_mission, date_debut, id_composante) SELECT :type, :nom, :date, (SELECT nom_composante FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_client = :nom_client and :nom_composante)");
-        $req->bindValue(':nom', $nom, PDO::PARAM_STR);
-        $req->bindValue(':type', $type, PDO::PARAM_STR);
-        $req->bindValue(':date', $date, PDO::PARAM_STR);
-        $req->bindValue(':nom_compo', $nom_compo, PDO::PARAM_STR);
-        $req->bindValue(':nom_client', $nom_client, PDO::PARAM_STR);
+        $req = $this->bd->prepare("INSERT INTO MISSION (type_bdl, nom_mission, date_debut, id_composante) SELECT :type, :nom, :date, (SELECT id_composante FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_client = :nom_client and nom_composante = :nom_composante)");
+        $req->bindValue(':nom', $nom);
+        $req->bindValue(':type', $type);
+        $req->bindValue(':date', $date);
+        $req->bindValue(':nom_composante', $nom_compo);
+        $req->bindValue(':nom_client', $nom_client);
         $req->execute();
         return (bool)$req->rowCount();
     }
@@ -660,7 +710,7 @@ class Model
     {
         $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM PERSONNE WHERE email = :email) AS personne_existe;');
         $req->bindValue(':email', $email);
-        $req->execute(); 
+        $req->execute();
         return $req->fetch()[0] == 't';
     }
 
@@ -669,7 +719,7 @@ class Model
         $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_composante = :nom_composante AND nom_client = :nom_client) AS composante_existe;');
         $req->bindValue(':nom_composante', $nom_compo);
         $req->bindValue(':nom_client', $nom_client);
-        $req->execute(); 
+        $req->execute();
         return $req->fetchall();
     }
 }

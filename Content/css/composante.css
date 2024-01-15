@@ -42,7 +42,7 @@
     text-shadow: var(--shadow-text);
 }
 
-.infos-container a{
+.infos-container .ajout{
     text-decoration: none;
     color: white;
     border-bottom: 1px solid white;
