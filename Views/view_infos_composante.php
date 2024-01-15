@@ -54,14 +54,14 @@ require 'view_header.php';
                 <h2>Prestataires</h2>
                 <a href="?controller=gestionnaire&action=ajout_prestataire_form&id-composante=<?= $_GET['id'] ?>" class="ajout"><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
                 <?php foreach($prestataires as $p): ?>
-                    <a href="?controller=gestionnaire&action=infos_personne&id-composante=<?= $p['id_personne']?>" class="block">
+                    <a href="?controller=gestionnaire&action=infos_personne&id=<?= $p['id_personne']?>" class="block">
                         <h3><?= $p['nom'] . ' ' . $p['prenom'] ?></h3>
                     </a>
                 <?php endforeach; ?>
             </div>
             <div class="infos__colonne">
                 <h2>Bons de livraison</h2>
-                <a> &nbsp;</a>
+                <a class="ajout"> &nbsp;</a>
                 <?php foreach($bdl as $b): ?>
                     <a href="" class="block">
                         <h3><?= $b['nom'] . ' ' . $b['prenom'] ?></h3>

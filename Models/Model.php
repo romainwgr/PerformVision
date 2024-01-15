@@ -150,16 +150,15 @@ class Model
         return $req->fetchall();
     }
 
-    public function getBdlComposante($id)
+    public function getBdlComposante($id_composante)
     {
-        $req = $this->bd->prepare('SELECT DISTINCT personne.id_personne AS id, id_bdl, nom, prenom, mois
+        $req = $this->bd->prepare('SELECT DISTINCT id_prestataire, id_bdl, nom, prenom, mois
        FROM PERSONNE JOIN PRESTATAIRE USING(id_personne) 
-           JOIN TRAVAILLEAVEC USING(id_personne)
-           JOIN MISSION USING(id_mission) 
-           JOIN BON_DE_LIVRAISON USING(id_mission)
+           JOIN BON_DE_LIVRAISON ON id_personne = id_prestataire 
+           JOIN MISSION USING(id_mission)
        WHERE id_composante = :id');
 
-        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':id', $id_composante);
         $req->execute();
         return $req->fetchall();
     }
@@ -271,22 +270,24 @@ class Model
         $req = $this->bd->prepare("INSERT INTO NB_HEURE (commentaire, id_bdl, id_personne, date_bdl, nb_heure) VALUES(:commentaire, :id_bdl, :id_personne, :date, :nb_heure)");
         $req->bindValue(':commentaire', $commentaire);
         $req->bindValue(':id_bdl', $id_bdl);
-        $req->bindValue(':id_personne', $id_personnne);
+        $req->bindValue(':id_personne', $id_personne);
         $req->bindValue(':date_bdl', $date_bdl);
         $req->bindValue(':nb_heure', $nb_heure);
         $req->execute();
         return (bool)$req->rowCount();
     }
 
-    public function assignerPrestataire($email, $mission)
+    public function assignerPrestataire($email, $mission, $id_composante)
     {
-        $req = $this->bd->prepare("INSERT INTO travailleAvec (id_personne, id_mission) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT m.id_mission FROM MISSION m JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :nom_mission')");
+        $req = $this->bd->prepare("INSERT INTO travailleAvec (id_personne, id_mission) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT m.id_mission FROM MISSION m JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :nom_mission and id_composante = :id_composante)");
         $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->bindValue(':nom_mission', $mission, PDO::PARAM_STR);
+        $req->bindValue(':id_composante', $id_composante);
         $req->execute();
-        $req = $this->bd->prepare("INSERT INTO BON_DE_LIVRAISON(id_personne, id_mission)  SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email),  (SELECT m.id_mission FROM MISSION m JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :nom_mission')");
+        $req = $this->bd->prepare("INSERT INTO BON_DE_LIVRAISON(id_prestataire, id_mission, mois)  SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email),  (SELECT m.id_mission FROM MISSION m JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :nom_mission and id_composante = :id_composante), (SELECT EXTRACT(MONTH FROM CURRENT_DATE))");
         $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->bindValue(':nom_mission', $mission, PDO::PARAM_STR);
+        $req->bindValue(':id_composante', $id_composante);
         $req->execute();
         return (bool)$req->rowCount();
     }

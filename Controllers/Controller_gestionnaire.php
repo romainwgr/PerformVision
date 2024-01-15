@@ -361,6 +361,14 @@ class Controller_gestionnaire extends Controller
         }
     }
 
+    public function action_ajout_prestataire(){
+        $bd = Model::getModel();
+        if(isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email-prestataire'])){
+            $this->action_ajout_personne($_POST['nom'], $_POST['prenom'], $_POST['email-prestataire']);
+            $bd->addPrestataire($_POST['email-prestataire']);
+        }
+    }
+
     public function action_ajout_interlocuteur_dans_composante()
     {
         $bd = Model::getModel();
@@ -372,10 +380,9 @@ class Controller_gestionnaire extends Controller
     public function action_ajout_prestataire_dans_mission()
     {
         $bd = Model::getModel();
-        if (isset($_POST['mission']) && isset($_POST['email'])) {
-            $bd->addPrestataireForGestionnaire($_POST['mission'], $_POST['email']);
+        if (isset($_POST['mission']) && isset($_POST['email-prestataire']) && $_GET['id'] && $bd->checkPrestataireExiste($_POST['email-prestataire'])) {
+            $bd->assignerPrestataire($_POST['email-prestataire'], $_POST['mission'], $_GET['id']);
         }
-        $this->action_prestataires();
     }
 
     public function action_ajout_commercial_dans_composante()
