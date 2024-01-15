@@ -86,6 +86,16 @@ class Controller_prestataire extends Controller
             echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
         }
     }
+    
+    public function action_prestataire_Allbdl(){
+        $bd=Model::getModel();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (isset($_SESSION['id']))){
+            $data=["bdl"=>$bd->getBdlPresta($_SESSION['id'])];
+            $this->render("bdl",$data);
+        
 
     public function action_prestataire_creer_bdl(){
         $bd=Model::getModel();
