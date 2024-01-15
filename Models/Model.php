@@ -442,6 +442,97 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    public function setCommentaireActivite($id, $commentaire)
+    {
+        $req = $this->bd->prepare("UPDATE ACTIVITE SET commentaire = :commentaire WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':commentaire', $commentaire, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function setDateBdlActivite($id, $date)
+    {
+        $req = $this->bd->prepare("UPDATE ACTIVITE SET date_bdl = :date WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':date', $date, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+
+    public function setNbHeureNbHeure($id, $heure)
+    {
+        $req = $this->bd->prepare("UPDATE NB_HEURE SET nb_heure = :heure WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':heure', $heure, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function setDebutHeurePlageHoraire($id, $heure)
+    {
+        $req = $this->bd->prepare("UPDATE PLAGE_HORAIRE SET debut_heure = :heure WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':heure', $heure, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function setFinHeurePlageHoraire($id, $heure)
+    {
+        $req = $this->bd->prepare("UPDATE PLAGE_HORAIRE SET fin_heure = :heure WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':heure', $heure, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function setMatinDemiJour($id, $matin)
+    {
+        $req = $this->bd->prepare("UPDATE DEMI_JOUR SET matin = :matin WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':matin', $matin, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function setApres_midiDemiJour($id, $aprem)
+    {
+        $req = $this->bd->prepare("UPDATE DEMI_JOUR SET apres_midi = :aprem WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':aprem', $aprem, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function setJourneeJour($id, $jour)
+    {
+        $req = $this->bd->prepare("UPDATE JOUR SET journee = :jour WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':jour', $jour, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function setDebutHeureSuppJour($id, $debut)
+    {
+        $req = $this->bd->prepare("UPDATE JOUR SET debut_heure_supp = :debut WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':debut', $debut, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+    
+    public function setFinHeureSuppJour($id, $fin)
+    {
+        $req = $this->bd->prepare("UPDATE JOUR SET fin_heure_supp = :fin WHERE id_activite = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':fin', $fin, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
     /* -------------------------------------------------------------------------
                             Fonction Commercial
         ------------------------------------------------------------------------*/
