@@ -1,6 +1,6 @@
 <?php
 
-class Controller_administrateur extends Controllers_gestionnaire
+class Controller_administrateur extends Controller_gestionnaire
 {
     public function action_dashboard()
     {

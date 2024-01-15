@@ -146,6 +146,7 @@ class Controller_gestionnaire extends Controller
 
     public function action_bdl()/*utilisé sur la page missions pour montré les bdl de cette mission*/
     {
+        $bd = Model::getModel();
         if (isset($_POST['mission'], $_POST['prestataire'])) {
             $data = ["bdl" => $bd->getBdlPrestaForGestionnaire($_POST['prestataire'], $_POST['mission'])];
             $this->render("bdl", $data);
@@ -276,7 +277,7 @@ class Controller_gestionnaire extends Controller
             } else {
                 $data = ['title' => "Ajout d'un gestionnaire", 'message' => "Echec lors de l'ajout du gestionnaire !"];
             }
-            $this->return('message', $data);
+            $this->render('message', $data);
         }
     }
 

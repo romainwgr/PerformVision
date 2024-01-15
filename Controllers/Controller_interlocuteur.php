@@ -109,7 +109,7 @@ class Controller_interlocuteur extends Controller
             } else {
                 $data = ['title' => "Ajout d'un interlocuteur", 'message' => "Echec lors de l'ajout de l'interlocuteur !"];
             }
-            $this->return('message', $data);
+            $this->render('message', $data);
         }
     }
 }
