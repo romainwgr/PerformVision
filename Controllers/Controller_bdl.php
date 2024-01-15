@@ -12,7 +12,7 @@ class Controller_bdl extends Controller
 
     public function action_dashboard()
     {
-        
+        $this->render('bdl', $data);
     }
 
    
