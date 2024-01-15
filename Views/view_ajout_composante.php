@@ -5,7 +5,7 @@ require 'view_header.php';
     <div class="add-container">
         <div class="form-abs">
             <h1>Ajout Composante</h1>
-            <form action="?controller=gestionnaire&action=ajout_composante">
+            <form action="?controller=gestionnaire&action=ajout_composante" method="post">
                 <h2>Informations interlocuteur</h2>
                 <div class="form-names">
                     <input type="text" placeholder="Prénom" name="prenom-interlocuteur" class="input-case">
@@ -24,6 +24,15 @@ require 'view_header.php';
                 <div class="form-infos-composante">
                     <input type="text" placeholder="Nom composante" name='composante' id='cpt' class="input-case">
                     <input type="text" placeholder="Société" id='sté' name='client' class="input-case">
+                </div>
+                <div class="form-infos-composante">
+                    <select name="type-bdl">
+                        <option selected>Type de bon de livraison </option>
+                        <option value="journee">Journée </option>
+                        <option value="demi-journee">Demi-journée </option>
+                        <option value="heure">Heure </option>
+                    </select>
+                    <input type="text" placeholder="Nom mission" name='mission' id='cpt' class="input-case">
                 </div>
 
                 <h4>Adresse</h4>

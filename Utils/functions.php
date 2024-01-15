@@ -31,18 +31,22 @@ function maj_infos_personne()
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
     }
+    $id = $_SESSION['id'];
+    if(isset($_GET['id'])){
+        $id = $_GET['id'];
+    }
     $bd = Model::getModel();
     if(isset($_POST['nom']) && !preg_match('/^ *$/', $_POST['nom'])){
-        $bd->setNomPersonne($_SESSION['id'], $_POST['nom']);
+        $bd->setNomPersonne($id, $_POST['nom']);
     }
     if(isset($_POST['prenom']) && !preg_match('/^ *$/', $_POST['prenom'])){
-        $bd->setPrenomPersonne($_SESSION['id'], $_POST['prenom']);
+        $bd->setPrenomPersonne($id, $_POST['prenom']);
     }
     if(isset($_POST['email']) && !preg_match('/^ *$/', $_POST['email'])){
-        $bd->setEmailPersonne($_SESSION['id'], $_POST['email']);
+        $bd->setEmailPersonne($id, $_POST['email']);
     }
     if(isset($_POST['mdp']) && !preg_match('/^ *$/', $_POST['mdp'])){
-        $bd->setMdpPersonne($_SESSION['id'], $_POST['mdp']);
+        $bd->setMdpPersonne($id, $_POST['mdp']);
     }
 }
 

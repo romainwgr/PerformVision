@@ -9,7 +9,6 @@ require 'view_header.php';
         <button type="submit" class="button-primary"
                 onclick="window.location='<?= $buttonLink ?>'">Ajouter
         </button>
-        <button type="submit" class="button-delete">Supprimer</button>
     </div>
 
     <div class="element-block">

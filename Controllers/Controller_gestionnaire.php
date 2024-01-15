@@ -62,16 +62,18 @@ class Controller_gestionnaire extends Controller
 
     public function action_maj_infos_client()
     {
-        maj_infos_client();
+        maj_infos_client(); // fonction dans Utils
         $this->action_infos_client();
     }
 
-    public function action_maj_infos_personne(){
-        maj_infos_personne();
+    public function action_maj_infos_personne()
+    {
+        maj_infos_personne(); // fonction dans Utils
         $this->action_infos_personne();
     }
 
-    public function action_infos_personne(){
+    public function action_infos_personne()
+    {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
@@ -122,7 +124,8 @@ class Controller_gestionnaire extends Controller
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $buttonLink = '?controller=gestionnaire&action=ajout_prestataire_form';
-            $data = ['title' => 'Prestataires', "buttonLink" => $buttonLink, "person" => $bd->getAllPrestataires(), 'menu' => $this->action_get_navbar()];
+            $cardLink = "?controller=gestionnaire&action=infos_personne";
+            $data = ['title' => 'Prestataires', 'cardLink' => $cardLink, "buttonLink" => $buttonLink, "person" => $bd->getAllPrestataires(), 'menu' => $this->action_get_navbar()];
             $this->render("liste", $data);
         }
     }
@@ -135,7 +138,8 @@ class Controller_gestionnaire extends Controller
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $buttonLink = '?controller=gestionnaire&action=ajout_commercial_form';
-            $data = ['title' => 'Commerciaux', 'buttonLink' => $buttonLink, "person" => $bd->getAllCommerciaux(), 'menu' => $this->action_get_navbar()];
+            $cardLink = "?controller=gestionnaire&action=infos_personne";
+            $data = ['title' => 'Commerciaux', 'cardLink' => $cardLink, 'buttonLink' => $buttonLink, "person" => $bd->getAllCommerciaux(), 'menu' => $this->action_get_navbar()];
             $this->render("liste", $data);
         }
     }
@@ -311,21 +315,30 @@ class Controller_gestionnaire extends Controller
         $bd->addInterlocuteur($_POST['email-interlocuteur']);
     }
 
-    public function action_ajout_composante(){
-        $bd = Model::getModel();
-        $bd->addComposante($_POST['type-voie'],
-            $_POST['cp'],
-            $_POST['numero-voie'],
-            $_POST['nom-voie'],
-            $_POST['client'],
-            $_POST['composante']);
-        $this->action_ajout_interlocuteur();
-        $this->action_ajout_interlocuteur_dans_composante();
-        $this->action_ajout_commercial_dans_composante();
-        $this->action_ajout_mission();
+    public function action_ajout_composante()
+    {
+        if (isset($_POST['composante']) &&
+            isset($_POST['numero-voie']) &&
+            isset($_POST['type-voie']) &&
+            isset($_POST['nom-voie']) &&
+            isset($_POST['cp']) &&
+            isset($_POST['ville'])) {
+            $bd = Model::getModel();
+            $bd->addComposante($_POST['type-voie'],
+                $_POST['cp'],
+                $_POST['numero-voie'],
+                $_POST['nom-voie'],
+                $_POST['client'],
+                $_POST['composante']);
+            $this->action_ajout_interlocuteur();
+            $this->action_ajout_interlocuteur_dans_composante();
+            $this->action_ajout_commercial_dans_composante();
+            $this->action_ajout_mission();
+        }
     }
 
-    public function action_ajout_mission(){
+    public function action_ajout_mission()
+    {
         $bd = Model::getModel();
         $bd->addMission($_POST['type-bdl'],
             $_POST['mission'],
