@@ -282,7 +282,7 @@ class Model
         $req->bindValue(':ville', $ville, PDO::PARAM_STR);
         $req->bindValue(':cp', $cp, PDO::PARAM_STR);
         $req->execute();
-        $req = $this->bd->prepare("INSERT INTO ADRESSE(numero, nomVoie, id_type_voie, id_localite) SELECT :num, :nomVoie, (SELECT id_typevoie FROM TypeVoie WHERE libelle = :libelleVoie), (SELECT id_localite FROM localite ORDER BY id_localite DESC LIMIT 1)");
+        $req = $this->bd->prepare("INSERT INTO ADRESSE(numero, nomVoie, id_type_voie, id_localite) SELECT :num, :nomVoie, (SELECT id_type_voie FROM TypeVoie WHERE libelle = :libelleVoie), (SELECT id_localite FROM localite ORDER BY id_localite DESC LIMIT 1)");
         $req->bindValue(':num', $numVoie, PDO::PARAM_STR);
         $req->bindValue(':nomVoie', $nomVoie, PDO::PARAM_STR);
         $req->bindValue(':libelleVoie', $libelleVoie, PDO::PARAM_STR);
