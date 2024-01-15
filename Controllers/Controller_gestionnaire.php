@@ -295,6 +295,7 @@ class Controller_gestionnaire extends Controller
             $_POST['nom-voie'],
             $_POST['client'],
             $_POST['composante']);
+        $this->action_ajout_interlocuteur();
         $this->action_ajout_interlocuteur_dans_composante();
         $this->action_ajout_commercial_dans_composante();
     }
