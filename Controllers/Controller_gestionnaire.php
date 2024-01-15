@@ -246,7 +246,7 @@ class Controller_gestionnaire extends Controller
     public function action_ajout_client()
     {
         $bd = Model::getModel();
-        if (isset($_POST['nom-client']) &&
+        if (isset($_POST['client']) &&
             isset($_POST['tel']) &&
             isset($_POST['mission']) &&
             isset($_POST['type-bdl']) &&
@@ -264,7 +264,9 @@ class Controller_gestionnaire extends Controller
             isset($_POST['nom-commercial']) &&
             isset($_POST['email-commercial'])) {
 
-            $bd->addClient($_POST['nom-client'], isset($_POST['tel']));
+
+
+            $bd->addClient($_POST['client'], $_POST['tel']);
             $this->action_ajout_composante();
             $this->action_ajout_mission();
             $this->action_ajout_interlocuteur();
@@ -295,7 +297,7 @@ class Controller_gestionnaire extends Controller
             $_POST['cp'],
             $_POST['numero-voie'],
             $_POST['nom-voie'],
-            $_POST['nom-client'],
+            $_POST['client'],
             $_POST['composante']);
     }
 
@@ -305,14 +307,14 @@ class Controller_gestionnaire extends Controller
             $_POST['mission'],
             $_POST['date-mission'],
             $_POST['composante'],
-            $_POST['nom-client']);
+            $_POST['client']);
     }
 
     public function action_ajout_interlocuteur_dans_composante()
     {
         $bd = Model::getModel();
-        if (isset($_POST['composante']) && isset($_POST['nom-client']) && $_POST['email-interlocuteur']) {
-            $bd->assignerInterlocuteurComposante($_POST['composante'], $_POST['nom-client'], $_POST['email-interlocuteur']);
+        if (isset($_POST['composante']) && isset($_POST['client']) && $_POST['email-interlocuteur']) {
+            $bd->assignerInterlocuteurComposante($_POST['composante'], $_POST['client'], $_POST['email-interlocuteur']);
         }
         $this->action_interlocuteurs();
     }
@@ -329,8 +331,8 @@ class Controller_gestionnaire extends Controller
     public function action_ajout_commercial_dans_composante()
     {
         $bd = Model::getModel();
-        if (isset($_POST['composante']) && isset($_POST['email-commercial']) && isset($_POST['nom-client'])) {
-            $bd->assignerCommercial($_POST['email-commercial'], $_POST['composante'], $_POST['nom-client']);
+        if (isset($_POST['composante']) && isset($_POST['email-commercial']) && isset($_POST['client'])) {
+            $bd->assignerCommercial($_POST['email-commercial'], $_POST['composante'], $_POST['client']);
         }
         $this->action_commerciaux();
     }
