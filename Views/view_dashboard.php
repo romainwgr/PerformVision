@@ -17,14 +17,6 @@
                             <td><?= $value ?></td>
                         <?php endif; endforeach; ?>
 
-                    <td>
-                        <div class="statut vert">L</div>
-                        <div class="statut orange">M</div>
-                        <div class="statut vert">M</div>
-                        <div class="statut orange">J</div>
-                        <div class="statut vert">V</div>
-                    </td>
-
                     <td style="display: flex; justify-content: space-around;">
                         <div style="text-align: center;">
                             <a href="#"><i class="fa fa-eye" aria-hidden="true"></i></a>

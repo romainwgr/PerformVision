@@ -198,7 +198,7 @@ class Model
 
     public function assignerInterlocuteurComposante($composante, $client, $email)
     {
-        $req = $this->bd->prepare("INSERT INTO dirige (id_personne, id_composante) SELECT  (SELECT id_personne FROM PERSONNE WHERE email=:email), (SELECT c.id_composante FROM COMPOSANTE c JOIN CLIENT cl ON c.id_client = cl.id_client WHERE c.nom_composante = :nom_compo  AND cl.nom_client = :nom_client)");
+        $req = $this->bd->prepare("INSERT INTO dirige (id_personne, id_composante) SELECT  (SELECT id_personne FROM PERSONNE WHERE email=:email), (SELECT c.id_composante FROM COMPOSANTE c JOIN CLIENT cl USING(id_client) WHERE c.nom_composante = :nom_compo  AND cl.nom_client = :nom_client)");
         $req->bindValue(':nom_compo', $composante, PDO::PARAM_STR);
         $req->bindValue(':nom_client', $client, PDO::PARAM_STR);
         $req->bindValue(':email', $email, PDO::PARAM_STR);
@@ -281,7 +281,7 @@ class Model
 
     public function assignerCommercial($email, $composante, $client)
     {
-        $req = $this->bd->prepare("INSERT INTO estDans (id_personne, id_composante) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT c.id_composante FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_composante = :composante AND nom_client = :client')");
+        $req = $this->bd->prepare("INSERT INTO estDans (id_personne, id_composante) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT id_composante FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_composante = :composante AND nom_client = :client)");
         $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->bindValue(':composante', $composante, PDO::PARAM_STR);
         $req->bindValue(':client', $client, PDO::PARAM_STR);
@@ -737,7 +737,7 @@ class Model
 
     public function checkMissionExiste($nom_mission, $nom_compo)
     {
-        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM MISSION JOIN COMPOSANTE USING(id_composante) WHERE nom_composante = :nom_compo AND nom_mission = :nom_mission) AS mission_existe');
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM MISSION JOIN COMPOSANTE USING(id_composante) WHERE nom_composante = :nom_composante AND nom_mission = :nom_mission) AS mission_existe');
         $req->bindValue(':nom_composante', $nom_compo);
         $req->bindValue(':nom_mission', $nom_mission);
         $req->execute();

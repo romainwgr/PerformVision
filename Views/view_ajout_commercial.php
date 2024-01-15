@@ -5,7 +5,7 @@ require 'view_header.php';
     <div class="add-container">
         <div class="form-abs">
             <h1>Ajout Commercial</h1>
-            <form action="?controller=prestataire&action=">
+            <form action="?controller=prestataire&action=<?php $_GET['id']? 'ajout_commercial_dans_composante' : 'ajout_commercial'?>">
                 <h2>Informations personnelles</h2>
                 <div class="form-names">
                     <input type="text" placeholder="Prénom" name="prenom" class="input-case">

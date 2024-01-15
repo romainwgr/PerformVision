@@ -21,7 +21,7 @@ class Controller_gestionnaire extends Controller
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $buttonLink = '?controller=gestionnaire&action=ajout_mission_form';
-            $headerDashboard = ['Société', 'Composante', 'Nom Mission', 'Préstataire assigné', 'Statut', 'Bon de livraison'];
+            $headerDashboard = ['Société', 'Composante', 'Nom Mission', 'Préstataire assigné', 'Bon de livraison'];
             $data = ['menu' => $this->action_get_navbar(), 'buttonLink' => $buttonLink, 'header' => $headerDashboard, 'dashboard' => $bd->getDashboardGestionnaire()];
             return $this->render('gestionnaire_missions', $data);
         } else {
@@ -258,6 +258,12 @@ class Controller_gestionnaire extends Controller
         $this->render('ajout_commercial', $data);
     }
 
+    public function action_ajout_commercial(){
+        $bd = Model::getModel();
+        if(isset($_POST['email-commercial']) && !$bd->checkCommercialExiste($_POST['email-commercial'])){
+            $bd->addCommercial($_POST['email-commercial']);
+        }
+    }
     public function action_ajout_gestionnaire()
     {
         $bd = Model::getModel();
@@ -292,7 +298,8 @@ class Controller_gestionnaire extends Controller
             isset($_POST['email-interlocuteur']) &&
             isset($_POST['prenom-commercial']) &&
             isset($_POST['nom-commercial']) &&
-            isset($_POST['email-commercial'])) {
+            isset($_POST['email-commercial']) &&
+            !$bd->checkSocieteExiste($_POST['client'])) {
 
             $bd->addClient($_POST['client'], $_POST['tel']);
             $this->action_ajout_composante();
@@ -312,18 +319,21 @@ class Controller_gestionnaire extends Controller
     {
         $bd = Model::getModel();
         $this->action_ajout_personne($_POST['nom-interlocuteur'], $_POST['prenom-interlocuteur'], $_POST['email-interlocuteur']);
-        $bd->addInterlocuteur($_POST['email-interlocuteur']);
+        if (!$bd->checkInterlocuteurExiste($_POST['email-interlocuteur'])) {
+            $bd->addInterlocuteur($_POST['email-interlocuteur']);
+        }
     }
 
     public function action_ajout_composante()
     {
+        $bd = Model::getModel();
         if (isset($_POST['composante']) &&
             isset($_POST['numero-voie']) &&
             isset($_POST['type-voie']) &&
             isset($_POST['nom-voie']) &&
             isset($_POST['cp']) &&
-            isset($_POST['ville'])) {
-            $bd = Model::getModel();
+            isset($_POST['ville']) &&
+            !$bd->checkComposanteExiste($_POST['composante'], $_POST['client'])) {
             $bd->addComposante($_POST['type-voie'],
                 $_POST['cp'],
                 $_POST['numero-voie'],
@@ -340,11 +350,13 @@ class Controller_gestionnaire extends Controller
     public function action_ajout_mission()
     {
         $bd = Model::getModel();
-        $bd->addMission($_POST['type-bdl'],
-            $_POST['mission'],
-            $_POST['date-mission'],
-            $_POST['composante'],
-            $_POST['client']);
+        if (!$bd->checkMissionExiste($_POST['mission'], $_POST['composante'])) {
+            $bd->addMission($_POST['type-bdl'],
+                $_POST['mission'],
+                $_POST['date-mission'],
+                $_POST['composante'],
+                $_POST['client']);
+        }
     }
 
     public function action_ajout_interlocuteur_dans_composante()
