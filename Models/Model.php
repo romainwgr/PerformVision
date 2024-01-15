@@ -289,6 +289,15 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    public function assignerCommercialByIdComposante($email, $id_composante)
+    {
+        $req = $this->bd->prepare("INSERT INTO estDans (id_personne, id_composante) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), :id_composante");
+        $req->bindValue(':email', $email);
+        $req->bindValue(':id_composante', $id_composante);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
     public function getBdlPresta($id_pr)
     {
         $req = $this->bd->prepare("SELECT id_bdl, mois, nom_mission FROM BON_DE_LIVRAISON bdl JOIN MISSION m USING(id_mission) JOIN travailleAvec ta USING(id_mission) WHERE ta.id_personne = :id");

@@ -170,7 +170,6 @@ class Controller_gestionnaire extends Controller
         if (isset($_POST['email']) && isset($_POST['client'])) {
             $bd->assignerCommercial($_POST['email'], $_POST['client']);
         }
-        $this->action_dashboard();
     }
 
     public function action_gestionnaire_supprimer_prestataire()
@@ -258,12 +257,14 @@ class Controller_gestionnaire extends Controller
         $this->render('ajout_commercial', $data);
     }
 
-    public function action_ajout_commercial(){
+    public function action_ajout_commercial()
+    {
         $bd = Model::getModel();
-        if(isset($_POST['email-commercial']) && !$bd->checkCommercialExiste($_POST['email-commercial'])){
+        if (isset($_POST['email-commercial']) && !$bd->checkCommercialExiste($_POST['email-commercial'])) {
             $bd->addCommercial($_POST['email-commercial']);
         }
     }
+
     public function action_ajout_gestionnaire()
     {
         $bd = Model::getModel();
@@ -380,7 +381,11 @@ class Controller_gestionnaire extends Controller
     {
         $bd = Model::getModel();
         if (isset($_POST['composante']) && isset($_POST['email-commercial']) && isset($_POST['client'])) {
+            $this->action_ajout_commercial();
             $bd->assignerCommercial($_POST['email-commercial'], $_POST['composante'], $_POST['client']);
+        } elseif (isset($_POST['email-commercial']) && isset($_GET['id'])) {
+            $this->action_ajout_commercial();
+            $bd->assignerCommercialByIdComposante($_POST['email-commercial'], $_GET['id']);
         }
     }
 

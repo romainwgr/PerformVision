@@ -12,9 +12,11 @@ require 'view_header.php';
                     <input type="text" placeholder="Nom" name="nom" class="input-case">
                 </div>
                 <input type="email" placeholder="Adresse email" name='email' id='mail-1' class="input-case">
-                <h2>Informations professionnelles</h2>
-                <input type="text" placeholder="Société" name='client' id='sté' class="input-case">
-                <input type="text" placeholder="Composante" name='composante' id='cpt' class="input-case">
+                <?php if (!isset($_GET['id-composante'])): ?>
+                    <h2>Informations professionnelles</h2>
+                    <input type="text" placeholder="Société" name='client' id='sté' class="input-case">
+                    <input type="text" placeholder="Composante" name='composante' id='cpt' class="input-case">
+                <?php endif; ?>
                 <div class="buttons" id="create">
                     <button type="submit">Créer</button>
                 </div>

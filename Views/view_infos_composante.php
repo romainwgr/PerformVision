@@ -34,7 +34,7 @@ require 'view_header.php';
         <div class="infos-container">
             <div class="infos__colonne">
                 <h2>Interlocuteurs</h2>
-                <a href="?controller=gestionnaire&action=ajout_interlocuteur_form" class="ajout"><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
+                <a href="?controller=gestionnaire&action=ajout_interlocuteur_form&id-composante=<?= $_GET['id'] ?>" class="ajout"><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
                 <?php foreach($interlocuteurs as $i): ?>
                     <a href="?controller=gestionnaire&action=infos_personne&id=<?= $i['id_personne']?>" class="block">
                         <h3><?= $i['nom'] . ' ' . $i['prenom'] ?></h3>
@@ -43,7 +43,7 @@ require 'view_header.php';
             </div>
             <div class="infos__colonne">
                 <h2>Commerciaux</h2>
-                <a href="?controller=gestionnaire&action=ajout_commercial_form" class="ajout"><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
+                <a href="?controller=gestionnaire&action=ajout_commercial_form&id-composante=<?= $_GET['id'] ?>" class="ajout"><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
                 <?php foreach($commerciaux as $c): ?>
                     <a href="?controller=gestionnaire&action=infos_personne&id=<?= $c['id_personne']?>" class="block">
                         <h3><?= $c['nom'] . ' ' . $c['prenom'] ?></h3>
@@ -52,9 +52,9 @@ require 'view_header.php';
             </div>
             <div class="infos__colonne">
                 <h2>Prestataires</h2>
-                <a href="?controller=gestionnaire&action=ajout_prestataire_form" class="ajout"><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
+                <a href="?controller=gestionnaire&action=ajout_prestataire_form&id-composante=<?= $_GET['id'] ?>" class="ajout"><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
                 <?php foreach($prestataires as $p): ?>
-                    <a href="?controller=gestionnaire&action=infos_personne&id=<?= $p['id_personne']?>" class="block">
+                    <a href="?controller=gestionnaire&action=infos_personne&id-composante=<?= $p['id_personne']?>" class="block">
                         <h3><?= $p['nom'] . ' ' . $p['prenom'] ?></h3>
                     </a>
                 <?php endforeach; ?>
