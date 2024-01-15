@@ -123,7 +123,7 @@ class Controller_prestataire extends Controller
             }else{
                 $data = ['title' => "Ajout d'un prestataire", 'message' => "Echec lors de l'ajout du prestataire !"];
             }
-            $this->return('message', $data);
+            $this->render('message', $data);
         }
     }
 }
