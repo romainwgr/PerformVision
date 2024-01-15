@@ -318,7 +318,7 @@ class Model
 
     public function assignerCommercial($email, $composante, $client)
     {
-        $req = $this->bd->prepare("INSERT INTO estDans (id_personne, id_composante) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT id_composante FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_composante = :composante AND nom_client = :client)");
+        $req = $this->bd->prepare("INSERT INTO estDans (id_personne, id_composante) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT c.id_composante FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_composante = :composante AND nom_client = :client')");
         $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->bindValue(':composante', $composante, PDO::PARAM_STR);
         $req->bindValue(':client', $client, PDO::PARAM_STR);
@@ -409,8 +409,8 @@ class Model
     public function setNomVoieAdresse($id, $nom)
     {
         $req = $this->bd->prepare("UPDATE ADRESSE SET nomVoie = :nom WHERE id_adresse = :id");
-        $req->bindValue(':id', $id);
-        $req->bindValue(':nom', $nom);
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':num', $num, PDO::PARAM_STR);
         $req->execute();
         return (bool)$req->rowCount();
     }
@@ -658,7 +658,7 @@ class Model
 
     public function checkPersonneExiste($email)
     {
-        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM PERSONNE WHERE email = :email) AS personne_existe;');
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM PERSONNE WHERE email = :email) AS personne_existe');
         $req->bindValue(':email', $email);
         $req->execute(); 
         return $req->fetch()[0] == 't';
@@ -666,10 +666,65 @@ class Model
 
     public function checkComposanteExiste($nom_compo, $nom_client)
     {
-        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_composante = :nom_composante AND nom_client = :nom_client) AS composante_existe;');
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_composante = :nom_composante AND nom_client = :nom_client) AS composante_existe');
         $req->bindValue(':nom_composante', $nom_compo);
         $req->bindValue(':nom_client', $nom_client);
         $req->execute(); 
-        return $req->fetchall();
+        return $req->fetch()[0] == 't';
     }
+
+    public function checkSocieteExiste($nom_client)
+    {
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM CLIENT WHERE nom_client = :nom_client) AS client_existe');
+        $req->bindValue(':nom_client', $nom_client);
+        $req->execute(); 
+        return $req->fetch()[0] == 't';
+    }
+
+    public function checkMissionExiste($nom_mission, $nom_compo)
+    {
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM MISSION JOIN COMPOSANTE USING(id_composante) WHERE nom_composante = :nom_compo AND nom_mission = :nom_mission) AS mission_existe');
+        $req->bindValue(':nom_composante', $nom_compo);
+        $req->bindValue(':nom_mission', $nom_mission);
+        $req->execute(); 
+        return $req->fetch()[0] == 't';
+    }
+
+    public function checkInterlocuteurExiste($email)
+    {
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM PERSONNE JOIN INTERLOCUTEUR USING(id_personne) WHERE email = :email) AS interlocuteur_existe');
+        $req->bindValue(':email', $email);
+        $req->execute(); 
+        return $req->fetch()[0] == 't';
+    }
+
+    public function checkCommercialExiste($email)
+    {
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM PERSONNE JOIN COMMERCIAL USING(id_personne) WHERE email = :email) AS commercial_existe');
+        $req->bindValue(':email', $email);
+        $req->execute(); 
+        return $req->fetch()[0] == 't';
+    }
+
+    public function checkPrestataireExiste($email)
+    {
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM PERSONNE JOIN PRESTATAIRE USING(id_personne) WHERE email = :email) AS prestataire_existe');
+        $req->bindValue(':email', $email);
+        $req->execute(); 
+        return $req->fetch()[0] == 't';
+    }
+
+    public function checkGestionnaireExiste($email)
+    {
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM PERSONNE JOIN GESTIONNAIRE USING(id_personne) WHERE email = :email) AS gestionnaire_existe');
+        $req->bindValue(':email', $email);
+        $req->execute(); 
+        return $req->fetch()[0] == 't';
+    }
+
+
+
+
+
+
 }
