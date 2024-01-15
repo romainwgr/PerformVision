@@ -265,7 +265,6 @@ class Controller_gestionnaire extends Controller
             isset($_POST['email-commercial'])) {
 
             $bd->addClient($_POST['client'], $_POST['tel']);
-            $this->action_ajout_interlocuteur();
             $this->action_ajout_composante();
             $this->action_ajout_mission();
         }
@@ -289,7 +288,6 @@ class Controller_gestionnaire extends Controller
     public function action_ajout_composante(){
         $bd = Model::getModel();
         $bd->addComposante($_POST['type-voie'],
-            $_POST['ville'],
             $_POST['cp'],
             $_POST['numero-voie'],
             $_POST['nom-voie'],

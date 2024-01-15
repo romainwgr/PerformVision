@@ -20,7 +20,7 @@ class Model
         include "credentials.php";
         $this->bd = new PDO($dsn, $login, $mdp);
         $this->bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $this->bd->query("SET nameS 'utf8'");
+        $this->bd->query("SET NAMES 'utf8'");
     }
 
     /**
@@ -37,10 +37,10 @@ class Model
     public function createPersonne($nom, $prenom, $email, $mdp)
     {
         $req = $this->bd->prepare('INSERT INTO PERSONNE(nom, prenom, email, mdp) VALUES(:nom, :prenom, :email, :mdp);');
-        $req->bindValue(':nom', (int)$nom, PDO::PARAM_STR);
-        $req->bindValue(':prenom', (int)$prenom, PDO::PARAM_STR);
-        $req->bindValue(':email', (int)$email, PDO::PARAM_STR);
-        $req->bindValue(':mdp', (int)$mdp, PDO::PARAM_STR);
+        $req->bindValue(':nom', $nom);
+        $req->bindValue(':prenom', $prenom);
+        $req->bindValue(':email', $email);
+        $req->bindValue(':mdp', $mdp);
         $req->execute();
         return (bool)$req->rowCount();
 
@@ -235,10 +235,10 @@ class Model
 
     public function assignerInterlocuteurComposante($composante, $client, $email)
     {
-        $req = $this->bd->prepare("INSERT INTO dirige (id_personne, id_composante) SELECT  (SELECT id_personne FROM PERSONNE WHERE email=:email), (SELECT c.id_composante FROM COMPOSANTE c JOIN CLIENT cl ON c.id_client = cl.id_client WHERE c.nom_composante = ':nom_compo'  AND cl.nom_client = ':nom_client')");
+        $req = $this->bd->prepare("INSERT INTO dirige (id_personne, id_composante) SELECT  (SELECT id_personne FROM PERSONNE WHERE email=:email), (SELECT c.id_composante FROM COMPOSANTE c JOIN CLIENT cl ON c.id_client = cl.id_client WHERE c.nom_composante = :nom_compo  AND cl.nom_client = :nom_client)");
         $req->bindValue(':nom_compo', $composante, PDO::PARAM_STR);
         $req->bindValue(':nom_client', $client, PDO::PARAM_STR);
-        $req->bindValue(':email', $client, PDO::PARAM_STR);
+        $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->execute();
         return (bool)$req->rowCount();
     }
@@ -254,7 +254,7 @@ class Model
     public function addInterlocuteur($email)
     {
         $req = $this->bd->prepare("INSERT INTO INTERLOCUTEUR (id_personne) SELECT id_personne FROM personne WHERE email = :email");
-        $req->bindValue(':email', $email, PDO::PARAM_STR);
+        $req->bindValue(':email', $email);
         $req->execute();
         return (bool)$req->rowCount();
     }
@@ -278,7 +278,7 @@ class Model
 
     public function addComposante($libelleVoie,$cp, $numVoie, $nomVoie, $nom_client, $nom_compo)
     {
-        $req = $this->bd->prepare("INSERT INTO ADRESSE(numero, nomVoie, id_type_voie, id_localite) SELECT :num, :nomVoie, (SELECT id_type_voie FROM TypeVoie WHERE libelle = :libelleVoie), (SELECT id_localite FROM localite WHERE cp = :cp");
+        $req = $this->bd->prepare("INSERT INTO ADRESSE(numero, nom_voie, id_type_voie, id_localite) SELECT :num, :nomVoie, (SELECT id_type_voie FROM TypeVoie WHERE libelle = :libelleVoie), (SELECT id_localite FROM localite WHERE cp = :cp)");
         $req->bindValue(':num', $numVoie, PDO::PARAM_STR);
         $req->bindValue(':nomVoie', $nomVoie, PDO::PARAM_STR);
         $req->bindValue(':libelleVoie', $libelleVoie, PDO::PARAM_STR);
@@ -661,7 +661,7 @@ class Model
         $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM PERSONNE WHERE email = :email) AS personne_existe;');
         $req->bindValue(':email', $email);
         $req->execute(); 
-        return $req->fetchall();
+        return $req->fetch()[0] == 't';
     }
 
     public function checkComposanteExiste($nom_compo, $nom_client)
