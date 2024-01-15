@@ -411,7 +411,7 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function setNomVoieAdresse($id, $nom)
+    public function setNomVoieAdresse($id, $num)
     {
         $req = $this->bd->prepare("UPDATE ADRESSE SET nomVoie = :nom WHERE id_adresse = :id");
         $req->bindValue(':id', $id, PDO::PARAM_INT);

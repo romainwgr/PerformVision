@@ -87,14 +87,17 @@ class Controller_prestataire extends Controller
         }
     }
     
-    public function action_prestataire_Allbdl(){
-        $bd=Model::getModel();
+    public function action_prestataire_Allbdl()
+    {
+        $bd = Model::getModel();
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        if (isset($_SESSION['id']))){
-            $data=["bdl"=>$bd->getBdlPresta($_SESSION['id'])];
-            $this->render("bdl",$data);
+        if (isset($_SESSION['id'])) {
+            $data = ["bdl" => $bd->getBdlPresta($_SESSION['id'])];
+            $this->render("bdl", $data);
+        }
+    }
         
 
     public function action_prestataire_creer_bdl(){

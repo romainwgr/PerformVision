@@ -264,14 +264,10 @@ class Controller_gestionnaire extends Controller
             isset($_POST['nom-commercial']) &&
             isset($_POST['email-commercial'])) {
 
-
-
             $bd->addClient($_POST['client'], $_POST['tel']);
+            $this->action_ajout_interlocuteur();
             $this->action_ajout_composante();
             $this->action_ajout_mission();
-            $this->action_ajout_interlocuteur();
-            $this->action_ajout_interlocuteur_dans_composante();
-            $this->action_ajout_commercial_dans_composante();
         }
     }
 
@@ -299,6 +295,8 @@ class Controller_gestionnaire extends Controller
             $_POST['nom-voie'],
             $_POST['client'],
             $_POST['composante']);
+        $this->action_ajout_interlocuteur_dans_composante();
+        $this->action_ajout_commercial_dans_composante();
     }
 
     public function action_ajout_mission(){
