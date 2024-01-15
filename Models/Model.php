@@ -409,7 +409,7 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function setNomVoieAdresse($id, $num)
+    public function setNomVoieAdresse($id, $nom)
     {
         $req = $this->bd->prepare("UPDATE ADRESSE SET nomVoie = :nom WHERE id_adresse = :id");
         $req->bindValue(':id', $id, PDO::PARAM_INT);
@@ -663,6 +663,15 @@ class Model
     {
         $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM PERSONNE WHERE email = :email) AS personne_existe;');
         $req->bindValue(':email', $email);
+        $req->execute(); 
+        return $req->fetchall();
+    }
+
+    public function checkComposanteExiste($nom_compo, $nom_client)
+    {
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_composante = :nom_composante AND nom_client = :nom_client) AS composante_existe;');
+        $req->bindValue(':nom_composante', $nom_compo);
+        $req->bindValue(':nom_client', $nom_client);
         $req->execute(); 
         return $req->fetchall();
     }
