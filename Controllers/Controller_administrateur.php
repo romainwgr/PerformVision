@@ -36,7 +36,7 @@ class Controller_administrateur extends Controllers_gestionnaire
         }
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
-            $buttonLink = '?controller=administrateur&action=ajout_commercial_form';
+            $buttonLink = '?controller=administrateur&action=ajout_gestionnaire_form';
             $data = ['title' => 'Gestionnaires', 'buttonLink' => $buttonLink, "person" => $bd->getAllCommerciaux(), 'menu' => $this->action_get_navbar()];
             $this->render("liste", $data);
         }

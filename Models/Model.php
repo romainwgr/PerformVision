@@ -276,16 +276,13 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function addComposante($libelleVoie, $ville, $cp, $numVoie, $nomVoie, $nom_client, $nom_compo)
+    public function addComposante($libelleVoie,$cp, $numVoie, $nomVoie, $nom_client, $nom_compo)
     {
-        $req = $this->bd->prepare("INSERT INTO LOCALITE(cp, ville) VALUES(:cp, :ville)");
-        $req->bindValue(':ville', $ville, PDO::PARAM_STR);
-        $req->bindValue(':cp', $cp, PDO::PARAM_STR);
-        $req->execute();
-        $req = $this->bd->prepare("INSERT INTO ADRESSE(numero, nomVoie, id_type_voie, id_localite) SELECT :num, :nomVoie, (SELECT id_type_voie FROM TypeVoie WHERE libelle = :libelleVoie), (SELECT id_localite FROM localite ORDER BY id_localite DESC LIMIT 1)");
+        $req = $this->bd->prepare("INSERT INTO ADRESSE(numero, nomVoie, id_type_voie, id_localite) SELECT :num, :nomVoie, (SELECT id_type_voie FROM TypeVoie WHERE libelle = :libelleVoie), (SELECT id_localite FROM localite WHERE cp = :cp");
         $req->bindValue(':num', $numVoie, PDO::PARAM_STR);
         $req->bindValue(':nomVoie', $nomVoie, PDO::PARAM_STR);
         $req->bindValue(':libelleVoie', $libelleVoie, PDO::PARAM_STR);
+        $req->bindValue(':cp', $cp, PDO::PARAM_STR);
         $req->execute();
         $req = $this->bd->prepare("INSERT INTO COMPOSANTE(nom_composante, id_adresse, id_client) SELECT :nom_compo, (SELECT id_adresse FROM adresse ORDER BY id_adresse DESC LIMIT 1), (SELECT id_client FROM CLIENT WHERE nom_client = :nom_client)");
         $req->bindValue(':nom_client', $nom_client, PDO::PARAM_STR);
