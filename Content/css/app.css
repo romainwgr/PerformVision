@@ -124,6 +124,18 @@ select{
     font-size: var(--font-size--little);
 }
 
+label {
+    position: absolute;
+    left: 20px;
+    color: #a0a0a0;
+    height: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+    transition: .2s;
+    font-family: Regular, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+
 button{
     transition: background-color 0.3s ease;
     padding: var(--spacer-2) var(--spacer-5); /* Ajustez la taille du bouton ici */
