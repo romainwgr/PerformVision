@@ -5,16 +5,19 @@ require 'view_header.php';
     <div class="add-container">
         <div class="form-abs">
             <h1>Ajout Interlocuteur Client</h1>
-            <form action="">
+            <form action="?controller=gestionnaire&action=ajout_interlocuteur_dans_composante<?php
+            if (isset($_GET['id-composante'])): echo '&id-composante=' . $_GET['id-composante']; endif;
+            if (isset($_GET['id-client'])): echo '&id-client=' . $_GET['id-client']; endif;
+            ?>" method="post">
                 <h2>Informations personnelles</h2>
                 <div class="form-names">
-                    <input type="text" placeholder="Prénom" name="prenom" class="input-case">
-                    <input type="text" placeholder="Nom" name="nom" class="input-case">
+                    <input type="text" placeholder="Prénom" name="prenom-interlocuteur" class="input-case">
+                    <input type="text" placeholder="Nom" name="nom-interlocuteur" class="input-case">
                 </div>
-                <input type="email" placeholder="Adresse email" name='email' id='mail-1' class="input-case">
+                <input type="email" placeholder="Adresse email" name='email-interlocuteur' id='mail-1'
+                       class="input-case">
                 <?php if (!isset($_GET['id-composante'])): ?>
                     <h2>Informations professionnelles</h2>
-                    <input type="text" placeholder="Société" name='client' id='sté' class="input-case">
                     <input type="text" placeholder="Composante" name='composante' id='cpt' class="input-case">
                 <?php endif; ?>
                 <div class="buttons" id="create">

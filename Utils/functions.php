@@ -60,3 +60,30 @@ function maj_infos_client()
         }
     }
 }
+
+function maj_infos_composante(){
+    $bd = Model::getModel();
+    if(isset($_GET['id-composante'])){
+        if(isset($_POST['composante']) && !preg_match('/^ *$/', $_POST['client'])){
+            $bd->setNomComposante($_GET['id'], $_POST['composante']);
+        }
+        if(isset($_POST['client']) && !preg_match('/^ *$/', $_POST['telephone-client'])){
+            $bd->setTelClient($_GET['id'], $_POST['telephone-client']);
+        }
+        if(isset($_POST['numero-voie']) && !preg_match('/^ *$/', $_POST['telephone-client'])){
+            $bd->setNumeroAdresse($_GET['id'], $_POST['numero-voie']);
+        }
+        if(isset($_POST['type-voie']) && !preg_match('/^ *$/', $_POST['telephone-client'])){
+            $bd->setLibelleTypevoie($_GET['id'], $_POST['type-voie']);
+        }
+        if(isset($_POST['nom-voie']) && !preg_match('/^ *$/', $_POST['telephone-client'])){
+            $bd->setNomVoieAdresse($_GET['id'], $_POST['nom-voie']);
+        }
+        if(isset($_POST['cp']) && !preg_match('/^ *$/', $_POST['telephone-client'])){
+            $bd->setCpLocalite($_GET['id'], $_POST['cp']);
+        }
+        if(isset($_POST['ville']) && !preg_match('/^ *$/', $_POST['telephone-client'])){
+            $bd->setVilleLocalite($_GET['id'], $_POST['ville']);
+        }
+    }
+}

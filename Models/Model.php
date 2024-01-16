@@ -205,6 +205,26 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    public function assignerInterlocuteurComposanteByIdComposante($id_composante, $email)
+    {
+        $req = $this->bd->prepare("INSERT INTO dirige (id_personne, id_composante) SELECT  (SELECT id_personne FROM PERSONNE WHERE email=:email), :id_composante");
+        $req->bindValue(':id_composante', $id_composante, PDO::PARAM_STR);
+        $req->bindValue(':email', $email, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function assignerInterlocuteurComposanteByIdClient($id_client, $email,  $composante){
+        $req = $this->bd->prepare("INSERT INTO dirige (id_personne, id_composante) SELECT  
+                                                    (SELECT id_personne FROM PERSONNE WHERE email=:email), 
+                                                    (SELECT id_composante FROM COMPOSANTE WHERE id_client = :id_client and nom_composante = :composante)");
+        $req->bindValue(':composante', $composante);
+        $req->bindValue(':id_client', $id_client);
+        $req->bindValue(':email', $email);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
     public function addPrestataire($email)
     {
         $req = $this->bd->prepare("INSERT INTO PRESTATAIRE (id_personne) SELECT id_personne FROM personne WHERE email = :email");
@@ -492,9 +512,20 @@ class Model
 
     public function setLibelleTypevoie($id, $libelle)
     {
-        $req = $this->bd->prepare("UPDATE TYPEVOIE SET libelle = :libelle WHERE id_type_voie = :id");
-        $req->bindValue(':id', $id, PDO::PARAM_INT);
-        $req->bindValue(':libelle', $libelle, PDO::PARAM_STR);
+        $req = $this->bd->prepare("UPDATE ADRESSE SET id_type_voie = (SELECT id_type_voie FROM TYPEVOIE WHERE LOWER(libelle) = LOWER(:libelle))
+               WHERE id_adresse = (SELECT id_adresse FROM COMPOSANTE JOIN ADRESSE USING(id_adresse) WHERE id_composante = :id)");
+        $req->bindValue(':id', $id);
+        $req->bindValue(':libelle', $libelle);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function setClientComposante($id, $client)
+    {
+        $req = $this->bd->prepare("UPDATE COMPOSANTE SET id_client = (SELECT id_client FROM CLIENT WHERE LOWER(nom_client) = LOWER(:client))
+                  WHERE id_composante = :id");
+        $req->bindValue(':id', $id);
+        $req->bindValue(':client', $client);
         $req->execute();
         return (bool)$req->rowCount();
     }

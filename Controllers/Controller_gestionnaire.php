@@ -73,6 +73,11 @@ class Controller_gestionnaire extends Controller
         maj_infos_personne(); // fonction dans Utils
         $this->action_infos_personne();
     }
+    public function action_maj_infos_composante()
+    {
+        maj_infos_composante(); // fonction dans Utils
+        $this->action_infos_personne();
+    }
 
     public function action_infos_personne()
     {
@@ -329,6 +334,7 @@ class Controller_gestionnaire extends Controller
         if (!$bd->checkInterlocuteurExiste($_POST['email-interlocuteur'])) {
             $bd->addInterlocuteur($_POST['email-interlocuteur']);
         }
+        $this->action_ajout_interlocuteur_form();
     }
 
     public function action_ajout_composante()
@@ -377,8 +383,21 @@ class Controller_gestionnaire extends Controller
     public function action_ajout_interlocuteur_dans_composante()
     {
         $bd = Model::getModel();
-        if (isset($_POST['composante']) && isset($_POST['client']) && $_POST['email-interlocuteur']) {
-            $bd->assignerInterlocuteurComposante($_POST['composante'], $_POST['client'], $_POST['email-interlocuteur']);
+        if (isset($_GET['id-composante']) && isset($_POST['email-interlocuteur']) && isset($_POST['nom-interlocuteur']) && isset($_POST['prenom-interlocuteur'])) {
+            if (!$bd->checkInterlocuteurExiste($_POST['email-interlocuteur'])) {
+                $this->action_ajout_personne($_POST['nom-interlocuteur'], $_POST['prenom-interlocuteur'], $_POST['email-interlocuteur']);
+                $bd->addInterlocuteur($_POST['email-interlocuteur']);
+            }
+            $bd->assignerInterlocuteurComposanteByIdComposante($_GET['id-composante'], $_POST['email-interlocuteur']);
+            $this->action_composantes();
+        }
+        if (isset($_GET['id-client']) && isset($_POST['email-interlocuteur']) && isset($_POST['nom-interlocuteur']) && isset($_POST['prenom-interlocuteur']) && isset($_POST['composante'])) {
+            if (!$bd->checkInterlocuteurExiste($_POST['email-interlocuteur'])) {
+                $this->action_ajout_personne($_POST['nom-interlocuteur'], $_POST['prenom-interlocuteur'], $_POST['email-interlocuteur']);
+                $bd->addInterlocuteur($_POST['email-interlocuteur']);
+            }
+            $bd->assignerInterlocuteurComposanteByIdClient($_GET['id-client'], $_POST['email-interlocuteur'], $_POST['composante']);
+            $this->action_clients();
         }
     }
 
@@ -388,6 +407,7 @@ class Controller_gestionnaire extends Controller
         if (isset($_POST['mission']) && isset($_POST['email-prestataire']) && $_GET['id'] && $bd->checkPrestataireExiste($_POST['email-prestataire'])) {
             $bd->assignerPrestataire($_POST['email-prestataire'], $_POST['mission'], $_GET['id']);
         }
+        $this->ajout_prestataire_form();
     }
 
     public function action_ajout_commercial_dans_composante()
