@@ -18,7 +18,7 @@ class Controller_commercial extends Controller
             $bd = Model::getModel();
             $headerDashboard = ['Société', 'Composante','Nom Mission' ,'Préstataire assigné', 'Statut', 'Bon de livraison'];
             $data = ['menu'=>$this->action_get_navbar(),'header' => $headerDashboard, 'dashboard' => $bd->getdashboardCommercial($_SESSION['id'])];
-            return $this->render('commercial_missions', $data);
+            return $this->render('prestataire_missions', $data);
         } 
         else 
         {
@@ -61,7 +61,7 @@ class Controller_commercial extends Controller
         if (isset($_SESSION['id'])){
             $bd = Model::getModel();
             $data=[$bd->getInterlocuteurForCommercial($_SESSION['id'])];
-            $this->render("commercial_interlocuteurs",$data);
+            $this->render("liste",$data);
         }
         else 
         {
@@ -93,7 +93,7 @@ class Controller_commercial extends Controller
         }
         if (isset($_SESSION['id'])){
             $bd = Model::getModel();
-            $data=[$bd->getBdlPrestaForCommercial($_POST['prestataire'],$_SESSION['id'])];
+            $data=[$bd->getBdlPrestaForCommercial($_GET['prestataire'],$_SESSION['id'])];
             $this->render("commercial_presta_bdl",$data);
         }
         else 
@@ -140,7 +140,7 @@ class Controller_commercial extends Controller
             $this->render('infos_client', $data);
         }
     }
-    
+
     public function action_infos_personne()
     {
         if (session_status() == PHP_SESSION_NONE) {
