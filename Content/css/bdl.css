@@ -8,9 +8,12 @@
     margin: auto;
 }
 
-.label-mois {
-    display: block;
-    margin-bottom: 8px;
+#label-mois {
+    position: initial;
+    color: white;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: medium;
 }
 
 .input-bdl {
@@ -19,20 +22,12 @@
     margin-bottom: 16px;
 }
 
-button {
-    background-color: #4F74B1;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
 
 .bdl-table {
     border-collapse: collapse;
     width: 100%;
     margin-top: 20px;
+    color: white;
 }
 
 .bdl-table th, td {
@@ -44,4 +39,24 @@ button {
 .bdl-table th {
     background-color: #4F74B1;
     color: white;
+}
+
+#button-get-data {
+    margin-top:2%;
+}
+#joursTableBody input {
+    background-color: rgb(0,0,0,0);
+    box-shadow: none;
+    color: white;
+    font-size: large;
+    font-weight: bold;
+    text-align: center;
+}
+#joursTableBody td{
+    background-color: #C5D0E5;
+    border-color: rgba(79, 116, 177, 0.50);
+    text-align: center;
+}
+#joursTableBody::before {
+    content: none;
 }
