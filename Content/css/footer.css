@@ -1,5 +1,6 @@
 footer {
-    margin-top: 10vh;
+    bottom:0;
+    position:absolute;
     display: flex;
     align-items: center;
     background-color: var(--primary-color);

@@ -29,13 +29,13 @@ img {
 
 .dashboard__table{
     box-shadow: var(--shadow-regular);
-    height: 50vh;
+    height: auto;
     width: 100%;
     border-radius: var(--border-3);
     background-color: #FFF;
     box-sizing: border-box;
     padding: var(--spacer-3);
-    overflow: scroll;
+    overflow: visible;
 }
 
 .dashboard-container {
