@@ -308,6 +308,19 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    public function addBdlInMission($nom_mission, $nom_composante, $mois, $id_prestataire)
+    {
+        $req = $this->bd->prepare("INSERT INTO BON_DE_LIVRAISON(mois, id_mission, id_prestataire) SELECT :mois, 
+                                                                               (SELECT id_mission FROM MISSION JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :mission and nom_composante = :composante),
+                                                                               :id_prestataire");
+        $req->bindValue(':mission', $nom_mission);
+        $req->bindValue(':composante', $nom_composante);
+        $req->bindValue(':mois', $mois);
+        $req->bindValue(':id_prestataire', $id_prestataire);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
     public function assignerPrestataire($email, $mission)
     {
         $req = $this->bd->prepare("INSERT INTO travailleAvec (id_personne, id_mission) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT m.id_mission FROM MISSION m JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :nom_mission')");
@@ -541,7 +554,8 @@ class Model
         return $req->fetchall();
     }
 
-    public function getDashboardPrestataire($id_prestataire){
+    public function getDashboardPrestataire($id_prestataire)
+    {
         $req = $this->bd->prepare('SELECT nom_client, nom_composante, nom_mission, id_mission FROM client JOIN composante c USING(id_client) JOIN mission USING(id_composante) JOIN travailleavec ta USING(id_mission) JOIN PERSONNE p ON ta.id_personne = p.id_personne WHERE ta.id_personne=:id');
         $req->bindValue(':id', $id_prestataire);
         $req->execute();
@@ -573,14 +587,25 @@ class Model
         return $req->fetchall();
     }
 
-    public function getBdlType($id_bdl){
+    public function getBdlType($id_bdl)
+    {
         $req = $this->bd->prepare("SELECT id_bdl, type_bdl FROM BON_DE_LIVRAISON JOIN MISSION USING(id_mission) WHERE id_bdl = :id");
         $req->bindValue(':id', $id_bdl);
         $req->execute();
         return $req->fetch();
     }
 
-    public function getIdActivite($date_activite, $id_bdl){
+    public function getBdlsOfPrestataireByIdMission($id_mission, $id_prestataire)
+    {
+        $req = $this->bd->prepare("SELECT id_bdl, nom_mission, mois FROM BON_DE_LIVRAISON JOIN MISSION USING(id_mission) WHERE id_mission = :id_mission and id_prestataire = :id_prestataire");
+        $req->bindValue(':id_mission', $id_mission);
+        $req->bindValue(':id_prestataire', $id_prestataire);
+        $req->execute();
+        return $req->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getIdActivite($date_activite, $id_bdl)
+    {
         $req = $this->bd->prepare('SELECT id_activite FROM activite WHERE id_bdl = :id_bdl and date_bdl = :date');
         $req->bindValue(':id_bdl', $id_bdl);
         $req->bindValue(':date', $date_activite);
@@ -777,7 +802,7 @@ class Model
         $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_composante = :nom_composante AND nom_client = :nom_client) AS composante_existe');
         $req->bindValue(':nom_composante', $nom_compo);
         $req->bindValue(':nom_client', $nom_client);
-        $req->execute(); 
+        $req->execute();
         return $req->fetch()[0] == 't';
     }
 
@@ -830,7 +855,8 @@ class Model
         return $req->fetch()[0] == 't';
     }
 
-    public function checkActiviteExiste($id_bdl, $date_activite){
+    public function checkActiviteExiste($id_bdl, $date_activite)
+    {
         $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM ACTIVITE WHERE id_bdl = :id_bdl and date_bdl = :date_activite)');
         $req->bindValue(':id_bdl', $id_bdl);
         $req->bindValue(':date_activite', $date_activite);
