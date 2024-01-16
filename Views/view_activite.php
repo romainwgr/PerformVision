@@ -4,7 +4,7 @@ require 'view_header.php';
 ?>
 <div class="bdl-container">
     <form id="bonDeLivraisonForm">
-        <label class='label-mois' for="mois">Mois :</label>
+        <label id='label-mois' for="mois">Choissisez le mois (par son nombre):</label>
         <input class='input-bdl' type="text" id="mois" name="mois" required>
         <button type="button" onclick="submitForm()">Enregistrer</button>
     </form>
@@ -23,7 +23,7 @@ require 'view_header.php';
         </tbody>
     </table>
 
-    <button type="button" onclick="getTableData()">Récupérer les données</button>
+    <button type="button" onclick="getTableData()" id="button-get-data">Récupérer les données</button>
 </div>
 <script>
   function submitForm() {
