@@ -391,9 +391,10 @@ class Controller_gestionnaire extends Controller
         if (isset($_POST['composante']) && isset($_POST['email-commercial']) && isset($_POST['client'])) {
             $this->action_ajout_commercial();
             $bd->assignerCommercial($_POST['email-commercial'], $_POST['composante'], $_POST['client']);
-        } elseif (isset($_POST['email-commercial']) && isset($_GET['id'])) {
+        } elseif (isset($_POST['email-commercial']) && isset($_GET['id-composante'])) {
             $this->action_ajout_commercial();
-            $bd->assignerCommercialByIdComposante($_POST['email-commercial'], $_GET['id']);
+            $bd->assignerCommercialByIdComposante($_POST['email-commercial'], $_GET['id-composante']);
+            $this->action_ajout_commercial_form();
         }
     }
 
