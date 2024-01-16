@@ -157,8 +157,8 @@ class Controller_gestionnaire extends Controller
             session_start();
         }
         if(isset($_GET['id']) && isset($_GET['id-prestataire'])){
-            $cardLink = '?controller=gestionnaire&action=afficher_bdl';
-            $data = ['title' => 'Bons de livraison', $cardLink, 'menu' => $this->action_get_navbar(), 'person' => $bd->getBdlsOfPrestataireByIdMission($_GET['id'], $_GET['id-prestataire'])];
+            $cardLink = '?controller=gestionnaire&action=consulter_bdl';
+            $data = ['title' => 'Bons de livraison', 'cardLink' => $cardLink, 'menu' => $this->action_get_navbar(), 'person' => $bd->getBdlsOfPrestataireByIdMission($_GET['id'], $_GET['id-prestataire'])];
             $this->render('liste', $data);
         }
     }
@@ -436,11 +436,13 @@ class Controller_gestionnaire extends Controller
             $commerciaux = $bd->getCommerciauxComposante($_GET['id']);
             $interlocuteurs = $bd->getInterlocuteursComposante($_GET['id']);
             $bdl = $bd->getBdlComposante($_GET['id']);
+            $cardLink = '?controller=gestionnaire';
             $data = ['infos' => $infos,
                 'prestataires' => $prestataires,
                 'commerciaux' => $commerciaux,
                 'interlocuteurs' => $interlocuteurs,
                 'bdl' => $bdl,
+                'cardLink' => $cardLink,
                 'menu' => $this->action_get_navbar()];
             $this->render('infos_composante', $data);
         }
@@ -461,6 +463,30 @@ class Controller_gestionnaire extends Controller
                 'interlocuteurs' => $interlocuteurs,
                 'menu' => $this->action_get_navbar()];
             $this->render('infos_client', $data);
+        }
+    }
+
+    public function action_consulter_bdl(){
+        $bd = Model::getModel();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (isset($_GET['id'])) {
+            $typeBdl = $bd->getBdlType($_GET['id']);
+            if($typeBdl['type_bdl'] == 'Heure'){
+                $activites = $bd->getAllNbHeureActivite($_GET['id']);
+            }
+            if($typeBdl['type_bdl'] == 'Demi-journée'){
+                $activites = $bd->getAllDemiJourActivite($_GET['id']);
+            }
+            if($typeBdl['type_bdl'] == 'Journée'){
+                $activites = $bd->getAllJourActivite($_GET['id']);
+            }
+
+            $data = ['menu' => $this->action_get_navbar(), 'bdl' => $typeBdl, 'activites' => $activites];
+            $this->render("consulte_bdl", $data);
+        } else {
+            echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
         }
     }
 }
