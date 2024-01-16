@@ -1,7 +1,15 @@
 <?php
 
-class Controller_administrateur extends Controller_gestionnaire
+class Controller_administrateur extends Controller
 {
+    /**
+     * @inheritDoc
+     */
+    public function action_default()
+    {
+        $this->action_dashboard();
+    }
+
     public function action_dashboard()
     {
         if (session_status() == PHP_SESSION_NONE) {
@@ -13,8 +21,8 @@ class Controller_administrateur extends Controller_gestionnaire
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $buttonLink = '?controller=administrateur&action=ajout_mission_form';
-            $headerDashboard = ['Société', 'Composante', 'Nom Mission', 'Préstataire assigné', 'Statut', 'Bon de livraison'];
-            $data = ['menu' => $this->action_get_navbar(), 'buttonLink' => $buttonLink, 'header' => $headerDashboard, 'dashboard' => $bd->getDashboardAdministrateur()];
+            $headerDashboard = ['Société', 'Composante', 'Nom Mission', 'Préstataire assigné', 'Bon de livraison'];
+            $data = ['menu' => $this->action_get_navbar(), 'buttonLink' => $buttonLink, 'header' => $headerDashboard, 'dashboard' => $bd->getDashboardGestionnaire()];
             return $this->render('gestionnaire_missions', $data);
         } else {
             echo 'Une erreur est survenue lors du chargement du tableau de bord';
@@ -83,5 +91,6 @@ class Controller_administrateur extends Controller_gestionnaire
     }
 
 
-
 }
+
+?>
