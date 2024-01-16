@@ -6,7 +6,7 @@ require 'view_header.php';
     <h1><?= $title ?> </h1>
     <div class="element-recherche">
         <input type="text" id="recherche" name="recherche" placeholder="Rechercher un <?= $title ?>...">
-        <?php if (isset($p['id_bdl']) && $_SESSION['role'] != 'gestionnaire'): ?>
+        <?php if ($_SESSION['role'] == 'gestionnaire'): ?>
             <button type="submit" class="button-primary"
                     onclick="window.location='<?= $buttonLink ?>'">Ajouter
             </button>

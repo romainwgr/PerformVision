@@ -214,7 +214,8 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function assignerInterlocuteurComposanteByIdClient($id_client, $email,  $composante){
+    public function assignerInterlocuteurComposanteByIdClient($id_client, $email, $composante)
+    {
         $req = $this->bd->prepare("INSERT INTO dirige (id_personne, id_composante) SELECT  
                                                     (SELECT id_personne FROM PERSONNE WHERE email=:email), 
                                                     (SELECT id_composante FROM COMPOSANTE WHERE id_client = :id_client and nom_composante = :composante)");
@@ -329,7 +330,7 @@ class Model
 
     public function addBdlInMission($nom_mission, $nom_composante, $mois, $id_prestataire)
     {
-        try{
+        try {
             $req = $this->bd->prepare("INSERT INTO BON_DE_LIVRAISON(mois, id_mission, id_prestataire) SELECT :mois, 
                                                                                (SELECT id_mission FROM MISSION JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :mission and nom_composante = :composante),
                                                                                :id_prestataire");
@@ -339,7 +340,7 @@ class Model
             $req->bindValue(':id_prestataire', $id_prestataire);
             $req->execute();
             return (bool)$req->rowCount();
-        }catch (PDOException $e){
+        } catch (PDOException $e) {
             error_log('Erreur PHP : ' . $e->getMessage());
             echo 'Une des informations est mauvaise';
         }
@@ -467,16 +468,16 @@ class Model
 
     public function setNomComposante($id, $nom)
     {
-        $req = $this->bd->prepare("UPDATE PERSONNE SET nom_composante = :nom WHERE id_composante = :id");
-        $req->bindValue(':id', $id, PDO::PARAM_INT);
-        $req->bindValue(':nom', $nom, PDO::PARAM_STR);
+        $req = $this->bd->prepare("UPDATE COMPOSANTE SET nom_composante = :nom WHERE id_composante = :id");
+        $req->bindValue(':id', $id);
+        $req->bindValue(':nom', $nom);
         $req->execute();
         return (bool)$req->rowCount();
     }
 
     public function setNumeroAdresse($id, $num)
     {
-        $req = $this->bd->prepare("UPDATE ADRESSE SET numero = :num WHERE id_adresse = :id");
+        $req = $this->bd->prepare("UPDATE ADRESSE SET numero = :num WHERE id_adresse = (SELECT id_adresse FROM ADRESSE JOIN COMPOSANTE USING(id_adresse) WHERE id_composante = :id)");
         $req->bindValue(':id', $id);
         $req->bindValue(':num', $num);
         $req->execute();
@@ -485,7 +486,7 @@ class Model
 
     public function setNomVoieAdresse($id, $nom)
     {
-        $req = $this->bd->prepare("UPDATE ADRESSE SET nomVoie = :nom WHERE id_adresse = :id");
+        $req = $this->bd->prepare("UPDATE ADRESSE SET nom_voie = :nom WHERE id_adresse = (SELECT id_adresse FROM ADRESSE JOIN COMPOSANTE USING(id_adresse) WHERE id_composante = :id)");
         $req->bindValue(':id', $id);
         $req->bindValue(':nom', $nom);
         $req->execute();
@@ -494,18 +495,20 @@ class Model
 
     public function setCpLocalite($id, $cp)
     {
-        $req = $this->bd->prepare("UPDATE LOCALITE SET cp = :cp WHERE id_adresse = :id");
-        $req->bindValue(':id', $id, PDO::PARAM_INT);
-        $req->bindValue(':cp', $cp, PDO::PARAM_STR);
+        $req = $this->bd->prepare("UPDATE ADRESSE SET id_localite = (SELECT id_localite FROM LOCALITE WHERE cp = :cp)
+               WHERE id_adresse = (SELECT id_adresse FROM ADRESSE JOIN COMPOSANTE USING(id_adresse) WHERE id_composante = :id)");
+        $req->bindValue(':id', $id);
+        $req->bindValue(':cp', $cp);
         $req->execute();
         return (bool)$req->rowCount();
     }
 
     public function setVilleLocalite($id, $ville)
     {
-        $req = $this->bd->prepare("UPDATE LOCALITE SET ville = :ville WHERE id_adresse = :id");
-        $req->bindValue(':id', $id, PDO::PARAM_INT);
-        $req->bindValue(':ville', $ville, PDO::PARAM_STR);
+        $req = $this->bd->prepare("UPDATE ADRESSE SET id_localite = (SELECT id_localite FROM LOCALITE WHERE LOWER(ville) = LOWER(:ville))
+               WHERE id_adresse = (SELECT id_adresse FROM ADRESSE JOIN COMPOSANTE USING(id_adresse) WHERE id_composante = :id)");
+        $req->bindValue(':id', $id);
+        $req->bindValue(':ville', $ville);
         $req->execute();
         return (bool)$req->rowCount();
     }

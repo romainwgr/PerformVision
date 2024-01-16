@@ -76,7 +76,7 @@ class Controller_gestionnaire extends Controller
     public function action_maj_infos_composante()
     {
         maj_infos_composante(); // fonction dans Utils
-        $this->action_infos_personne();
+        $this->action_infos_composante();
     }
 
     public function action_infos_personne()
