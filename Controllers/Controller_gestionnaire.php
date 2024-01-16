@@ -219,7 +219,8 @@ class Controller_gestionnaire extends Controller
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        $data = ['menu' => $this->action_get_navbar()];
+        $ajoutInterlocuteurLink = '?controller=gestionnaire&action=ajout_interlocuteur_dans_composante'; //le lien que tu dois modifier pour qu'il renvoie à l'action du commercial adéquate
+        $data = ['ajoutInterlocuteurLink' => $ajoutInterlocuteurLink, 'menu' => $this->action_get_navbar()];
         $this->render('ajout_interlocuteur', $data);
     }
 

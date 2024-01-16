@@ -5,7 +5,7 @@ require 'view_header.php';
     <div class="add-container">
         <div class="form-abs">
             <h1>Ajout Interlocuteur Client</h1>
-            <form action="?controller=gestionnaire&action=ajout_interlocuteur_dans_composante<?php
+            <form action="<?= $ajoutInterlocuteurLink ?>"<?php
             if (isset($_GET['id-composante'])): echo '&id-composante=' . $_GET['id-composante']; endif;
             if (isset($_GET['id-client'])): echo '&id-client=' . $_GET['id-client']; endif;
             ?>" method="post">
