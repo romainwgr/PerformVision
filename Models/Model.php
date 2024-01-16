@@ -52,7 +52,7 @@ class Model
 
     public function getDashboardGestionnaire()
     {
-        $req = $this->bd->prepare("SELECT c.nom_client, co.nom_composante, m.nom_mission, COALESCE(p.nom, 'Aucun') AS nom, COALESCE(p.prenom, 'Aucun') AS prenom 
+        $req = $this->bd->prepare("SELECT c.nom_client, co.nom_composante, m.nom_mission, COALESCE(p.nom, 'Aucun') AS nom, COALESCE(p.prenom, 'Aucun') AS prenom, ta.id_personne as id_prestataire, ta.id_mission 
         FROM mission m
             JOIN composante co ON m.id_composante = co.id_composante 
             JOIN client c ON co.id_client = c.id_client 

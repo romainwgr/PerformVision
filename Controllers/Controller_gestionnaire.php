@@ -20,9 +20,10 @@ class Controller_gestionnaire extends Controller
         }
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
+            $bdlLink = '?controller=gestionnaire&action=mission_bdl';
             $buttonLink = '?controller=gestionnaire&action=ajout_mission_form';
             $headerDashboard = ['Société', 'Composante', 'Nom Mission', 'Préstataire assigné', 'Bon de livraison'];
-            $data = ['menu' => $this->action_get_navbar(), 'buttonLink' => $buttonLink, 'header' => $headerDashboard, 'dashboard' => $bd->getDashboardGestionnaire()];
+            $data = ['menu' => $this->action_get_navbar(), 'bdlLink' => $bdlLink, 'buttonLink' => $buttonLink, 'header' => $headerDashboard, 'dashboard' => $bd->getDashboardGestionnaire()];
             return $this->render('gestionnaire_missions', $data);
         } else {
             echo 'Une erreur est survenue lors du chargement du tableau de bord';
@@ -144,12 +145,15 @@ class Controller_gestionnaire extends Controller
         }
     }
 
-    public function action_bdl()/*utilisé sur la page missions pour montré les bdl de cette mission*/
-    {
+    public function action_mission_bdl(){
         $bd = Model::getModel();
-        if (isset($_POST['mission'], $_POST['prestataire'])) {
-            $data = ["bdl" => $bd->getBdlPrestaForGestionnaire($_POST['prestataire'], $_POST['mission'])];
-            $this->render("bdl", $data);
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if(isset($_GET['id']) && isset($_GET['id-prestataire'])){
+            $cardLink = '?controller=gestionnaire&action=afficher_bdl';
+            $data = ['title' => 'Bons de livraison', $cardLink, 'menu' => $this->action_get_navbar(), 'person' => $bd->getBdlsOfPrestataireByIdMission($_GET['id'], $_GET['id-prestataire'])];
+            $this->render('liste', $data);
         }
     }
 

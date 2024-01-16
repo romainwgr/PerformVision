@@ -20,16 +20,9 @@
 
                     <td style="display: flex; justify-content: space-around;">
                         <div style="text-align: center;">
-                            <a href="?controller=prestataire&action=mission_bdl&id=<?= $row['id_mission'] ?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                            <a href="<?= $bdlLink ?><?php if(isset($row['id_prestataire'])): echo '&id-prestataire=' . $row['id_prestataire']; endif;  ?>&id=<?= $row['id_mission'] ?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
                             <p>Consulter</p>
                         </div>
-
-                        <!--
-                        <div style="text-align: center;">
-                            <a href="#"><i class="fa fa-download" aria-hidden="true"></i></a>
-                            <p>Télécharger</p>
-                        </div>
-                        -->
                     </td>
                 </tr>
             <?php endforeach; ?>

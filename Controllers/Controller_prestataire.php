@@ -96,10 +96,9 @@ class Controller_prestataire extends Controller
             session_start();
         }
         if(isset($_GET['id'])){
-            $headerDashboard = ['Société', 'Composante', 'Nom Mission', 'Bon de livraison'];
             $buttonLink = '?controller=prestataire&action=ajout_bdl_form';
             $cardLink = '?controller=prestataire&action=afficher_bdl';
-            $data = ['title' => 'Bons de livraison', 'buttonLink' => $buttonLink, 'cardLink' => $cardLink, 'menu' => $this->action_get_navbar(), 'header' => $headerDashboard, 'person' => $bd->getBdlsOfPrestataireByIdMission($_GET['id'], $_SESSION['id'])];
+            $data = ['title' => 'Bons de livraison', 'buttonLink' => $buttonLink, 'cardLink' => $cardLink, 'menu' => $this->action_get_navbar(), 'person' => $bd->getBdlsOfPrestataireByIdMission($_GET['id'], $_SESSION['id'])];
             $this->render('liste', $data);
         }
     }
