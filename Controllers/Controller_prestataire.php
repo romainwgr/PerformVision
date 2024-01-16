@@ -15,13 +15,16 @@ class Controller_prestataire extends Controller
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        if (!array_key_exists('role', $_SESSION)) {
-            $_SESSION['role'] = 'prestataire';
+        if (isset($_SESSION['role'])) {
+            unset($_SESSION['role']);
         }
+        $_SESSION['role'] = 'prestataire';
+
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
+            $bdlLink = '?controller=prestataire&action=mission_bdl';
             $headerDashboard = ['Société', 'Composante', 'Nom Mission', 'Bon de livraison'];
-            $data = ['menu' => $this->action_get_navbar(), 'header' => $headerDashboard, 'dashboard' => $bd->getDashboardPrestataire($_SESSION['id'])];
+            $data = ['menu' => $this->action_get_navbar(), 'bdlLink' => $bdlLink, 'header' => $headerDashboard, 'dashboard' => $bd->getDashboardPrestataire($_SESSION['id'])];
             return $this->render('prestataire_missions', $data);
         } else {
             echo 'Une erreur est survenue lors du chargement du tableau de bord';

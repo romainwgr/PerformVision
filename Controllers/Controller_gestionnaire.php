@@ -15,9 +15,10 @@ class Controller_gestionnaire extends Controller
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        if (!array_key_exists('role', $_SESSION)) {
-            $_SESSION['role'] = 'gestionnaire';
+        if (isset($_SESSION['role'])) {
+            unset($_SESSION['role']);
         }
+        $_SESSION['role'] = 'gestionnaire';
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $bdlLink = '?controller=gestionnaire&action=mission_bdl';

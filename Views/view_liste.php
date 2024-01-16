@@ -6,14 +6,17 @@ require 'view_header.php';
     <h1><?= $title ?> </h1>
     <div class="element-recherche">
         <input type="text" id="recherche" name="recherche" placeholder="Rechercher un <?= $title ?>...">
-        <button type="submit" class="button-primary"
-                onclick="window.location='<?= $buttonLink ?>'">Ajouter
-        </button>
+        <?php if (isset($p['id_bdl']) && $_SESSION['role'] != 'gestionnaire'): ?>
+            <button type="submit" class="button-primary"
+                    onclick="window.location='<?= $buttonLink ?>'">Ajouter
+            </button>
+        <?php endif; ?>
     </div>
 
     <div class="element-block">
         <?php foreach ($person as $p): ?>
-            <a href='<?= $cardLink ?>&id=<?php if(isset($p['id_bdl'])): echo $p['id_bdl']; else: echo $p['id']; endif; ?>' class="block">
+            <a href='<?= $cardLink ?>&id=<?php if (isset($p['id_bdl'])): echo $p['id_bdl']; else: echo $p['id']; endif; ?>'
+               class="block">
                 <h2><?php
                     if (array_key_exists('id_bdl', $p)): echo $p['nom_mission']; endif;
                     if (array_key_exists('nom', $p)): echo $p['nom'] . ' ' . $p['prenom']; endif;

@@ -22,7 +22,7 @@
     margin-bottom: 16px;
 }
 
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+.input-bdl::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: white;
     opacity: 1; /* Firefox */
 }
@@ -35,7 +35,7 @@
     color: white;
 }
 
-.bdl-table th, td {
+.bdl-table th, .bdl-table td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
