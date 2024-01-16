@@ -198,8 +198,9 @@ class Controller_prestataire extends Controller
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        if(isset($_POST['mission']) && isset($_POST['mois']) && isset($_POST['composante'])){
+        if($_POST['mission'] && $_POST['mois'] && $_POST['composante']){
             $bd->addBdlInMission($_POST['mission'], $_POST['composante'], $_POST['mois'], $_SESSION['id']);
         }
+        $this->action_ajout_bdl_form();
     }
 }

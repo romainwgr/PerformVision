@@ -310,15 +310,20 @@ class Model
 
     public function addBdlInMission($nom_mission, $nom_composante, $mois, $id_prestataire)
     {
-        $req = $this->bd->prepare("INSERT INTO BON_DE_LIVRAISON(mois, id_mission, id_prestataire) SELECT :mois, 
+        try{
+            $req = $this->bd->prepare("INSERT INTO BON_DE_LIVRAISON(mois, id_mission, id_prestataire) SELECT :mois, 
                                                                                (SELECT id_mission FROM MISSION JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :mission and nom_composante = :composante),
                                                                                :id_prestataire");
-        $req->bindValue(':mission', $nom_mission);
-        $req->bindValue(':composante', $nom_composante);
-        $req->bindValue(':mois', $mois);
-        $req->bindValue(':id_prestataire', $id_prestataire);
-        $req->execute();
-        return (bool)$req->rowCount();
+            $req->bindValue(':mission', $nom_mission);
+            $req->bindValue(':composante', $nom_composante);
+            $req->bindValue(':mois', $mois);
+            $req->bindValue(':id_prestataire', $id_prestataire);
+            $req->execute();
+            return (bool)$req->rowCount();
+        }catch (PDOException $e){
+            error_log('Erreur PHP : ' . $e->getMessage());
+            echo 'Une des informations est mauvaise';
+        }
     }
 
     public function assignerPrestataire($email, $mission)
