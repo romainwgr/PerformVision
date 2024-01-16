@@ -367,6 +367,30 @@ class Model
         return $req->fetchall();
     }
 
+    public function getAllNbHeure($id_bdl)
+    {
+        $req = $this->bd->prepare("SELECT nb_heure, a.commentaire, date_bdl FROM NB_HEURE JOIN ACTIVITE a USING(id_activite) JOIN BON_DE_LIVRAISON using(id_bdl) WHERE id_bdl = :id_bdl ORDER BY date_bdl");
+        $req->bindValue(':id_bdl', $id_bdl);
+        $req->execute();
+        return $req->fetchall();
+    }
+
+    public function getAllDemiJour($id_bdl)
+    {
+        $req = $this->bd->prepare("SELECT nb_demi_journee, a.commentaire, date_bdl FROM DEMI_JOUR JOIN ACTIVITE a USING(id_activite) JOIN BON_DE_LIVRAISON using(id_bdl) WHERE id_bdl = :id_bdl ORDER BY date_bdl");
+        $req->bindValue(':id_bdl', $id_bdl);
+        $req->execute();
+        return $req->fetchall();
+    }
+
+    public function getAllJour($id_bdl)
+    {
+        $req = $this->bd->prepare("SELECT journee, a.commentaire, date_bdl FROM JOUR JOIN ACTIVITE a USING(id_activite) JOIN BON_DE_LIVRAISON using(id_bdl) WHERE id_bdl = :id_bdl ORDER BY date_bdl");
+        $req->bindValue(':id_bdl', $id_bdl);
+        $req->execute();
+        return $req->fetchall();
+    }
+
     public function setNomPersonne($id, $nom)
     {
         $req = $this->bd->prepare("UPDATE PERSONNE SET nom = :nom WHERE id_personne = :id");
