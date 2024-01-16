@@ -14,12 +14,13 @@
                         <?php if ($cle == 'prenom' or $cle == 'nom'): ?>
                             <td><?= $row['prenom'] . ' ' . $row['nom'] ?></td>
                             <?php break; else: ?>
+                        <?php if($cle != 'id_mission') ?>
                             <td><?= $value ?></td>
                         <?php endif; endforeach; ?>
 
                     <td style="display: flex; justify-content: space-around;">
                         <div style="text-align: center;">
-                            <a href="#"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                            <a href="?controller=prestataire&action=mission_bdl&id=<?= $row['id_mission'] ?>"><i class="fa fa-eye" aria-hidden="true"></i></a>
                             <p>Consulter</p>
                         </div>
 

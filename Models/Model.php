@@ -268,12 +268,42 @@ class Model
 
     public function addNbHeureActivite($commentaire, $id_bdl, $id_personne, $date_bdl, $nb_heure)
     {
-        $req = $this->bd->prepare("INSERT INTO NB_HEURE (commentaire, id_bdl, id_personne, date_bdl, nb_heure) VALUES(:commentaire, :id_bdl, :id_personne, :date, :nb_heure)");
+        $req = $this->bd->prepare("INSERT INTO ACTIVITE (commentaire, id_bdl, id_personne, date_bdl) VALUES(:commentaire, :id_bdl, :id_personne, :date_bdl)");
         $req->bindValue(':commentaire', $commentaire);
         $req->bindValue(':id_bdl', $id_bdl);
-        $req->bindValue(':id_personne', $id_personnne);
+        $req->bindValue(':id_personne', $id_personne);
         $req->bindValue(':date_bdl', $date_bdl);
+        $req->execute();
+        $req = $this->bd->prepare("INSERT INTO NB_HEURE SELECT (SELECT id_activite FROM activite ORDER BY id_activite DESC LIMIT 1), :nb_heure");
         $req->bindValue(':nb_heure', $nb_heure);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function addDemiJournee($commentaire, $id_bdl, $id_personne, $date_bdl, $nb_dj)
+    {
+        $req = $this->bd->prepare("INSERT INTO ACTIVITE (commentaire, id_bdl, id_personne, date_bdl) VALUES(:commentaire, :id_bdl, :id_personne, :date_bdl)");
+        $req->bindValue(':commentaire', $commentaire);
+        $req->bindValue(':id_bdl', $id_bdl);
+        $req->bindValue(':id_personne', $id_personne);
+        $req->bindValue(':date_bdl', $date_bdl);
+        $req->execute();
+        $req = $this->bd->prepare("INSERT INTO DEMI_JOUR SELECT (SELECT id_activite FROM activite ORDER BY id_activite DESC LIMIT 1), :nb_dj");
+        $req->bindValue(':nb_dj', $nb_dj);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function addJourneeJour($commentaire, $id_bdl, $id_personne, $date_bdl, $nb_jour)
+    {
+        $req = $this->bd->prepare("INSERT INTO ACTIVITE (commentaire, id_bdl, id_personne, date_bdl) VALUES(:commentaire, :id_bdl, :id_personne, :date_bdl)");
+        $req->bindValue(':commentaire', $commentaire);
+        $req->bindValue(':id_bdl', $id_bdl);
+        $req->bindValue(':id_personne', $id_personne);
+        $req->bindValue(':date_bdl', $date_bdl);
+        $req->execute();
+        $req = $this->bd->prepare("INSERT INTO JOUR(id_activite, journee) SELECT (SELECT id_activite FROM activite ORDER BY id_activite DESC LIMIT 1), :nb_jour");
+        $req->bindValue(':nb_jour', $nb_jour);
         $req->execute();
         return (bool)$req->rowCount();
     }
@@ -301,9 +331,9 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function getBdlPresta($id_pr)
+    public function getAllBdlPrestataire($id_pr)
     {
-        $req = $this->bd->prepare("SELECT id_bdl, mois, nom_mission FROM BON_DE_LIVRAISON bdl JOIN MISSION m USING(id_mission) JOIN travailleAvec ta USING(id_mission) WHERE ta.id_personne = :id");
+        $req = $this->bd->prepare("SELECT id_bdl, mois, nom_mission FROM bon_de_livraison JOIN prestataire ON id_personne = id_prestataire JOIN MISSION USING(id_mission) WHERE id_personne = :id");
         $req->bindValue(':id', $id_pr, PDO::PARAM_INT);
         $req->execute();
         return $req->fetchall();
@@ -436,7 +466,7 @@ class Model
     }
 
 
-    public function setNbHeureNbHeure($id, $heure)
+    public function setNbHeure($id, $heure)
     {
         $req = $this->bd->prepare("UPDATE NB_HEURE SET nb_heure = :heure WHERE id_activite = :id");
         $req->bindValue(':id', $id, PDO::PARAM_INT);
@@ -463,20 +493,11 @@ class Model
         return (bool)$req->rowCount();
     }
 
-    public function setMatinDemiJour($id, $matin)
+    public function setDemiJournee($id, $demi_journee)
     {
-        $req = $this->bd->prepare("UPDATE DEMI_JOUR SET matin = :matin WHERE id_activite = :id");
-        $req->bindValue(':id', $id, PDO::PARAM_INT);
-        $req->bindValue(':matin', $matin, PDO::PARAM_STR);
-        $req->execute();
-        return (bool)$req->rowCount();
-    }
-
-    public function setApres_midiDemiJour($id, $aprem)
-    {
-        $req = $this->bd->prepare("UPDATE DEMI_JOUR SET apres_midi = :aprem WHERE id_activite = :id");
-        $req->bindValue(':id', $id, PDO::PARAM_INT);
-        $req->bindValue(':aprem', $aprem, PDO::PARAM_STR);
+        $req = $this->bd->prepare("UPDATE DEMI_JOUR SET nb_demi_journee = :dj WHERE id_activite = :id");
+        $req->bindValue(':id', $id);
+        $req->bindValue(':dj', $demi_journee);
         $req->execute();
         return (bool)$req->rowCount();
     }
@@ -520,6 +541,13 @@ class Model
         return $req->fetchall();
     }
 
+    public function getDashboardPrestataire($id_prestataire){
+        $req = $this->bd->prepare('SELECT nom_client, nom_composante, nom_mission, id_mission FROM client JOIN composante c USING(id_client) JOIN mission USING(id_composante) JOIN travailleavec ta USING(id_mission) JOIN PERSONNE p ON ta.id_personne = p.id_personne WHERE ta.id_personne=:id');
+        $req->bindValue(':id', $id_prestataire);
+        $req->execute();
+        return $req->fetchall(PDO::FETCH_ASSOC);
+    }
+
     public function getInterlocuteurForCommercial($id_co)
     {
         $req = $this->bd->prepare('SELECT nom, prenom, nom_client, nom_composante FROM dirige JOIN composante USING(id_composante) JOIN client USING(id_client) JOIN personne USING(id_personne) JOIN estDans ed USING(id_composante) WHERE ed.id_personne = :id');
@@ -545,6 +573,20 @@ class Model
         return $req->fetchall();
     }
 
+    public function getBdlType($id_bdl){
+        $req = $this->bd->prepare("SELECT id_bdl, type_bdl FROM BON_DE_LIVRAISON JOIN MISSION USING(id_mission) WHERE id_bdl = :id");
+        $req->bindValue(':id', $id_bdl);
+        $req->execute();
+        return $req->fetch();
+    }
+
+    public function getIdActivite($date_activite, $id_bdl){
+        $req = $this->bd->prepare('SELECT id_activite FROM activite WHERE id_bdl = :id_bdl and date_bdl = :date');
+        $req->bindValue(':id_bdl', $id_bdl);
+        $req->bindValue(':date', $date_activite);
+        $req->execute();
+        return $req->fetch()[0];
+    }
 
     /* -------------------------------------------------------------------------
                         Fonction Interlocuteur
@@ -788,9 +830,11 @@ class Model
         return $req->fetch()[0] == 't';
     }
 
-
-
-
-
-
+    public function checkActiviteExiste($id_bdl, $date_activite){
+        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM ACTIVITE WHERE id_bdl = :id_bdl and date_bdl = :date_activite)');
+        $req->bindValue(':id_bdl', $id_bdl);
+        $req->bindValue(':date_activite', $date_activite);
+        $req->execute();
+        return $req->fetch()[0] == 't';
+    }
 }

@@ -1,0 +1,47 @@
+#bonDeLivraisonForm {
+    width: 80%;
+    margin: auto;
+}
+
+.bdl-container{
+    width: 80%;
+    margin: auto;
+}
+
+.label-mois {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.input-bdl {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+}
+
+button {
+    background-color: #4F74B1;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+.bdl-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.bdl-table th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.bdl-table th {
+    background-color: #4F74B1;
+    color: white;
+}
