@@ -22,6 +22,11 @@
     margin-bottom: 16px;
 }
 
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    opacity: 1; /* Firefox */
+}
+
 
 .bdl-table {
     border-collapse: collapse;
