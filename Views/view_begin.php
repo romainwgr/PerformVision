@@ -21,5 +21,6 @@
     <link rel="stylesheet" href="/Content/css/footer.css">
     <link rel="stylesheet" href="/Content/css/ajout_form.css">
     <link rel="stylesheet" href="/Content/css/composante.css">
+    <link rel="stylesheet" href="/Content/css/bdl.css">
 </head>
 <body>

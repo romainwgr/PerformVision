@@ -5,7 +5,7 @@ require 'view_header.php';
 
 <div class='main-contrainer'>
     <div class="dashboard-container">
-        <h1>Missions</h1>
+        <h1>Mes Missions</h1>
         <?php require_once 'view_dashboard.php'; ?>
     </div>
 </div>

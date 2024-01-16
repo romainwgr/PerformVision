@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  * Fonction échappant les caractères html dans $message
  * @param string $message chaîne à échapper
