@@ -21,20 +21,20 @@ require 'view_header.php';
         <div class="infos-container">
             <div class="infos__colonne">
                 <h2>Interlocuteurs</h2>
-                <a href="?controller=gestionnaire&action=ajout_interlocuteur_form&id-client=<?= $_GET['id'] ?>" class="ajout"><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
+                <a href="?controller=<?= $_GET['controller']?>&action=ajout_interlocuteur_form&id-client=<?= $_GET['id'] ?>" class="ajout"><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
                 <?php foreach ($interlocuteurs as $i): ?>
-                    <a href="?controller=gestionnaire&action=infos_personne&id=<?= $i['id_personne']?>" class="block">
+                    <a href="?controller=<?= $_GET['controller']?>&action=infos_personne&id=<?= $i['id_personne']?>" class="block">
                         <h3><?= $i['nom'] . ' ' . $i['prenom'] ?></h3>
                     </a>
                 <?php endforeach; ?>
             </div>
             <div class="infos__colonne">
                 <h2>Composantes</h2>
-                <a href="?controller=gestionnaire&action=ajout_composante_form" class="ajout"><i
+                <a href="?controller=<?= $_GET['controller']?>&action=ajout_composante_form" class="ajout"><i
                         class="fa fa-solid fa-user-plus"></i>
                     &nbsp; Ajouter</a>
                 <?php foreach ($composantes as $c): ?>
-                    <a href='?controller=gestionnaire&action=infos_composante&id=<?= $c['id_composante'] ?>'
+                    <a href='?controller=<?= $_GET['controller']?>&action=infos_composante&id=<?= $c['id_composante'] ?>'
                        class="block">
                         <h3><?= $c['nom_composante'] ?></h3>
                     </a>
