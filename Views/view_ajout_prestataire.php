@@ -5,7 +5,7 @@ require 'view_header.php';
     <div class="add-container">
         <div class="form-abs">
             <h1>Ajout Prestataire</h1>
-            <form action="?controller=gestionnaire&action=<?php if(isset($_GET['id-composante'])): echo 'ajout_prestataire_dans_mission&id=' . $_GET['id-composante']; else: echo 'ajout_prestataire'; endif;?>" method="post">
+            <form action="?controller=gestionnaire&action=<?php if(isset($_GET['id'])): echo 'ajout_prestataire_dans_mission&id=' . $_GET['id']; else: echo 'ajout_prestataire'; endif;?>" method="post">
                 <h2>Informations personnelles</h2>
                 <div class="form-names">
                     <input type="text" placeholder="Prénom" name="prenom" class="input-case">
@@ -13,7 +13,7 @@ require 'view_header.php';
                 </div>
                 <input type="email" placeholder="Adresse email" name="email-prestataire" id='mail-1' class="input-case">
                 <h2>Informations professionnelles</h2>
-                <?php if (!isset($_GET['id-composante'])): ?>
+                <?php if (!isset($_GET['id'])): ?>
                     <input type="text" placeholder="Société" name="client" id='sté' class="input-case">
                 <?php else: ?>
                     <input type="text" placeholder="Nom mission" name="mission" id='sté' class="input-case">

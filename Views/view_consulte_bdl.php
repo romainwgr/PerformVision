@@ -16,7 +16,7 @@ require 'view_header.php';
                 <tr>
                     <td><?= $activite["date_bdl"] ?></td>
                     <td><?php
-                        if (isset($activite['journee'])): if($activite['journee']): echo 'Présent';
+                        if (isset($activite['journee'])): if ($activite['journee']): echo 'Présent';
                         else: echo 'Absent'; endif; endif;
                         if (isset($activite['nb_heure'])): echo $activite['nb_heure']; endif;
                         if (isset($activite['nb_demi_journee'])): echo $activite['nb_demi_journee']; endif;
@@ -26,8 +26,11 @@ require 'view_header.php';
             <?php endforeach; ?>
         </tbody>
     </table>
-
-    <button type="submit" id="button-get-data">Valider</button>
+    <?php if (str_contains($_GET['controller'], 'interlocuteur')): ?>
+        <form>
+            <button type="submit" id="button-get-data">Valider</button>
+        </form>
+    <?php endif; ?>
 </div>
 <?php
 require 'view_end.php';

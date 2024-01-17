@@ -86,7 +86,7 @@ class Controller_prestataire extends Controller
             session_start();
         }
         if (isset($_GET['id'])) {
-            $data = ['menu' => $this->action_get_navbar(), 'bdl' => $bd->getBdlType($_GET['id'])];
+            $data = ['menu' => $this->action_get_navbar(), 'bdl' => $bd->getBdlTypeAndMonth($_GET['id'])];
             $this->render("activite", $data);
         } else {
             echo 'Une erreur est survenue lors du chargement de ce bon de livraison';

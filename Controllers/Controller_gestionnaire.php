@@ -408,7 +408,7 @@ class Controller_gestionnaire extends Controller
         if (isset($_POST['mission']) && isset($_POST['email-prestataire']) && $_GET['id'] && $bd->checkPrestataireExiste($_POST['email-prestataire'])) {
             $bd->assignerPrestataire($_POST['email-prestataire'], $_POST['mission'], $_GET['id']);
         }
-        $this->ajout_prestataire_form();
+        $this->action_ajout_prestataire_form();
     }
 
     public function action_ajout_commercial_dans_composante()
@@ -472,7 +472,7 @@ class Controller_gestionnaire extends Controller
             session_start();
         }
         if (isset($_GET['id'])) {
-            $typeBdl = $bd->getBdlType($_GET['id']);
+            $typeBdl = $bd->getBdlTypeAndMonth($_GET['id']);
             if($typeBdl['type_bdl'] == 'Heure'){
                 $activites = $bd->getAllNbHeureActivite($_GET['id']);
             }

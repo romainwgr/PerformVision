@@ -353,7 +353,7 @@ class Model
         $req->bindValue(':nom_mission', $mission, PDO::PARAM_STR);
         $req->bindValue(':id_composante', $id_composante);
         $req->execute();
-        $req = $this->bd->prepare("INSERT INTO BON_DE_LIVRAISON(id_prestataire, id_mission, mois)  SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email),  (SELECT m.id_mission FROM MISSION m JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :nom_mission and id_composante = :id_composante), (SELECT EXTRACT(MONTH FROM CURRENT_DATE))");
+        $req = $this->bd->prepare("INSERT INTO BON_DE_LIVRAISON(id_prestataire, id_mission, mois)  SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email),  (SELECT m.id_mission FROM MISSION m JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :nom_mission and id_composante = :id_composante), (SELECT TO_CHAR(NOW(), 'YYYY-MM') AS date_format)");
         $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->bindValue(':nom_mission', $mission, PDO::PARAM_STR);
         $req->bindValue(':id_composante', $id_composante);
@@ -660,9 +660,9 @@ class Model
         return $req->fetchall();
     }
 
-    public function getBdlType($id_bdl)
+    public function getBdlTypeAndMonth($id_bdl)
     {
-        $req = $this->bd->prepare("SELECT id_bdl, type_bdl FROM BON_DE_LIVRAISON JOIN MISSION USING(id_mission) WHERE id_bdl = :id");
+        $req = $this->bd->prepare("SELECT id_bdl, type_bdl, mois FROM BON_DE_LIVRAISON JOIN MISSION USING(id_mission) WHERE id_bdl = :id");
         $req->bindValue(':id', $id_bdl);
         $req->execute();
         return $req->fetch();

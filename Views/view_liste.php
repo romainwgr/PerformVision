@@ -6,7 +6,8 @@ require 'view_header.php';
     <h1><?= $title ?> </h1>
     <div class="element-recherche">
         <input type="text" id="recherche" name="recherche" placeholder="Rechercher un <?= $title ?>...">
-        <?php if (str_contains($cardLink, 'gestionnaire') || str_contains($cardLink, 'administrateur')): ?>
+        <?php if (!(str_contains($cardLink, 'gestionnaire') || str_contains($cardLink, 'administrateur'))
+            || ((str_contains($cardLink, 'prestataire') && isset($person[0]['id_bdl'])))): ?>
             <button type="submit" class="button-primary"
                     onclick="window.location='<?= $buttonLink ?>'">Ajouter
             </button>

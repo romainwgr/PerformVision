@@ -7,8 +7,19 @@
     width: 80%;
     min-height: 60vh;
     margin: auto;
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+#button-get-data{
+    width: fit-content;
+}
+
+.bdl-container > form{
+    align-items: center;
+}
 #label-mois {
     position: initial;
     color: white;
