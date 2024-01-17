@@ -13,10 +13,6 @@
     align-items: center;
 }
 
-#button-get-data{
-    width: fit-content;
-}
-
 .bdl-container > form{
     align-items: center;
 }
@@ -58,9 +54,16 @@
     color: white;
 }
 
-#button-get-data {
-    margin-top:2%;
+.button-valide-container{
+    display: flex;
+    gap: var(--spacer-3);
 }
+
+.button-valide {
+    margin-top: var(--spacer-3);
+    width: 10rem;
+}
+
 #joursTableBody input {
     background-color: rgb(0,0,0,0);
     box-shadow: none;
@@ -69,11 +72,13 @@
     font-weight: bold;
     text-align: center;
 }
+
 #joursTableBody td{
     background-color: #C5D0E5;
     border-color: rgba(79, 116, 177, 0.50);
     text-align: center;
 }
+
 #joursTableBody::before {
     content: none;
 }

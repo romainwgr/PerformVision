@@ -3,9 +3,10 @@
 
 header {
     background: #4F74B1;
-    height: 10vh;
+    min-height: 10vh;
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     color: white;
     margin-bottom: 10vh;
@@ -20,8 +21,8 @@ header {
 }
 
 .menu-list{
-    justify-content: space-between;
-    width: 50%;
+    gap: var(--spacer-8);
+    max-width: 50%;
 }
 
 nav ul {

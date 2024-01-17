@@ -5,7 +5,7 @@ require 'view_header.php';
     <div class="add-container">
         <div class="form-abs">
             <h1>Informations</h1>
-            <form action="?controller=gestionnaire&action=maj_infos_personne&id=<?= $person['id_personne'] ?>" method="post">
+            <form action="?controller=<?= $_GET['controller'] ?>>&action=maj_infos_personne&id=<?= $person['id_personne'] ?>" method="post">
                 <div class="form-names">
                     <input type="text" placeholder="<?= $person['prenom'] ?>" name="prenom" class="input-case">
                     <input type="text" placeholder="<?= $person['nom'] ?>" name="nom" class="input-case">

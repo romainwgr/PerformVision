@@ -412,6 +412,16 @@ class Model
         return $req->fetchall(PDO::FETCH_ASSOC);
     }
 
+    public function setEstValideBdl($id_bdl, $id_interlocuteur, $valide){
+        $req = $this->bd->prepare("UPDATE BON_DE_LIVRAISON SET est_valide = :valide, id_interlocuteur = :id_interlocuteur WHERE id_bdl = :id_bdl");
+        $req->bindValue(':id_interlocuteur', $id_interlocuteur);
+        $req->bindValue(':id_bdl', $id_bdl);
+        $req->bindValue(':valide', $valide);
+        $req->execute();
+        return (bool)$req->rowCount();
+
+    }
+
     public function setNomPersonne($id, $nom)
     {
         $req = $this->bd->prepare("UPDATE PERSONNE SET nom = :nom WHERE id_personne = :id");
@@ -712,7 +722,7 @@ class Model
      */
     public function getClientContactDashboardData()
     {
-        $req = $this->bd->prepare('SELECT nom_mission, date_debut, nom, prenom, id_bdl FROM mission m JOIN travailleAvec USING(id_mission) JOIN personne p USING(id_personne) JOIN bon_de_livraison bdl ON m.id_mission= bdl.id_mission WHERE bdl.id_personne = :id;');
+        $req = $this->bd->prepare('SELECT nom_mission, date_debut, nom, prenom, id_bdl, ta.id_mission, ta.id_personne as id_prestataire FROM mission m JOIN travailleAvec ta USING(id_mission) JOIN personne p USING(id_personne) JOIN bon_de_livraison bdl ON m.id_mission= bdl.id_mission WHERE bdl.id_interlocuteur = :id;');
         $req->bindValue(':id', $_SESSION['id']);
         $req->execute();
         return $req->fetchAll(PDO::FETCH_ASSOC);
@@ -766,7 +776,6 @@ class Model
         $req->execute();
         return $req->fetchall();
     }
-
 
     /* -------------------------------------------------------------------------
                             Fonction Prestataire

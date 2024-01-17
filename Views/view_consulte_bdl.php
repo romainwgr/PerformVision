@@ -27,9 +27,16 @@ require 'view_header.php';
         </tbody>
     </table>
     <?php if (str_contains($_GET['controller'], 'interlocuteur')): ?>
-        <form>
-            <button type="submit" id="button-get-data">Valider</button>
-        </form>
+    <div class="button-valide-container">
+        <button class="button-delete button-valide"
+            onclick="window.location='?controller=interlocuteur&action=valider_bdl&id=<?php echo $_GET['id'] ?>&valide=false'"
+            id="button-get-data">Contester
+        </button>
+        <button class="button-primary button-valide"
+            onclick="window.location='?controller=interlocuteur&action=valider_bdl&id=<?php echo $_GET['id'] ?>&valide=true'"
+            id="button-get-data">Valider
+        </button>
+    </div>
     <?php endif; ?>
 </div>
 <?php

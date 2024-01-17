@@ -10,7 +10,7 @@
         <?php endif; ?>
         <ul>
             <li>
-                <a class='right-elt' href="?controller=<?= $_SESSION['role'] ?>&action=infos" id="username" class='right-elt'><i class="fa fa-user-circle"
+                <a class='right-elt' href="?controller=<?= $_GET['controller'] ?>&action=infos" id="username" class='right-elt'><i class="fa fa-user-circle"
                                                                                  aria-hidden="true"></i><?php if (isset($_SESSION)): echo '&nbsp;' . $_SESSION['nom']; endif; ?>
                     <br> <?php if (isset($_SESSION)): echo '&nbsp;' . $_SESSION['prenom']; endif; ?></a></li>
             <li><a href="?controller=login" class='right-elt'><i class="fa fa-sign-out"

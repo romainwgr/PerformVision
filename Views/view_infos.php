@@ -5,7 +5,7 @@ require 'view_header.php';
     <div class="add-container">
         <div class="form-abs">
             <h1>Mon compte</h1>
-            <form action="?controller=<?= $_SESSION['role'] ?>&action=maj_infos" method="post">
+            <form action="?controller=<?= $_GET['controller'] ?>&action=maj_infos" method="post">
                 <h2>Informations personnelles</h2>
                 <div class="form-names">
                     <input type="text" placeholder="<?= $_SESSION['prenom'] ?>" name="prenom" class="input-case">

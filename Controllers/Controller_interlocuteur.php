@@ -21,13 +21,86 @@ class Controller_interlocuteur extends Controller
         }
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
-            $headerDashboard = ['Nom projet/société', 'Date', 'Préstataire assigné', 'Statut', 'Bon de livraison'];
-            $data = ['header' => $headerDashboard, 'dashboard' => $bd->getClientContactDashboardData()];
+            $bdlLink = '?controller=interlocuteur&action=mission_bdl';
+            $headerDashboard = ['Nom projet/société', 'Date', 'Préstataire assigné', 'Bon de livraison'];
+            $data = ['header' => $headerDashboard, 'menu' => $this->action_get_navbar(), 'bdlLink' => $bdlLink, 'dashboard' => $bd->getClientContactDashboardData()];
             return $this->render('interlocuteur', $data);
         } else {
             echo 'Une erreur est survenue lors du chargement du tableau de bord';
         }
     }
+
+    public function action_get_navbar()
+    {
+        return [['link' => '?controller=interlocuteur&action=dashboard', 'name' => 'Mes prestataires']];
+    }
+
+    public function action_infos()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        $data = ['role' => 'interlocuteur', 'menu' => $this->action_get_navbar()];
+        $this->render('infos', $data);
+    }
+
+    public function action_maj_infos()
+    {
+        maj_infos_personne(); // fonction dans Utils
+        $this->action_infos();
+    }
+
+
+    public function action_mission_bdl(){
+        $bd = Model::getModel();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if(isset($_GET['id']) && isset($_GET['id-prestataire'])){
+            $cardLink = '?controller=interlocuteur&action=consulter_bdl';
+            $data = ['title' => 'Bons de livraison', 'menu' => $this->action_get_navbar(), 'cardLink' => $cardLink, 'person' => $bd->getBdlsOfPrestataireByIdMission($_GET['id'], $_GET['id-prestataire'])];
+            $this->render('liste', $data);
+        }
+    }
+
+    public function action_consulter_bdl(){
+        $bd = Model::getModel();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (isset($_GET['id'])) {
+            $typeBdl = $bd->getBdlTypeAndMonth($_GET['id']);
+            if($typeBdl['type_bdl'] == 'Heure'){
+                $activites = $bd->getAllNbHeureActivite($_GET['id']);
+            }
+            if($typeBdl['type_bdl'] == 'Demi-journée'){
+                $activites = $bd->getAllDemiJourActivite($_GET['id']);
+            }
+            if($typeBdl['type_bdl'] == 'Journée'){
+                $activites = $bd->getAllJourActivite($_GET['id']);
+            }
+
+            $data = ['bdl' => $typeBdl, 'menu' => $this->action_get_navbar(), 'activites' => $activites];
+            $this->render("consulte_bdl", $data);
+        } else {
+            echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
+        }
+    }
+
+    public function action_valider_bdl(){
+        $bd = Model::getModel();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if(isset($_GET['id']) && isset($_GET['valide'])){
+            $bd->setEstValideBdl($_GET['id'], $_SESSION['id'], $_GET['valide']);
+            $this->action_consulter_bdl();
+        }
+        else {
+            echo 'Une erreur est survenue lors de la validation de ce bon de livraison';
+        }
+    }
+
 
     /**
      * Envoie un email au(x) commercial/commerciaux assigné(s) à la mission de l'interlocuteur client
@@ -81,19 +154,6 @@ class Controller_interlocuteur extends Controller
         } else {
             // Le fichier n'existe pas
             echo "Le fichier n'existe pas.";
-        }
-    }
-
-    /**
-     * Renvoie à la vue du bon de livraison
-     * @return void
-     */
-    public function action_bdl()
-    {
-        if (isset($_GET['idBdl'])) {
-            $bd = Model::getModel();
-            $data = ['bdl' => $bd->getBdlInfos($_GET['idBdl'])];
-            $this->render('bdl', $data);
         }
     }
 
