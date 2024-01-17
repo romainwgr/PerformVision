@@ -5,8 +5,8 @@ require 'view_header.php';
     <div class="add-container">
         <div class="form-abs">
             <h1>Ajout Interlocuteur Client</h1>
-            <form action="<?= $ajoutInterlocuteurLink ?>"<?php
-            if (isset($_GET['id-composante'])): echo '&id-composante=' . $_GET['id-composante']; endif;
+            <form action="?controller=<?= $_GET['controller'] ?>&action=ajout_interlocuteur_dans_composante<?php
+            if (isset($_GET['id'])): echo '&id-composante=' . $_GET['id']; endif;
             if (isset($_GET['id-client'])): echo '&id-client=' . $_GET['id-client']; endif;
             ?>" method="post">
                 <h2>Informations personnelles</h2>
@@ -16,7 +16,7 @@ require 'view_header.php';
                 </div>
                 <input type="email" placeholder="Adresse email" name='email-interlocuteur' id='mail-1'
                        class="input-case">
-                <?php if (!isset($_GET['id-composante'])): ?>
+                <?php if (!isset($_GET['id'])): ?>
                     <h2>Informations professionnelles</h2>
                     <input type="text" placeholder="Composante" name='composante' id='cpt' class="input-case">
                 <?php endif; ?>

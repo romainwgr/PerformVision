@@ -6,7 +6,7 @@ require 'view_header.php';
         <div class="form-abs">
             <h1>Ajout Commercial</h1>
             <form
-                action="?controller=gestionnaire&action=<?php if(isset($_GET['id-composante'])): echo 'ajout_commercial_dans_composante&id-composante=' . $_GET['id-composante']; else: echo 'ajout_commercial'; endif;?>"
+                action="?controller=gestionnaire&action=<?php if(isset($_GET['id'])): echo 'ajout_commercial_dans_composante&id-composante=' . $_GET['id']; else: echo 'ajout_commercial'; endif;?>"
                 method="post">
                 <h2>Informations personnelles</h2>
                 <div class="form-names">

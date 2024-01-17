@@ -3,7 +3,8 @@ require 'view_begin.php';
 require 'view_header.php';
 ?>
     <div class="composante-container">
-        <form action="?controller=<?= $_SESSION['role'] ?>&action=maj_infos_composante&id=<?= $_GET['id'] ?>" method="post">
+        <form action="?controller=<?= $_SESSION['role'] ?>&action=maj_infos_composante&id=<?= $_GET['id'] ?>"
+              method="post">
             <div class="infos-composante">
                 <h2>Informations composante</h2>
                 <div class="form-infos-composante">
@@ -34,27 +35,40 @@ require 'view_header.php';
         <div class="infos-container">
             <div class="infos__colonne">
                 <h2>Interlocuteurs</h2>
-                <a href="<?= $cardLink ?>&action=ajout_interlocuteur_form&id=<?= $_GET['id'] ?>" class="ajout"><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
-                <?php foreach($interlocuteurs as $i): ?>
-                    <a href="?controller=<?= $_SESSION['role'] ?>&action=infos_personne&id=<?= $i['id_personne']?>" class="block">
+                <a href="?controller=<?= $_GET['controller'] ?>&action=ajout_interlocuteur_form&id=<?= $_GET['id'] ?>" class="ajout"><i
+                        class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
+                <?php foreach ($interlocuteurs as $i): ?>
+                    <a href="?controller=<?= $_SESSION['role'] ?>&action=infos_personne&id=<?= $i['id_personne'] ?>"
+                       class="block">
                         <h3><?= $i['nom'] . ' ' . $i['prenom'] ?></h3>
                     </a>
                 <?php endforeach; ?>
             </div>
             <div class="infos__colonne">
                 <h2>Commerciaux</h2>
-                <a href="<?= $cardLink ?>&action=ajout_commercial_form&id=<?= $_GET['id'] ?>" class="ajout"><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
-                <?php foreach($commerciaux as $c): ?>
-                    <a href="?controller=gestionnaire&action=infos_personne&id=<?= $c['id_personne']?>" class="block">
+                <?php if (!str_contains($_GET['controller'], 'commercial')): ?>
+                    <a href="<?= $cardLink ?>&action=ajout_commercial_form&id=<?= $_GET['id'] ?>" class="ajout"><i
+                            class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
+                <?php else: ?>
+                    <a class="ajout"> &nbsp;</a>
+                <?php endif; ?>
+                <?php foreach ($commerciaux as $c): ?>
+                    <a href="?controller=<?= $_GET['controller'] ?>&action=infos_personne&id=<?= $c['id_personne'] ?>" class="block">
                         <h3><?= $c['nom'] . ' ' . $c['prenom'] ?></h3>
                     </a>
                 <?php endforeach; ?>
             </div>
             <div class="infos__colonne">
                 <h2>Prestataires</h2>
-                <a href="<?= $cardLink ?>&action=ajout_prestataire_form&id=<?= $_GET['id'] ?>" class="ajout"><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
-                <?php foreach($prestataires as $p): ?>
-                    <a href="?controller=gestionnaire&action=infos_personne&id=<?= $p['id_personne']?>" class="block">
+                <?php if (!str_contains($_GET['controller'], 'commercial')): ?>
+
+                    <a href="?controller=<?= $_GET['controller'] ?>&action=ajout_prestataire_form&id=<?= $_GET['id'] ?>" class="ajout"><i
+                            class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
+                <?php else: ?>
+                    <a class="ajout"> &nbsp;</a>
+                <?php endif; ?>
+                <?php foreach ($prestataires as $p): ?>
+                    <a href="?controller=<?= $_GET['controller'] ?>&action=infos_personne&id=<?= $p['id_personne'] ?>" class="block">
                         <h3><?= $p['nom'] . ' ' . $p['prenom'] ?></h3>
                     </a>
                 <?php endforeach; ?>
@@ -62,8 +76,8 @@ require 'view_header.php';
             <div class="infos__colonne">
                 <h2>Bons de livraison</h2>
                 <a class="ajout"> &nbsp;</a>
-                <?php foreach($bdl as $b): ?>
-                    <a href="<?= $cardLink ?>&action=consulter_bdl&id=<?= $b['id_bdl'] ?>" class="block">
+                <?php foreach ($bdl as $b): ?>
+                    <a href="?controller=<?= $_GET['controller'] ?>&action=consulter_bdl&id=<?= $b['id_bdl'] ?>" class="block">
                         <h3><?= $b['nom'] . ' ' . $b['prenom'] ?></h3>
                         <p><?= $b['mois'] ?></p>
                     </a>
