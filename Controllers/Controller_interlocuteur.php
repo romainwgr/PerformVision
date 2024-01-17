@@ -51,6 +51,7 @@ class Controller_interlocuteur extends Controller
     }
 
 
+
     public function action_mission_bdl(){
         $bd = Model::getModel();
         if (session_status() == PHP_SESSION_NONE) {

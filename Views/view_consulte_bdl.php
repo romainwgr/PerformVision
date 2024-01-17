@@ -5,7 +5,7 @@ require 'view_header.php';
 <div class="bdl-container">
     <table class="bdl-table">
         <thead>
-            <tr>
+            <tr class="bdl-head">
                 <th>Date</th>
                 <th><?= $bdl['type_bdl'] ?></th>
                 <th>Commentaire</th>

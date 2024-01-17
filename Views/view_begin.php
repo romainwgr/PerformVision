@@ -9,7 +9,7 @@
           rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <title>Perform vision Login</title>
+    <title>Perform vision</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/Content/css/variables.css">
     <link rel="stylesheet" href="/Content/css/app.css">

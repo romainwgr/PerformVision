@@ -55,6 +55,7 @@ a:hover {
     font-size: var(--font-size--huge);
     font-weight: lighter;
     font-family: 'Judson', regular;
+    text-shadow: var(--shadow-text);
 }
 .right-elt {
     display: flex;

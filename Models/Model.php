@@ -736,7 +736,7 @@ class Model
     }
 
     public function getClientForCommercial(){
-        $req = $this->bd->prepare('SELECT id_client AS id, nom_client, telephone_client FROM CLIENT JOIN COMPOSANTE USING(id_client) JOIN ESTDANS USING(id_composante) WHERE id_personne = :id;');
+        $req = $this->bd->prepare('SELECT DISTINCT id_client AS id, nom_client, telephone_client FROM CLIENT JOIN COMPOSANTE USING(id_client) JOIN ESTDANS USING(id_composante) WHERE id_personne = :id;');
         $req->bindValue(':id', $_SESSION['id']);
         $req->execute();
         return $req->fetchall();

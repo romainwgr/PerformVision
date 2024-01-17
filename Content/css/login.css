@@ -28,6 +28,8 @@
 
 .container > h1 {
     color: black;
+    margin-bottom: 1%;
+    margin-top: 5%;
 }
 
 .container > h3{

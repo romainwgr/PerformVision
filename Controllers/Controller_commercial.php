@@ -53,6 +53,29 @@ class Controller_commercial extends Controller
         }
     }
 
+    public function action_maj_infos()
+    {
+        maj_infos_personne(); // fonction dans Utils
+        $this->action_infos();
+    }
+
+    public function action_maj_infos_client()
+    {
+        maj_infos_client(); // fonction dans Utils
+        $this->action_infos_client();
+    }
+
+    public function action_maj_infos_personne()
+    {
+        maj_infos_personne(); // fonction dans Utils
+        $this->action_infos_personne();
+    }
+    public function action_maj_infos_composante()
+    {
+        maj_infos_composante(); // fonction dans Utils
+        $this->action_infos_composante();
+    }
+
     public function action_consulter_bdl(){
         $bd = Model::getModel();
         if (session_status() == PHP_SESSION_NONE) {
@@ -213,6 +236,13 @@ class Controller_commercial extends Controller
         $this->render('ajout_interlocuteur', $data);
     }
 
+    public function action_infos()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        $this->render('infos', ['menu' => $this->action_get_navbar()]);
+    }
 
     public function action_infos_client()
     {

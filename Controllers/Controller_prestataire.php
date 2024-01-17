@@ -31,6 +31,14 @@ class Controller_prestataire extends Controller
         }
     }
 
+    public function action_infos()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        $this->render('infos', ['menu' => $this->action_get_navbar()]);
+    }
+
     public function action_get_navbar()
     {
         return [
@@ -86,19 +94,28 @@ class Controller_prestataire extends Controller
             session_start();
         }
         if (isset($_GET['id'])) {
-            $data = ['menu' => $this->action_get_navbar(), 'bdl' => $bd->getBdlTypeAndMonth($_GET['id'])];
+            $typeBdl = $bd->getBdlTypeAndMonth($_GET['id']);
+            if ($typeBdl['type_bdl'] == 'Heure') {
+                $infosBdl = $bd->getAllNbHeureActivite($_GET['id']);
+            } elseif ($typeBdl['type_bdl'] == 'Journée') {
+                $infosBdl = $bd->getAllJourActivite($_GET['id']);
+            } elseif ($typeBdl['type_bdl'] == 'Demi-journée') {
+                $infosBdl = $bd->getAllDemiJourActivite($_GET['id']);
+            }
+            $data = ['menu' => $this->action_get_navbar(), 'bdl' => $typeBdl, 'infosBdl' => $infosBdl];
             $this->render("activite", $data);
         } else {
             echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
         }
     }
 
-    public function action_mission_bdl(){
+    public function action_mission_bdl()
+    {
         $bd = Model::getModel();
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        if(isset($_GET['id'])){
+        if (isset($_GET['id'])) {
             $buttonLink = '?controller=prestataire&action=ajout_bdl_form';
             $cardLink = '?controller=prestataire&action=afficher_bdl';
             $data = ['title' => 'Bons de livraison', 'buttonLink' => $buttonLink, 'cardLink' => $cardLink, 'menu' => $this->action_get_navbar(), 'person' => $bd->getBdlsOfPrestataireByIdMission($_GET['id'], $_SESSION['id'])];
@@ -195,12 +212,13 @@ class Controller_prestataire extends Controller
         $this->render('ajout_bdl', $data);
     }
 
-    public function action_ajout_bdl(){
+    public function action_ajout_bdl()
+    {
         $bd = Model::getModel();
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        if($_POST['mission'] && $_POST['mois'] && $_POST['composante']){
+        if ($_POST['mission'] && $_POST['mois'] && $_POST['composante']) {
             $bd->addBdlInMission($_POST['mission'], $_POST['composante'], $_POST['mois'], $_SESSION['id']);
         }
         $this->action_ajout_bdl_form();
