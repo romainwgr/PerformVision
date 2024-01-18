@@ -44,7 +44,7 @@ class Controller_administrateur extends Controller
             $bd = Model::getModel();
             $buttonLink = '?controller=administrateur&action=ajout_gestionnaire_form';
             $cardLink = '?controller=administrateur&action=infos_personne';
-            $data = ['title' => 'Gestionnaires', 'cardLink' => $cardLink, 'buttonLink' => $buttonLink, "person" => $bd->getAllCommerciaux(), 'menu' => $this->action_get_navbar()];
+            $data = ['title' => 'Gestionnaires', 'cardLink' => $cardLink, 'buttonLink' => $buttonLink, "person" => $bd->getAllGestionnaires(), 'menu' => $this->action_get_navbar()];
             $this->render("liste", $data);
         }
 
@@ -328,15 +328,10 @@ class Controller_administrateur extends Controller
     public function action_ajout_gestionnaire()
     {
         $bd = Model::getModel();
-        if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email'])) {
-            $mdp = genererMdp();
-            $bd->createPersonne($_POST['nom'], $_POST['prenom'], $_POST['email'], $mdp);
-            if ($bd->addGestionnaire($_POST['email'])) {
-                $data = ['title' => "Ajout d'un gestionnaire", 'message' => "Le gestionnaire a été ajouté !"];
-            } else {
-                $data = ['title' => "Ajout d'un gestionnaire", 'message' => "Echec lors de l'ajout du gestionnaire !"];
-            }
-            $this->render('message', $data);
+        if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email-gestionnaire'])) {
+            $this->action_ajout_personne($_POST['nom'], $_POST['prenom'], $_POST['email-gestionnaire']);
+            $bd->addGestionnaire($_POST['email-gestionnaire']);
+            $this->action_gestionnaires();
         }
     }
 

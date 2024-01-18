@@ -7,7 +7,7 @@ require 'view_header.php';
     <div class="form-abs">
         <h1>Ajout Gestionnaire</h1>
         <form
-            action="?controller=administrateur&action=ajout_gestionnaire;?>"
+            action="?controller=administrateur&action=ajout_gestionnaire"
             method="post">
             <h2>Informations personnelles</h2>
             <div class="form-names">

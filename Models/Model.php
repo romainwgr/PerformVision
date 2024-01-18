@@ -90,6 +90,11 @@ class Model
         return $req->fetchall();
     }
 
+    public function getAllGestionnaires(){
+        $req = $this->bd->prepare('SELECT id_personne AS id, nom, prenom FROM GESTIONNAIRE JOIN PERSONNE USING(id_personne);');
+        $req->execute();
+        return $req->fetchall();
+    }
     public function getInfosPersonne($id)
     {
         $req = $this->bd->prepare('SELECT id_personne, nom, prenom, email FROM PERSONNE WHERE id_personne = :id');
@@ -245,6 +250,14 @@ class Model
     public function addCommercial($email)
     {
         $req = $this->bd->prepare("INSERT INTO COMMERCIAL (id_personne) SELECT id_personne FROM personne WHERE email = :email");
+        $req->bindValue(':email', $email, PDO::PARAM_STR);
+        $req->execute();
+        return (bool)$req->rowCount();
+    }
+
+    public function addGestionnaire($email)
+    {
+        $req = $this->bd->prepare("INSERT INTO GESTIONNAIRE (id_personne) SELECT id_personne FROM personne WHERE email = :email");
         $req->bindValue(':email', $email, PDO::PARAM_STR);
         $req->execute();
         return (bool)$req->rowCount();
@@ -655,7 +668,7 @@ class Model
 
     public function getPrestataireForCommercial($id_co)
     {
-        $req = $this->bd->prepare('SELECT nom, prenom, ta.id_personne as id FROM client JOIN composante USING(id_client) JOIN mission USING(id_composante) JOIN travailleavec ta USING(id_mission) JOIN PERSONNE p ON ta.id_personne = p.id_personne JOIN estDans ed USING(id_composante) WHERE ed.id_personne = :id');
+        $req = $this->bd->prepare('SELECT DISTINCT nom, prenom, ta.id_personne as id FROM client JOIN composante USING(id_client) JOIN mission USING(id_composante) JOIN travailleavec ta USING(id_mission) JOIN PERSONNE p ON ta.id_personne = p.id_personne JOIN estDans ed USING(id_composante) WHERE ed.id_personne = :id');
         $req->bindValue(':id', $id_co, PDO::PARAM_INT);
         $req->execute();
         return $req->fetchall();
