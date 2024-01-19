@@ -326,25 +326,6 @@ class Controller_gestionnaire extends Controller
     }
 
     /**
-     * Vérfie d'avoir toutes les informations nécessaire et que la personne n'existe pas avant la création d'un gestionnaire.
-     * @return void
-     */
-    public function action_ajout_gestionnaire()
-    {
-        $bd = Model::getModel();
-        if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) && $bd->checkPersonneExiste(e($_POST['email']))) {
-            $mdp = genererMdp();
-            $bd->createPersonne(e($_POST['nom']), e($_POST['prenom']), e($_POST['email'], $mdp));
-            if ($bd->addGestionnaire(e($_POST['email']))) {
-                $data = ['title' => "Ajout d'un gestionnaire", 'message' => "Le gestionnaire a été ajouté !"];
-            } else {
-                $data = ['title' => "Ajout d'un gestionnaire", 'message' => "Echec lors de l'ajout du gestionnaire !"];
-            }
-            $this->render('message', $data);
-        }
-    }
-
-    /**
      * Vérifie qu'il y'a toutes les informations nécessaire pour l'ajout d'un(e) client/société
      * @return void
      */
@@ -429,7 +410,6 @@ class Controller_gestionnaire extends Controller
             $this->action_ajout_interlocuteur_dans_composante();
             $this->action_ajout_commercial_dans_composante();
             $this->action_ajout_mission();
-            $this->action_ajout_composante_form();
         }
         if(isset($_POST['tel'])){
             $this->action_ajout_client_form();
