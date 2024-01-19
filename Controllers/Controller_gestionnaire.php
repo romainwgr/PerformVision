@@ -211,6 +211,7 @@ class Controller_gestionnaire extends Controller
             $data = ['title' => 'Bons de livraison', 'cardLink' => $cardLink, 'menu' => $this->action_get_navbar(), 'person' => $bd->getBdlsOfPrestataireByIdMission(e($_GET['id']), e($_GET['id-prestataire']))];
             $this->render('liste', $data);
         }
+        $this->action_dashboard();
     }
 
     /**
@@ -402,7 +403,6 @@ class Controller_gestionnaire extends Controller
         if (!$bd->checkInterlocuteurExiste(e($_POST['email-interlocuteur']))) {
             $bd->addInterlocuteur(e($_POST['email-interlocuteur']));
         }
-        $this->action_ajout_interlocuteur_form();
     }
 
     /**
@@ -429,6 +429,13 @@ class Controller_gestionnaire extends Controller
             $this->action_ajout_interlocuteur_dans_composante();
             $this->action_ajout_commercial_dans_composante();
             $this->action_ajout_mission();
+            $this->action_ajout_composante_form();
+        }
+        if(isset($_POST['tel'])){
+            $this->action_ajout_client_form();
+        }
+        else{
+            $this->action_ajout_composante_form();
         }
     }
 
@@ -482,6 +489,10 @@ class Controller_gestionnaire extends Controller
             }
             $bd->assignerInterlocuteurComposanteByIdClient(e($_GET['id-client']), e($_POST['email-interlocuteur']), e($_POST['composante']));
             $this->action_clients();
+        }
+        if (isset($_POST['client']) && isset($_POST['composante'])){
+            $id = $bd->getIdComposante(e($_POST['composante']), e($_POST['client']));
+            $bd->assignerInterlocuteurComposanteByIdComposante($id['id_composante'], e($_POST['email-interlocuteur']));
         }
     }
 

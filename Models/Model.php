@@ -50,6 +50,14 @@ class Model
                             Fonction Gestionnaire/Admin
         ------------------------------------------------------------------------*/
 
+    public function getIdComposante($composante, $client){
+        $req = $this->bd->prepare('SELECT id_composante FROM COMPOSANTE JOIN CLIENT USING(id_client)
+                     WHERE nom_composante = :composante and nom_client = :client ');
+        $req->bindValue(':client', $client);
+        $req->bindValue(':composante', $composante);
+        $req->execute();
+        return $req->fetch(PDO::FETCH_ASSOC);
+    }
     public function getDashboardGestionnaire()
     {
         $req = $this->bd->prepare("SELECT c.nom_client, co.nom_composante, m.nom_mission, COALESCE(p.nom, 'Aucun') AS nom, COALESCE(p.prenom, 'Aucun') AS prenom, ta.id_personne as id_prestataire, ta.id_mission 
@@ -90,11 +98,13 @@ class Model
         return $req->fetchall();
     }
 
-    public function getAllGestionnaires(){
+    public function getAllGestionnaires()
+    {
         $req = $this->bd->prepare('SELECT id_personne AS id, nom, prenom FROM GESTIONNAIRE JOIN PERSONNE USING(id_personne);');
         $req->execute();
         return $req->fetchall();
     }
+
     public function getInfosPersonne($id)
     {
         $req = $this->bd->prepare('SELECT id_personne, nom, prenom, email FROM PERSONNE WHERE id_personne = :id');
@@ -213,8 +223,8 @@ class Model
     public function assignerInterlocuteurComposanteByIdComposante($id_composante, $email)
     {
         $req = $this->bd->prepare("INSERT INTO dirige (id_personne, id_composante) SELECT  (SELECT id_personne FROM PERSONNE WHERE email=:email), :id_composante");
-        $req->bindValue(':id_composante', $id_composante, PDO::PARAM_STR);
-        $req->bindValue(':email', $email, PDO::PARAM_STR);
+        $req->bindValue(':id_composante', $id_composante);
+        $req->bindValue(':email', $email);
         $req->execute();
         return (bool)$req->rowCount();
     }
@@ -289,7 +299,7 @@ class Model
 
     public function addMission($type, $nom, $date, $nom_compo, $nom_client)
     {
-        $req = $this->bd->prepare("INSERT INTO MISSION (type_bdl, nom_mission, date_debut, id_composante) SELECT :type, :nom, :date, (SELECT id_composante FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_client = :nom_client and nom_composante = :nom_composante)");
+        $req = $this->bd->prepare("INSERT INTO MISSION (type_bdl, nom_mission, date_debut, id_composante) SELECT :type, :nom, :date, (SELECT id_composante FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE LOWER(nom_client) = LOWER(:nom_client) and LOWER(nom_composante) = LOWER(:nom_composante))");
         $req->bindValue(':nom', $nom);
         $req->bindValue(':type', $type);
         $req->bindValue(':date', $date);
@@ -376,10 +386,10 @@ class Model
 
     public function assignerCommercial($email, $composante, $client)
     {
-        $req = $this->bd->prepare("INSERT INTO estDans (id_personne, id_composante) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT c.id_composante FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE nom_composante = :composante AND nom_client = :client')");
-        $req->bindValue(':email', $email, PDO::PARAM_STR);
-        $req->bindValue(':composante', $composante, PDO::PARAM_STR);
-        $req->bindValue(':client', $client, PDO::PARAM_STR);
+        $req = $this->bd->prepare("INSERT INTO estDans (id_personne, id_composante) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT c.id_composante FROM COMPOSANTE c JOIN CLIENT USING(id_client) WHERE nom_composante = :composante AND nom_client = :client)");
+        $req->bindValue(':email', $email);
+        $req->bindValue(':composante', $composante);
+        $req->bindValue(':client', $client);
         $req->execute();
         return (bool)$req->rowCount();
     }
@@ -425,7 +435,8 @@ class Model
         return $req->fetchall(PDO::FETCH_ASSOC);
     }
 
-    public function setEstValideBdl($id_bdl, $id_interlocuteur, $valide){
+    public function setEstValideBdl($id_bdl, $id_interlocuteur, $valide)
+    {
         $req = $this->bd->prepare("UPDATE BON_DE_LIVRAISON SET est_valide = :valide, id_interlocuteur = :id_interlocuteur WHERE id_bdl = :id_bdl");
         $req->bindValue(':id_interlocuteur', $id_interlocuteur);
         $req->bindValue(':id_bdl', $id_bdl);
@@ -674,7 +685,8 @@ class Model
         return $req->fetchall();
     }
 
-    public function getComposantesForCommercial($id_commercial){
+    public function getComposantesForCommercial($id_commercial)
+    {
         $req = $this->bd->prepare('SELECT id_composante AS id, nom_composante, nom_client FROM CLIENT JOIN COMPOSANTE using(id_client) JOIN estDans USING(id_composante) WHERE id_personne = :id');
         $req->bindValue(':id', $id_commercial);
         $req->execute();
@@ -748,7 +760,8 @@ class Model
         return $req->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getClientForCommercial(){
+    public function getClientForCommercial()
+    {
         $req = $this->bd->prepare('SELECT DISTINCT id_client AS id, nom_client, telephone_client FROM CLIENT JOIN COMPOSANTE USING(id_client) JOIN ESTDANS USING(id_composante) WHERE id_personne = :id;');
         $req->bindValue(':id', $_SESSION['id']);
         $req->execute();
@@ -926,7 +939,7 @@ class Model
     public function checkMissionExiste($nom_mission, $nom_compo)
     {
         $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM MISSION JOIN COMPOSANTE USING(id_composante) WHERE nom_composante = :nom_compo AND nom_mission = :nom_mission) AS mission_existe');
-        $req->bindValue(':nom_composante', $nom_compo);
+        $req->bindValue(':nom_compo', $nom_compo);
         $req->bindValue(':nom_mission', $nom_mission);
         $req->execute();
         return $req->fetch()[0] == 't';

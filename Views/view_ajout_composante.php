@@ -33,6 +33,8 @@ require 'view_header.php';
                         <option value="heure">Heure </option>
                     </select>
                     <input type="text" placeholder="Nom mission" name='mission' id='cpt' class="input-case">
+                    <input type="date" placeholder="Date de début" name="date-mission" class="input-case">
+
                 </div>
 
                 <h4>Adresse</h4>
