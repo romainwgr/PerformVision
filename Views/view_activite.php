@@ -3,19 +3,20 @@ require 'view_begin.php';
 require 'view_header.php';
 ?>
     <div class="bdl-container">
-        <table class="bdl-table">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th><?= $bdl['type_bdl'] ?></th>
-                    <th>Commentaire</th>
-                </tr>
-            </thead>
-            <tbody id="joursTableBody">
+        <div class="bdl__table">
+            <table class="bdl-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th><?= $bdl['type_bdl'] ?></th>
+                        <th>Commentaire</th>
+                    </tr>
+                </thead>
+                <tbody id="joursTableBody">
 
-            </tbody>
-        </table>
-
+                </tbody>
+            </table>
+        </div>
         <button type="button" onclick="getTableData()" id="button-get-data">Enregistrer</button>
     </div>
     <script>
