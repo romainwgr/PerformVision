@@ -1,3 +1,4 @@
+<!-- Vue qui s'affiche lorsqu'une personne a plusieurs rôle, elle peut choisir -->
 <div class="background-blur">
     <div class="popup">
         <div class="container-popup">

@@ -1,3 +1,4 @@
+<!-- Vue permettant de voir les informations d'une composante -->
 <?php
 require 'view_begin.php';
 require 'view_header.php';

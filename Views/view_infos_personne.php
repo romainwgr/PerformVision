@@ -1,3 +1,4 @@
+<!-- Vue permettant de voir les informations d'une personne quelconque sur laquelle on a cliqué -->
 <?php
 require 'view_begin.php';
 require 'view_header.php';

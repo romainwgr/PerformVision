@@ -1,3 +1,4 @@
+<!-- Vue de l'interlocuteur où il peut voir ses missions, y consulter ses bons de livraison et faire une demande -->
 <?php
 require 'view_begin.php';
 require 'view_header.php';

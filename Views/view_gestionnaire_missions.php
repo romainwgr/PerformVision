@@ -1,3 +1,4 @@
+<!-- Vue permettant au gestionnaire de voir toutes les missions et d'en créer une -->
 <?php
 require 'view_begin.php';
 require 'view_header.php';

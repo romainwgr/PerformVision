@@ -1,3 +1,4 @@
+<!-- Vue permettant de voir la page de connection afin de se connecter et accéder au site -->
 <?php
 require 'view_begin.php';
 ?>

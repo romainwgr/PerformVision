@@ -1,3 +1,5 @@
+<!-- Vue permettant au prestataire de déclarer une absence lors de l'une de ses missions -->
+
 <?php
 require 'view_begin.php';
 $menu = [['link' => '?controller=prestataire&action=missions', 'name' => 'Missions'],

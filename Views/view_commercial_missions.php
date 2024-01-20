@@ -1,3 +1,5 @@
+<!-- Vue permettant au commercial de voir ses missions -->
+
 <?php
 require 'view_begin.php';
 require 'view_header.php';

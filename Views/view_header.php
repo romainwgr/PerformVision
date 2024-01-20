@@ -1,3 +1,4 @@
+<!-- Vue stockant le header personnalisé pour chaque fonction -->
 <header>
     <nav class="header-navbar">
         <div class="logo">Perform Vision</div>

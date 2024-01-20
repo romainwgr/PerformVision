@@ -1,3 +1,5 @@
+<!-- Forumulaire permettant de créer une nouvelle mission -->
+
 <?php
 require 'view_begin.php';
 require 'view_header.php';

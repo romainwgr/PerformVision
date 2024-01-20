@@ -1,3 +1,6 @@
+<!-- Vue permettant d'ouvrir une balise HTML jusqu'à l'ouverture du body 
+elle comprend donc tout le head et les liens de chaque fichiers css -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

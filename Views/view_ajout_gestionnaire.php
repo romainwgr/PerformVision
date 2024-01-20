@@ -1,3 +1,5 @@
+<!-- Formulaire permettant à l'administrateur d'ajouter un nouveau gestionnaire  -->
+
 <?php
 require 'view_begin.php';
 require 'view_header.php';

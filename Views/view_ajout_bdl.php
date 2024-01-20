@@ -1,3 +1,4 @@
+<!-- Formulaire permettant d'ajouter un bon de livraison -->
 <?php
 require 'view_begin.php';
 require 'view_header.php';

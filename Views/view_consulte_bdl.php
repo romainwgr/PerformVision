@@ -1,3 +1,5 @@
+<!-- Vue permettant de consulter un bdl et si il est interlocuteur client de le contester ou valider -->
+
 <?php
 require 'view_begin.php';
 require 'view_header.php';

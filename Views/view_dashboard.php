@@ -1,3 +1,5 @@
+<!-- Vue permettant de consulter son dashboard comportant les missions, prestataire assigné, composante et consulter son bon de livraison -->
+
 <div class='dashboard__table'>
     <table>
         <thead>

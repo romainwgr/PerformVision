@@ -1,3 +1,5 @@
+<!-- Formulaire permettant d'ajouter un nouveau prestataire  -->
+
 <?php
 require 'view_begin.php';
 require 'view_header.php';

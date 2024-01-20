@@ -1,3 +1,4 @@
+<!-- Vue permettant de faire la liste d'un type de personne -->
 <?php
 require 'view_begin.php';
 require 'view_header.php';

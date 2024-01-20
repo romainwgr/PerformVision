@@ -1,3 +1,4 @@
+<!-- Créer le bon de livraison pour qu'on puisse le remplir -->
 <?php
 require 'view_begin.php';
 require 'view_header.php';

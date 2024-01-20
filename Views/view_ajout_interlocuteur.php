@@ -1,3 +1,5 @@
+<!-- Formulaire permettant l'ajout de nouvel interlocuteur -->
+
 <?php
 require 'view_begin.php';
 require 'view_header.php';

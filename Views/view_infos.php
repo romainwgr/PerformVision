@@ -1,3 +1,4 @@
+<!-- Vue permettant de voir les informations de son compte et de les changer si nécessaire -->
 <?php
 require 'view_begin.php';
 require 'view_header.php';

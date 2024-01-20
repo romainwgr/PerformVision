@@ -1,3 +1,4 @@
+<!-- Formulaire permettant d'ajouter une nouvelle composante  -->
 <?php
 require 'view_begin.php';
 require 'view_header.php';

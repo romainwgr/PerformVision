@@ -1,3 +1,4 @@
+<!-- Formulaire permettant d'ajouter une nouevlle société  -->
 <?php
 require 'view_begin.php';
 require 'view_header.php';
