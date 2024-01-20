@@ -8,7 +8,7 @@
                 <h1 class="popup-title">Il se trouve que vous ayez plusieurs rôles !</h1>
                     <div class="container-select-button">
                             <?php foreach ($data['response']['roles'] as $role) : ?>
-                                <button type="submit" class="button-primary" onclick="window.location='?controller=<?= $_GET['controller'] ?>&action=default'"><?= $_GET['controller'] ?></button>
+                                <button type="submit" class="button-primary" onclick="window.location='?controller=<?= $role ?>&action=default'"><?= $role ?></button>
                             <?php endforeach; ?>
                     </div>
             </div>
