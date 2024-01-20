@@ -11,19 +11,19 @@ require 'view_header.php';
                     <input type="text" placeholder="Prénom" name="prenom-interlocuteur" class="input-case">
                     <input type="text" placeholder="Nom" name="nom-interlocuteur" class="input-case">
                 </div>
-                <input type="email" placeholder="Adresse email" name='email-interlocuteur' id='mail-1'
+                <input type="email" placeholder="Adresse email" name='email-interlocuteur'
                        class="input-case">
                 <h2>Informations commercial</h2>
                 <div class="form-names">
                     <input type="text" placeholder="Prénom" name="prenom-name" class="input-case">
                     <input type="text" placeholder="Nom" name="nom" class="input-case">
                 </div>
-                <input type="email" placeholder="Adresse email" name='email-commercial' id='mail-1' class="input-case">
+                <input type="email" placeholder="Adresse email" name='email-commercial' class="input-case">
 
                 <h2>Informations composante</h2>
                 <div class="form-infos-composante">
-                    <input type="text" placeholder="Nom composante" name='composante' id='cpt' class="input-case">
-                    <input type="text" placeholder="Société" id='sté' name='client' class="input-case">
+                    <input type="text" placeholder="Nom composante" name='composante'  class="input-case">
+                    <input type="text" placeholder="Société" name='client' class="input-case">
                 </div>
                 <div class="form-infos-composante">
                     <select name="type-bdl">
@@ -32,7 +32,7 @@ require 'view_header.php';
                         <option value="demi-journee">Demi-journée </option>
                         <option value="heure">Heure </option>
                     </select>
-                    <input type="text" placeholder="Nom mission" name='mission' id='cpt' class="input-case">
+                    <input type="text" placeholder="Nom mission" name='mission' class="input-case">
                     <input type="date" placeholder="Date de début" name="date-mission" class="input-case">
 
                 </div>

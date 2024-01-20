@@ -8,10 +8,10 @@ require 'view_header.php';
             <form action="?controller=<?php $_GET['controller'] ?>&action=ajout_client" method="post">
                 <h2>Informations société</h2>
                 <input type="text" placeholder="Société" id='sté' name='client' class="input-case">
-                <input type="tel" placeholder="Numéro de téléphone" name='tel' class="input-case">
+                <input type="tel" placeholder="Numéro de téléphone" name='tel' class="input-case" autocomplete="tel">
                 <h2>Informations composante</h2>
                 <input type="text" placeholder="Nom de la mission" name='mission' class="input-case">
-                <input type="text" placeholder="Composante" name='composante' id='cpt' class="input-case">
+                <input type="text" placeholder="Composante" name='composante' class="input-case">
                 <div class="form-names">
                     <select name="type-bdl">
                         <option selected>Type de bon de livraison </option>
@@ -37,14 +37,14 @@ require 'view_header.php';
                     <input type="text" placeholder="Prénom" name="prenom-interlocuteur" class="input-case">
                     <input type="text" placeholder="Nom" name="nom-interlocuteur" class="input-case">
                 </div>
-                <input type="email" placeholder="Adresse email" name='email-interlocuteur' id='mail-1'
+                <input type="email" placeholder="Adresse email" name='email-interlocuteur'
                        class="input-case">
                 <h2>Informations commercial</h2>
                 <div class="form-names">
                     <input type="text" placeholder="Prénom" name="prenom-commercial" class="input-case">
                     <input type="text" placeholder="Nom" name="nom-commercial" class="input-case">
                 </div>
-                <input type="email" placeholder="Adresse email" name='email-commercial' id='mail-1' class="input-case">
+                <input type="email" placeholder="Adresse email" name='email-commercial' class="input-case">
                 <div class="buttons" id="create">
                     <button type="submit">Créer</button>
                 </div>
