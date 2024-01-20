@@ -5,7 +5,7 @@ require 'view_header.php';
     <div class="add-container">
         <div class="form-abs">
             <h1>Ajout Composante</h1>
-            <form action="?controller=<?php $_GET['conroller'] ?>&action=ajout_composante" method="post">
+            <form action="?controller=<?php $_GET['controller'] ?>&action=ajout_composante" method="post">
                 <h2>Informations interlocuteur</h2>
                 <div class="form-names">
                     <input type="text" placeholder="Prénom" name="prenom-interlocuteur" class="input-case">
