@@ -30,11 +30,19 @@ class Controller_interlocuteur extends Controller
         }
     }
 
+    /**
+     * Action qui retourne les éléments du menu pour l'interlocuteur
+     * @return array[]
+     */
     public function action_get_navbar()
     {
         return [['link' => '?controller=interlocuteur&action=dashboard', 'name' => 'Mes prestataires']];
     }
 
+    /**
+     * Renvoie la vue qui montre les informations de l'utilisateur connecté
+     * @return void
+     */
     public function action_infos()
     {
         if (session_status() == PHP_SESSION_NONE) {
@@ -50,8 +58,10 @@ class Controller_interlocuteur extends Controller
         $this->action_infos();
     }
 
-
-
+    /**
+     * Met à jour les informations de l'utilisateur connecté
+     * @return void
+     */
     public function action_mission_bdl(){
         $bd = Model::getModel();
         if (session_status() == PHP_SESSION_NONE) {
@@ -59,11 +69,15 @@ class Controller_interlocuteur extends Controller
         }
         if(isset($_GET['id']) && isset($_GET['id-prestataire'])){
             $cardLink = '?controller=interlocuteur&action=consulter_bdl';
-            $data = ['title' => 'Bons de livraison', 'menu' => $this->action_get_navbar(), 'cardLink' => $cardLink, 'person' => $bd->getBdlsOfPrestataireByIdMission($_GET['id'], $_GET['id-prestataire'])];
+            $data = ['title' => 'Bons de livraison', 'menu' => $this->action_get_navbar(), 'cardLink' => $cardLink, 'person' => $bd->getBdlsOfPrestataireByIdMission(e($_GET['id']), e($_GET['id-prestataire']))];
             $this->render('liste', $data);
         }
     }
 
+    /**
+     * Vérifie qu'il existe dans l'url l'id qui fait référence au bon de livraison et renvoie la vue qui permet de consulter le bon de livraison
+     * @return void
+     */
     public function action_consulter_bdl(){
         $bd = Model::getModel();
         if (session_status() == PHP_SESSION_NONE) {
@@ -88,13 +102,17 @@ class Controller_interlocuteur extends Controller
         }
     }
 
+    /**
+     * Met à jour la colonne valide de la table BON_DE_LIVRAISON pour indiquer que le bon de livraison est validé
+     * @return void
+     */
     public function action_valider_bdl(){
         $bd = Model::getModel();
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
         if(isset($_GET['id']) && isset($_GET['valide'])){
-            $bd->setEstValideBdl($_GET['id'], $_SESSION['id'], $_GET['valide']);
+            $bd->setEstValideBdl(e($_GET['id']), $_SESSION['id'], e($_GET['valide']));
             $this->action_consulter_bdl();
         }
         else {
@@ -136,7 +154,7 @@ class Controller_interlocuteur extends Controller
      */
     public function telecharger_bdl()
     {
-        $cheminFichier = $cheminBdl . $_GET['id'];
+        $cheminFichier = $cheminBdl . e($_GET['id']);
 
         // Vérifiez si le fichier existe
         if (file_exists($cheminFichier)) {
@@ -155,22 +173,6 @@ class Controller_interlocuteur extends Controller
         } else {
             // Le fichier n'existe pas
             echo "Le fichier n'existe pas.";
-        }
-    }
-
-    public function action_ajout_interlocuteur()
-    {
-        $bd = Model::getModel();
-        if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email'])) {
-            $mdp = genererMdp();
-            $bd->createPersonne($_POST['nom'], $_POST['prenom'], $_POST['email'], $mdp);
-            if ($bd->addInterlocuteur($_POST['email']) &&
-                $bd->addInterlocuteurDansComposante($_POST['email'], $_POST['client'], $_POST['composante'])) {
-                $data = ['title' => "Ajout d'un interlocuteur", 'message' => "L'interlocuteur a été ajouté !"];
-            } else {
-                $data = ['title' => "Ajout d'un interlocuteur", 'message' => "Echec lors de l'ajout de l'interlocuteur !"];
-            }
-            $this->render('message', $data);
         }
     }
 }

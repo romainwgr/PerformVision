@@ -693,15 +693,6 @@ class Model
         return $req->fetchall(PDO::FETCH_ASSOC);
     }
 
-    public function getBdlPrestaForCommercial($id_pr, $id_co)
-    {
-        $req = $this->bd->prepare("SELECT id_bdl, mois, nom_mission FROM BON_DE_LIVRAISON bdl JOIN MISSION m USING(id_mission) JOIN travailleAvec ta USING(id_mission) JOIN COMPOSANTE USING(id_composante) JOIN estDans ed USING(id_composante) WHERE ta.id_personne = :id_pr AND ed.id_personne = :id_com");
-        $req->bindValue(':id_pr', $id_pr, PDO::PARAM_INT);
-        $req->bindValue(':id_com', $id_co, PDO::PARAM_INT);
-        $req->execute();
-        return $req->fetchall();
-    }
-
     public function getBdlTypeAndMonth($id_bdl)
     {
         $req = $this->bd->prepare("SELECT id_bdl, type_bdl, mois FROM BON_DE_LIVRAISON JOIN MISSION USING(id_mission) WHERE id_bdl = :id");

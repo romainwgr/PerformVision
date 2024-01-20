@@ -10,6 +10,10 @@ class Controller_prestataire extends Controller
         $this->action_dashboard();
     }
 
+    /**
+     * Renvoie le tableau de bord du prestataire avec les variables adéquates
+     * @return void
+     */
     public function action_dashboard()
     {
         if (session_status() == PHP_SESSION_NONE) {
@@ -31,6 +35,10 @@ class Controller_prestataire extends Controller
         }
     }
 
+    /**
+     * Renvoie la vue qui montre les informations de l'utilisateur connecté
+     * @return void
+     */
     public function action_infos()
     {
         if (session_status() == PHP_SESSION_NONE) {
@@ -39,6 +47,10 @@ class Controller_prestataire extends Controller
         $this->render('infos', ['menu' => $this->action_get_navbar()]);
     }
 
+    /**
+     * Action qui retourne les éléments du menu pour le prestataire
+     * @return array[]
+     */
     public function action_get_navbar()
     {
         return [
@@ -46,7 +58,10 @@ class Controller_prestataire extends Controller
             ['link' => '?controller=prestataire&action=liste_bdl', 'name' => 'Bons de livraison']];
     }
 
-
+    /**
+     * Ajoute dans la base de données la date à laquelle le prestataire est absent
+     * @return void
+     */
     public function action_prestataire_creer_absences()
     {
         $bd = Model::getModel();
@@ -57,36 +72,10 @@ class Controller_prestataire extends Controller
         }
     }
 
-
-    public function action_prestataire_Statut()
-    {
-        $bd = Model::getModel();
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-        if (isset($_SESSION['id'])) {
-            if (isset($_POST['jour']) && isset($_POST['mission'])) {
-                $bd->setAbsenceForPrestataire($_POST['jour'], $_POST['mission'], $_SESSION['id']);
-            }
-        } else {
-            echo "Une erreur est survenue lors du chargement de l'absence de ce jour";
-        }
-    }
-
-    public function action_prestataire_clients()
-    {
-        $bd = Model::getModel();
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-        if (isset($_SESSION['id'])) {
-            $data = ["tableau" => $bd->getInterlocuteurForPrestataire($_SESSION['id'])];
-            $this->render("prestataire_interlocuteurs", $data);
-        } else {
-            echo 'Une erreur est survenue lors du chargement des clients';
-        }
-    }
-
+    /**
+     * Renvoie la vue qui lui permet de remplir son bon de livraion avec le bon type
+     * @return void
+     */
     public function action_afficher_bdl()
     {
         $bd = Model::getModel();
@@ -109,6 +98,10 @@ class Controller_prestataire extends Controller
         }
     }
 
+    /**
+     * Vérifie d'avoir les informations nécessaire pour renvoyer la vue liste avec les bonnes variables pour afficher la liste des bons de livraisons du prestataire en fonction de la mission
+     * @return void
+     */
     public function action_mission_bdl()
     {
         $bd = Model::getModel();
@@ -123,6 +116,10 @@ class Controller_prestataire extends Controller
         }
     }
 
+    /**
+     * Renvoie la liste des bons de livraison du prestataire connecté
+     * @return void
+     */
     public function action_liste_bdl()
     {
         $bd = Model::getModel();
@@ -137,7 +134,10 @@ class Controller_prestataire extends Controller
         }
     }
 
-
+    /**
+     * Vérifie d'avoir les informations nécessaires pour créer un bon de livraison
+     * @return void
+     */
     public function action_prestataire_creer_bdl()
     {
         $bd = Model::getModel();
@@ -145,12 +145,16 @@ class Controller_prestataire extends Controller
             session_start();
         }
         if (isset($_SESSION['id']) && isset($_POST['mission'])) {
-            $bd->addBdlForPrestataire($_SESSION['id'], $_POST['mission']);
+            $bd->addBdlForPrestataire($_SESSION['id'], e($_POST['mission']));
         } else {
             echo 'Une erreur est survenue lors de la création du bon de livraison';
         }
     }
 
+    /**
+     * Récupère le tableau renvoyé par le JavaScript et rempli les lignes du bon de livraison en fonction de son type
+     * @return void
+     */
     public function action_completer_bdl()
     {
         $bd = Model::getModel();
@@ -191,27 +195,20 @@ class Controller_prestataire extends Controller
         $this->render('dashboard');
     }
 
-    public function action_ajout_prestataire()
-    {
-        $bd = Model::getModel();
-        if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email'])) {
-            $mdp = genererMdp();
-            $bd->createPersonne($_POST['nom'], $_POST['prenom'], $_POST['email'], $mdp);
-            if ($bd->addPrestataire($_POST['email'], $_POST['client'])) {
-                $data = ['title' => "Ajout d'un prestataire", 'message' => "Le prestataire a été ajouté !"];
-            } else {
-                $data = ['title' => "Ajout d'un prestataire", 'message' => "Echec lors de l'ajout du prestataire !"];
-            }
-            $this->render('message', $data);
-        }
-    }
-
+    /**
+     * Renvoie le formulaire pour ajouter un bon de livraison
+     * @return void
+     */
     public function action_ajout_bdl_form()
     {
         $data = ['menu' => $this->action_get_navbar()];
         $this->render('ajout_bdl', $data);
     }
 
+    /**
+     * Vérifie d'avoir les informations nécessaire pour ajouter un bon de livraison à une mission
+     * @return void
+     */
     public function action_ajout_bdl()
     {
         $bd = Model::getModel();
@@ -219,7 +216,7 @@ class Controller_prestataire extends Controller
             session_start();
         }
         if ($_POST['mission'] && $_POST['mois'] && $_POST['composante']) {
-            $bd->addBdlInMission($_POST['mission'], $_POST['composante'], $_POST['mois'], $_SESSION['id']);
+            $bd->addBdlInMission(e($_POST['mission']), e($_POST['composante']), e($_POST['mois']), $_SESSION['id']);
         }
         $this->action_ajout_bdl_form();
     }

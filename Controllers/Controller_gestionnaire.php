@@ -373,20 +373,6 @@ class Controller_gestionnaire extends Controller
     }
 
     /**
-     * Vérifie que la personne existe avec les informations dans $_POST, puis que l'interlocuteur existe, si il n'existe pas elle ajoute un interlocuteur.
-     * Quoi qu'il arrive elle renvoie la vue du formulaire d'ajout d'un interlocuteur
-     * @return void
-     */
-    public function action_ajout_interlocuteur()
-    {
-        $bd = Model::getModel();
-        $this->action_ajout_personne(e($_POST['nom-interlocuteur']), e($_POST['prenom-interlocuteur']), e($_POST['email-interlocuteur']));
-        if (!$bd->checkInterlocuteurExiste(e($_POST['email-interlocuteur']))) {
-            $bd->addInterlocuteur(e($_POST['email-interlocuteur']));
-        }
-    }
-
-    /**
      * Fonction qui créée une composante, son interlocuteur, commercial et les assigne a elle, et créée la mission.
      * @return void
      */
@@ -406,7 +392,6 @@ class Controller_gestionnaire extends Controller
                 $_POST['nom-voie'],
                 $_POST['client'],
                 $_POST['composante']);
-            $this->action_ajout_interlocuteur();
             $this->action_ajout_interlocuteur_dans_composante();
             $this->action_ajout_commercial_dans_composante();
             $this->action_ajout_mission();
@@ -426,7 +411,7 @@ class Controller_gestionnaire extends Controller
     public function action_ajout_mission()
     {
         $bd = Model::getModel();
-        if (!$bd->checkMissionExiste($_POST['mission'], $_POST['composante'])) {
+        if (!$bd->checkMissionExiste(e($_POST['mission']), e($_POST['composante']))) {
             $bd->addMission(e($_POST['type-bdl']),
                 e($_POST['mission']),
                 e($_POST['date-mission']),
