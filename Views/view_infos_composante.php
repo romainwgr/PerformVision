@@ -3,7 +3,7 @@ require 'view_begin.php';
 require 'view_header.php';
 ?>
     <div class="composante-container">
-        <form action="?controller=<?= $_SESSION['role'] ?>&action=maj_infos_composante&id=<?= $_GET['id'] ?>"
+        <form action="?controller=<?= $_GET['controller'] ?>&action=maj_infos_composante&id=<?= $_GET['id'] ?>"
               method="post">
             <div class="infos-composante">
                 <h2>Informations composante</h2>

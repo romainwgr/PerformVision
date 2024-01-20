@@ -5,7 +5,7 @@ require 'view_header.php';
     <div class="add-container">
         <div class="form-abs">
             <h1>Ajout Mission</h1>
-            <form action="?controller=gestionnaire&action=ajout_mission" method="post">
+            <form action="?controller=<?php $_GET['controller'] ?>>&action=ajout_mission" method="post">
                 <h2>Informations mission</h2>
                 <input type="text" placeholder="Nom de la mission" name='mission' class="input-case">
                 <input type="text" placeholder="Société" id='sté' name='client' class="input-case">

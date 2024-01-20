@@ -18,11 +18,11 @@ class Controller_administrateur extends Controller
         if (isset($_SESSION['role'])) {
             unset($_SESSION['role']);
         }
-        $_SESSION['role'] = 'gestionnaire';
+        $_SESSION['role'] = 'administrateur';
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
-            $bdlLink = '?controller=gestionnaire&action=mission_bdl';
-            $buttonLink = '?controller=gestionnaire&action=ajout_mission_form';
+            $bdlLink = '?controller=administrateur&action=mission_bdl';
+            $buttonLink = '?controller=administrateur&action=ajout_mission_form';
             $headerDashboard = ['Société', 'Composante', 'Nom Mission', 'Préstataire assigné', 'Bon de livraison'];
             $data = ['menu' => $this->action_get_navbar(), 'bdlLink' => $bdlLink, 'buttonLink' => $buttonLink, 'header' => $headerDashboard, 'dashboard' => $bd->getDashboardGestionnaire()];
             return $this->render('gestionnaire_missions', $data);
