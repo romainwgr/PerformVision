@@ -34,6 +34,14 @@ class Model
         return self::$instance;
     }
 
+    /**
+     * Méthode permettant d'insérer une ligne dans la table personne
+     * @param $nom
+     * @param $prenom
+     * @param $email
+     * @param $mdp
+     * @return bool
+     */
     public function createPersonne($nom, $prenom, $email, $mdp)
     {
         $req = $this->bd->prepare('INSERT INTO PERSONNE(nom, prenom, email, mdp) VALUES(:nom, :prenom, :email, :mdp);');
@@ -47,17 +55,13 @@ class Model
     }
 
     /* -------------------------------------------------------------------------
-                            Fonction Gestionnaire/Admin
+                            Méthodes DashBoard
         ------------------------------------------------------------------------*/
 
-    public function getIdComposante($composante, $client){
-        $req = $this->bd->prepare('SELECT id_composante FROM COMPOSANTE JOIN CLIENT USING(id_client)
-                     WHERE nom_composante = :composante and nom_client = :client ');
-        $req->bindValue(':client', $client);
-        $req->bindValue(':composante', $composante);
-        $req->execute();
-        return $req->fetch(PDO::FETCH_ASSOC);
-    }
+    /**
+     * Méthode permettant de récupérer toutes les informations des missions en fonction de la composante, la société et les prestataires assignés
+     * @return array|false
+     */
     public function getDashboardGestionnaire()
     {
         $req = $this->bd->prepare("SELECT c.nom_client, co.nom_composante, m.nom_mission, COALESCE(p.nom, 'Aucun') AS nom, COALESCE(p.prenom, 'Aucun') AS prenom, ta.id_personne as id_prestataire, ta.id_mission 
@@ -70,13 +74,24 @@ class Model
         return $req->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getAllInterlocuteurs()
+    /* -------------------------------------------------------------------------
+                         Méthodes getAll...
+     ------------------------------------------------------------------------*/
+    /**
+     * Méthode permettant de récupérer la liste des composantes
+     * @return array|false
+     */
+    public function getAllComposantes()
     {
-        $req = $this->bd->prepare('SELECT personne.id_personne AS id, nom, prenom, nom_client FROM dirige JOIN composante USING(id_composante) JOIN client USING(id_client) JOIN personne USING(id_personne);');
+        $req = $this->bd->prepare('SELECT id_composante AS id, nom_composante, nom_client FROM CLIENT JOIN COMPOSANTE using(id_client)');
         $req->execute();
         return $req->fetchall();
     }
 
+    /**
+     * Méthode permettant de récupérer la liste de tous les commerciaux
+     * @return array|false
+     */
     public function getAllCommerciaux()
     {
         $req = $this->bd->prepare('SELECT personne.id_personne AS id, nom, prenom, nom_composante FROM estdans JOIN composante USING(id_composante) JOIN personne USING(id_personne);');
@@ -84,6 +99,10 @@ class Model
         return $req->fetchall();
     }
 
+    /**
+     * Méthode permettant de récupérer la liste de tous les prestataires
+     * @return array|false
+     */
     public function getAllPrestataires()
     {
         $req = $this->bd->prepare('SELECT p.id_personne AS id, nom, prenom, interne FROM PERSONNE p JOIN PRESTATAIRE pr ON p.id_personne =  pr.id_personne;');
@@ -91,6 +110,10 @@ class Model
         return $req->fetchall();
     }
 
+    /**
+     * Méthode permettant de récupérer la liste de toutes les sociétés
+     * @return array|false
+     */
     public function getAllClients()
     {
         $req = $this->bd->prepare('SELECT id_client AS id, nom_client, telephone_client FROM CLIENT;');
@@ -98,6 +121,10 @@ class Model
         return $req->fetchall();
     }
 
+    /**
+     * Méthode permettant de récupérer la liste de tous les gestionnaires
+     * @return array|false
+     */
     public function getAllGestionnaires()
     {
         $req = $this->bd->prepare('SELECT id_personne AS id, nom, prenom FROM GESTIONNAIRE JOIN PERSONNE USING(id_personne);');
@@ -105,6 +132,11 @@ class Model
         return $req->fetchall();
     }
 
+    /**
+     * Méthode permettant de récupérer le nom, prenom et email d'une personne en fonction de son identifiant
+     * @param $id
+     * @return mixed
+     */
     public function getInfosPersonne($id)
     {
         $req = $this->bd->prepare('SELECT id_personne, nom, prenom, email FROM PERSONNE WHERE id_personne = :id');
@@ -114,9 +146,43 @@ class Model
     }
 
     /* -------------------------------------------------------------------------
-                            Fonction Composante
-        ------------------------------------------------------------------------*/
+                            Méthodes Composante
+       ------------------------------------------------------------------------*/
+    /**
+     * Méthode permettant de récupérer l'id d'un composant à l'aide de son nom et la société à laquelle il appartient
+     * @param $composante
+     * @param $client
+     * @return mixed
+     */
+    public function getIdComposante($composante, $client)
+    {
+        $req = $this->bd->prepare('SELECT id_composante FROM COMPOSANTE JOIN CLIENT USING(id_client)
+                     WHERE nom_composante = :composante and nom_client = :client ');
+        $req->bindValue(':client', $client);
+        $req->bindValue(':composante', $composante);
+        $req->execute();
+        return $req->fetch(PDO::FETCH_ASSOC);
+    }
 
+    /**
+     * Méthode permettant de récupérer les informations d'une composante
+     * @param $id
+     * @return mixed
+     */
+    public function getInfosComposante($id)
+    {
+        $req = $this->bd->prepare('SELECT id_composante, nom_composante, nom_client, numero, nom_voie, cp, ville, libelle
+       FROM CLIENT JOIN COMPOSANTE using(id_client) JOIN ADRESSE USING(id_adresse) JOIN LOCALITE USING(id_localite) JOIN TYPEVOIE USING(id_type_voie) WHERE id_composante = :id');
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall()[0];
+    }
+
+    /**
+     * Méthode permettant de récupérer la liste des prestataires d'une composante
+     * @param $id
+     * @return array|false
+     */
     public function getPrestatairesComposante($id)
     {
         $req = $this->bd->prepare('SELECT DISTINCT id_personne, nom, prenom
@@ -130,6 +196,11 @@ class Model
         return $req->fetchall();
     }
 
+    /**
+     * Méthode permettant de récupérer la liste des commerciaux d'une composante
+     * @param $id
+     * @return array|false
+     */
     public function getCommerciauxComposante($id)
     {
         $req = $this->bd->prepare('SELECT DISTINCT id_personne, nom, prenom
@@ -142,6 +213,11 @@ class Model
         return $req->fetchall();
     }
 
+    /**
+     * Méthode permettant de récupérer la liste des interlocuteurs d'une composante
+     * @param $id
+     * @return array|false
+     */
     public function getInterlocuteursComposante($id)
     {
         $req = $this->bd->prepare('SELECT DISTINCT id_personne, nom, prenom
@@ -154,17 +230,11 @@ class Model
         return $req->fetchall();
     }
 
-    public function getInterlocuteursSociete($id)
-    {
-        $req = $this->bd->prepare('SELECT DISTINCT id_personne, nom, prenom
-       FROM PERSONNE JOIN INTERLOCUTEUR USING(id_personne) 
-           JOIN DIRIGE USING(id_personne) JOIN COMPOSANTE USING(id_composante) JOIN CLIENT using(id_client) WHERE id_client = :id');
-
-        $req->bindValue(':id', $id, PDO::PARAM_INT);
-        $req->execute();
-        return $req->fetchall();
-    }
-
+    /**
+     * Méthode permettant de récupérer la liste des bons de livraison liés d'une composante
+     * @param $id_composante
+     * @return array|false
+     */
     public function getBdlComposante($id_composante)
     {
         $req = $this->bd->prepare('SELECT DISTINCT id_prestataire, id_bdl, nom, prenom, mois
@@ -178,22 +248,30 @@ class Model
         return $req->fetchall();
     }
 
-    public function getAllComposantes()
+    /* -------------------------------------------------------------------------
+                                Méthodes Societe
+       ------------------------------------------------------------------------*/
+    /**
+     * Méthode peremettant de récupérer la liste des interlocuteurs d'une société
+     * @param $id
+     * @return array|false
+     */
+    public function getInterlocuteursSociete($id)
     {
-        $req = $this->bd->prepare('SELECT id_composante AS id, nom_composante, nom_client FROM CLIENT JOIN COMPOSANTE using(id_client)');
+        $req = $this->bd->prepare('SELECT DISTINCT id_personne, nom, prenom
+       FROM PERSONNE JOIN INTERLOCUTEUR USING(id_personne) 
+           JOIN DIRIGE USING(id_personne) JOIN COMPOSANTE USING(id_composante) JOIN CLIENT using(id_client) WHERE id_client = :id');
+
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->execute();
         return $req->fetchall();
     }
 
-    public function getInfosComposante($id)
-    {
-        $req = $this->bd->prepare('SELECT id_composante, nom_composante, nom_client, numero, nom_voie, cp, ville, libelle
-       FROM CLIENT JOIN COMPOSANTE using(id_client) JOIN ADRESSE USING(id_adresse) JOIN LOCALITE USING(id_localite) JOIN TYPEVOIE USING(id_type_voie) WHERE id_composante = :id');
-        $req->bindValue(':id', $id, PDO::PARAM_INT);
-        $req->execute();
-        return $req->fetchall()[0];
-    }
-
+    /**
+     * Méthode permettant de récupérer les informations d'une société
+     * @param $id
+     * @return mixed
+     */
     public function getInfosSociete($id)
     {
         $req = $this->bd->prepare('SELECT id_client, nom_client, telephone_client FROM CLIENT WHERE id_client = :id');
@@ -202,6 +280,11 @@ class Model
         return $req->fetchall()[0];
     }
 
+    /**
+     * Méthode permettant de récupérer la liste des composantes d'une société
+     * @param $id
+     * @return array|false
+     */
     public function getComposantesSociete($id)
     {
         $req = $this->bd->prepare('SELECT id_composante, nom_composante FROM COMPOSANTE JOIN CLIENT using(id_client) WHERE id_client = :id');
@@ -210,6 +293,16 @@ class Model
         return $req->fetchall();
     }
 
+    /* -------------------------------------------------------------------------
+                            Méthodes assigner...
+       ------------------------------------------------------------------------*/
+    /**
+     * Méthode permettant d'assigner un interlocuteur à une composante en connaissant le nom de la composante et de la société
+     * @param $composante
+     * @param $client
+     * @param $email
+     * @return bool
+     */
     public function assignerInterlocuteurComposante($composante, $client, $email)
     {
         $req = $this->bd->prepare("INSERT INTO dirige (id_personne, id_composante) SELECT  (SELECT id_personne FROM PERSONNE WHERE email=:email), (SELECT c.id_composante FROM COMPOSANTE c JOIN CLIENT cl ON c.id_client = cl.id_client WHERE c.nom_composante = :nom_compo  AND cl.nom_client = :nom_client)");
@@ -220,6 +313,12 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    /**
+     * Méthode permettant d'assigner un interlocuteur à une composante en connaissant l'identifiant de la composante
+     * @param $id_composante
+     * @param $email
+     * @return bool
+     */
     public function assignerInterlocuteurComposanteByIdComposante($id_composante, $email)
     {
         $req = $this->bd->prepare("INSERT INTO dirige (id_personne, id_composante) SELECT  (SELECT id_personne FROM PERSONNE WHERE email=:email), :id_composante");
@@ -229,6 +328,13 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    /**
+     * Méthode permettant d'assigner un interlocuteur à une composante en connaissant le nom de la composante et l'identifiant de la société
+     * @param $id_client
+     * @param $email
+     * @param $composante
+     * @return bool
+     */
     public function assignerInterlocuteurComposanteByIdClient($id_client, $email, $composante)
     {
         $req = $this->bd->prepare("INSERT INTO dirige (id_personne, id_composante) SELECT  
@@ -241,6 +347,14 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    /* -------------------------------------------------------------------------
+                                Méthodes add...
+       ------------------------------------------------------------------------*/
+    /**
+     * Méthode permettant d'ajouter une personne dans la table prestataire en connaissant son email
+     * @param $email
+     * @return bool
+     */
     public function addPrestataire($email)
     {
         $req = $this->bd->prepare("INSERT INTO PRESTATAIRE (id_personne) SELECT id_personne FROM personne WHERE email = :email");
@@ -249,6 +363,11 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    /**
+     * Méthode permettant d'ajouter une personne dans la table interlocuteur en connaissant son email
+     * @param $email
+     * @return bool
+     */
     public function addInterlocuteur($email)
     {
         $req = $this->bd->prepare("INSERT INTO INTERLOCUTEUR (id_personne) SELECT id_personne FROM personne WHERE email = :email");
@@ -257,6 +376,11 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    /**
+     * Méthode permettant d'ajouter une personne dans la table commercial en connaissant son email
+     * @param $email
+     * @return bool
+     */
     public function addCommercial($email)
     {
         $req = $this->bd->prepare("INSERT INTO COMMERCIAL (id_personne) SELECT id_personne FROM personne WHERE email = :email");
@@ -265,6 +389,11 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    /**
+     * Méthode permettant d'ajouter une personne dans la table gestionnaire en connaissant son email
+     * @param $email
+     * @return bool
+     */
     public function addGestionnaire($email)
     {
         $req = $this->bd->prepare("INSERT INTO GESTIONNAIRE (id_personne) SELECT id_personne FROM personne WHERE email = :email");
@@ -273,6 +402,12 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    /**
+     * Méthode permettant d'ajouter un client dans la table client avec ses informations
+     * @param $client
+     * @param $tel
+     * @return bool
+     */
     public function addClient($client, $tel)
     {
         $req = $this->bd->prepare("INSERT INTO client(nom_client, telephone_client) VALUES( :nom_client, :tel)");
@@ -282,6 +417,16 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    /**
+     * Méthode permettant d'ajouter une composante en ajoutant les informations de son adresse dans la table adresse puis les informations de la composante dans la table composante
+     * @param $libelleVoie
+     * @param $cp
+     * @param $numVoie
+     * @param $nomVoie
+     * @param $nom_client
+     * @param $nom_compo
+     * @return bool
+     */
     public function addComposante($libelleVoie, $cp, $numVoie, $nomVoie, $nom_client, $nom_compo)
     {
         $req = $this->bd->prepare("INSERT INTO ADRESSE(numero, nom_voie, id_type_voie, id_localite) SELECT :num, :nomVoie, (SELECT id_type_voie FROM TypeVoie WHERE libelle = :libelleVoie), (SELECT id_localite FROM localite WHERE cp = :cp)");
@@ -297,6 +442,15 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    /**
+     * Méthode permettant d'ajouter une mission avec ses informations et les identifiants de la composante et de la société auxquelles elle est liée
+     * @param $type
+     * @param $nom
+     * @param $date
+     * @param $nom_compo
+     * @param $nom_client
+     * @return bool
+     */
     public function addMission($type, $nom, $date, $nom_compo, $nom_client)
     {
         $req = $this->bd->prepare("INSERT INTO MISSION (type_bdl, nom_mission, date_debut, id_composante) SELECT :type, :nom, :date, (SELECT id_composante FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE LOWER(nom_client) = LOWER(:nom_client) and LOWER(nom_composante) = LOWER(:nom_composante))");
@@ -309,6 +463,15 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    /**
+     * Méthode permettant d'ajouter une activité en fonction de si il s'agit d'un bon de livraison de type Heure
+     * @param $commentaire
+     * @param $id_bdl
+     * @param $id_personne
+     * @param $date_bdl
+     * @param $nb_heure
+     * @return bool
+     */
     public function addNbHeureActivite($commentaire, $id_bdl, $id_personne, $date_bdl, $nb_heure)
     {
         $req = $this->bd->prepare("INSERT INTO ACTIVITE (commentaire, id_bdl, id_personne, date_bdl) VALUES(:commentaire, :id_bdl, :id_personne, :date_bdl)");
@@ -323,6 +486,15 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    /**
+     * Méthode permettant d'ajouter une activité en fonction de si il s'agit d'un bon de livraison de type Demi-Journée
+     * @param $commentaire
+     * @param $id_bdl
+     * @param $id_personne
+     * @param $date_bdl
+     * @param $nb_dj
+     * @return bool
+     */
     public function addDemiJournee($commentaire, $id_bdl, $id_personne, $date_bdl, $nb_dj)
     {
         $req = $this->bd->prepare("INSERT INTO ACTIVITE (commentaire, id_bdl, id_personne, date_bdl) VALUES(:commentaire, :id_bdl, :id_personne, :date_bdl)");
@@ -337,6 +509,15 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    /**
+     * Méthode permettant d'ajouter une activité en fonction de si il s'agit d'un bon de livraison de type Journée
+     * @param $commentaire
+     * @param $id_bdl
+     * @param $id_personne
+     * @param $date_bdl
+     * @param $nb_jour
+     * @return bool
+     */
     public function addJourneeJour($commentaire, $id_bdl, $id_personne, $date_bdl, $nb_jour)
     {
         $req = $this->bd->prepare("INSERT INTO ACTIVITE (commentaire, id_bdl, id_personne, date_bdl) VALUES(:commentaire, :id_bdl, :id_personne, :date_bdl)");
@@ -351,6 +532,14 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    /**
+     * Méthode permettant d'ajouter un bon de livraison dans la table BON_DE_LIVRAISON avec seulement les informations comme le mois, la mission et le prestataire.
+     * @param $nom_mission
+     * @param $nom_composante
+     * @param $mois
+     * @param $id_prestataire
+     * @return bool|void
+     */
     public function addBdlInMission($nom_mission, $nom_composante, $mois, $id_prestataire)
     {
         try {
@@ -369,6 +558,13 @@ class Model
         }
     }
 
+    /**
+     * Méthode permettant d'assigner un prestataire à une mission et lui créée un bon de livraison
+     * @param $email
+     * @param $mission
+     * @param $id_composante
+     * @return bool
+     */
     public function assignerPrestataire($email, $mission, $id_composante)
     {
         $req = $this->bd->prepare("INSERT INTO travailleAvec (id_personne, id_mission) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT m.id_mission FROM MISSION m JOIN COMPOSANTE USING(id_composante) WHERE nom_mission = :nom_mission and id_composante = :id_composante)");
@@ -384,6 +580,13 @@ class Model
         return (bool)$req->rowCount();
     }
 
+    /**
+     * Méthode permettant
+     * @param $email
+     * @param $composante
+     * @param $client
+     * @return bool
+     */
     public function assignerCommercial($email, $composante, $client)
     {
         $req = $this->bd->prepare("INSERT INTO estDans (id_personne, id_composante) SELECT  (SELECT p.id_personne FROM PERSONNE p WHERE p.email = :email), (SELECT c.id_composante FROM COMPOSANTE c JOIN CLIENT USING(id_client) WHERE nom_composante = :composante AND nom_client = :client)");
