@@ -25,7 +25,7 @@ class Controller_login extends Controller
         $db = Model::getModel();
         if (isset($_POST['mail']) && isset($_POST['password'])) {
             if (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $_POST['mail'])) {
-                $msg = "Ce n'est pas un email correcte !";
+                $msg = "Ce n'est pas un email correct !";
             } else {
                 $msg = "L'identifiant ou le mot de passe est incorrect !";
 
@@ -40,7 +40,9 @@ class Controller_login extends Controller
                 }
             }
 
-            $data = ['response' => $msg];
+            $data = [
+                'response' => $msg
+            ];
             $this->render('login', $data);
         }
     }
@@ -51,6 +53,8 @@ class Controller_login extends Controller
      * Elle vérifie si l'email existe dans la base de donnée, renvoie true si oui, false sinon
      * @return bool
      */
+    // TODO - action pas appelé 
+
     public function action_check_mail()
     {
         $mailExisting = false;

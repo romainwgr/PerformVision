@@ -16,16 +16,23 @@ class Controller_interlocuteur extends Controller
      */
     public function action_dashboard()
     {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+        sessionstart();
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
-            $bdlLink = '?controller=interlocuteur&action=mission_bdl';
-            $headerDashboard = ['Nom projet/société', 'Date', 'Préstataire assigné', 'Bon de livraison'];
-            $data = ['header' => $headerDashboard, 'menu' => $this->action_get_navbar(), 'bdlLink' => $bdlLink, 'dashboard' => $bd->getClientContactDashboardData()];
+            $data = [
+                'header' => [
+                    'Nom projet/société', 
+                    'Date', 
+                    'Préstataire assigné', 
+                    'Bon de livraison'
+                ], 
+                'menu' => $this->action_get_navbar(), 
+                'bdlLink' => '?controller=interlocuteur&action=mission_bdl', 
+                'dashboard' => $bd->getClientContactDashboardData()
+            ];
             return $this->render('interlocuteur', $data);
         } else {
+            // TODO remove echo
             echo 'Une erreur est survenue lors du chargement du tableau de bord';
         }
     }
@@ -45,10 +52,11 @@ class Controller_interlocuteur extends Controller
      */
     public function action_infos()
     {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-        $data = ['role' => 'interlocuteur', 'menu' => $this->action_get_navbar()];
+        sessionstart();
+        $data = [
+            'role' => 'interlocuteur', 
+            'menu' => $this->action_get_navbar()
+        ];
         $this->render('infos', $data);
     }
 
@@ -64,12 +72,14 @@ class Controller_interlocuteur extends Controller
      */
     public function action_mission_bdl(){
         $bd = Model::getModel();
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+        sessionstart();
         if(isset($_GET['id']) && isset($_GET['id-prestataire'])){
-            $cardLink = '?controller=interlocuteur&action=consulter_bdl';
-            $data = ['title' => 'Bons de livraison', 'menu' => $this->action_get_navbar(), 'cardLink' => $cardLink, 'person' => $bd->getBdlsOfPrestataireByIdMission(e($_GET['id']), e($_GET['id-prestataire']))];
+            $data = [
+                'title' => 'Bons de livraison', 
+                'menu' => $this->action_get_navbar(), 
+                'cardLink' => '?controller=interlocuteur&action=consulter_bdl', 
+                'person' => $bd->getBdlsOfPrestataireByIdMission(e($_GET['id']), e($_GET['id-prestataire']))
+            ];
             $this->render('liste', $data);
         }
     }
@@ -80,9 +90,7 @@ class Controller_interlocuteur extends Controller
      */
     public function action_consulter_bdl(){
         $bd = Model::getModel();
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+        sessionstart();
         if (isset($_GET['id'])) {
             $typeBdl = $bd->getBdlTypeAndMonth($_GET['id']);
             if($typeBdl['type_bdl'] == 'Heure'){
@@ -95,9 +103,14 @@ class Controller_interlocuteur extends Controller
                 $activites = $bd->getAllJourActivite($_GET['id']);
             }
 
-            $data = ['bdl' => $typeBdl, 'menu' => $this->action_get_navbar(), 'activites' => $activites];
+            $data = [
+                'bdl' => $typeBdl, 
+                'menu' => $this->action_get_navbar(), 
+                'activites' => $activites
+            ];
             $this->render("consulte_bdl", $data);
         } else {
+            // TODO remove echo
             echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
         }
     }
@@ -108,14 +121,13 @@ class Controller_interlocuteur extends Controller
      */
     public function action_valider_bdl(){
         $bd = Model::getModel();
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+        sessionstart();
         if(isset($_GET['id']) && isset($_GET['valide'])){
             $bd->setEstValideBdl(e($_GET['id']), $_SESSION['id'], e($_GET['valide']));
             $this->action_consulter_bdl();
         }
         else {
+            // TODO remove echo
             echo 'Une erreur est survenue lors de la validation de ce bon de livraison';
         }
     }
@@ -127,6 +139,7 @@ class Controller_interlocuteur extends Controller
      */
     public function action_envoyer_email()
     {
+        // DONE title mit dans $data pour envoyer sur view_message
         session_start();
         $bd = Model::getModel();
         if (isset($_SESSION['id']) && $bd->getComponentCommercialsEmails($_SESSION['id'])) {
@@ -141,19 +154,31 @@ class Controller_interlocuteur extends Controller
             $headers .= 'From: <' . $emetteur . '>' . "\r\n";
 
             if (mail($destinatairesEmails, $objet, $message, $headers)) {
-                $this->render('message', [$title => 'Email', $message => 'Le mail a été envoyé !']);
+                $data = [
+                    'title' => 'Email',
+                    'message' => 'Le mail a été envoyé !'
+                ];
+                $this->render('message',$data);
             } else {
-                $this->render('message', [$title => 'Email', $message => "Une erreur est survenue lors de l'envoie du mail !"]);
+                $data = [
+                    'title' => 'Email',
+                    'message' => "Une erreur est survenue lors de l'envoie du mail !"
+                ];
+                $this->render('message', $data);
             }
         }
     }
 
+
+    // TODO Fonction qui télécharge un fichier ? A tester
     /**
      * Lecture du fichier correspondant au bon de livraison pour l'envoyer au client
      * @return void
      */
     public function telecharger_bdl()
     {
+        // FIXME Gérer l'erreur cheminbdl pas déclaré
+        $cheminBdl = '../BDL/';
         $cheminFichier = $cheminBdl . e($_GET['id']);
 
         // Vérifiez si le fichier existe
@@ -172,6 +197,7 @@ class Controller_interlocuteur extends Controller
             exit;
         } else {
             // Le fichier n'existe pas
+            // TODO remove echo
             echo "Le fichier n'existe pas.";
         }
     }

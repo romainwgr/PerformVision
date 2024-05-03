@@ -14,16 +14,16 @@ elle comprend donc tout le head et les liens de chaque fichiers css -->
 
     <title>Perform vision</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/Content/css/variables.css">
-    <link rel="stylesheet" href="/Content/css/app.css">
-    <link rel="stylesheet" href="/Content/css/login.css">
-    <link rel="stylesheet" href="/Content/css/interlocuteur.css">
-    <link rel="stylesheet" href="/Content/css/gestionnaire/missions.css">
-    <link rel="stylesheet" href="/Content/css/gestionnaire/prestataire.css">
-    <link rel="stylesheet" href="/Content/css/header.css">
-    <link rel="stylesheet" href="/Content/css/footer.css">
-    <link rel="stylesheet" href="/Content/css/ajout_form.css">
-    <link rel="stylesheet" href="/Content/css/composante.css">
-    <link rel="stylesheet" href="/Content/css/bdl.css">
+    <link rel="stylesheet" href="Content/css/variables.css">
+    <link rel="stylesheet" href="Content/css/app.css">
+    <link rel="stylesheet" href="Content/css/login.css">
+    <link rel="stylesheet" href="Content/css/interlocuteur.css">
+    <link rel="stylesheet" href="Content/css/gestionnaire/missions.css">
+    <link rel="stylesheet" href="Content/css/gestionnaire/prestataire.css">
+    <link rel="stylesheet" href="Content/css/header.css">
+    <link rel="stylesheet" href="Content/css/footer.css">
+    <link rel="stylesheet" href="Content/css/ajout_form.css">
+    <link rel="stylesheet" href="Content/css/composante.css">
+    <link rel="stylesheet" href="Content/css/bdl.css">
 </head>
 <body>

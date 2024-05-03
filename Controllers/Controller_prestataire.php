@@ -16,9 +16,7 @@ class Controller_prestataire extends Controller
      */
     public function action_dashboard()
     {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+        sessionstart();
         if (isset($_SESSION['role'])) {
             unset($_SESSION['role']);
         }
@@ -26,26 +24,24 @@ class Controller_prestataire extends Controller
 
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
-            $bdlLink = '?controller=prestataire&action=mission_bdl';
-            $headerDashboard = ['Société', 'Composante', 'Nom Mission', 'Bon de livraison'];
-            $data = ['menu' => $this->action_get_navbar(), 'bdlLink' => $bdlLink, 'header' => $headerDashboard, 'dashboard' => $bd->getDashboardPrestataire($_SESSION['id'])];
+            $data = [
+                'menu' => $this->action_get_navbar(), 
+                'bdlLink' => '?controller=prestataire&action=mission_bdl', 
+                'header' => [
+                    'Société', 
+                    'Composante', 
+                    'Nom Mission', 
+                    'Bon de livraison'
+                ], 
+                'dashboard' => $bd->getDashboardPrestataire($_SESSION['id'])
+            ];
             return $this->render('prestataire_missions', $data);
         } else {
+            // TODO remove echo
             echo 'Une erreur est survenue lors du chargement du tableau de bord';
         }
     }
 
-    /**
-     * Renvoie la vue qui montre les informations de l'utilisateur connecté
-     * @return void
-     */
-    public function action_infos()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-        $this->render('infos', ['menu' => $this->action_get_navbar()]);
-    }
 
     /**
      * Action qui retourne les éléments du menu pour le prestataire
@@ -59,13 +55,32 @@ class Controller_prestataire extends Controller
     }
 
     /**
+     * Renvoie la vue qui montre les informations de l'utilisateur connecté
+     * @return void
+     */
+    public function action_infos()
+    {
+        sessionstart();
+        $this->render('infos', ['menu' => $this->action_get_navbar()]);
+    }
+
+    
+
+    /**
      * Ajoute dans la base de données la date à laquelle le prestataire est absent
      * @return void
      */
     public function action_prestataire_creer_absences()
     {
         $bd = Model::getModel();
-        if (isset($_POST['prenom']) && isset($_POST['nom']) && isset($_POST['email']) && isset($_POST['Date']) && isset($_POST['motif'])) {
+        if (
+            isset($_POST['prenom']) && 
+            isset($_POST['nom']) && 
+            isset($_POST['email']) && 
+            isset($_POST['Date']) && 
+            isset($_POST['motif'])
+        ) {
+            // FIXME Fonction non déclaré dans le modèle
             $bd->addAbsenceForPrestataire($_POST['prenom'], $_POST['nom'], $_POST['email'], $_POST['Date'], $_POST['motif']);
         } else {
             $this->action_error("données incomplètes");
@@ -79,9 +94,7 @@ class Controller_prestataire extends Controller
     public function action_afficher_bdl()
     {
         $bd = Model::getModel();
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+        sessionstart();
         if (isset($_GET['id'])) {
             $typeBdl = $bd->getBdlTypeAndMonth($_GET['id']);
             if ($typeBdl['type_bdl'] == 'Heure') {
@@ -91,9 +104,14 @@ class Controller_prestataire extends Controller
             } elseif ($typeBdl['type_bdl'] == 'Demi-journée') {
                 $infosBdl = $bd->getAllDemiJourActivite($_GET['id']);
             }
-            $data = ['menu' => $this->action_get_navbar(), 'bdl' => $typeBdl, 'infosBdl' => $infosBdl];
+            $data = [
+                'menu' => $this->action_get_navbar(), 
+                'bdl' => $typeBdl, 
+                'infosBdl' => $infosBdl
+            ];
             $this->render("activite", $data);
         } else {
+            // TODO remove echo
             echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
         }
     }
@@ -105,13 +123,15 @@ class Controller_prestataire extends Controller
     public function action_mission_bdl()
     {
         $bd = Model::getModel();
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+        sessionstart();
         if (isset($_GET['id'])) {
-            $buttonLink = '?controller=prestataire&action=ajout_bdl_form';
-            $cardLink = '?controller=prestataire&action=afficher_bdl';
-            $data = ['title' => 'Bons de livraison', 'buttonLink' => $buttonLink, 'cardLink' => $cardLink, 'menu' => $this->action_get_navbar(), 'person' => $bd->getBdlsOfPrestataireByIdMission($_GET['id'], $_SESSION['id'])];
+            $data = [
+                'title' => 'Bons de livraison', 
+                'buttonLink' => '?controller=prestataire&action=ajout_bdl_form', 
+                'cardLink' =>  '?controller=prestataire&action=afficher_bdl', 
+                'menu' => $this->action_get_navbar(), 
+                'person' => $bd->getBdlsOfPrestataireByIdMission($_GET['id'], $_SESSION['id'])
+            ];
             $this->render('liste', $data);
         }
     }
@@ -123,13 +143,15 @@ class Controller_prestataire extends Controller
     public function action_liste_bdl()
     {
         $bd = Model::getModel();
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+        sessionstart();
         if (isset($_SESSION['id'])) {
-            $cardLink = '?controller=prestataire&action=afficher_bdl';
-            $buttonLink = '?controller=prestataire&action=ajout_bdl_form';
-            $data = ['title' => 'Mes Bons de livraison', 'buttonLink' => $buttonLink, 'cardLink' => $cardLink, 'menu' => $this->action_get_navbar(), "person" => $bd->getAllBdlPrestataire($_SESSION['id'])];
+            $data = [
+                'title' => 'Mes Bons de livraison', 
+                'buttonLink' => '?controller=prestataire&action=ajout_bdl_form', 
+                'cardLink' => '?controller=prestataire&action=afficher_bdl', 
+                'menu' => $this->action_get_navbar(), 
+                "person" => $bd->getAllBdlPrestataire($_SESSION['id'])
+            ];
             $this->render("liste", $data);
         }
     }
@@ -141,12 +163,12 @@ class Controller_prestataire extends Controller
     public function action_prestataire_creer_bdl()
     {
         $bd = Model::getModel();
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+        sessionstart();
         if (isset($_SESSION['id']) && isset($_POST['mission'])) {
+            // FIXME Fonction non déclaré dans le modèle 
             $bd->addBdlForPrestataire($_SESSION['id'], e($_POST['mission']));
         } else {
+            // TODO remove echo
             echo 'Une erreur est survenue lors de la création du bon de livraison';
         }
     }
@@ -155,12 +177,11 @@ class Controller_prestataire extends Controller
      * Récupère le tableau renvoyé par le JavaScript et rempli les lignes du bon de livraison en fonction de son type
      * @return void
      */
+    // TODO a tester
     public function action_completer_bdl()
     {
         $bd = Model::getModel();
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+        sessionstart();
         // Récupérer les données depuis la requête POST
         $data = json_decode(file_get_contents("php://input"), true);
 
@@ -201,7 +222,9 @@ class Controller_prestataire extends Controller
      */
     public function action_ajout_bdl_form()
     {
-        $data = ['menu' => $this->action_get_navbar()];
+        $data = [
+            'menu' => $this->action_get_navbar()
+        ];
         $this->render('ajout_bdl', $data);
     }
 
@@ -212,9 +235,7 @@ class Controller_prestataire extends Controller
     public function action_ajout_bdl()
     {
         $bd = Model::getModel();
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+        sessionstart();
         if ($_POST['mission'] && $_POST['mois'] && $_POST['composante']) {
             $bd->addBdlInMission(e($_POST['mission']), e($_POST['composante']), e($_POST['mois']), $_SESSION['id']);
         }
