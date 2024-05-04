@@ -23,6 +23,7 @@ function genererMdp(){
     // ensuite on coupe à la longueur voulue avec la fonction substr(), propre à PHP aussi
     return substr($Chaine,0, 12);
 }
+
 function sessionstart(){
     if (session_status() == PHP_SESSION_NONE) {
         session_start();

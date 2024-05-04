@@ -7,7 +7,7 @@ require 'view_header.php';
     <div class="add-container">
         <div class="form-abs">
             <h1>Ajout Prestataire</h1>
-            <form action="?controller=<?php $_GET['controller'] ?>>&action=<?php if(isset($_GET['id'])): echo 'ajout_prestataire_dans_mission&id=' . $_GET['id']; else: echo 'ajout_prestataire'; endif;?>" method="post">
+            <form action="?controller=<?= $_GET['controller'] ?>>&action=<?php if(isset($_GET['id'])): echo 'ajout_prestataire_dans_mission&id=' . $_GET['id']; else: echo 'ajout_prestataire'; endif;?>" method="post">
                 <h2>Informations personnelles</h2>
                 <div class="form-names">
                     <input type="text" placeholder="Prénom" name="prenom" class="input-case">

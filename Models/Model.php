@@ -1029,6 +1029,7 @@ class Model
     /**
      * Vérifie que le mot de passe correspond bien au mail. Si ils correspondent, une session avec les informations de la personne lié au mail débute.
      **/
+    // TODO mettre les sessions dans le controller ?
     public function checkMailPassword($mail, $password)
     {
         $req = $this->bd->prepare('SELECT * FROM PERSONNE WHERE email = :mail');

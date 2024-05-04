@@ -433,15 +433,21 @@ class Controller_gestionnaire extends Controller
      */
     public function action_ajout_mission()
     {
+        
         $bd = Model::getModel();
-        if (!$bd->checkMissionExiste(e($_POST['mission']), e($_POST['composante']))) {
+        if (
+            !$bd->checkMissionExiste(e($_POST['mission']), e($_POST['composante']))
+        ) {
             $bd->addMission(e($_POST['type-bdl']),
             e($_POST['mission']),
             e($_POST['date-mission']),
             e($_POST['composante']),
             e($_POST['client']));
-        }
+
+            
     }
+        }
+        
 
     /**
      * Vérifie d'avoir toutes les informations d'un prestataire pour ensuite créer la personne et l'ajouter en tant que prestataire

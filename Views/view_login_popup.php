@@ -3,7 +3,7 @@
     <div class="popup">
         <div class="container-popup">
             <div class="img-popup">
-                <img src="/Content/images/Questions-amico.svg" alt="">
+                <img src="Content/images/Questions-amico.svg" alt="">
             </div>
             <div class="form-popup">
                 <h1 class="popup-title">Il se trouve que vous ayez plusieurs rôles !</h1>

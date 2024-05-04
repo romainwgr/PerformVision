@@ -23,7 +23,7 @@ class Controller_interlocuteur extends Controller
                 'header' => [
                     'Nom projet/société', 
                     'Date', 
-                    'Préstataire assigné', 
+                    'Prestataire assigné', 
                     'Bon de livraison'
                 ], 
                 'menu' => $this->action_get_navbar(), 
