@@ -451,6 +451,7 @@ class Model
      * @param $nom_client
      * @return bool
      */
+    // FIXME erreur ERREUR:  une valeur NULL viole la contrainte NOT NULL de la colonne « id_composante » dans la relation « mission »
     public function addMission($type, $nom, $date, $nom_compo, $nom_client)
     {
         $req = $this->bd->prepare("INSERT INTO MISSION (type_bdl, nom_mission, date_debut, id_composante) SELECT :type, :nom, :date, (SELECT id_composante FROM COMPOSANTE JOIN CLIENT USING(id_client) WHERE LOWER(nom_client) = LOWER(:nom_client) and LOWER(nom_composante) = LOWER(:nom_composante))");

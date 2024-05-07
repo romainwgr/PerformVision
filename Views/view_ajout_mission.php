@@ -13,6 +13,12 @@ require 'view_header.php';
                 <h2>Informations mission</h2>
                 <input type="text" placeholder="Nom de la mission" name='mission' class="input-case">
                 <input type="text" placeholder="Société" id='sté' name='client' class="input-case">
+
+
+
+                <!-- FIXME il faut controller la saisie du composant sinon on a une erreur car composant est une clé étrangère
+                    faut il afficher le nom de toutes les composantes dans un select option? mieux connaitre le projet pour fixer
+                -->
                 <input type="text" placeholder="Composante" name='composante' id='cpt' class="input-case">
                 <div class="form-names">
                     <select name="type-bdl">

@@ -64,8 +64,8 @@ class Controller_prestataire extends Controller
         $this->render('infos', ['menu' => $this->action_get_navbar()]);
     }
 
+    // TEST
     
-
     /**
      * Ajoute dans la base de données la date à laquelle le prestataire est absent
      * @return void

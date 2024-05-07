@@ -175,6 +175,7 @@ button:hover {
     background-color: #FFF;
     border: var(--border-button);
     color: var(--primary-color);
+    
 }
 
 .button-primary{
