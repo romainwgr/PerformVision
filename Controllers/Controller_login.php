@@ -28,7 +28,7 @@ class Controller_login extends Controller
                 $msg = "Ce n'est pas un email correct !";
             } else {
                 $msg = "L'identifiant ou le mot de passe est incorrect !";
-
+                // FIXME il faut mettre le déchiffrage du mot de passe
                 if ($db->checkMailPassword(e($_POST['mail']), e($_POST['password']))) {
                     $role = $db->hasSeveralRoles();
                     if (isset($role['roles'])) {

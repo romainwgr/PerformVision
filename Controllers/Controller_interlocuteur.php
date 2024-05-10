@@ -32,7 +32,7 @@ class Controller_interlocuteur extends Controller
             ];
             return $this->render('interlocuteur', $data);
         } else {
-            // TODO remove echo
+            // TODO Réaliser un render de l'erreur
             echo 'Une erreur est survenue lors du chargement du tableau de bord';
         }
     }
@@ -110,7 +110,7 @@ class Controller_interlocuteur extends Controller
             ];
             $this->render("consulte_bdl", $data);
         } else {
-            // TODO remove echo
+            // TODO Réaliser un render de l'erreur
             echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
         }
     }
@@ -127,7 +127,7 @@ class Controller_interlocuteur extends Controller
             $this->action_consulter_bdl();
         }
         else {
-            // TODO remove echo
+            // TODO Réaliser un render de l'erreur
             echo 'Une erreur est survenue lors de la validation de ce bon de livraison';
         }
     }
@@ -197,7 +197,7 @@ class Controller_interlocuteur extends Controller
             exit;
         } else {
             // Le fichier n'existe pas
-            // TODO remove echo
+            // TODO Réaliser un render de l'erreur
             echo "Le fichier n'existe pas.";
         }
     }

@@ -79,58 +79,96 @@ class Model
      ------------------------------------------------------------------------*/
     /**
      * Méthode permettant de récupérer la liste des composantes
-     * @return array|false
+     * @return array|string
      */
     public function getAllComposantes()
-    {
-        $req = $this->bd->prepare('SELECT id_composante AS id, nom_composante, nom_client FROM CLIENT JOIN COMPOSANTE using(id_client)');
-        $req->execute();
-        return $req->fetchall();
+{
+    $req = $this->bd->prepare('SELECT id_composante AS id, nom_composante, nom_client FROM CLIENT JOIN COMPOSANTE using(id_client)');
+    $req->execute();
+    $result = $req->fetchAll();
+    if (empty($result)) {
+        return 'Il n\'y a aucune composante.';
     }
+    return $result;
+}
+
 
     /**
      * Méthode permettant de récupérer la liste de tous les commerciaux
-     * @return array|false
+     * @return array|string
      */
     public function getAllCommerciaux()
-    {
-        $req = $this->bd->prepare('SELECT personne.id_personne AS id, nom, prenom, nom_composante FROM estdans JOIN composante USING(id_composante) JOIN personne USING(id_personne);');
-        $req->execute();
-        return $req->fetchall();
+{
+    $req = $this->bd->prepare('SELECT personne.id_personne AS id, nom, prenom, nom_composante FROM estdans JOIN composante USING(id_composante) JOIN personne USING(id_personne);');
+    $req->execute();
+    $result = $req->fetchAll();
+    if (empty($result)) {
+        return 'Il n\'y a aucun commercial.';
     }
+    return $result;
+}
+
 
     /**
      * Méthode permettant de récupérer la liste de tous les prestataires
-     * @return array|false
+     * @return array|string
      */
     public function getAllPrestataires()
-    {
-        $req = $this->bd->prepare('SELECT p.id_personne AS id, nom, prenom, interne FROM PERSONNE p JOIN PRESTATAIRE pr ON p.id_personne =  pr.id_personne;');
+{
+    try {
+        $req = $this->bd->prepare('
+            SELECT
+                p.id_personne AS id, nom, prenom, interne 
+            FROM 
+                PERSONNE p 
+            JOIN 
+                PRESTATAIRE pr 
+            ON 
+                p.id_personne =  pr.id_personne;');
         $req->execute();
-        return $req->fetchall();
+        $result = $req->fetchAll();
+        if (empty($result)) {
+            return 'Il n\'y a aucun prestataire.';
+        }
+        return $result;
+    } catch (PDOException $e) {
+        return 'Erreur lors de la récupération des données : ' . $e->getMessage();
     }
+}
+
+
 
     /**
      * Méthode permettant de récupérer la liste de toutes les sociétés
-     * @return array|false
+     * @return array|string
      */
     public function getAllClients()
-    {
-        $req = $this->bd->prepare('SELECT id_client AS id, nom_client, telephone_client FROM CLIENT;');
-        $req->execute();
-        return $req->fetchall();
+{
+    $req = $this->bd->prepare('SELECT id_client AS id, nom_client, telephone_client FROM CLIENT;');
+    $req->execute();
+    $result = $req->fetchAll();
+    if (empty($result)) {
+        return 'Il n\'y a aucune société.';
     }
+    return $result;
+}
+
 
     /**
      * Méthode permettant de récupérer la liste de tous les gestionnaires
-     * @return array|false
+     * @return array|string
      */
     public function getAllGestionnaires()
-    {
-        $req = $this->bd->prepare('SELECT id_personne AS id, nom, prenom FROM GESTIONNAIRE JOIN PERSONNE USING(id_personne);');
-        $req->execute();
-        return $req->fetchall();
+{
+    $req = $this->bd->prepare('SELECT id_personne AS id, nom, prenom FROM GESTIONNAIRE JOIN PERSONNE USING(id_personne);');
+    $req->execute();
+    $result = $req->fetchAll();
+    if (empty($result)) {
+        return 'Il n\'y a aucun gestionnaire.';
     }
+    return $result;
+}
+
 
     /**
      * Méthode permettant de récupérer le nom, prenom et email d'une personne en fonction de son identifiant
@@ -138,12 +176,16 @@ class Model
      * @return mixed
      */
     public function getInfosPersonne($id)
-    {
-        $req = $this->bd->prepare('SELECT id_personne, nom, prenom, email FROM PERSONNE WHERE id_personne = :id');
-        $req->bindValue(':id', $id, PDO::PARAM_INT);
-        $req->execute();
-        return $req->fetchall()[0];
+{
+    $req = $this->bd->prepare('SELECT id_personne, nom, prenom, email FROM PERSONNE WHERE id_personne = :id');
+    $req->bindValue(':id', $id, PDO::PARAM_INT);
+    $req->execute();
+    $result = $req->fetchAll();
+    if (empty($result)) {
+        return 'Aucune information disponible pour l\'identifiant fourni.';
     }
+    return $result[0];
+}
 
     /* -------------------------------------------------------------------------
                             Méthodes Composante
@@ -1125,12 +1167,14 @@ class Model
     }
 
     public function checkSocieteExiste($nom_client)
-    {
-        $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM CLIENT WHERE nom_client = :nom_client) AS client_existe');
-        $req->bindValue(':nom_client', $nom_client);
-        $req->execute();
-        return $req->fetch()[0] == 't';
-    }
+{
+    $req = $this->bd->prepare('SELECT EXISTS (SELECT 1 FROM CLIENT WHERE nom_client = :nom_client)');
+    $req->bindValue(':nom_client', $nom_client, PDO::PARAM_STR);
+    $req->execute();
+    $result = $req->fetch(PDO::FETCH_NUM); 
+    return $result[0] === 't';
+}
+
 
     public function checkMissionExiste($nom_mission, $nom_compo)
     {
@@ -1181,4 +1225,51 @@ class Model
         $req->execute();
         return $req->fetch()[0] == 't';
     }
+
+    //Ajout rechercher_prestataire 10/05 Romain
+    public function recherchePrestataires($recherche){
+        $req = $this->bd->prepare("
+            SELECT
+                p.id_personne 
+            FROM 
+                PERSONNE p
+            JOIN PRESTATAIRE pr ON 
+                p.id_personne = pr.id_personne
+            WHERE 
+                p.nom LIKE :recherche OR p.prenom LIKE :recherche"
+        );
+        // Modification ici: Ajoutez '%' à la fin de la chaîne de recherche pour permettre la recherche de tout texte commençant par 'recherche'
+        $req->bindValue(':recherche', '%' . $recherche . '%', PDO::PARAM_STR);
+
+        if ($req->execute()) {
+            return $req->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return null; // ou retourner un message d'erreur spécifique ou lever une exception
+        }
+    }
+    
+    
+    public function getPrestatairesByIds($ids){
+        $idsString = implode(',', array_map('intval', $ids));
+        if (empty($ids)) {
+            return 'Aucun prestataire'; 
+        }
+    
+        $req = $this->bd->prepare("
+            SELECT
+                p.id_personne AS id, nom, prenom, interne 
+            FROM 
+                PERSONNE p 
+            JOIN 
+                PRESTATAIRE pr 
+            ON 
+                p.id_personne = pr.id_personne
+            WHERE 
+                p.id_personne IN ($idsString)
+        ");
+    
+        $req->execute();
+        return $req->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 }

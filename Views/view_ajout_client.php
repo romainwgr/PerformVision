@@ -8,9 +8,12 @@ require 'view_header.php';
             <h1>Ajout Société</h1>
             <form action="?controller=<?= $_GET['controller'] ?>&action=ajout_client" method="post">
                 <h2>Informations société</h2>
+
                 <input type="text" placeholder="Société" id='sté' name='client' class="input-case">
                 <input type="tel" placeholder="Numéro de téléphone" name='tel' class="input-case" autocomplete="tel">
+                
                 <h2>Informations composante</h2>
+                
                 <input type="text" placeholder="Nom de la mission" name='mission' class="input-case">
                 <input type="text" placeholder="Composante" name='composante' class="input-case">
                 <div class="form-names">
@@ -22,7 +25,9 @@ require 'view_header.php';
                     </select>
                     <input type="date" placeholder="Date de début" name="date-mission" class="input-case">
                 </div>
+                
                 <h4>Adresse</h4>
+                
                 <div class="form-address">
                     <input type="number" placeholder="Numéro de voie" name="numero-voie"
                            class="input-case form-num-voie">
@@ -33,6 +38,7 @@ require 'view_header.php';
                     <input type="number" placeholder="Code postal" name="cp" class="input-case form-cp">
                     <input type="text" placeholder="Ville" name="ville" class="input-case form-ville">
                 </div>
+                
                 <h2>Informations interlocuteur</h2>
                 <div class="form-names">
                     <input type="text" placeholder="Prénom" name="prenom-interlocuteur" class="input-case">
@@ -40,7 +46,9 @@ require 'view_header.php';
                 </div>
                 <input type="email" placeholder="Adresse email" name='email-interlocuteur'
                        class="input-case">
+
                 <h2>Informations commercial</h2>
+                
                 <div class="form-names">
                     <input type="text" placeholder="Prénom" name="prenom-commercial" class="input-case">
                     <input type="text" placeholder="Nom" name="nom-commercial" class="input-case">

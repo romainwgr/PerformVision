@@ -37,7 +37,7 @@ class Controller_prestataire extends Controller
             ];
             return $this->render('prestataire_missions', $data);
         } else {
-            // TODO remove echo
+            // TODO Réaliser un render de l'erreur
             echo 'Une erreur est survenue lors du chargement du tableau de bord';
         }
     }
@@ -65,7 +65,7 @@ class Controller_prestataire extends Controller
     }
 
     // TEST
-    
+
     /**
      * Ajoute dans la base de données la date à laquelle le prestataire est absent
      * @return void
@@ -111,7 +111,7 @@ class Controller_prestataire extends Controller
             ];
             $this->render("activite", $data);
         } else {
-            // TODO remove echo
+            // TODO Réaliser un render de l'erreur
             echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
         }
     }
@@ -168,7 +168,7 @@ class Controller_prestataire extends Controller
             // FIXME Fonction non déclaré dans le modèle 
             $bd->addBdlForPrestataire($_SESSION['id'], e($_POST['mission']));
         } else {
-            // TODO remove echo
+            // TODO Réaliser un render de l'erreur
             echo 'Une erreur est survenue lors de la création du bon de livraison';
         }
     }

@@ -38,7 +38,7 @@ class Controller_gestionnaire extends Controller
             ];
             return $this->render('gestionnaire_missions', $data);
         } else {
-            // TODO remove echo
+            // TODO Réaliser un render de l'erreur
             echo 'Une erreur est survenue lors du chargement du tableau de bord';
         }
     }
@@ -51,6 +51,7 @@ class Controller_gestionnaire extends Controller
     {
         return [['link' => '?controller=gestionnaire&action=clients', 'name' => 'Société'],
             ['link' => '?controller=gestionnaire&action=composantes', 'name' => 'Composantes'],
+            // FIXME action_missions pas défini c'est surement mission_bdl
             ['link' => '?controller=gestionnaire&action=missions', 'name' => 'Missions'],
             ['link' => '?controller=gestionnaire&action=prestataires', 'name' => 'Prestataires'],
             ['link' => '?controller=gestionnaire&action=commerciaux', 'name' => 'Commerciaux']];
@@ -140,7 +141,8 @@ class Controller_gestionnaire extends Controller
             $data = [
                 'title' =>  'Composantes', 
                 'person' => $bd->getAllComposantes(), 
-                'buttonLink' =>  '?controller=gestionnaire&action=ajout_composante_form', 
+                'buttonLink' =>  '?controller=gestionnaire&action=ajout_composante_form',
+                'rechercheLink'=> '?controller=gestionnaire&action=recherche_composante',
                 'cardLink' => '?controller=gestionnaire&action=infos_composante', 
                 'menu' => $this->action_get_navbar()
             ];
@@ -161,6 +163,7 @@ class Controller_gestionnaire extends Controller
             $data = [
                 'title' => 'Société', 
                 'buttonLink' => '?controller=gestionnaire&action=ajout_client_form', 
+                'rechercheLink'=> '?controller=gestionnaire&action=recherche_clients',
                 'cardLink' =>  '?controller=gestionnaire&action=infos_client', 
                 'person' => $bd->getAllClients(), 
                 'menu' => $this->action_get_navbar()
@@ -179,10 +182,12 @@ class Controller_gestionnaire extends Controller
         sessionstart();
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
+
             $data = [
                 'title' => 'Prestataires', 
                 'cardLink' => "?controller=gestionnaire&action=infos_personne", 
-                "buttonLink" =>  '?controller=gestionnaire&action=ajout_prestataire_form', 
+                "buttonLink" =>  '?controller=gestionnaire&action=ajout_prestataire_form',
+                'rechercheLink'=> '?controller=gestionnaire&action=recherche_prestataires',
                 "person" => $bd->getAllPrestataires(), 
                 'menu' => $this->action_get_navbar()
             ];
@@ -195,6 +200,7 @@ class Controller_gestionnaire extends Controller
      * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
      * @return void
      */
+    
     public function action_commerciaux()
     {
         sessionstart();
@@ -204,6 +210,8 @@ class Controller_gestionnaire extends Controller
                 'title' => 'Commerciaux', 
                 'cardLink' => "?controller=gestionnaire&action=infos_personne", 
                 'buttonLink' => '?controller=gestionnaire&action=ajout_commercial_form', 
+                'rechercheLink'=> '?controller=gestionnaire&action=recherche_commerciaux',
+
                 "person" => $bd->getAllCommerciaux(), 
                 'menu' => $this->action_get_navbar()
             ];
@@ -215,6 +223,7 @@ class Controller_gestionnaire extends Controller
      * Vérifie d'avoir les informations nécessaire pour renvoyer la vue liste avec les bonnes variables pour afficher la liste des bons de livraisons d'un prestataire en fonction de la mission
      * @return void
      */
+    // TODO je ne trouve pas le render de cette action (A supprimer?)
     public function action_mission_bdl(){
         $bd = Model::getModel();
         sessionstart();
@@ -348,24 +357,29 @@ class Controller_gestionnaire extends Controller
      * Vérifie qu'il y'a toutes les informations nécessaire pour l'ajout d'un(e) client/société
      * @return void
      */
+    // TODO pourquoi autant d'arguments pour en utiliser que deux wsh
     public function action_ajout_client()
     {
         $bd = Model::getModel();
         if (
             isset($_POST['client']) &&
             isset($_POST['tel']) &&
+
             isset($_POST['mission']) &&
             isset($_POST['type-bdl']) &&
             isset($_POST['date-mission']) &&
             isset($_POST['composante']) &&
+
             isset($_POST['numero-voie']) &&
             isset($_POST['type-voie']) &&
             isset($_POST['nom-voie']) &&
             isset($_POST['cp']) &&
             isset($_POST['ville']) &&
+
             isset($_POST['prenom-interlocuteur']) &&
             isset($_POST['nom-interlocuteur']) &&
             isset($_POST['email-interlocuteur']) &&
+            
             isset($_POST['prenom-commercial']) &&
             isset($_POST['nom-commercial']) &&
             isset($_POST['email-commercial']) &&
@@ -389,6 +403,7 @@ class Controller_gestionnaire extends Controller
     {
         $bd = Model::getModel();
         if (!$bd->checkPersonneExiste($email)) {
+            // FIXME chiffrer le mot de passe
             $bd->createPersonne($nom, $prenom, $email, genererMdp());
         }
     }
@@ -612,10 +627,40 @@ class Controller_gestionnaire extends Controller
             ];
             $this->render("consulte_bdl", $data);
         } else {
-            // TODO remove echo
+            // TODO Réaliser un render de l'erreur 
             echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
         }
     }
+    // Ajout d'une fonction pour rechercher un prestataire 10/05 Romain
+    // ca recherche pas un gestionnaire mais obligé de mettre ça car leur site est cassé
+    /**
+     * Recherche un prestataire selon l'entrée de l'utilisateur dans la barre de recherche
+     * @return void
+     */
+    public function action_rechercher_gestionnaire(){
+        $m = Model::getModel();
+        session_start();
+        $recherche = '';
+        if (isset($_POST['recherche'])) {
+            $recherche = ucfirst(strtolower($_POST['recherche']));
+        }
+        $resultat = $m->recherchePrestataires($recherche);
+        $ids = array_column($resultat, 'id_personne');
+        
+        $users = $m->getPrestatairesByIds($ids);
+      
+        $data = [
+            "title" => "Prestataires",
+            'cardLink' => "?controller=gestionnaire&action=infos_personne", 
+            "buttonLink" => '?controller=gestionnaire&action=ajout_prestataire_form', 
+            "person" => $users,  
+            "val_rech" => $recherche,
+            'menu' => $this->action_get_navbar()
+        ];
+    
+        $this->render("liste", $data);
+    }
+    
 }
 
 ?>

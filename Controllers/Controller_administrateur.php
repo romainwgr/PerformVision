@@ -38,7 +38,7 @@ class Controller_administrateur extends Controller
             ];
             return $this->render('gestionnaire_missions', $data);
         } else {
-            // TODO remove echo
+            // TODO Réaliser un render de l'erreur
             echo 'Une erreur est survenue lors du chargement du tableau de bord';
         }
     }
@@ -305,7 +305,7 @@ class Controller_administrateur extends Controller
         sessionstart();
         $bd = Model::getModel();
         if (isset($_POST['email'])) {
-            // FIXME paramètre manquant
+            // FIXME paramètre manquant 
             $bd->assignerPrestataire(e($_POST['email']), e($_POST['mission']));
         }
         $this->action_dashboard();
@@ -334,6 +334,7 @@ class Controller_administrateur extends Controller
     {
         $bd = Model::getModel();
         if (!$bd->checkPersonneExiste($email)) {
+            // FIXME chiffrer le mot de passe
             $bd->createPersonne($nom, $prenom, $email, genererMdp());
         }
     }
@@ -664,7 +665,7 @@ class Controller_administrateur extends Controller
             $data = ['menu' => $this->action_get_navbar(), 'bdl' => $typeBdl, 'activites' => $activites];
             $this->render("consulte_bdl", $data);
         } else {
-            // TODO remove echo
+            // TODO Réaliser un render de l'erreur
             echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
         }
     }

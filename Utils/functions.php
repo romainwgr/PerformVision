@@ -48,6 +48,7 @@ function maj_infos_personne()
         $bd->setEmailPersonne($id, $_POST['email']);
     }
     if(isset($_POST['mdp']) && !preg_match('/^ *$/', $_POST['mdp'])){
+        // FIXME mettre en place le chiffrage
         $bd->setMdpPersonne($id, $_POST['mdp']);
     }
 }

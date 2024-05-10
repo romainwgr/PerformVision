@@ -33,7 +33,7 @@ class Controller_commercial extends Controller
         } 
         else 
         {
-            // TODO remove echo
+            // TODO Réaliser un render de l'erreur
             echo 'Une erreur est survenue lors du chargement du tableau de bord';
         }
     }
@@ -137,7 +137,7 @@ class Controller_commercial extends Controller
             ];
             $this->render("consulte_bdl", $data);
         } else {
-            // TODO remove echo
+            // TODO Réaliser un render de l'erreur
             echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
         }
     }
@@ -198,7 +198,7 @@ class Controller_commercial extends Controller
         }
         else 
         {
-            // TODO remove echo
+            // TODO Réaliser un render de l'erreur
             echo 'Une erreur est survenue lors du chargement des clients.';
         }
     }
@@ -222,7 +222,7 @@ class Controller_commercial extends Controller
         }
         else 
         {
-            // TODO remove echo
+            // TODO Réaliser un render de l'erreur
             echo 'Une erreur est survenue lors du chargement des prestataire.';
         }
     }
@@ -238,6 +238,7 @@ class Controller_commercial extends Controller
     {
         $bd = Model::getModel();
         if (!$bd->checkPersonneExiste($email)) {
+            // FIXME chiffrer le mot de passe
             $bd->createPersonne($nom, $prenom, $email, genererMdp());
         }
     }
@@ -358,6 +359,29 @@ class Controller_commercial extends Controller
             ];
             $this->render('infos_composante', $data);
         }
+    }
+    public function action_rechercher_prestataire(){
+        $m = Model::getModel();
+        session_start();
+        $recherche = '';
+        if (isset($_POST['recherche'])) {
+            $recherche = ucfirst(strtolower($_POST['recherche']));
+        }
+        $resultat = $m->recherchePrestataires($recherche);
+        $ids = array_column($resultat, 'id_personne');
+        
+        $users = $m->getPrestatairesByIds($ids);
+      
+        $data = [
+            "title" => "Prestataires",
+            'cardLink' => "?controller=gestionnaire&action=infos_personne", 
+            "buttonLink" => '?controller=gestionnaire&action=ajout_prestataire_form', 
+            "person" => $users,  
+            "val_rech" => $recherche,
+            'menu' => $this->action_get_navbar()
+        ];
+    
+        $this->render("liste", $data);
     }
 
 }
