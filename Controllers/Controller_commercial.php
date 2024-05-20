@@ -291,7 +291,7 @@ class Controller_commercial extends Controller
         $data = [
             'menu' => $this->action_get_navbar()
         ];
-        $this->render('ajout_interlocuteur', $data);
+        $this->render('ajout_interlocuteur', $data,'Ajouts');
     }
 
     /**

@@ -2,7 +2,10 @@
 // $dsn='pgsql:host=localhost;dbname=extranet';
 // $login='marya';
 // $mdp='a';
-$dsn= "pgsql:host=localhost;dbname=newent";
-$login= "sae301";
-$mdp = "sae301";
+$dsn= "pgsql:host=localhost;dbname=sae";
+$login= "postgres";
+$mdp = "";
+// $dsn= "pgsql:host=localhost;dbname=newent";
+// $login= "sae301";
+// $mdp = "sae301";
 ?>

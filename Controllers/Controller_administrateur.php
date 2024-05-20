@@ -422,7 +422,7 @@ class Controller_administrateur extends Controller
         $data = [
             'menu' => $this->action_get_navbar()
         ];
-        $this->render('ajout_gestionnaire', $data);
+        $this->render('ajout_gestionnaire', $data,'administrateur');
     }
 
     /**

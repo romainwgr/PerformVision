@@ -109,7 +109,7 @@ class Controller_prestataire extends Controller
                 'bdl' => $typeBdl, 
                 'infosBdl' => $infosBdl
             ];
-            $this->render("activite", $data);
+            $this->render("activite", $data,'prestataire');
         } else {
             // TODO Réaliser un render de l'erreur
             echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
@@ -225,7 +225,7 @@ class Controller_prestataire extends Controller
         $data = [
             'menu' => $this->action_get_navbar()
         ];
-        $this->render('ajout_bdl', $data);
+        $this->render('ajout_bdl', $data,'prestataire');
     }
 
     /**

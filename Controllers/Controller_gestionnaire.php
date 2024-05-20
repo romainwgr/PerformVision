@@ -50,9 +50,10 @@ class Controller_gestionnaire extends Controller
     public function action_get_navbar()
     {
         return [['link' => '?controller=gestionnaire&action=clients', 'name' => 'Société'],
-            ['link' => '?controller=gestionnaire&action=composantes', 'name' => 'Composantes'],
+            // ['link' => '?controller=gestionnaire&action=composantes', 'name' => 'Composantes'],
             // FIXME action_missions pas défini c'est surement mission_bdl
-            ['link' => '?controller=gestionnaire&action=missions', 'name' => 'Missions'],
+            ['link' => '?controller=gestionnaire&action=dashboard', 'name' => 'Composantes'],
+            // ['link' => '?controller=gestionnaire&action=mission_bdl', 'name' => 'Missions'],
             ['link' => '?controller=gestionnaire&action=prestataires', 'name' => 'Prestataires'],
             ['link' => '?controller=gestionnaire&action=commerciaux', 'name' => 'Commerciaux']];
     }
@@ -142,8 +143,8 @@ class Controller_gestionnaire extends Controller
                 'title' =>  'Composantes', 
                 'person' => $bd->getAllComposantes(), 
                 'buttonLink' =>  '?controller=gestionnaire&action=ajout_composante_form',
-                'rechercheLink'=> '?controller=gestionnaire&action=recherche_composante',
-                'cardLink' => '?controller=gestionnaire&action=infos_composante', 
+                'rechercheLink'=> '?controller=gestionnaire&action=rechercher&role=Composantes',
+                'cardLink' => '?controller=gestionnaire&action=infos_composante',
                 'menu' => $this->action_get_navbar()
             ];
             $this->render("liste", $data);
@@ -163,12 +164,12 @@ class Controller_gestionnaire extends Controller
             $data = [
                 'title' => 'Société', 
                 'buttonLink' => '?controller=gestionnaire&action=ajout_client_form', 
-                'rechercheLink'=> '?controller=gestionnaire&action=recherche_clients',
+                'rechercheLink'=> '?controller=gestionnaire&action=rechercher&role=client',
                 'cardLink' =>  '?controller=gestionnaire&action=infos_client', 
                 'person' => $bd->getAllClients(), 
                 'menu' => $this->action_get_navbar()
             ];
-            $this->render("liste", $data);
+            $this->render("client", $data,'gestionnaire');
         }
     }
 
@@ -187,11 +188,12 @@ class Controller_gestionnaire extends Controller
                 'title' => 'Prestataires', 
                 'cardLink' => "?controller=gestionnaire&action=infos_personne", 
                 "buttonLink" =>  '?controller=gestionnaire&action=ajout_prestataire_form',
-                'rechercheLink'=> '?controller=gestionnaire&action=recherche_prestataires',
+                'rechercheLink'=> '?controller=gestionnaire&action=rechercher&role=prestataire',
                 "person" => $bd->getAllPrestataires(), 
                 'menu' => $this->action_get_navbar()
             ];
-            $this->render("liste", $data);
+            // pas liste mais prestataire
+            $this->render("prestataire", $data,'gestionnaire');
         }
     }
 
@@ -210,12 +212,12 @@ class Controller_gestionnaire extends Controller
                 'title' => 'Commerciaux', 
                 'cardLink' => "?controller=gestionnaire&action=infos_personne", 
                 'buttonLink' => '?controller=gestionnaire&action=ajout_commercial_form', 
-                'rechercheLink'=> '?controller=gestionnaire&action=recherche_commerciaux',
+                'rechercheLink'=> '?controller=gestionnaire&action=rechercher&role=commercial',
 
                 "person" => $bd->getAllCommerciaux(), 
                 'menu' => $this->action_get_navbar()
             ];
-            $this->render("liste", $data);
+            $this->render("commercial", $data,'gestionnaire');
         }
     }
 
@@ -269,7 +271,7 @@ class Controller_gestionnaire extends Controller
         $data = [
             'menu' => $this->action_get_navbar()
         ];
-        $this->render('ajout_interlocuteur', $data);
+        $this->render('ajout_interlocuteur', $data,'Ajouts');
     }
 
     /**
@@ -282,7 +284,7 @@ class Controller_gestionnaire extends Controller
         $data = [
             'menu' => $this->action_get_navbar()
         ];
-        $this->render('ajout_composante', $data);
+        $this->render('ajout_composante', $data,'gestionnaire');
     }
 
     /**
@@ -295,7 +297,7 @@ class Controller_gestionnaire extends Controller
         $data = [
             'menu' => $this->action_get_navbar()
         ];
-        $this->render('ajout_prestataire', $data);
+        $this->render('ajout_prestataire', $data,'gestionnaire');
     }
 
     /**
@@ -308,7 +310,7 @@ class Controller_gestionnaire extends Controller
         $data = [
             'menu' => $this->action_get_navbar()
         ];
-        $this->render('ajout_mission', $data);
+        $this->render('ajout_mission', $data,'gestionnaire');
     }
 
     /**
@@ -321,7 +323,7 @@ class Controller_gestionnaire extends Controller
         $data = [
             'menu' => $this->action_get_navbar()
         ];
-        $this->render('ajout_client', $data);
+        $this->render('ajout_client', $data,'gestionnaire');
     }
 
     /**
@@ -334,7 +336,7 @@ class Controller_gestionnaire extends Controller
         $data = [
             'menu' => $this->action_get_navbar()
         ];
-        $this->render('ajout_commercial', $data);
+        $this->render('ajout_commercial', $data,'gestionnaire');
     }
 
     /**
@@ -358,39 +360,62 @@ class Controller_gestionnaire extends Controller
      * @return void
      */
     // TODO pourquoi autant d'arguments pour en utiliser que deux wsh
-    public function action_ajout_client()
-    {
+    // public function action_ajout_client()
+    // {
+    //     $bd = Model::getModel();
+    //     if (
+    //         isset($_POST['client']) &&
+    //         isset($_POST['tel']) &&
+
+    //         isset($_POST['mission']) &&
+    //         isset($_POST['type-bdl']) &&
+    //         isset($_POST['date-mission']) &&
+    //         isset($_POST['composante']) &&
+
+    //         isset($_POST['numero-voie']) &&
+    //         isset($_POST['type-voie']) &&
+    //         isset($_POST['nom-voie']) &&
+    //         isset($_POST['cp']) &&
+    //         isset($_POST['ville']) &&
+
+    //         isset($_POST['prenom-interlocuteur']) &&
+    //         isset($_POST['nom-interlocuteur']) &&
+    //         isset($_POST['email-interlocuteur']) &&
+
+    //         isset($_POST['prenom-commercial']) &&
+    //         isset($_POST['nom-commercial']) &&
+    //         isset($_POST['email-commercial']) &&
+    //         !$bd->checkSocieteExiste(e($_POST['client']))
+    //     ) {
+
+    //         $bd->addClient(e($_POST['client']), e($_POST['tel']));
+    //         $this->action_ajout_composante();
+    //     }
+    //     $this->action_ajout_client_form();
+    // }
+    public function action_is_client() {
+        session_start();
         $bd = Model::getModel();
-        if (
-            isset($_POST['client']) &&
-            isset($_POST['tel']) &&
-
-            isset($_POST['mission']) &&
-            isset($_POST['type-bdl']) &&
-            isset($_POST['date-mission']) &&
-            isset($_POST['composante']) &&
-
-            isset($_POST['numero-voie']) &&
-            isset($_POST['type-voie']) &&
-            isset($_POST['nom-voie']) &&
-            isset($_POST['cp']) &&
-            isset($_POST['ville']) &&
-
-            isset($_POST['prenom-interlocuteur']) &&
-            isset($_POST['nom-interlocuteur']) &&
-            isset($_POST['email-interlocuteur']) &&
-            
-            isset($_POST['prenom-commercial']) &&
-            isset($_POST['nom-commercial']) &&
-            isset($_POST['email-commercial']) &&
-            !$bd->checkSocieteExiste(e($_POST['client']))
-        ) {
-
-            $bd->addClient(e($_POST['client']), e($_POST['tel']));
-            $this->action_ajout_composante();
+        
+        if (isset($_POST['client'], $_POST['tel'])) {
+            if (!$bd->checkSocieteExiste($_POST['client'])) {
+                // $bd->addClient($_POST['client'], $_POST['tel']);
+                $_SESSION['client'] = $_POST['client'];
+                $_SESSION['tel'] = $_POST['tel'];
+                $response = ['success' => true];
+            } else {
+                $response = ['success' => false, 'message' => 'La société existe déjà.'];
+            }
+        } else {
+            $response = ['success' => false, 'message' => 'Informations manquantes.'];
         }
-        $this->action_ajout_client_form();
+        echo json_encode($response);
     }
+    
+    public function action_is_composante(){
+
+    }
+    
 
     /**
      * Vérifie si la personne existe et la créée si ce n'est pas le cas
@@ -403,7 +428,7 @@ class Controller_gestionnaire extends Controller
     {
         $bd = Model::getModel();
         if (!$bd->checkPersonneExiste($email)) {
-            // FIXME chiffrer le mot de passe
+            // FIXME chiffrer le mot de passe et ucfirst sur nom prenom
             $bd->createPersonne($nom, $prenom, $email, genererMdp());
         }
     }
@@ -637,28 +662,93 @@ class Controller_gestionnaire extends Controller
      * Recherche un prestataire selon l'entrée de l'utilisateur dans la barre de recherche
      * @return void
      */
-    public function action_rechercher_gestionnaire(){
+    public function action_rechercher(){
         $m = Model::getModel();
         session_start();
-        $recherche = '';
-        if (isset($_POST['recherche'])) {
+        if(isset($_GET['role'],$_POST['recherche']) ){
+
+            $recherche = '';
+            $role= ucfirst($_GET['role']);
+            $fonction_recherche = "recherche{$role}";
+            $fonction_recuperation = "get{$role}ByIds";
+
             $recherche = ucfirst(strtolower($_POST['recherche']));
-        }
-        $resultat = $m->recherchePrestataires($recherche);
-        $ids = array_column($resultat, 'id_personne');
-        
-        $users = $m->getPrestatairesByIds($ids);
-      
-        $data = [
-            "title" => "Prestataires",
-            'cardLink' => "?controller=gestionnaire&action=infos_personne", 
-            "buttonLink" => '?controller=gestionnaire&action=ajout_prestataire_form', 
-            "person" => $users,  
-            "val_rech" => $recherche,
-            'menu' => $this->action_get_navbar()
-        ];
+            $resultat = $m->$fonction_recherche($recherche);
+            $ids = array_column($resultat, 'id_personne');
     
-        $this->render("liste", $data);
+            $users = $m->$fonction_recuperation($ids);
+          
+            $data = [
+                "title" => ucfirst($_GET['role']),
+                'cardLink' => "?controller=gestionnaire&action=infos_personne", 
+                "buttonLink" => '?controller=gestionnaire&action=ajout_'. $_GET['role'] .'_form',
+                'rechercheLink'=> '?controller=gestionnaire&action=rechercher&role='. $_GET['role'] , 
+                "person" => $users,  
+                "val_rech" => $recherche,
+                'menu' => $this->action_get_navbar()
+            ];
+        
+            $this->render($_GET['role'], $data,'gestionnaire');
+        }
+        else{
+            $this->render('message',[
+                'title'=> 'Erreur de recherche',
+                'message'=> 'EVITE DE MODIFIER L\'URL'
+            ]);
+        }
+        
+    }
+    public function action_recherche()
+    {
+        $m = Model::getModel();
+        session_start();
+        if(isset($_GET['role'],$_POST['recherche']) ){
+
+            $roles=['client','prestataire','commercial'];
+
+            if(in_array($_GET['role'],$roles)){
+
+                $recherche = '';
+            
+                $recherche = ucfirst(strtolower($_POST['recherche']));
+                $resultat = $m->recherche($recherche,$_GET['role']);
+                if($_GET['role']== 'client'){
+                    $ids = array_column($resultat, 'id_client');
+    
+                }
+                else{
+                    $ids = array_column($resultat, 'id_personne');
+    
+                }
+        
+                $users = $m->recuperationRecherche($ids);
+              
+                $data = [
+                    "title" => ucfirst($_GET['role']),
+                    'cardLink' => "?controller=gestionnaire&action=infos_personne", 
+                    "buttonLink" => '?controller=gestionnaire&action=ajout_'. $_GET['role'] .'_form',
+                    'rechercheLink'=> '?controller=gestionnaire&action=rechercher&role='. $_GET['role'] , 
+                    "person" => $users,  
+                    "val_rech" => $recherche,
+                    'menu' => $this->action_get_navbar()
+                ];
+            
+                $this->render($_GET['role'], $data,'gestionnaire');
+            }
+            else{
+                $this->render('message',[
+                    'title'=> 'Erreur de recherche',
+                    'message'=> 'Ne modifiez pas l\'url'
+                ]);
+            }
+            
+        }
+        else{
+            $this->render('message',[
+                'title'=> 'Erreur de recherche',
+                'message'=> 'Ne modifiez pas l\'url'
+            ]);
+        }
     }
     
 }
