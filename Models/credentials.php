@@ -1,11 +1,5 @@
 <?php
-// $dsn='pgsql:host=localhost;dbname=extranet';
-// $login='marya';
-// $mdp='a';
-$dsn= "pgsql:host=localhost;dbname=sae";
-$login= "postgres";
-$mdp = "";
-// $dsn= "pgsql:host=localhost;dbname=newent";
-// $login= "sae301";
-// $mdp = "sae301";
+$dsn = "pgsql:host=localhost;port=5433;dbname=SAES4";
+$login = "postgres";
+$mdp = "02062004";
 ?>
