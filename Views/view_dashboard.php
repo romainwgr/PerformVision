@@ -29,7 +29,8 @@ require 'view_header.php';
                     <div class="text">
                         <a href='<?= $bdlLink ?><?php if (isset($row['id_prestataire'])):
                               echo '&id-prestataire=' . $row['id_prestataire'];
-                          endif; ?>&id=<?= $row['id_mission'] ?>' class="block">
+                          endif; ?>' class="block">
+
                             <h2><?php
                             if (isset($row['nom_mission'])):
                                 echo $row['nom_mission'];

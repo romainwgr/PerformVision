@@ -36,9 +36,8 @@ require 'view_header.php';
                               echo $p['id'];
                           endif; ?>' class="block">
                             <h2><?php
-                            if (array_key_exists('id_bdl', $p)):
-                                echo $p['nom_mission'];
-                            elseif (array_key_exists('nom', $p)):
+
+                            if (array_key_exists('nom', $p)):
                                 echo $p['nom'] . ' ' . $p['prenom'];
                             elseif (array_key_exists('nom_client', $p) and array_key_exists('telephone_client', $p)):
                                 echo $p['nom_client'];

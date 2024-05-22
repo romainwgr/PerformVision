@@ -30,16 +30,16 @@ abstract class Controller
      * @param array $data tableau contenant les données à passer à la vue
      * @return aucun
      */
-    protected function render($vue, $data = [],$dossier ='')
+    protected function render($vue, $data = [], $dossier = '')
     {
 
         //On extrait les données à afficher
         extract($data);
-        if(!empty($dossier)){
-            $dossier = $dossier.'/';
+        if (!empty($dossier)) {
+            $dossier = $dossier . '/';
         }
         //On teste si la vue existe
-        $file_name = "Views/".$dossier."view_" . $vue . '.php';
+        $file_name = "Views/" . $dossier . "view_" . $vue . '.php';
         if (file_exists($file_name)) {
             //Si oui, on l'affiche
             include $file_name;
@@ -64,4 +64,5 @@ abstract class Controller
         ];
         $this->render("message", $data);
     }
+
 }
