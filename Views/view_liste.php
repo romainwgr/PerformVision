@@ -33,7 +33,7 @@ require 'view_header.php';
                         <a href='<?= $cardLink ?>&id=<?php if (isset($p['id_bdl'])):
                               echo $p['id_bdl'];
                           else:
-                              echo $p['id'];
+                              echo isset($p['id']);
                           endif; ?>' class="block">
                             <h2><?php
 
