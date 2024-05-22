@@ -20,56 +20,69 @@ require 'view_header.php';
 
 
         <div class="row">
-            <p>Il y a plus de <span><?= count($person) ?></span> <?= $title ?></p>
+            <p>Il y a plus de <span><?= isset($person) && is_array($person) ? count($person) : 0 ?></span>
+                <?= htmlspecialchars($title) ?></p>
         </div>
 
-        <?php foreach ($person as $p): ?>
-            <div class="job_card">
-                <div class="job_details">
-                    <div class="img">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="text">
-                        <a href='<?= $cardLink ?>&id=<?php if (isset($p['id_bdl'])):
-                              echo $p['id_bdl'];
-                          else:
-                              echo isset($p['id']);
-                          endif; ?>' class="block">
-                            <h2><?php
 
-                            if (array_key_exists('nom', $p)):
-                                echo $p['nom'] . ' ' . $p['prenom'];
-                            elseif (array_key_exists('nom_client', $p) and array_key_exists('telephone_client', $p)):
+        <?php if (isset($person)): ?>
+            <?php foreach ($person as $p): ?>
+                <div class="job_card">
+                    <div class="job_details">
+                        <div class="img">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="text">
+                            <a href='<?= $cardLink ?>&id=<?php echo isset($p['id']) ? $p['id'] : '?controller=administrateur&action=default'; ?>'
+                                class="block">
+                                <!-- pour affiche l'erreur decommenter le a href d'un bas -->
+                                <!-- <a href='<?= $cardLink ?>&id=<?php if (isset($p['id_bdl'])):
+                                      echo $p['id_bdl'];
+                                  else:
+                                      echo $p['id'];
+                                  endif; ?>' class="block"> -->
+                                <h2><?php
+                                if (array_key_exists('nom', $p)):
+                                    echo $p['nom'] . ' ' . $p['prenom'];
+                                elseif (array_key_exists('nom_client', $p) and array_key_exists('telephone_client', $p)):
+                                    echo $p['nom_client'];
+                                elseif (array_key_exists('nom_composante', $p) and array_key_exists('nom_client', $p)):
+                                    echo $p['nom_composante'];
+                                endif;
+                                ?></h2>
+                            </a>
+                            <span><?php
+                            if (array_key_exists('email', $p)):
+                                echo 'Email: ' . $p['email'];
+                            elseif (array_key_exists('autre_info', $p)):
+                                echo 'Autre info: ' . $p['autre_info'];
+                            elseif (array_key_exists('id_bdl', $p)):
+                                echo $p['mois'];
+                            elseif (array_key_exists('interne', $p)):
+                                if ($p['interne']):
+                                    echo 'Interne';
+                                else:
+                                    echo 'Indépendant';
+                                endif;
+                            elseif (array_key_exists('nom_client', $p) and !array_key_exists('telephone_client', $p)):
                                 echo $p['nom_client'];
-                            elseif (array_key_exists('nom_composante', $p) and array_key_exists('nom_client', $p)):
+                            elseif (array_key_exists('nom_composante', $p) and !array_key_exists('nom_client', $p)):
                                 echo $p['nom_composante'];
+                            elseif (array_key_exists('telephone_client', $p)):
+                                echo $p['telephone_client'];
                             endif;
-                            ?></h2>
-                        </a>
-                        <span><?php
-                        if (array_key_exists('email', $p)):
-                            echo 'Email: ' . $p['email'];
-                        elseif (array_key_exists('autre_info', $p)):
-                            echo 'Autre info: ' . $p['autre_info'];
-                        elseif (array_key_exists('id_bdl', $p)):
-                            echo $p['mois'];
-                        elseif (array_key_exists('interne', $p)):
-                            if ($p['interne']):
-                                echo 'Interne';
-                            else:
-                                echo 'Indépendant';
-                            endif;
-                        elseif (array_key_exists('nom_client', $p) and !array_key_exists('telephone_client', $p)):
-                            echo $p['nom_client'];
-                        elseif (array_key_exists('nom_composante', $p) and !array_key_exists('nom_client', $p)):
-                            echo $p['nom_composante'];
-                        elseif (array_key_exists('telephone_client', $p)):
-                            echo $p['telephone_client'];
-                        endif;
-                        ?></span>
+                            ?></span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>Aucune donnée disponible.</p>
+        <?php endif; ?>
+        <?php if (
+            ((str_contains($_GET['controller'], 'gestionnaire') || str_contains($_GET['controller'], 'administrateur')) && !isset($_GET['id']))
+            || ((str_contains($_GET['controller'], 'prestataire') && isset($person[0]['id_bdl'])))
+        ): ?>
+        <?php endif; ?>
     </div>
 </section>

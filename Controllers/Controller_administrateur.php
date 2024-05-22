@@ -24,16 +24,16 @@ class Controller_administrateur extends Controller
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $data = [
-                'menu' => $this->action_get_navbar(), 
-                'bdlLink' => '?controller=administrateur&action=mission_bdl', 
-                'buttonLink' => '?controller=administrateur&action=ajout_mission_form', 
+                'menu' => $this->action_get_navbar(),
+                'bdlLink' => '?controller=administrateur&action=mission_bdl',
+                'buttonLink' => '?controller=administrateur&action=ajout_mission_form',
                 'header' => [
                     'Société',
-                    'Composante', 
-                    'Nom Mission', 
-                    'Préstataire assigné', 
+                    'Composante',
+                    'Nom Mission',
+                    'Préstataire assigné',
                     'Bon de livraison'
-                ], 
+                ],
                 'dashboard' => $bd->getDashboardGestionnaire()
             ];
             return $this->render('gestionnaire_missions', $data);
@@ -49,12 +49,14 @@ class Controller_administrateur extends Controller
      */
     public function action_get_navbar()
     {
-        return [['link' => '?controller=administrateur&action=clients', 'name' => 'Société'],
+        return [
+            ['link' => '?controller=administrateur&action=clients', 'name' => 'Société'],
             ['link' => '?controller=administrateur&action=composantes', 'name' => 'Composantes'],
             ['link' => '?controller=administrateur&action=missions', 'name' => 'Missions'],
             ['link' => '?controller=administrateur&action=prestataires', 'name' => 'Prestataires'],
             ['link' => '?controller=administrateur&action=commerciaux', 'name' => 'Commerciaux'],
-            ['link' => '?controller=administrateur&action=gestionnaires', 'name' => 'Gestionnaires']];
+            ['link' => '?controller=administrateur&action=gestionnaires', 'name' => 'Gestionnaires']
+        ];
     }
 
     /**
@@ -62,15 +64,16 @@ class Controller_administrateur extends Controller
      * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
      * @return void
      */
-    public function action_gestionnaires(){
+    public function action_gestionnaires()
+    {
         sessionstart();
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $data = [
-                'title' => 'Gestionnaires', 
-                'cardLink' => '?controller=administrateur&action=infos_personne', 
-                'buttonLink' => '?controller=administrateur&action=ajout_gestionnaire_form', 
-                "person" => $bd->getAllGestionnaires(), 
+                'title' => 'Gestionnaires',
+                'cardLink' => '?controller=administrateur&action=infos_personne',
+                'buttonLink' => '?controller=administrateur&action=ajout_gestionnaire_form',
+                "person" => $bd->getAllGestionnaires(),
                 'menu' => $this->action_get_navbar()
             ];
             $this->render("liste", $data);
@@ -89,10 +92,10 @@ class Controller_administrateur extends Controller
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $data = [
-                'title' => 'Société', 
-                'buttonLink' => '?controller=administrateur&action=ajout_client_form', 
-                'cardLink' => '?controller=administrateur&action=infos_client', 
-                'person' => $bd->getAllClients(), 
+                'title' => 'Société',
+                'buttonLink' => '?controller=administrateur&action=ajout_client_form',
+                'cardLink' => '?controller=administrateur&action=infos_client',
+                'person' => $bd->getAllClients(),
                 'menu' => $this->action_get_navbar()
             ];
             $this->render("liste", $data);
@@ -110,10 +113,10 @@ class Controller_administrateur extends Controller
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $data = [
-                'title' => 'Prestataires', 
-                'cardLink' => '?controller=administrateur&action=infos_personne', 
-                "buttonLink" => '?controller=administrateur&action=ajout_prestataire_form', 
-                "person" => $bd->getAllPrestataires(), 
+                'title' => 'Prestataires',
+                'cardLink' => '?controller=administrateur&action=infos_personne',
+                "buttonLink" => '?controller=administrateur&action=ajout_prestataire_form',
+                "person" => $bd->getAllPrestataires(),
                 'menu' => $this->action_get_navbar()
             ];
             $this->render("liste", $data);
@@ -131,10 +134,10 @@ class Controller_administrateur extends Controller
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $data = [
-                'title' => 'Commerciaux', 
-                'cardLink' => '?controller=administrateur&action=infos_personne', 
-                'buttonLink' =>  '?controller=administrateur&action=ajout_commercial_form', 
-                "person" => $bd->getAllCommerciaux(), 
+                'title' => 'Commerciaux',
+                'cardLink' => '?controller=administrateur&action=infos_personne',
+                'buttonLink' => '?controller=administrateur&action=ajout_commercial_form',
+                "person" => $bd->getAllCommerciaux(),
                 'menu' => $this->action_get_navbar()
             ];
             $this->render("liste", $data);
@@ -152,10 +155,10 @@ class Controller_administrateur extends Controller
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $data = [
-                'title' =>  'Composantes', 
-                'person' => $bd->getAllComposantes(), 
-                'buttonLink' =>  '?controller=administrateur&action=ajout_composante_form', 
-                'cardLink' => '?controller=administrateur&action=infos_composante', 
+                'title' => 'Composantes',
+                'person' => $bd->getAllComposantes(),
+                'buttonLink' => '?controller=administrateur&action=ajout_composante_form',
+                'cardLink' => '?controller=administrateur&action=infos_composante',
                 'menu' => $this->action_get_navbar()
             ];
             $this->render("liste", $data);
@@ -166,14 +169,15 @@ class Controller_administrateur extends Controller
      * Vérifie d'avoir les informations nécessaire pour renvoyer la vue liste avec les bonnes variables pour afficher la liste des bons de livraisons d'un prestataire en fonction de la mission
      * @return void
      */
-    public function action_mission_bdl(){
+    public function action_mission_bdl()
+    {
         $bd = Model::getModel();
         sessionstart();
-        if(isset($_GET['id']) && isset($_GET['id-prestataire'])){
+        if (isset($_GET['id']) && isset($_GET['id-prestataire'])) {
             $data = [
-                'title' => 'Bons de livraison', 
-                'cardLink' => '?controller=administrateur&action=consulter_bdl', 
-                'menu' => $this->action_get_navbar(), 
+                'title' => 'Bons de livraison',
+                'cardLink' => '?controller=administrateur&action=consulter_bdl',
+                'menu' => $this->action_get_navbar(),
                 'person' => $bd->getBdlsOfPrestataireByIdMission(e($_GET['id']), e($_GET['id-prestataire']))
             ];
             $this->render('liste', $data);
@@ -245,7 +249,7 @@ class Controller_administrateur extends Controller
         if (isset($_GET['id'])) {
             $bd = Model::getModel();
             $data = [
-                'person' => $bd->getInfosPersonne($_GET['id']), 
+                'person' => $bd->getInfosPersonne($_GET['id']),
                 'menu' => $this->action_get_navbar()
             ];
             $this->render("infos_personne", $data);
@@ -262,8 +266,8 @@ class Controller_administrateur extends Controller
         if (isset($_GET['id'])) {
             $bd = Model::getModel();
             $data = [
-                'infos' => $$bd->getInfosComposante($_GET['id']),
-                'prestataires' => $$bd->getPrestatairesComposante(e($_GET['id'])),
+                'infos' => $bd->getInfosComposante($_GET['id']),
+                'prestataires' => $bd->getPrestatairesComposante(e($_GET['id'])),
                 'commerciaux' => $bd->getCommerciauxComposante(e($_GET['id'])),
                 'interlocuteurs' => $bd->getInterlocuteursComposante(e($_GET['id'])),
                 'bdl' => $bd->getBdlComposante(e($_GET['id'])),
@@ -284,8 +288,8 @@ class Controller_administrateur extends Controller
         if (isset($_GET['id'])) {
             $bd = Model::getModel();
             $data = [
-                'infos' =>  $bd->getInfosSociete(e($_GET['id'])),
-                'composantes' =>  $bd->getComposantesSociete(e($_GET['id'])),
+                'infos' => $bd->getInfosSociete(e($_GET['id'])),
+                'composantes' => $bd->getComposantesSociete(e($_GET['id'])),
                 'interlocuteurs' => $bd->getInterlocuteursSociete(e($_GET['id'])),
                 'menu' => $this->action_get_navbar()
             ];
@@ -422,7 +426,7 @@ class Controller_administrateur extends Controller
         $data = [
             'menu' => $this->action_get_navbar()
         ];
-        $this->render('ajout_gestionnaire', $data,'administrateur');
+        $this->render('ajout_gestionnaire', $data, 'administrateur');
     }
 
     /**
@@ -467,7 +471,7 @@ class Controller_administrateur extends Controller
     {
         $bd = Model::getModel();
         if (
-            isset($_POST['email-commercial']) && 
+            isset($_POST['email-commercial']) &&
             !$bd->checkCommercialExiste(e($_POST['email-commercial']))
         ) {
             $bd->addCommercial(e($_POST['email-commercial']));
@@ -482,8 +486,8 @@ class Controller_administrateur extends Controller
     {
         $bd = Model::getModel();
         if (
-            isset($_POST['nom']) && 
-            isset($_POST['prenom']) && 
+            isset($_POST['nom']) &&
+            isset($_POST['prenom']) &&
             isset($_POST['email-gestionnaire'])
         ) {
             $this->action_ajout_personne(e($_POST['nom']), e($_POST['prenom']), e($_POST['email-gestionnaire']));
@@ -500,9 +504,9 @@ class Controller_administrateur extends Controller
     {
         $bd = Model::getModel();
         if (
-            isset($_GET['id-composante']) && 
-            isset($_POST['email-interlocuteur']) && 
-            isset($_POST['nom-interlocuteur']) && 
+            isset($_GET['id-composante']) &&
+            isset($_POST['email-interlocuteur']) &&
+            isset($_POST['nom-interlocuteur']) &&
             isset($_POST['prenom-interlocuteur'])
         ) {
             if (!$bd->checkInterlocuteurExiste(e($_POST['email-interlocuteur']))) {
@@ -513,10 +517,10 @@ class Controller_administrateur extends Controller
             $this->action_composantes();
         }
         if (
-            isset($_GET['id-client']) && 
-            isset($_POST['email-interlocuteur']) && 
-            isset($_POST['nom-interlocuteur']) && 
-            isset($_POST['prenom-interlocuteur']) && 
+            isset($_GET['id-client']) &&
+            isset($_POST['email-interlocuteur']) &&
+            isset($_POST['nom-interlocuteur']) &&
+            isset($_POST['prenom-interlocuteur']) &&
             isset($_POST['composante'])
         ) {
             if (!$bd->checkInterlocuteurExiste(e($_POST['email-interlocuteur']))) {
@@ -526,7 +530,7 @@ class Controller_administrateur extends Controller
             $bd->assignerInterlocuteurComposanteByIdClient(e($_GET['id-client']), e($_POST['email-interlocuteur']), e($_POST['composante']));
             $this->action_clients();
         }
-        if (isset($_POST['client']) && isset($_POST['composante'])){
+        if (isset($_POST['client']) && isset($_POST['composante'])) {
             $id = $bd->getIdComposante(e($_POST['composante']), e($_POST['client']));
             $bd->assignerInterlocuteurComposanteByIdComposante($id['id_composante'], e($_POST['email-interlocuteur']));
         }
@@ -560,10 +564,9 @@ class Controller_administrateur extends Controller
             $this->action_ajout_commercial_dans_composante();
             $this->action_ajout_mission();
         }
-        if($_POST['tel']){
+        if ($_POST['tel']) {
             $this->action_ajout_client_form();
-        }
-        else{
+        } else {
             $this->action_ajout_composante_form();
         }
     }
@@ -581,7 +584,8 @@ class Controller_administrateur extends Controller
                 e($_POST['mission']),
                 e($_POST['date-mission']),
                 e($_POST['composante']),
-                e($_POST['client']));
+                e($_POST['client'])
+            );
         }
     }
 
@@ -589,13 +593,14 @@ class Controller_administrateur extends Controller
      * Vérifie d'avoir toutes les informations d'un prestataire pour ensuite créer la personne et l'ajouter en tant que prestataire
      * @return void
      */
-    public function action_ajout_prestataire(){
+    public function action_ajout_prestataire()
+    {
         $bd = Model::getModel();
-        if(
-            isset($_POST['nom']) && 
-            isset($_POST['prenom']) && 
+        if (
+            isset($_POST['nom']) &&
+            isset($_POST['prenom']) &&
             isset($_POST['email-prestataire'])
-        ){
+        ) {
             $this->action_ajout_personne(e($_POST['nom']), e($_POST['prenom']), e($_POST['email-prestataire']));
             $bd->addPrestataire(e($_POST['email-prestataire']));
         }
@@ -609,8 +614,8 @@ class Controller_administrateur extends Controller
     {
         $bd = Model::getModel();
         if (
-            isset($_POST['mission']) && 
-            isset($_POST['email-prestataire']) && 
+            isset($_POST['mission']) &&
+            isset($_POST['email-prestataire']) &&
             $_GET['id'] && $bd->checkPrestataireExiste(e($_POST['email-prestataire']))
         ) {
             $bd->assignerPrestataire(e($_POST['email-prestataire']), e($_POST['mission']), e($_GET['id']));
@@ -626,14 +631,14 @@ class Controller_administrateur extends Controller
     {
         $bd = Model::getModel();
         if (
-            isset($_POST['composante']) && 
-            isset($_POST['email-commercial']) && 
+            isset($_POST['composante']) &&
+            isset($_POST['email-commercial']) &&
             isset($_POST['client'])
         ) {
             $this->action_ajout_commercial();
             $bd->assignerCommercial(
-                e($_POST['email-commercial']), 
-                e($_POST['composante']), 
+                e($_POST['email-commercial']),
+                e($_POST['composante']),
                 e($_POST['client'])
             );
         } elseif (isset($_POST['email-commercial']) && isset($_GET['id-composante'])) {
@@ -647,18 +652,19 @@ class Controller_administrateur extends Controller
      * Vérifie qu'il existe dans l'url l'id qui fait référence au bon de livraison et renvoie la vue qui permet de consulter le bon de livraison
      * @return void
      */
-    public function action_consulter_bdl(){
+    public function action_consulter_bdl()
+    {
         $bd = Model::getModel();
         sessionstart();
         if (isset($_GET['id'])) {
             $typeBdl = $bd->getBdlTypeAndMonth(e($_GET['id']));
-            if($typeBdl['type_bdl'] == 'Heure'){
+            if ($typeBdl['type_bdl'] == 'Heure') {
                 $activites = $bd->getAllNbHeureActivite(e($_GET['id']));
             }
-            if($typeBdl['type_bdl'] == 'Demi-journée'){
+            if ($typeBdl['type_bdl'] == 'Demi-journée') {
                 $activites = $bd->getAllDemiJourActivite(e($_GET['id']));
             }
-            if($typeBdl['type_bdl'] == 'Journée'){
+            if ($typeBdl['type_bdl'] == 'Journée') {
                 $activites = $bd->getAllJourActivite(e($_GET['id']));
             }
 

@@ -102,10 +102,15 @@ require 'view_header.php';
                             <tr>
                                 <?php foreach ($bdl as $b): ?>
                                     <td>
-                                        <a href="?controller=<?= $_GET['controller'] ?>&action=consulter_bdl&id=<?= $b['id_bdl'] ?>"
-                                            class="block">
-                                            <h3><?= $b['nom'] . ' ' . $b['prenom'] . '<br>' . $b['mois'] ?></h3>
-                                        </a>
+                                        <?php if (isset($b['id_bdl'], $b['nom'], $b['prenom'], $b['mois'])): ?>
+                                            <a href="?controller=<?= $_GET['controller'] ?>&action=consulter_bdl&id=<?= $b['id_bdl'] ?>"
+                                                class="block">
+                                                <h3><?= htmlspecialchars($b['nom']) . ' ' . htmlspecialchars($b['prenom']) . '<br>' . htmlspecialchars($b['mois']) ?>
+                                                </h3>
+                                            </a>
+                                        <?php else: ?>
+                                            <p>Aucun bons de livraison pour ce composante</p>
+                                        <?php endif; ?>
                                     </td>
                                 <?php endforeach; ?>
                             </tr>
@@ -116,8 +121,8 @@ require 'view_header.php';
                         <?php else: ?>
                             <a class="ajout"> &nbsp;</a>
                         <?php endif; ?>
-
                     </div>
+
                 </div>
             </div>
         </div>

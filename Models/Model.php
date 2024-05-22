@@ -971,15 +971,18 @@ class Model
      */
     public function getAllBdlPrestataire($id_pr)
     {
-        // TODO pas testé
         try {
             // Préparation de la requête SQL pour récupérer les bons de livraison associés à un prestataire
             $req = $this->bd->prepare("
-            SELECT bdl.id_composante, bdl.annee, bdl.mois, bdl.signature_interlocuteur, bdl.signature_prestataire, bdl.commentaire, bdl.heures
-            FROM  bdl
-            JOIN Prestataire pr ON bdl.id_prestataire = pr.id_personne
-            WHERE pr.id_personne = :id_pr
-        ");
+                SELECT bdl.id_bdl, bdl.id_composante, bdl.annee, bdl.mois, bdl.signature_interlocuteur, 
+                       bdl.signature_prestataire, bdl.commentaire, bdl.heures,
+                       c.nom_composante, cl.nom_client, cl.telephone_client
+                FROM bdl
+                JOIN Prestataire pr ON bdl.id_prestataire = pr.id_personne
+                JOIN Composante c ON bdl.id_composante = c.id_composante
+                JOIN Client cl ON c.id_client = cl.id_client
+                WHERE pr.id_personne = :id_pr
+            ");
 
             // Liaison des paramètres pour éviter les injections SQL
             $req->bindValue(':id_pr', $id_pr, PDO::PARAM_INT);
@@ -1001,6 +1004,19 @@ class Model
             return false;
         }
     }
+
+
+    public function getBdlPrestataireBybdlId($id_pr, $id_bdl)
+    {
+        $req = $this->bd->prepare("SELECT * FROM BDL JOIN prestataire ON BDL.id_prestataire = Prestataire.id_personne JOIN Composante USING (id_composante) join Client Using(id_client) WHERE Prestataire.id_personne = :id and BDL.id_bdl = :idb");
+        $req->bindValue(':id', $id_pr, PDO::PARAM_INT);
+        $req->bindValue(':idb', $id_bdl, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall();
+    }
+
+
+
 
     // public function setEstValideBdl($id_bdl, $id_interlocuteur, $valide)
     // {

@@ -258,7 +258,7 @@ class Controller_prestataire extends Controller
                 ];
 
                 // Rendre la vue avec les données
-                $this->render('afficher_bdl', $data); // Assurez-vous d'adapter 'afficher_bdl' selon le nom de votre vue
+                $this->render('afficher_bdl', $data);
             } else {
                 echo "Aucun BDL trouvé pour cet ID.";
             }
@@ -298,21 +298,39 @@ class Controller_prestataire extends Controller
      * Renvoie la liste des bons de livraison du prestataire connecté
      * @return void
      */
+    // public function action_liste_bdl()
+    // {
+    //     $bd = Model::getModel();
+    //     sessionstart();
+    //     if (isset($_SESSION['id'])) {
+    //         $data = [
+    //             'title' => 'Mes Bons de livraison',
+    //             'buttonLink' => '?controller=prestataire&action=ajout_bdl_form',
+    //             'cardLink' => '?controller=prestataire&action=afficher_bdl',
+    //             'menu' => $this->action_get_navbar(),
+    //             "person" => $bd->getAllBdlPrestataire($_SESSION['id'])
+    //         ];
+    //         $this->render("liste", $data);
+    //     }
+    // }
+
     public function action_liste_bdl()
     {
         $bd = Model::getModel();
-        sessionstart();
+        session_start();
         if (isset($_SESSION['id'])) {
+            $person = $bd->getAllBdlPrestataire($_SESSION['id']);
             $data = [
                 'title' => 'Mes Bons de livraison',
                 'buttonLink' => '?controller=prestataire&action=ajout_bdl_form',
                 'cardLink' => '?controller=prestataire&action=afficher_bdl',
                 'menu' => $this->action_get_navbar(),
-                "person" => $bd->getAllBdlPrestataire($_SESSION['id'])
+                'person' => $person
             ];
             $this->render("liste", $data);
         }
     }
+
 
     /**
      * Vérifie d'avoir les informations nécessaires pour créer un bon de livraison
