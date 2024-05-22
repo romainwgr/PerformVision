@@ -1,0 +1,1255 @@
+/* Importation de la police Google - Poppins */
+/* Définition d'une couleur primaire pour une utilisation cohérente */
+:root {
+  --primary-color: #5db0cf;
+}
+
+/* Application de box-sizing à tous les éléments pour inclure les bordures et le padding dans la taille totale */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Styles de base pour le html et le body */
+html, body {
+  height: 100%; /* Pour s'assurer que l'image de fond prend toute la hauteur de la page */
+  font-family: 'Helvetica Neue', Arial, sans-serif; /* Police par défaut */
+  background-image: url('../images/accueil.webp'); /* Image de fond */
+  background-size: cover; /* Pour que l'image couvre toute la page */
+  background-attachment: fixed; /* Pour que l'image reste fixe lors du défilement */
+  background-position: center; /* Pour centrer l'image de fond */
+  display: flex; /* Utilisation de flexbox pour un alignement flexible des enfants */
+  flex-direction: column; /* Alignement vertical des enfants */
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins" , sans-serif;
+}
+
+/* Conteneur principal */
+.container {
+  display: flex;
+  width: 100%; /* Utilisation de toute la largeur disponible */
+  margin: 0;
+}
+
+/* Section principale */
+.main {
+  margin-left: 280px; /* Espace pour la barre de navigation latérale */
+  width: calc(100% - 280px); /* Utilisation de l'espace restant */
+  padding: 1rem;
+}
+
+/* Corps principal */
+.main-body {
+  padding: 1rem;
+}
+
+/* Barre de recherche */
+.search_bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* Formulaire de recherche */
+.search_form {
+  display: flex;
+  align-items: center;
+  border: 2px solid #ccc;
+  border-radius: 8px; /* Coins arrondis */
+  overflow: hidden;
+}
+
+/* Champ de recherche */
+.search_input {
+  flex: 1;
+  padding: 12px; /* Augmentation du padding */
+  border: none;
+  background-color: transparent;
+  font-size: 18px; /* Augmentation de la taille de la police */
+}
+
+/* Bouton de recherche */
+.search_button {
+  background-color: #5db0cf;
+  border: none;
+  padding: 12px 20px; /* Augmentation du padding */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Changement de couleur au survol du bouton */
+.search_button:hover {
+  background-color: #4a96ae;
+}
+
+/* Icône du bouton de recherche */
+.search_button i {
+  color: #fff;
+}
+
+/* Bouton principal */
+.button-primary {
+  padding: 10px 20px;
+  background-color: #5db0cf;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #fff;
+  margin-left: 10px;
+}
+
+/* Autres styles de la barre de recherche */
+.search_bar {
+  display: flex;
+  padding: 10px;
+  justify-content: space-between;
+}
+
+.search_bar input {
+  width: 50%;
+  padding: 10px;
+  border: 1px solid rgb(190, 190, 190);
+}
+
+/* Changement de bordure au focus du champ de recherche */
+.search_bar input:focus {
+  border: 1px solid blueviolet;
+}
+
+.search_bar select {
+  border: 1px solid rgb(190, 190, 190);
+  padding: 10px;
+  margin-left: 2rem;
+}
+
+/* Filtre de recherche */
+.search_bar .filter {
+  width: 300px;
+}
+
+/* Rangée */
+.row {
+  display: flex;
+  padding: 10px;
+  margin-top: 1.3rem;
+  justify-content: space-between;
+}
+
+.row p {
+  color: rgb(54, 54, 54);
+  font-size: 15px;
+}
+
+.row p span {
+  color: blueviolet;
+}
+
+/* Carte de travail */
+.job_card {
+  width: 100%;
+  padding: 15px;
+  cursor: pointer;
+  display: flex;
+  border-radius: 10px;
+  background: #fff;
+  margin-bottom: 15px;
+  justify-content: space-between;
+  border: 2px solid rgb(190, 190, 190);
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Détails de l'emploi */
+.job_details {
+  display: flex;
+}
+
+/* Image dans les détails de l'emploi */
+.job_details .img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Lien */
+a {
+  color: #000;
+}
+
+/* Icône dans les détails de l'emploi */
+.job_details .img i {
+  width: 70px;
+  font-size: 3rem;
+  margin-left: 1rem;
+  padding: 10px;
+  color: rgb(0, 86, 192);
+}
+
+/* Texte dans les détails de l'emploi */
+.job_details .text {
+  margin-left: 2.3rem;
+}
+
+.job_details .text span {
+  color: rgb(116, 112, 112);
+}
+
+/* Salaire dans les détails de l'emploi */
+.job_salary {
+  text-align: right;
+  color: rgb(54, 54, 54);
+}
+
+/* État actif de la carte de travail */
+.job_card:active {
+  border: 2px solid blueviolet;
+  transition: 0.4s;
+}
+
+/* Barre latérale */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 110px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(17px);
+  --webkit-backdrop-filter: blur(17px);
+  border-right: 1px solid rgba(255, 255, 255, 0.7);
+  transition: width 0.3s ease;
+}
+
+/* Élargissement de la barre latérale au survol */
+.sidebar:hover {
+  width: 260px;
+}
+
+/* Logo dans la barre latérale */
+.sidebar .logo {
+  color: #000;
+  display: flex;
+  align-items: center;
+  padding: 25px 10px 15px;
+}
+
+.logo img {
+  width: 73px;
+  border-radius: 50%;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* Titre du logo */
+.logo h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-left: 15px;
+  display: none;
+}
+
+/* Affichage du titre du logo au survol de la barre latérale */
+.sidebar:hover .logo h2 {
+  display: block;
+}
+
+/* Liens dans la barre latérale */
+.sidebar .links {
+  list-style: none;
+  margin-top: 20px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  height: calc(100% - 140px);
+}
+
+/* Masquage de la barre de défilement */
+.sidebar .links::-webkit-scrollbar {
+  display: none;
+}
+
+.links li {
+  margin-top: 2rem;
+  display: flex;
+  border-radius: 4px;
+  align-items: center;
+}
+
+.links li:hover {
+  cursor: pointer;
+  background: #fff;
+}
+
+.links h4 {
+  color: #222;
+  font-weight: 500;
+  display: none;
+  margin-bottom: 10px;
+}
+
+/* Affichage du texte des liens au survol de la barre latérale */
+.sidebar:hover .links h4 {
+  display: block;
+}
+
+.links hr {
+  margin: 10px 8px;
+  border: 1px solid #4c4c4c;
+}
+
+/* Changement de couleur de la ligne de séparation au survol */
+.sidebar:hover .links hr {
+  border-color: transparent;
+}
+
+.links li span {
+  padding: 12px 10px;
+}
+
+.links li a {
+  padding: 10px;
+  color: #000;
+  display: none;
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+/* Affichage des liens au survol de la barre latérale */
+.sidebar:hover .links li a {
+  display: block;
+}
+
+/* Bouton suivant */
+input.btn.btn-next.width-50.ml-auto {
+  margin-top: 5px;
+}
+
+/* Titres */
+h1 {
+  text-align: center;
+  /* color: #39c213; */
+  font-size: 24px; /* Taille de police pour les titres du tableau de bord */
+  margin-bottom: 20px; /* Espace sous le titre */
+}
+
+h3 {
+  color: rgb(171, 171, 171);
+  font-size: 16px;
+  text-align: center;
+}
+
+/* Conteneur pour ajouter des éléments */
+.add-container {
+  margin-left: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Formulaire en position absolue */
+.form-abs {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-35%);
+  background-color: #fff;
+  padding: 20px;
+  padding-left: 40px;
+  padding-right: 40px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+/* Conteneur d'informations */
+.infos-container table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 10px;
+}
+
+.infos-container table td {
+  padding: 10px;
+  background-color: #fff; /* Couleur de fond blanc */
+  border-radius: 5px;
+}
+
+/* Icône de fermeture */
+.close-icon {
+  position: absolute;
+  top: 10px; /* Ajustement de la position verticale */
+  right: 10px; /* Ajustement de la position horizontale */
+  cursor: pointer;
+}
+
+/* Conteneur caché/affiché */
+#caheaffiche {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  z-index: 1000;
+  width: 80%;
+  max-width: 500px;
+}
+
+/* Affichage du conteneur au ciblage */
+#caheaffiche:target {
+  display: block;
+}
+
+/* Positionnement relatif du formulaire absolu */
+#caheaffiche .form-abs {
+  position: relative;
+}
+
+/* Lien de la carte de travail */
+.job-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Titre du formulaire */
+.form-abs h1 {
+  font-size: 24px;
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+/* Champ de saisie */
+.input-case {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+}
+
+/* Conteneur de noms dans le formulaire */
+.form-names {
+  display: flex;
+  gap: 10px;
+}
+
+.form-names input,
+.form-names select {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  background-color: white;
+  color: #333;
+}
+
+/* Conteneur d'adresse dans le formulaire */
+.form-address {
+  display: flex;
+  gap: 10px;
+}
+
+.form-address input {
+  flex-grow: 1;
+}
+
+/* Groupe de boutons */
+.btns-group {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Boutons */
+.btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: #5db0cf;
+  color: white;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+}
+
+/* Changement de couleur au survol des boutons */
+.btn:hover {
+  background-color: #4a96ae;
+}
+
+/* Barre de progression */
+.progressbar {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.progressbar::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: #d3d3d3;
+  transform: translateY(-50%);
+}
+
+/* Progression */
+.progress {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 4px;
+  background-color: #5db0cf;
+  transform: translateY(-50%);
+  transition: width 0.3s;
+}
+
+/* Étape de la barre de progression */
+.progress-step {
+  width: 30px;
+  height: 30px;
+  background-color: #d3d3d3;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: white;
+  position: relative;
+}
+
+.progress-step::before {
+  content: attr(data-title);
+  position: absolute;
+  top: -30px;
+  font-size: 12px;
+  color: #000;
+}
+
+/* Étape active de la barre de progression */
+.progress-step-active {
+  background-color: #5db0cf;
+}
+
+/* Étapes du formulaire */
+.form-step {
+  display: none;
+}
+
+.form-step-active {
+  display: block;
+}
+
+/* page d'accueil */
+.hero-section {
+  padding: 80px 0;
+  text-align: center;
+}
+.content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 36px;
+  margin-bottom: 30px;
+}
+.search-form {
+  display: flex;
+  justify-content: center;
+}
+.search-form input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px 0 0 5px;
+  width: 70%;
+  font-size: 16px;
+}
+button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+
+/* Styles pour le formulaire de connexion et d'inscription */
+
+.center-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.container {
+  position: relative;
+  max-width: 1000px; /* Augmenter la largeur maximale */
+  width: 100%;
+  background: #fff;
+  padding: 50px 50px; /* Augmenter le padding */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  perspective: 2700px;
+}
+
+.container .cover {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 100%;
+  width: 50%;
+  z-index: 98;
+  transition: all 1s ease;
+  transform-origin: left;
+  transform-style: preserve-3d;
+}
+
+.container #flip:checked ~ .cover {
+  transform: rotateY(-180deg);
+}
+
+.container .cover .front,
+.container .cover .back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.cover .back {
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+}
+
+.container .cover::before,
+.container .cover::after {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: #5db0cf;
+  opacity: 0.5;
+  z-index: 12;
+}
+
+.container .cover::after {
+  opacity: 0.3;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+}
+
+.container .cover img {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  z-index: 10;
+}
+
+.container .cover .text {
+  position: absolute;
+  z-index: 130;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.cover .text .text-1,
+.cover .text .text-2 {
+  font-size: 26px;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+}
+
+.cover .text .text-2 {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.container .forms {
+  height: 100%;
+  width: 100%;
+  background: #fff;
+}
+
+.container .form-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-content .login-form,
+.form-content .signup-form {
+  width: calc(100% / 2 - 25px);
+}
+
+.forms .form-content .title {
+  position: relative;
+  font-size: 24px;
+  font-weight: 500;
+  color: #333;
+}
+
+.forms .form-content .title:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 25px;
+  background: #5db0cf;
+}
+
+.forms .signup-form .title:before {
+  width: 20px;
+}
+
+.forms .form-content .input-boxes {
+  margin-top: 30px;
+}
+
+.forms .form-content .input-box {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 100%;
+  margin: 10px 0;
+  position: relative;
+}
+
+.form-content .input-box input {
+  height: 100%;
+  width: 100%;
+  outline: none;
+  border: none;
+  padding: 0 60px;
+  font-size: 16px;
+  font-weight: 500;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.form-content .input-box input:focus,
+.form-content .input-box input:valid {
+  border-color: #5db0cf;
+}
+
+.form-content .input-box i {
+  position: absolute;
+  color: #5db0cf;
+  font-size: 17px;
+}
+
+.forms .form-content .text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.forms .form-content .text a {
+  text-decoration: none;
+}
+
+.forms .form-content .text a:hover {
+  text-decoration: underline;
+}
+
+.forms .form-content .button {
+  color: #fff;
+  margin-top: 40px;
+}
+
+.forms .form-content .button input {
+  color: #fff;
+  background: #60a1b9;
+  border-radius: 6px;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+
+.forms .form-content .button input:hover {
+  background: #5db0cf;
+}
+
+.forms .form-content label {
+  color: #5db0cf;
+  cursor: pointer;
+}
+
+.forms .form-content label:hover {
+  text-decoration: underline;
+}
+
+.forms .form-content .login-text,
+.forms .form-content .sign-up-text {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.container #flip {
+  display: none;
+}
+
+/* Styles pour le fond flou */
+.background-blur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Conteneur principal du popup */
+.popup {
+  background: #fff;
+  padding: 40px 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Conteneur pour le contenu du popup */
+.container-popup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Style de l'image dans le popup */
+.img-popup {
+  margin-bottom: 20px;
+}
+
+.img-popup img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Titre du popup */
+.popup-title {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Conteneur pour les boutons de sélection */
+.container-select-button {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* Style des boutons de sélection */
+.button-primary {
+  padding: 10px 20px;
+  background-color: #5db0cf;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.button-primary:hover {
+  background-color: #4a96ae;
+}
+
+
+
+
+textarea#message {
+  margin-top: 40px;
+  width: 100%;
+  height: 65px;
+}
+
+h1.mise1 {
+  font-size: 36px;
+  color: #2c3e50;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+h2.mise2 {
+  font-size: 28px;
+  color: #34495e;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h2.mise2 span {
+  color: #0012b5;
+}
+
+.fa-times::before {
+  font-size: 20px;
+}
+
+
+
+/* Styles pour tablettes */
+@media (max-width: 768px) {
+  .main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .search_form {
+    flex-direction: row; /* Garder les éléments sur la même ligne */
+    align-items: center;
+  }
+
+  .search_input {
+    flex: 1;
+    width: 100%;
+  }
+
+  .search_button {
+    width: auto;
+  }
+
+  .main-body {
+    padding: 3rem;
+    padding-left: 7rem;
+  }
+  form.search-form {
+    margin-left: 90px;
+}
+  h1.mise1{
+    margin-left: 6rem;
+  }
+  h2.mise2 {
+    font-size: 1.5rem;
+    margin-left: 90px;
+  }
+}
+
+/* Styles pour écrans en dessous de 768px */
+@media (max-width: 767px) {
+  .search_form {
+    display: none; /* Cacher la barre de recherche */
+  }
+  .job_card {
+    width: 300px;
+    padding: 10px;
+    font-size: 14px; /* Ajuster la taille de la police */
+  }
+  .infos-container table {
+    border-spacing: 5px;
+}
+}
+
+
+@media (max-width: 730px) {
+  .container .cover {
+    display: none;
+  }
+
+  .form-content .login-form,
+  .form-content .signup-form {
+    width: 100%;
+  }
+
+  .form-content .signup-form {
+    display: none;
+  }
+
+  .container #flip:checked ~ .forms .signup-form {
+    display: block;
+  }
+
+  .container #flip:checked ~ .forms .login-form {
+    display: none;
+  }
+}
+
+/* Styles pour écrans de 425px */
+@media (max-width: 425px) {
+  .main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .main-body {
+    padding: 2rem;
+    padding-left: 1rem;
+  }
+
+  h2.mise2 {
+    padding-left: 1rem;
+  }
+  /* Réduire la taille des job cards et leur contenu */
+  .job_card {
+    margin-left: 80px;
+    padding: 10px;
+    font-size: 14px; /* Ajuster la taille de la police */
+    width: 80%;
+  }
+  h2 {
+    font-size: 1rem;
+}
+.marge {
+  margin-left: 90px;
+}
+
+.infos-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.infos-container table,
+.infos-container tr,
+.infos-container td {
+  display: block;
+  width: 100%;
+  /* margin: 10px auto; Centrer chaque élément horizontalement */
+  margin: 10px 23px;
+}
+.infos__colonne h2, .infos__colonne a {
+  margin-left: 70px;
+}
+
+  .job_details .img i {
+    width: 50px; /* Ajuster la taille de l'icône */
+    font-size: 2.5rem; /* Ajuster la taille de l'icône */
+    margin-left: 0.5rem;
+    padding: 5px;
+  }
+
+  .job_details .text {
+    margin-left: 1rem;
+    font-size: 14px; /* Ajuster la taille de la police */
+  }
+
+  .job_salary {
+    font-size: 14px; /* Ajuster la taille de la police */
+  }
+}
+
+/* Styles pour écrans de 376px */
+@media (max-width: 376px) {
+  .search_bar, .row p {
+    margin-left: 90px;
+  }
+  .main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .main-body {
+    padding: 1.5rem;
+    padding-left: 1rem;
+  }
+}
+
+/* Styles pour écrans de 375px */
+@media (max-width: 375px) {
+  .main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .main-body {
+    padding: 1.5rem;
+    padding-left: 1rem;
+  }
+
+  /* Réduire la taille des job cards et leur contenu */
+  .job_card {
+    padding: 8px;
+    font-size: 12px; /* Ajuster la taille de la police */
+  }
+
+  .job_details .img i {
+    width: 40px; /* Ajuster la taille de l'icône */
+    font-size: 2rem; /* Ajuster la taille de l'icône */
+    margin-left: 0.5rem;
+    padding: 5px;
+  }
+
+  .job_details .text {
+    margin-left: 0.5rem;
+    font-size: 12px; /* Ajuster la taille de la police */
+  }
+
+  .job_salary {
+    font-size: 12px; /* Ajuster la taille de la police */
+  }
+}
+
+/* Styles pour écrans de 320px */
+@media (max-width: 320px) {
+  .main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .main-body {
+    padding: 1rem;
+    padding-left: 0.5rem;
+  }
+  .row p {
+    font-size: 0.8rem;
+}
+
+  form.search-form {
+    margin-left: 100px;
+}
+  h1.mise1{
+    font-size: 1.9rem;
+  }
+  h2.mise2 {
+    font-size: 1rem;
+  }
+  /* Réduire la taille des job cards et leur contenu */
+  .job_card {
+    padding: 5px;
+    font-size: 10px; /* Ajuster la taille de la police */
+  }
+
+  .job_details .img i {
+    width: 30px; /* Ajuster la taille de l'icône */
+    font-size: 1.5rem; /* Ajuster la taille de l'icône */
+    margin-left: 0.5rem;
+    padding: 5px;
+  }
+
+  .job_details .text {
+    margin-left: 0.5rem;
+    font-size: 10px; /* Ajuster la taille de la police */
+  }
+
+  .job_salary {
+    font-size: 10px; /* Ajuster la taille de la police */
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.bdl-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.bdl-title {
+  text-align: center;
+  color: #5db0cf;
+  margin-bottom: 20px;
+}
+
+.bdl__table {
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.bdl-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.bdl-table th,
+.bdl-table td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.bdl-table th {
+  background-color: #5db0cf;
+  color: #fff;
+}
+
+.bdl-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.input-bdl-form {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+
+.pdf-container {
+  margin-top: 20px;
+}
+
+.row {
+  margin-bottom: 20px;
+}
+
+.pdf-container h2 {
+  margin-bottom: 10px;
+}
+
