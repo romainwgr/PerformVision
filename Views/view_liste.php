@@ -24,6 +24,7 @@ require 'view_header.php';
                 <?= htmlspecialchars($title) ?></p>
         </div>
 
+<<<<<<< HEAD
 
         <?php if (isset($person)): ?>
             <?php foreach ($person as $p): ?>
@@ -85,4 +86,51 @@ require 'view_header.php';
         ): ?>
         <?php endif; ?>
     </div>
+=======
+       <div class="element-block">
+    <?php if (is_string($person)): ?>
+        <p class=""><?= htmlspecialchars($person); ?></p>
+    <?php elseif (isset($person) && !empty($person)): ?>
+        <?php foreach ($person as $p): ?>
+            <div class="job_card">
+                <div class="job_details">
+                    <div class="img">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="text">
+                        <form method="post" action="?controller=prestataire&action=afficher_bdl">
+                            <input type="hidden" name="id_bdl" value="<?= htmlspecialchars($p['id_bdl'] ?? $p['id']) ?>">
+                            <button type="submit" class="block">
+                                <h2><?php
+                                    if (array_key_exists('nom', $p)):
+                                        echo htmlspecialchars($p['nom'] . ' ' . $p['prenom']);
+                                    elseif (array_key_exists('nom_client', $p) and array_key_exists('telephone_client', $p)):
+                                        echo htmlspecialchars($p['nom_client']);
+                                    elseif (array_key_exists('nom_composante', $p) and array_key_exists('nom_client', $p)):
+                                        echo htmlspecialchars($p['nom_composante']);
+                                    endif;
+                                ?></h2>
+                                <h3><?php
+                                    if (array_key_exists('mois', $p)):
+                                        echo htmlspecialchars($p['mois']);
+                                    elseif (array_key_exists('interne', $p)):
+                                        echo $p['interne'] ? 'Interne' : 'Indépendant';
+                                    elseif (array_key_exists('nom_client', $p) and !array_key_exists('telephone_client', $p)):
+                                        echo htmlspecialchars($p['nom_client']);
+                                    elseif (array_key_exists('nom_composante', $p) and !array_key_exists('nom_client', $p)):
+                                        echo htmlspecialchars($p['nom_composante']);
+                                    elseif (array_key_exists('telephone_client', $p)):
+                                        echo htmlspecialchars($p['telephone_client']);
+                                    endif;
+                                ?></h3>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>
+
+>>>>>>> 67f4d445a4f6aec0c8c420395c4a6aa8cd562354
 </section>

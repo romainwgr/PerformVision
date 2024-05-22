@@ -258,7 +258,11 @@ class Controller_prestataire extends Controller
                 ];
 
                 // Rendre la vue avec les données
+<<<<<<< HEAD
                 $this->render('afficher_bdl', $data);
+=======
+                $this->render('afficher_bdl', $data); 
+>>>>>>> 67f4d445a4f6aec0c8c420395c4a6aa8cd562354
             } else {
                 echo "Aucun BDL trouvé pour cet ID.";
             }
