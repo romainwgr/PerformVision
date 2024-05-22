@@ -1,5 +1,5 @@
 <?php require "view_begin.php"; ?>
-<?php require "view_header.php";?>
+
 
 <h1> 
     <?= e($title) ?> 

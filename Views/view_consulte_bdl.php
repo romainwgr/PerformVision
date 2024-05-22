@@ -4,46 +4,47 @@
 require 'view_begin.php';
 require 'view_header.php';
 ?>
-<div class="bdl-container">
-    <div class="bdl__table">
 
-        <table class="bdl-table">
+<section class="main">
+    <div class="main-body">
+        <div class="search_bar">
+            <form action="#" method="GET" class="search_form">
+                <input type="search" name="search" id="search" class="search_input" placeholder="Search here...">
+                <button type="submit" class="search_button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
+
+        <table>
             <thead>
-                <tr class="bdl-head">
+                <tr>
                     <th>Date</th>
-                    <th><?= $bdl['type_bdl'] ?></th>
-                    <th>Commentaire</th>
+                    <th>Présence </th>
+                    <th>Nombre d'heures </th>
+                    <th>Nombre de demi-journées </th>
+                    <th>Commentaire </th>
                 </tr>
             </thead>
-            <tbody id="joursTableBody">
-                <?php foreach ($activites as $activite) : ?>
+            <tbody>
+                <?php foreach ($activites as $activite): ?>
                     <tr>
-                        <td><?= $activite["date_bdl"] ?></td>
+                        <td><?php echo isset($activite["date_bdl"]) ? $activite["date_bdl"] : ''; ?></td>
                         <td><?php
-                            if (isset($activite['journee'])): if ($activite['journee']): echo 'Présent';
-                            else: echo 'Absent'; endif; endif;
-                            if (isset($activite['nb_heure'])): echo $activite['nb_heure']; endif;
-                            if (isset($activite['nb_demi_journee'])): echo $activite['nb_demi_journee']; endif;
-                            ?></td>
+                        if (isset($activite['journee'])) {
+                            echo $activite['journee'] ? 'Présent' : 'Absent';
+                        }
+                        ?></td>
+                        <td><?php echo isset($activite['nb_heure']) ? $activite['nb_heure'] : ''; ?></td>
+                        <td><?php echo isset($activite['nb_demi_journee']) ? $activite['nb_demi_journee'] : ''; ?></td>
                         <td><?= $activite["commentaire"] ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
     </div>
-    <?php if (str_contains($_GET['controller'], 'interlocuteur')): ?>
-        <div class="button-valide-container">
-            <button class="button-delete button-valide"
-                    onclick="window.location='?controller=interlocuteur&action=valider_bdl&id=<?php echo $_GET['id'] ?>&valide=false'"
-                    id="button-get-data">Contester
-            </button>
-            <button class="button-primary button-valide"
-                    onclick="window.location='?controller=interlocuteur&action=valider_bdl&id=<?php echo $_GET['id'] ?>&valide=true'"
-                    id="button-get-data">Valider
-            </button>
-        </div>
-    <?php endif; ?>
-</div>
+</section>
+
 <?php
 require 'view_end.php';
 ?>
