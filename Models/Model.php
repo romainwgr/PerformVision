@@ -971,35 +971,18 @@ class Model
      */
     public function getAllBdlPrestataire($id_pr)
     {
-        // TODO pas testé
-        try {
-            // Préparation de la requête SQL pour récupérer les bons de livraison associés à un prestataire
-            $req = $this->bd->prepare("
-            SELECT bdl.id_composante, bdl.annee, bdl.mois, bdl.signature_interlocuteur, bdl.signature_prestataire, bdl.commentaire, bdl.heures
-            FROM  bdl
-            JOIN Prestataire pr ON bdl.id_prestataire = pr.id_personne
-            WHERE pr.id_personne = :id_pr
-        ");
-
-            // Liaison des paramètres pour éviter les injections SQL
-            $req->bindValue(':id_pr', $id_pr, PDO::PARAM_INT);
-
-            // Exécution de la requête
-            $req->execute();
-
-            // Récupération des résultats
-            $result = $req->fetchAll(PDO::FETCH_ASSOC);
-
-            // Vérifier si des résultats ont été trouvés
-            if (!empty($result)) {
-                return $result;
-            } else {
-                return false;
-            }
-        } catch (Exception $e) {
-            echo 'Erreur : ' . $e->getMessage();
-            return false;
-        }
+        $req = $this->bd->prepare("SELECT * FROM BDL JOIN prestataire ON BDL.id_prestataire = Prestataire.id_personne JOIN Composante USING (id_composante) join Client Using(id_client) WHERE Prestataire.id_personne = :id");
+        $req->bindValue(':id', $id_pr, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall();
+    }
+    public function getBdlPrestataireBybdlId($id_pr,$id_bdl)
+    {
+        $req = $this->bd->prepare("SELECT * FROM BDL JOIN prestataire ON BDL.id_prestataire = Prestataire.id_personne JOIN Composante USING (id_composante) join Client Using(id_client) WHERE Prestataire.id_personne = :id and BDL.id_bdl = :idb");
+        $req->bindValue(':id', $id_pr, PDO::PARAM_INT);
+        $req->bindValue(':idb', $id_bdl, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall();
     }
 
     // public function setEstValideBdl($id_bdl, $id_interlocuteur, $valide)
