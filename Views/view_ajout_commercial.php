@@ -9,7 +9,7 @@ require 'view_header.php';
         <span class="close-icon" id="close-form" onclick="closeFormajout()"> <!-- Ajout de l'ID -->
             <i class="fas fa-times"></i>
         </span>
-        <h1 class="text-center">Ajout Société</h1>
+        <h1 class="text-center">Ajout Commercial</h1>
         <form action="?controller=<?= $_GET['controller'] ?>&action=<?php if (isset($_GET['id'])):
               echo 'ajout_commercial_dans_composante&id-composante=' . $_GET['id'];
           else:
