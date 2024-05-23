@@ -322,6 +322,7 @@ IF
                             , (6, 4);
 
                           -- Inserting data into BDL
+
                           INSERT INTO
                             BDL (
                               id_composante
@@ -360,4 +361,176 @@ IF
                               , 90.50
                               , 10
                               , 10
+                            )
+                            -- For prestataire 1
+                            (
+                              1
+                              , 1
+                              , 2024
+                              , 'February'
+                              , TRUE
+                              , TRUE
+                              , 'Meeting scheduled'
+                              , 110.0
+                              , 2
+                              , 4
+                            )
+                            , (
+                              2
+                              , 1
+                              , 2024
+                              , 'March'
+                              , TRUE
+                              , FALSE
+                              , 'Follow up needed'
+                              , 95.5
+                              , 9
+                              , 8
+                            )
+                            , (
+                              3
+                              , 1
+                              , 2024
+                              , 'April'
+                              , FALSE
+                              , TRUE
+                              , 'Project delayed'
+                              , 88.0
+                              , 10
+                              , 10
+                            )
+                            , (4, 1, 2024, 'May', TRUE, TRUE, 'All good', 130.0, 2, 4)
+                            , (
+                              1
+                              , 1
+                              , 2024
+                              , 'June'
+                              , TRUE
+                              , TRUE
+                              , 'Monthly report submitted'
+                              , 140.0
+                              , 9
+                              , 8
+                            )
+                            , -- For prestataire 7
+                              (
+                              2
+                              , 7
+                              , 2024
+                              , 'January'
+                              , TRUE
+                              , TRUE
+                              , 'Initial setup'
+                              , 120.0
+                              , 2
+                              , 4
+                            )
+                            , (
+                              3
+                              , 7
+                              , 2024
+                              , 'February'
+                              , TRUE
+                              , FALSE
+                              , 'System maintenance'
+                              , 105.5
+                              , 9
+                              , 8
+                            )
+                            , (
+                              4
+                              , 7
+                              , 2024
+                              , 'March'
+                              , FALSE
+                              , TRUE
+                              , 'Software update'
+                              , 92.0
+                              , 10
+                              , 10
+                            )
+                            , (
+                              1
+                              , 7
+                              , 2024
+                              , 'April'
+                              , TRUE
+                              , TRUE
+                              , 'Performance review'
+                              , 115.0
+                              , 2
+                              , 4
+                            )
+                            , (
+                              2
+                              , 7
+                              , 2024
+                              , 'May'
+                              , TRUE
+                              , TRUE
+                              , 'Annual audit'
+                              , 125.0
+                              , 9
+                              , 8
+                            )
+                            , -- For prestataire 8
+                              (
+                              3
+                              , 8
+                              , 2024
+                              , 'January'
+                              , TRUE
+                              , TRUE
+                              , 'Network upgrade'
+                              , 110.0
+                              , 2
+                              , 4
+                            )
+                            , (
+                              4
+                              , 8
+                              , 2024
+                              , 'February'
+                              , TRUE
+                              , FALSE
+                              , 'Security check'
+                              , 95.0
+                              , 9
+                              , 8
+                            )
+                            , (
+                              1
+                              , 8
+                              , 2024
+                              , 'March'
+                              , FALSE
+                              , TRUE
+                              , 'New project launch'
+                              , 88.5
+                              , 10
+                              , 10
+                            )
+                            , (
+                              2
+                              , 8
+                              , 2024
+                              , 'April'
+                              , TRUE
+                              , TRUE
+                              , 'Client feedback'
+                              , 120.0
+                              , 2
+                              , 4
+                            )
+                            , (
+                              3
+                              , 8
+                              , 2024
+                              , 'May'
+                              , TRUE
+                              , TRUE
+                              , 'Service improvement'
+                              , 130.5
+                              , 9
+                              , 8
                             );

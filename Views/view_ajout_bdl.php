@@ -14,15 +14,15 @@ require 'view_header.php';
                 <h2>Ajout d'un Bon de livraison</h2>
                 <div class="input-group">
                     <label for="sté">Mission</label>
-                    <input type="text" placeholder="Mission" id="sté" name="mission" class="input-case">
+                    <input type="text" placeholder="Mission" id="sté" name="mission" class="input-case" require>
                 </div>
                 <div class="input-group">
                     <label for="sté">Mois</label>
-                    <input type="month" placeholder="Mois" id="sté" name="mois" class="input-case">
+                    <input type="month" placeholder="Mois" id="sté" name="mois" class="input-case" require>
                 </div>
                 <div class="input-group">
                     <label for="sté">Composante</label>
-                    <input type="text" placeholder="Composante" id="sté" name="composante" class="input-case">
+                    <input type="text" placeholder="Composante" id="sté" name="composante" class="input-case" require>
 
                 </div>
             </div>

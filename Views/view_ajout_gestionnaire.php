@@ -17,16 +17,16 @@ require 'view_header.php';
                 <h2>Informations personnelles</h2>
                 <div class="input-group">
                     <label for="sté">Prénom</label>
-                    <input type="text" placeholder="Prénom" id="sté" name="prenom" class="input-case">
+                    <input type="text" placeholder="Prénom" id="sté" name="prenom" class="input-case" require>
                 </div>
                 <div class="input-group">
                     <label for="sté">Nom</label>
-                    <input type="text" placeholder="Nom" id="sté" name="nom" class="input-case">
+                    <input type="text" placeholder="Nom" id="sté" name="nom" class="input-case" require>
                 </div>
                 <div class="input-group">
                     <label for="sté">Email</label>
                     <input type="email" placeholder="Adresse email" id="sté" name="email-gestionnaire"
-                        class="input-case">
+                        class="input-case" require>
 
                 </div>
             </div>
@@ -37,7 +37,6 @@ require 'view_header.php';
 
     </div>
 </div>
-
 <?php
 require 'view_end.php';
 ?>

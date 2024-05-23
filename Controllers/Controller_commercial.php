@@ -4,39 +4,73 @@ class Controller_commercial extends Controller
 {
     public function action_default()
     {
+        $this->action_accueil();
+    }
+
+    public function action_accueil()
+    {
+        sessionstart(); // Fonction dans Utils pour lancer la session si elle n'est pas lancée 
+        if (isset($_SESSION['role'])) {
+            unset($_SESSION['role']);
+        }
+        $_SESSION['role'] = 'gestionnaire';
+        if (isset($_SESSION['id'])) {
+            $bd = Model::getModel();
+            $data = [
+                'menu' => $this->action_get_navbar(),
+                'bdlLink' => '?controller=gestionnaire&action=mission_bdl',
+                'buttonLink' => '?controller=gestionnaire&action=ajout_mission_form',
+                'header' => [
+                    'Société',
+                    'Composante',
+                    'Nom Mission',
+                    'Préstataire assigné',
+                    'Bon de livraison'
+                ],
+                'dashboard' => $bd->getDashboardCommercial($_SESSION['id'])
+            ];
+            $this->render('accueil', $data);
+        }
+        $this->render('accueil');
+    }
+
+    public function action_missions()
+    {
+        // Redirection vers l'action dashboard
         $this->action_dashboard();
     }
+
 
     /**
      * Renvoie le tableau de bord du commercial avec les variables adéquates
      * @return void
      */
-    public function action_dashboard()
-    {
-        sessionstart();
-        $_SESSION['role'] = 'commercial';
-        if (isset($_SESSION['id'])) {
-            $bd = Model::getModel();
-            $data = [
-                'menu'=>$this->action_get_navbar(), 
-                'bdlLink' => '?controller=commercial&action=mission_bdl', 
-                'header' => [
-                    'Société', 
-                    'Composante',
-                    'Nom Mission',
-                    'Préstataire assigné', 
-                    'Bon de livraison'
-                ], 
-                'dashboard' => $bd->getdashboardCommercial($_SESSION['id'])
-            ];
-            return $this->render('prestataire_missions', $data);
-        } 
-        else 
-        {
-            // TODO Réaliser un render de l'erreur
-            echo 'Une erreur est survenue lors du chargement du tableau de bord';
-        }
-    }
+    // public function action_dashboard()
+    // {
+    //     sessionstart();
+    //     $_SESSION['role'] = 'commercial';
+    //     if (isset($_SESSION['id'])) {
+    //         $bd = Model::getModel();
+    //         $data = [
+    //             'menu'=>$this->action_get_navbar(), 
+    //             'bdlLink' => '?controller=commercial&action=mission_bdl', 
+    //             'header' => [
+    //                 'Société', 
+    //                 'Composante',
+    //                 'Nom Mission',
+    //                 'Préstataire assigné', 
+    //                 'Bon de livraison'
+    //             ], 
+    //             'dashboard' => $bd->getdashboardCommercial($_SESSION['id'])
+    //         ];
+    //         return $this->render('prestataire_missions', $data);
+    //     } 
+    //     else 
+    //     {
+    //         // TODO Réaliser un render de l'erreur
+    //         echo 'Une erreur est survenue lors du chargement du tableau de bord';
+    //     }
+    // }
 
     /**
      * Action qui retourne les éléments du menu pour le commercial
@@ -49,21 +83,22 @@ class Controller_commercial extends Controller
             ['link' => '?controller=commercial&action=composantes', 'name' => 'Composantes'],
             ['link' => '?controller=commercial&action=clients', 'name' => 'Clients'],
             ['link' => '?controller=commercial&action=prestataires', 'name' => 'Prestataires'],
-            ];
+        ];
     }
 
     /**
      * Vérifie d'avoir les informations nécessaire pour renvoyer la vue liste avec les bonnes variables pour afficher la liste des bons de livraisons d'un prestataire en fonction de la mission
      * @return void
      */
-    public function action_mission_bdl(){
+    public function action_mission_bdl()
+    {
         $bd = Model::getModel();
         sessionstart();
-        if(isset($_GET['id']) && isset($_GET['id-prestataire'])){
+        if (isset($_GET['id']) && isset($_GET['id-prestataire'])) {
             $data = [
-                'title' => 'Bons de livraison', 
-                'cardLink' =>  '?controller=commercial&action=consulter_bdl', 
-                'menu' => $this->action_get_navbar(), 
+                'title' => 'Bons de livraison',
+                'cardLink' => '?controller=commercial&action=consulter_bdl',
+                'menu' => $this->action_get_navbar(),
                 'person' => $bd->getBdlsOfPrestataireByIdMission(e($_GET['id']), e($_GET['id-prestataire']))
             ];
             $this->render('liste', $data);
@@ -115,24 +150,25 @@ class Controller_commercial extends Controller
      * Vérifie qu'il existe dans l'url l'id qui fait référence au bon de livraison et renvoie la vue qui permet de consulter le bon de livraison
      * @return void
      */
-    public function action_consulter_bdl(){
+    public function action_consulter_bdl()
+    {
         $bd = Model::getModel();
         sessionstart();
         if (isset($_GET['id'])) {
             $typeBdl = $bd->getBdlTypeAndMonth(e($_GET['id']));
-            if($typeBdl['type_bdl'] == 'Heure'){
+            if ($typeBdl['type_bdl'] == 'Heure') {
                 $activites = $bd->getAllNbHeureActivite(e($_GET['id']));
             }
-            if($typeBdl['type_bdl'] == 'Demi-journée'){
+            if ($typeBdl['type_bdl'] == 'Demi-journée') {
                 $activites = $bd->getAllDemiJourActivite(e($_GET['id']));
             }
-            if($typeBdl['type_bdl'] == 'Journée'){
+            if ($typeBdl['type_bdl'] == 'Journée') {
                 $activites = $bd->getAllJourActivite(e($_GET['id']));
             }
 
             $data = [
-                'menu' => $this->action_get_navbar(), 
-                'bdl' => $typeBdl, 
+                'menu' => $this->action_get_navbar(),
+                'bdl' => $typeBdl,
                 'activites' => $activites
             ];
             $this->render("consulte_bdl", $data);
@@ -153,10 +189,10 @@ class Controller_commercial extends Controller
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $data = [
-                'title' => 'Société', 
-                'buttonLink' => '?controller=commercial&action=ajout_interlocuteur_form', 
-                'cardLink' => '?controller=commercial&action=infos_client', 
-                'person' => $bd->getClientForCommercial(), 
+                'title' => 'Société',
+                'buttonLink' => '?controller=commercial&action=ajout_interlocuteur_form',
+                'cardLink' => '?controller=commercial&action=infos_client',
+                'person' => $bd->getClientForCommercial(),
                 'menu' => $this->action_get_navbar()
             ];
             $this->render("liste", $data);
@@ -174,9 +210,9 @@ class Controller_commercial extends Controller
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $data = [
-                'title' => 'Composantes', 
+                'title' => 'Composantes',
                 'person' => $bd->getComposantesForCommercial($_SESSION['id']),
-                'cardLink' => '?controller=commercial&action=infos_composante', 
+                'cardLink' => '?controller=commercial&action=infos_composante',
                 'menu' => $this->action_get_navbar()
             ];
             $this->render("liste", $data);
@@ -187,17 +223,16 @@ class Controller_commercial extends Controller
      * Renvoie la liste des interlocuteurs des composantes assignées au commercial connecté
      * @return void
      */
-    public function action_commercial_interlocuteurs(){
+    public function action_commercial_interlocuteurs()
+    {
         sessionstart();
-        if (isset($_SESSION['id'])){
+        if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
-            $data=[
+            $data = [
                 $bd->getInterlocuteurForCommercial($_SESSION['id'])
             ];
-            $this->render("liste",$data);
-        }
-        else 
-        {
+            $this->render("liste", $data);
+        } else {
             // TODO Réaliser un render de l'erreur
             echo 'Une erreur est survenue lors du chargement des clients.';
         }
@@ -208,20 +243,19 @@ class Controller_commercial extends Controller
      * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
      * @return void
      */
-    public function action_prestataires(){
+    public function action_prestataires()
+    {
         sessionstart();
-        if (isset($_SESSION['id'])){
+        if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $data = [
-                'title' => 'Prestataires', 
-                'cardLink' => "?controller=commercial&action=infos_personne", 
-                "person" => $bd->getPrestataireForCommercial($_SESSION['id']), 
+                'title' => 'Prestataires',
+                'cardLink' => "?controller=commercial&action=infos_personne",
+                "person" => $bd->getPrestataireForCommercial($_SESSION['id']),
                 'menu' => $this->action_get_navbar()
             ];
             $this->render("liste", $data);
-        }
-        else 
-        {
+        } else {
             // TODO Réaliser un render de l'erreur
             echo 'Une erreur est survenue lors du chargement des prestataire.';
         }
@@ -253,7 +287,7 @@ class Controller_commercial extends Controller
         if (
             isset($_GET['id-composante']) &&
             isset($_POST['email-interlocuteur']) &&
-            isset($_POST['nom-interlocuteur']) && 
+            isset($_POST['nom-interlocuteur']) &&
             isset($_POST['prenom-interlocuteur'])
         ) {
             if (!$bd->checkInterlocuteurExiste(e($_POST['email-interlocuteur']))) {
@@ -264,10 +298,10 @@ class Controller_commercial extends Controller
             $this->action_composantes();
         }
         if (
-            isset($_GET['id-client']) && 
-            isset($_POST['email-interlocuteur']) && 
-            isset($_POST['nom-interlocuteur']) && 
-            isset($_POST['prenom-interlocuteur']) && 
+            isset($_GET['id-client']) &&
+            isset($_POST['email-interlocuteur']) &&
+            isset($_POST['nom-interlocuteur']) &&
+            isset($_POST['prenom-interlocuteur']) &&
             isset($_POST['composante'])
         ) {
             if (!$bd->checkInterlocuteurExiste(e($_POST['email-interlocuteur']))) {
@@ -291,7 +325,7 @@ class Controller_commercial extends Controller
         $data = [
             'menu' => $this->action_get_navbar()
         ];
-        $this->render('ajout_interlocuteur', $data,'Ajouts');
+        $this->render('ajout_interlocuteur', $data, 'Ajouts');
     }
 
     /**
@@ -333,7 +367,7 @@ class Controller_commercial extends Controller
         if (isset($_GET['id'])) {
             $bd = Model::getModel();
             $data = [
-                'person' => $bd->getInfosPersonne(e($_GET['id'])), 
+                'person' => $bd->getInfosPersonne(e($_GET['id'])),
                 'menu' => $this->action_get_navbar()
             ];
             $this->render("infos_personne", $data);
@@ -360,7 +394,8 @@ class Controller_commercial extends Controller
             $this->render('infos_composante', $data);
         }
     }
-    public function action_rechercher_prestataire(){
+    public function action_rechercher_prestataire()
+    {
         $m = Model::getModel();
         session_start();
         $recherche = '';
@@ -369,18 +404,18 @@ class Controller_commercial extends Controller
         }
         $resultat = $m->recherchePrestataires($recherche);
         $ids = array_column($resultat, 'id_personne');
-        
+
         $users = $m->getPrestatairesByIds($ids);
-      
+
         $data = [
             "title" => "Prestataires",
-            'cardLink' => "?controller=gestionnaire&action=infos_personne", 
-            "buttonLink" => '?controller=gestionnaire&action=ajout_prestataire_form', 
-            "person" => $users,  
+            'cardLink' => "?controller=gestionnaire&action=infos_personne",
+            "buttonLink" => '?controller=gestionnaire&action=ajout_prestataire_form',
+            "person" => $users,
             "val_rech" => $recherche,
             'menu' => $this->action_get_navbar()
         ];
-    
+
         $this->render("liste", $data);
     }
 

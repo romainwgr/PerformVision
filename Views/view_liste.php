@@ -17,16 +17,15 @@ require 'view_header.php';
             <?php endif; ?>
         </div>
 
-
-
         <div class="row">
             <p>Il y a plus de <span><?= isset($person) && is_array($person) ? count($person) : 0 ?></span>
                 <?= htmlspecialchars($title) ?></p>
         </div>
+        <div id="errorMessage" style="display: none;"></div>
 
-<<<<<<< HEAD
-
-        <?php if (isset($person)): ?>
+        <?php if (is_string($person)): ?>
+            <p class=""><?= htmlspecialchars($person); ?></p>
+        <?php elseif (isset($person) && !empty($person)): ?>
             <?php foreach ($person as $p): ?>
                 <div class="job_card">
                     <div class="job_details">
@@ -34,103 +33,48 @@ require 'view_header.php';
                             <i class="fas fa-user"></i>
                         </div>
                         <div class="text">
-                            <a href='<?= $cardLink ?>&id=<?php echo isset($p['id']) ? $p['id'] : '?controller=administrateur&action=default'; ?>'
+                            <a href="?controller=prestataire&action=afficher_bdl&id_bdl=<?= htmlspecialchars($p['id_bdl'] ?? $p['id']) ?>"
                                 class="block">
-                                <!-- pour affiche l'erreur decommenter le a href d'un bas -->
-                                <!-- <a href='<?= $cardLink ?>&id=<?php if (isset($p['id_bdl'])):
-                                      echo $p['id_bdl'];
-                                  else:
-                                      echo $p['id'];
-                                  endif; ?>' class="block"> -->
                                 <h2><?php
                                 if (array_key_exists('nom', $p)):
-                                    echo $p['nom'] . ' ' . $p['prenom'];
-                                elseif (array_key_exists('nom_client', $p) and array_key_exists('telephone_client', $p)):
-                                    echo $p['nom_client'];
-                                elseif (array_key_exists('nom_composante', $p) and array_key_exists('nom_client', $p)):
-                                    echo $p['nom_composante'];
+                                    echo htmlspecialchars($p['nom'] . ' ' . $p['prenom']);
+                                elseif (array_key_exists('nom_client', $p) && array_key_exists('telephone_client', $p)):
+                                    echo htmlspecialchars($p['nom_client']);
+                                elseif (array_key_exists('nom_composante', $p) && array_key_exists('nom_client', $p)):
+                                    echo htmlspecialchars($p['nom_composante']);
                                 endif;
                                 ?></h2>
-                            </a>
-                            <span><?php
-                            if (array_key_exists('email', $p)):
-                                echo 'Email: ' . $p['email'];
-                            elseif (array_key_exists('autre_info', $p)):
-                                echo 'Autre info: ' . $p['autre_info'];
-                            elseif (array_key_exists('id_bdl', $p)):
-                                echo $p['mois'];
-                            elseif (array_key_exists('interne', $p)):
-                                if ($p['interne']):
-                                    echo 'Interne';
-                                else:
-                                    echo 'Indépendant';
+                                <span><?php
+                                if (array_key_exists('mois', $p)):
+                                    echo htmlspecialchars($p['mois']);
+                                elseif (array_key_exists('interne', $p)):
+                                    echo $p['interne'] ? 'Interne' : 'Indépendant';
+                                elseif (array_key_exists('nom_client', $p) && !array_key_exists('telephone_client', $p)):
+                                    echo htmlspecialchars($p['nom_client']);
+                                elseif (array_key_exists('nom_composante', $p) && !array_key_exists('nom_client', $p)):
+                                    echo htmlspecialchars($p['nom_composante']);
+                                elseif (array_key_exists('telephone_client', $p)):
+                                    echo htmlspecialchars($p['telephone_client']);
                                 endif;
-                            elseif (array_key_exists('nom_client', $p) and !array_key_exists('telephone_client', $p)):
-                                echo $p['nom_client'];
-                            elseif (array_key_exists('nom_composante', $p) and !array_key_exists('nom_client', $p)):
-                                echo $p['nom_composante'];
-                            elseif (array_key_exists('telephone_client', $p)):
-                                echo $p['telephone_client'];
-                            endif;
-                            ?></span>
+                                ?></php>
+                            </a>
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
-        <?php else: ?>
-            <p>Aucune donnée disponible.</p>
         <?php endif; ?>
+
         <?php if (
             ((str_contains($_GET['controller'], 'gestionnaire') || str_contains($_GET['controller'], 'administrateur')) && !isset($_GET['id']))
             || ((str_contains($_GET['controller'], 'prestataire') && isset($person[0]['id_bdl'])))
         ): ?>
         <?php endif; ?>
     </div>
-=======
-       <div class="element-block">
-    <?php if (is_string($person)): ?>
-        <p class=""><?= htmlspecialchars($person); ?></p>
-    <?php elseif (isset($person) && !empty($person)): ?>
-        <?php foreach ($person as $p): ?>
-            <div class="job_card">
-                <div class="job_details">
-                    <div class="img">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="text">
-                        <form method="post" action="?controller=prestataire&action=afficher_bdl">
-                            <input type="hidden" name="id_bdl" value="<?= htmlspecialchars($p['id_bdl'] ?? $p['id']) ?>">
-                            <button type="submit" class="block">
-                                <h2><?php
-                                    if (array_key_exists('nom', $p)):
-                                        echo htmlspecialchars($p['nom'] . ' ' . $p['prenom']);
-                                    elseif (array_key_exists('nom_client', $p) and array_key_exists('telephone_client', $p)):
-                                        echo htmlspecialchars($p['nom_client']);
-                                    elseif (array_key_exists('nom_composante', $p) and array_key_exists('nom_client', $p)):
-                                        echo htmlspecialchars($p['nom_composante']);
-                                    endif;
-                                ?></h2>
-                                <h3><?php
-                                    if (array_key_exists('mois', $p)):
-                                        echo htmlspecialchars($p['mois']);
-                                    elseif (array_key_exists('interne', $p)):
-                                        echo $p['interne'] ? 'Interne' : 'Indépendant';
-                                    elseif (array_key_exists('nom_client', $p) and !array_key_exists('telephone_client', $p)):
-                                        echo htmlspecialchars($p['nom_client']);
-                                    elseif (array_key_exists('nom_composante', $p) and !array_key_exists('nom_client', $p)):
-                                        echo htmlspecialchars($p['nom_composante']);
-                                    elseif (array_key_exists('telephone_client', $p)):
-                                        echo htmlspecialchars($p['telephone_client']);
-                                    endif;
-                                ?></h3>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
-</div>
-
->>>>>>> 67f4d445a4f6aec0c8c420395c4a6aa8cd562354
 </section>
+
+<script>
+    <?php if (count($bdl) == 0): ?>
+        document.getElementById('errorMessage').innerHTML = 'Aucun BDL trouvé pour cet ID.';
+        document.getElementById('errorMessage').style.display = 'block';
+    <?php endif; ?>
+</script>

@@ -7,26 +7,22 @@ class Controller_administrateur extends Controller
      */
     public function action_default()
     {
-        $this->action_dashboard();
+        $this->action_accueil();
     }
 
-    /**
-     * Renvoie le tableau de bord de l'administrateur avec les variables adéquates
-     * @return void
-     */
-    public function action_dashboard()
+    public function action_accueil()
     {
-        sessionstart();
+        sessionstart(); // Fonction dans Utils pour lancer la session si elle n'est pas lancée 
         if (isset($_SESSION['role'])) {
             unset($_SESSION['role']);
         }
-        $_SESSION['role'] = 'administrateur';
+        $_SESSION['role'] = 'gestionnaire';
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $data = [
                 'menu' => $this->action_get_navbar(),
-                'bdlLink' => '?controller=administrateur&action=mission_bdl',
-                'buttonLink' => '?controller=administrateur&action=ajout_mission_form',
+                'bdlLink' => '?controller=gestionnaire&action=mission_bdl',
+                'buttonLink' => '?controller=gestionnaire&action=ajout_mission_form',
                 'header' => [
                     'Société',
                     'Composante',
@@ -34,14 +30,51 @@ class Controller_administrateur extends Controller
                     'Préstataire assigné',
                     'Bon de livraison'
                 ],
-                'dashboard' => $bd->getDashboardGestionnaire()
+                // 'dashboard' => $bd->getDashboardPrestataire($_SESSION['id'])
             ];
-            return $this->render('gestionnaire_missions', $data);
-        } else {
-            // TODO Réaliser un render de l'erreur
-            echo 'Une erreur est survenue lors du chargement du tableau de bord';
+            $this->render('accueil', $data);
         }
+        $this->render('accueil');
     }
+
+    public function action_missions()
+    {
+        // Redirection vers l'action dashboard
+        $this->action_dashboard();
+    }
+
+    /**
+     * Renvoie le tableau de bord de l'administrateur avec les variables adéquates
+     * @return void
+     */
+    // public function action_dashboard()
+    // {
+    //     sessionstart();
+    //     if (isset($_SESSION['role'])) {
+    //         unset($_SESSION['role']);
+    //     }
+    //     $_SESSION['role'] = 'administrateur';
+    //     if (isset($_SESSION['id'])) {
+    //         $bd = Model::getModel();
+    //         $data = [
+    //             'menu' => $this->action_get_navbar(),
+    //             'bdlLink' => '?controller=administrateur&action=mission_bdl',
+    //             'buttonLink' => '?controller=administrateur&action=ajout_mission_form',
+    //             'header' => [
+    //                 'Société',
+    //                 'Composante',
+    //                 'Nom Mission',
+    //                 'Préstataire assigné',
+    //                 'Bon de livraison'
+    //             ],
+    //             'dashboard' => $bd->getDashboardGestionnaire()
+    //         ];
+    //         return $this->render('gestionnaire_missions', $data);
+    //     } else {
+    //         // TODO Réaliser un render de l'erreur
+    //         echo 'Une erreur est survenue lors du chargement du tableau de bord';
+    //     }
+    // }
 
     /**
      * Action qui retourne les éléments du menu pour le gestionnaire

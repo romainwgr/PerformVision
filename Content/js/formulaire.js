@@ -1,106 +1,11 @@
-// const prevBtns = document.querySelectorAll(".btn-prev");
-// const nextBtns = document.querySelectorAll(".btn-next");
-// const progress = document.getElementById("progress");
-// const formSteps = document.querySelectorAll(".form-step");
-// const progressSteps = document.querySelectorAll(".progress-step");
+const prevBtns = document.querySelectorAll(".btn-prev");
+const nextBtns = document.querySelectorAll(".btn-next");
+const progress = document.getElementById("progress");
+const formSteps = document.querySelectorAll(".form-step");
+const progressSteps = document.querySelectorAll(".progress-step");
 
-// // page connexion
-// document.addEventListener("DOMContentLoaded", function () {
-//   if (document.querySelector(".popup")) {
-//     const inputs = document.querySelectorAll("input");
-//     const buttons = document.querySelectorAll(".desactive");
-//     inputs.forEach((input) => {
-//       input.disabled = true;
-//     });
-//     buttons.forEach((button) => {
-//       button.disabled = true;
-//     });
-//   }
-// });
-
-// // les formulaires
-// let formStepsNum = 0;
-
-// nextBtns.forEach((btn) => {
-//   btn.addEventListener("click", () => {
-//     formStepsNum++;
-//     updateFormSteps();
-//     updateProgressbar();
-//   });
-// });
-
-// prevBtns.forEach((btn) => {
-//   btn.addEventListener("click", () => {
-//     formStepsNum--;
-//     updateFormSteps();
-//     updateProgressbar();
-//   });
-// });
-
-// // etape du formulaire
-// function updateFormSteps() {
-//   formSteps.forEach((formStep) => {
-//     formStep.classList.contains("form-step-active") &&
-//       formStep.classList.remove("form-step-active");
-//   });
-
-//   formSteps[formStepsNum].classList.add("form-step-active");
-// }
-
-// function updateProgressbar() {
-//   progressSteps.forEach((progressStep, idx) => {
-//     if (idx < formStepsNum + 1) {
-//       progressStep.classList.add("progress-step-active");
-//     } else {
-//       progressStep.classList.remove("progress-step-active");
-//     }
-//   });
-
-//   const progressActive = document.querySelectorAll(".progress-step-active");
-
-//   progress.style.width =
-//     ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
-// }
-
-// function closeForm() {
-//   const formContainer = document.getElementById("caheaffiche");
-//   let affiche = document.getElementById("affiche");
-//   formContainer.style.display = "none";
-// }
-
-// //  formulaire pour modifier les infos
-// // Récupérer la carte d'emploi et le formulaire
-// const jobCardLink = document.querySelector(".job-card-link");
-// const formContainer = document.getElementById("caheaffiche");
-
-// // Ajouter un gestionnaire d'événements pour le clic sur la carte d'emploi
-// jobCardLink.addEventListener("click", function (event) {
-//   // Empêcher le comportement par défaut du lien
-//   event.preventDefault();
-
-//   // Afficher ou masquer le formulaire en fonction de son état actuel
-//   if (formContainer.style.display === "none") {
-//     formContainer.style.display = "block";
-//   } else {
-//     formContainer.style.display = "none";
-//   }
-// });
-
-// // pour revenir a la page precedent qd on appuie sur l'icone de fermeture
-// function closeFormajout() {
-//   document.getElementById("close-form").addEventListener("click", function () {
-//     window.history.back();
-//   });
-// }
-
+// page connexion
 document.addEventListener("DOMContentLoaded", function () {
-  const prevBtns = document.querySelectorAll(".btn-prev");
-  const nextBtns = document.querySelectorAll(".btn-next");
-  const progress = document.getElementById("progress");
-  const formSteps = document.querySelectorAll(".form-step");
-  const progressSteps = document.querySelectorAll(".progress-step");
-
-  // page connexion
   if (document.querySelector(".popup")) {
     const inputs = document.querySelectorAll("input");
     const buttons = document.querySelectorAll(".desactive");
@@ -111,84 +16,178 @@ document.addEventListener("DOMContentLoaded", function () {
       button.disabled = true;
     });
   }
+});
 
-  // les formulaires
-  let formStepsNum = 0;
+// les formulaires
+let formStepsNum = 0;
 
-  nextBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      formStepsNum++;
-      updateFormSteps();
-      updateProgressbar();
-    });
+nextBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    formStepsNum++;
+    updateFormSteps();
+    updateProgressbar();
+  });
+});
+
+prevBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    formStepsNum--;
+    updateFormSteps();
+    updateProgressbar();
+  });
+});
+
+// etape du formulaire
+function updateFormSteps() {
+  formSteps.forEach((formStep) => {
+    formStep.classList.contains("form-step-active") &&
+      formStep.classList.remove("form-step-active");
   });
 
-  prevBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      formStepsNum--;
-      updateFormSteps();
-      updateProgressbar();
-    });
-  });
+  formSteps[formStepsNum].classList.add("form-step-active");
+}
 
-  // etape du formulaire
-  function updateFormSteps() {
-    formSteps.forEach((formStep) => {
-      formStep.classList.contains("form-step-active") &&
-        formStep.classList.remove("form-step-active");
-    });
-
-    formSteps[formStepsNum].classList.add("form-step-active");
-  }
-
-  function updateProgressbar() {
-    progressSteps.forEach((progressStep, idx) => {
-      if (idx < formStepsNum + 1) {
-        progressStep.classList.add("progress-step-active");
-      } else {
-        progressStep.classList.remove("progress-step-active");
-      }
-    });
-
-    const progressActive = document.querySelectorAll(".progress-step-active");
-
-    progress.style.width =
-      ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
-  }
-
-  function closeForm() {
-    const formContainer = document.getElementById("caheaffiche");
-    let affiche = document.getElementById("affiche");
-    formContainer.style.display = "none";
-  }
-
-  //  formulaire pour modifier les infos
-  // Récupérer la carte d'emploi et le formulaire
-  const jobCardLink = document.querySelector(".job-card-link");
-  const formContainer = document.getElementById("caheaffiche");
-
-  // Ajouter un gestionnaire d'événements pour le clic sur la carte d'emploi
-  jobCardLink.addEventListener("click", function (event) {
-    // Empêcher le comportement par défaut du lien
-    event.preventDefault();
-
-    // Afficher ou masquer le formulaire en fonction de son état actuel
-    if (formContainer.style.display === "none") {
-      formContainer.style.display = "block";
+function updateProgressbar() {
+  progressSteps.forEach((progressStep, idx) => {
+    if (idx < formStepsNum + 1) {
+      progressStep.classList.add("progress-step-active");
     } else {
-      formContainer.style.display = "none";
+      progressStep.classList.remove("progress-step-active");
     }
   });
 
-  // pour revenir a la page precedent qd on appuie sur l'icone de fermeture
-  function closeFormajout() {
-    document
-      .getElementById("close-form")
-      .addEventListener("click", function () {
-        window.history.back();
-      });
+  const progressActive = document.querySelectorAll(".progress-step-active");
+
+  progress.style.width =
+    ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
+}
+
+function closeForm() {
+  const formContainer = document.getElementById("caheaffiche");
+  let affiche = document.getElementById("affiche");
+  formContainer.style.display = "none";
+}
+
+//  formulaire pour modifier les infos
+// Récupérer la carte d'emploi et le formulaire
+const jobCardLink = document.querySelector(".job-card-link");
+const formContainer = document.getElementById("caheaffiche");
+
+// Ajouter un gestionnaire d'événements pour le clic sur la carte d'emploi
+jobCardLink.addEventListener("click", function (event) {
+  // Empêcher le comportement par défaut du lien
+  event.preventDefault();
+
+  // Afficher ou masquer le formulaire en fonction de son état actuel
+  if (formContainer.style.display === "none") {
+    formContainer.style.display = "block";
+  } else {
+    formContainer.style.display = "none";
   }
 });
+
+// pour revenir a la page precedent qd on appuie sur l'icone de fermeture
+function closeFormajout() {
+  document.getElementById("close-form").addEventListener("click", function () {
+    window.history.back();
+  });
+}
+
+// document.addEventListener("DOMContentLoaded", function () {
+//   const prevBtns = document.querySelectorAll(".btn-prev");
+//   const nextBtns = document.querySelectorAll(".btn-next");
+//   const progress = document.getElementById("progress");
+//   const formSteps = document.querySelectorAll(".form-step");
+//   const progressSteps = document.querySelectorAll(".progress-step");
+
+//   // page connexion
+//   if (document.querySelector(".popup")) {
+//     const inputs = document.querySelectorAll("input");
+//     const buttons = document.querySelectorAll(".desactive");
+//     inputs.forEach((input) => {
+//       input.disabled = true;
+//     });
+//     buttons.forEach((button) => {
+//       button.disabled = true;
+//     });
+//   }
+
+//   // les formulaires
+//   let formStepsNum = 0;
+
+//   nextBtns.forEach((btn) => {
+//     btn.addEventListener("click", () => {
+//       formStepsNum++;
+//       updateFormSteps();
+//       updateProgressbar();
+//     });
+//   });
+
+//   prevBtns.forEach((btn) => {
+//     btn.addEventListener("click", () => {
+//       formStepsNum--;
+//       updateFormSteps();
+//       updateProgressbar();
+//     });
+//   });
+
+//   // etape du formulaire
+//   function updateFormSteps() {
+//     formSteps.forEach((formStep) => {
+//       formStep.classList.contains("form-step-active") &&
+//         formStep.classList.remove("form-step-active");
+//     });
+
+//     formSteps[formStepsNum].classList.add("form-step-active");
+//   }
+
+//   function updateProgressbar() {
+//     progressSteps.forEach((progressStep, idx) => {
+//       if (idx < formStepsNum + 1) {
+//         progressStep.classList.add("progress-step-active");
+//       } else {
+//         progressStep.classList.remove("progress-step-active");
+//       }
+//     });
+
+//     const progressActive = document.querySelectorAll(".progress-step-active");
+
+//     progress.style.width =
+//       ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
+//   }
+
+//   function closeForm() {
+//     const formContainer = document.getElementById("caheaffiche");
+//     let affiche = document.getElementById("affiche");
+//     formContainer.style.display = "none";
+//   }
+
+//   //  formulaire pour modifier les infos
+//   // Récupérer la carte d'emploi et le formulaire
+//   const jobCardLink = document.querySelector(".job-card-link");
+//   const formContainer = document.getElementById("caheaffiche");
+
+//   // Ajouter un gestionnaire d'événements pour le clic sur la carte d'emploi
+//   jobCardLink.addEventListener("click", function (event) {
+//     // Empêcher le comportement par défaut du lien
+//     event.preventDefault();
+
+//     // Afficher ou masquer le formulaire en fonction de son état actuel
+//     if (formContainer.style.display === "none") {
+//       formContainer.style.display = "block";
+//     } else {
+//       formContainer.style.display = "none";
+//     }
+//   });
+//   // pour revenir a la page precedent qd on appuie sur l'icone de fermeture
+//   function closeFormajout() {
+//     document
+//       .getElementById("close-form")
+//       .addEventListener("click", function () {
+//         window.history.back();
+//       });
+//   }
+// });
 
 // jQuery section
 $(document).ready(function () {

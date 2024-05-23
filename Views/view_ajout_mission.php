@@ -16,21 +16,23 @@ require 'view_header.php';
                 <h2>Informations mission</h2>
                 <div class="input-group">
                     <label for="sté">Mission</label>
-                    <input type="text" placeholder="Nom de la mission" name='mission' class="input-case" id="sté">
+                    <input type="text" placeholder="Nom de la mission" name='mission' class="input-case" id="sté"
+                        require>
                 </div>
                 <div class="input-group">
                     <label for="sté">Société</label>
-                    <input type="text" placeholder="Société" id='sté' name='client' class="input-case" id="sté">
+                    <input type="text" placeholder="Société" id='sté' name='client' class="input-case" id="sté" require>
                 </div>
                 <div class="input-group">
                     <label for="sté">Composante</label>
-                    <input type="text" placeholder="Composante" name='composante' id='cpt' class="input-case" id="sté">
+                    <input type="text" placeholder="Composante" name='composante' id='cpt' class="input-case" id="sté"
+                        require>
 
                 </div>
                 <div class="form-names ensemble">
                     <div class="input-group">
                         <label for="type-bdl">Type de bon de livraison</label>
-                        <select name="type-bdl">
+                        <select name="type-bdl" require>
                             <option selected>Type de bon de livraison</option>
                             <option value="journee">Journée</option>
                             <option value="demi-journee">Demi-journée</option>
@@ -39,7 +41,7 @@ require 'view_header.php';
                     </div>
                     <div class="input-group date">
                         <label for="date-mission">Date de début</label>
-                        <input type="date" placeholder="Date de début" name="date-mission" class="input-case">
+                        <input type="date" placeholder="Date de début" name="date-mission" class="input-case" require>
                     </div>
                 </div>
                 <div class="">

@@ -26,19 +26,20 @@ require 'view_header.php';
                 <div class="form-names">
                     <div class="input-group">
                         <label for="prenom-interlocuteur">Prénom</label>
-                        <input type="text" placeholder="Prénom" name="prenom-interlocuteur" class="input-case">
+                        <input type="text" placeholder="Prénom" name="prenom-interlocuteur" class="input-case" require>
                     </div>
                 </div>
                 <div class="form-names">
                     <div class="input-group">
                         <label for="nom-interlocuteur">Nom</label>
-                        <input type="text" placeholder="Nom" name="nom-interlocuteur" class="input-case">
+                        <input type="text" placeholder="Nom" name="nom-interlocuteur" class="input-case" require>
                     </div>
                 </div>
                 <div class="form-names">
                     <div class="input-group">
                         <label for="email-interlocuteur">Adresse email</label>
-                        <input type="email" placeholder="Adresse email" name="email-interlocuteur" class="input-case">
+                        <input type="email" placeholder="Adresse email" name="email-interlocuteur" class="input-case"
+                            require>
                     </div>
                 </div>
                 <div class="">
@@ -51,19 +52,20 @@ require 'view_header.php';
                 <div class="form-names">
                     <div class="input-group">
                         <label for="prenom-commercial">Prénom</label>
-                        <input type="text" placeholder="Prénom" name="prenom-commercial" class="input-case">
+                        <input type="text" placeholder="Prénom" name="prenom-commercial" class="input-case" require>
                     </div>
                 </div>
                 <div class="form-names">
                     <div class="input-group">
                         <label for="nom-commercial">Nom</label>
-                        <input type="text" placeholder="Nom" name="nom-commercial" class="input-case">
+                        <input type="text" placeholder="Nom" name="nom-commercial" class="input-case" require>
                     </div>
                 </div>
                 <div class="form-names">
                     <div class="input-group">
                         <label for="email-commercial">Adresse email</label>
-                        <input type="email" placeholder="Adresse email" name="email-commercial" class="input-case">
+                        <input type="email" placeholder="Adresse email" name="email-commercial" class="input-case"
+                            require>
                     </div>
                 </div>
                 <div class="btns-group">
@@ -77,27 +79,27 @@ require 'view_header.php';
 
                     <div class="input-group">
                         <label for="mission">Nom du Composante</label>
-                        <input type="text" placeholder="Nom composante" name='composante' class="input-case">
+                        <input type="text" placeholder="Nom composante" name='composante' class="input-case" require>
                     </div>
                     <div class="input-group">
                         <label for="mission">Nom de la Société</label>
-                        <input type="text" placeholder="Société" name='client' class="input-case">
+                        <input type="text" placeholder="Société" name='client' class="input-case" require>
                     </div>
                 </div>
                 <div class="form-names ensemble">
                     <div class="input-group">
                         <label for="mission">Nom de la mission</label>
-                        <input type="text" placeholder="Nom de la mission" name="mission" class="input-case">
+                        <input type="text" placeholder="Nom de la mission" name="mission" class="input-case" require>
                     </div>
                     <div class="input-group">
                         <label for="composante">Composante</label>
-                        <input type="text" placeholder="Composante" name="composante" class="input-case">
+                        <input type="text" placeholder="Composante" name="composante" class="input-case" require>
                     </div>
                 </div>
                 <div class="form-names ensemble">
                     <div class="input-group">
                         <label for="type-bdl">Type de bon de livraison</label>
-                        <select name="type-bdl">
+                        <select name="type-bdl" require>
                             <option selected>Type de bon de livraison</option>
                             <option value="journee">Journée</option>
                             <option value="demi-journee">Demi-journée</option>
@@ -106,7 +108,7 @@ require 'view_header.php';
                     </div>
                     <div class="input-group date">
                         <label for="date-mission">Date de début</label>
-                        <input type="date" placeholder="Date de début" name="date-mission" class="input-case">
+                        <input type="date" placeholder="Date de début" name="date-mission" class="input-case" require>
                     </div>
                 </div>
                 <div class="btns-group">
@@ -121,28 +123,29 @@ require 'view_header.php';
                     <div class="input-group">
                         <label for="numero-voie">Numéro de voie</label>
                         <input type="number" placeholder="Numéro de voie" name="numero-voie"
-                            class="input-case form-num-voie">
+                            class="input-case form-num-voie" require>
                     </div>
                 </div>
                 <div class="form-names ensemble">
                     <div class="input-group">
                         <label for="type-voie">Type de voie</label>
-                        <input type="text" placeholder="Type de voie" name="type-voie"
-                            class="input-case form-type-voie">
+                        <input type="text" placeholder="Type de voie" name="type-voie" class="input-case form-type-voie"
+                            require>
                     </div>
                     <div class="input-group">
                         <label for="nom-voie">Nom de voie</label>
-                        <input type="text" placeholder="Nom de voie" name="nom-voie" class="input-case form-nom-voie">
+                        <input type="text" placeholder="Nom de voie" name="nom-voie" class="input-case form-nom-voie"
+                            require>
                     </div>
                 </div>
                 <div class="form-names ensemble">
                     <div class="input-group">
                         <label for="cp">Code postal</label>
-                        <input type="number" placeholder="Code postal" name="cp" class="input-case form-cp">
+                        <input type="number" placeholder="Code postal" name="cp" class="input-case form-cp" require>
                     </div>
                     <div class="input-group">
                         <label for="ville">Ville</label>
-                        <input type="text" placeholder="Ville" name="ville" class="input-case form-ville">
+                        <input type="text" placeholder="Ville" name="ville" class="input-case form-ville" require>
                     </div>
                 </div>
                 <div class="btns-group">

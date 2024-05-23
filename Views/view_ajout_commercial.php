@@ -27,15 +27,16 @@ require 'view_header.php';
                 <h2>Informations personnelles</h2>
                 <div class="input-group">
                     <label for="sté">Prénom</label>
-                    <input type="text" placeholder="Prénom" id="sté" name="prenom" class="input-case">
+                    <input type="text" placeholder="Prénom" id="sté" name="prenom" class="input-case" require>
                 </div>
                 <div class="input-group">
                     <label for="sté">Nom</label>
-                    <input type="text" placeholder="Nom" id="sté" name="nom" class="input-case">
+                    <input type="text" placeholder="Nom" id="sté" name="nom" class="input-case" require>
                 </div>
                 <div class="input-group">
                     <label for="sté">Adresse email</label>
-                    <input type="email" placeholder="Adresse email" name='email-commercial' id='sté' class="input-case">
+                    <input type="email" placeholder="Adresse email" name='email-commercial' id='sté' class="input-case"
+                        require>
                 </div>
                 <div class="">
                     <a href="#" class="btn btn-next width-50 ml-auto">Suivant</a>
@@ -47,7 +48,7 @@ require 'view_header.php';
                     <h2>Informations professionnelles</h2>
                     <div class="input-group">
                         <label for="mission">Société</label>
-                        <input type="text" placeholder="Société" name="société" class="input-case">
+                        <input type="text" placeholder="Société" name="société" class="input-case" require>
                     </div>
                     <div class="btns-group">
                         <a href="#" class="btn btn-prev">Précedent</a>

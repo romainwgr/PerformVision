@@ -157,9 +157,9 @@ class Controller_prestataire extends Controller
         $bd = Model::getModel();
 
         // Vérifiez si l'ID du BDL est passé en POST
-        if (isset($_POST['id_bdl'])) {
+        if (isset($_GET['id_bdl'])) {
             // Stockez l'ID du BDL dans la session
-            $_SESSION['id_bdl'] = $_POST['id_bdl'];
+            $_SESSION['id_bdl'] = $_GET['id_bdl'];
         }
 
         // Récupérez l'ID du BDL et du prestataire depuis la session
@@ -258,13 +258,12 @@ class Controller_prestataire extends Controller
                 ];
 
                 // Rendre la vue avec les données
-<<<<<<< HEAD
                 $this->render('afficher_bdl', $data);
-=======
-                $this->render('afficher_bdl', $data); 
->>>>>>> 67f4d445a4f6aec0c8c420395c4a6aa8cd562354
             } else {
-                echo "Aucun BDL trouvé pour cet ID.";
+                echo "<script>alert('Aucun BDL trouvé pour cet ID.'); window.location.href = '?controller=prestataire&action=liste_bdl';</script>";
+                exit;
+
+                // echo "Aucun BDL trouvé pour cet ID.";
             }
         } else {
             echo "ID BDL ou ID Prestataire non défini.";
