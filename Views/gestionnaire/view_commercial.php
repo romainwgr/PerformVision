@@ -11,7 +11,7 @@ require 'Views/view_header.php';
         (mettre une variable $rechercheLink avec le lien de l'action pour rechercher dans le tableau $data pour chaque action qui render liste et dans chaque controller)
     
         -->
-        <form method="post" action="?= $rechercheLink?>">
+        <form method="post" action="<?= $rechercheLink?>">
             <input type="text" id="" name="recherche" placeholder="Rechercher des <?= strtolower($title) ?>..." value="<?php if(isset($val_rech)){echo $val_rech;}?>">
              <button type="submit">Rechercher</button>
         </form> 

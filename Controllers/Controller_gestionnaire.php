@@ -5,13 +5,16 @@ class Controller_gestionnaire extends Controller
     /**
      * @inheritDoc
      */
-
     public function action_default()
     {
-        $this->action_accueil();
+        $this->action_clients();
     }
 
-    public function action_accueil()
+    /**
+     * Renvoie le tableau de bord du gestionnaire avec les variables adéquates
+     * @return void
+     */
+    public function action_dashboard()
     {
         sessionstart(); // Fonction dans Utils pour lancer la session si elle n'est pas lancée 
         if (isset($_SESSION['role'])) {
@@ -21,61 +24,24 @@ class Controller_gestionnaire extends Controller
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $data = [
-                'menu' => $this->action_get_navbar(),
-                'bdlLink' => '?controller=gestionnaire&action=mission_bdl',
-                'buttonLink' => '?controller=gestionnaire&action=ajout_mission_form',
+                'menu' => $this->action_get_navbar(), 
+                'bdlLink' =>  '?controller=gestionnaire&action=mission_bdl', 
+                'buttonLink' => '?controller=gestionnaire&action=ajout_mission_form', 
                 'header' => [
-                    'Société',
-                    'Composante',
+                    'Société', 
+                    'Composante', 
                     'Nom Mission',
-                    'Préstataire assigné',
+                    'Préstataire assigné', 
                     'Bon de livraison'
-                ],
-                'dashboard' => $bd->getDashboardPrestataire($_SESSION['id'])
+                ], 
+                'dashboard' => $bd->getDashboardGestionnaire()
             ];
-            $this->render('accueil', $data);
+            return $this->render('gestionnaire_missions', $data);
+        } else {
+            // TODO Réaliser un render de l'erreur
+            echo 'Une erreur est survenue lors du chargement du tableau de bord';
         }
-        $this->render('accueil');
     }
-
-    public function action_missions()
-    {
-        // Redirection vers l'action dashboard
-        $this->action_dashboard();
-    }
-
-    /**
-     * Renvoie le tableau de bord du gestionnaire avec les variables adéquates
-     * @return void
-     */
-    // public function action_dashboard()
-    // {
-    //     sessionstart(); // Fonction dans Utils pour lancer la session si elle n'est pas lancée 
-    //     if (isset($_SESSION['role'])) {
-    //         unset($_SESSION['role']);
-    //     }
-    //     $_SESSION['role'] = 'gestionnaire';
-    //     if (isset($_SESSION['id'])) {
-    //         $bd = Model::getModel();
-    //         $data = [
-    //             'menu' => $this->action_get_navbar(), 
-    //             'bdlLink' =>  '?controller=gestionnaire&action=mission_bdl', 
-    //             'buttonLink' => '?controller=gestionnaire&action=ajout_mission_form', 
-    //             'header' => [
-    //                 'Société', 
-    //                 'Composante', 
-    //                 'Nom Mission',
-    //                 'Préstataire assigné', 
-    //                 'Bon de livraison'
-    //             ], 
-    //             'dashboard' => $bd->getDashboardGestionnaire()
-    //         ];
-    //         return $this->render('gestionnaire_missions', $data);
-    //     } else {
-    //         // TODO Réaliser un render de l'erreur
-    //         echo 'Une erreur est survenue lors du chargement du tableau de bord';
-    //     }
-    // }
 
     /**
      * Action qui retourne les éléments du menu pour le gestionnaire
@@ -83,15 +49,13 @@ class Controller_gestionnaire extends Controller
      */
     public function action_get_navbar()
     {
-        return [
-            ['link' => '?controller=gestionnaire&action=clients', 'name' => 'Société'],
+        return [['link' => '?controller=gestionnaire&action=clients', 'name' => 'Société'],
             // ['link' => '?controller=gestionnaire&action=composantes', 'name' => 'Composantes'],
             // FIXME action_missions pas défini c'est surement mission_bdl
-            ['link' => '?controller=gestionnaire&action=dashboard', 'name' => 'Composantes'],
+            ['link' => '?controller=gestionnaire&action=composantes', 'name' => 'Composantes'],
             // ['link' => '?controller=gestionnaire&action=mission_bdl', 'name' => 'Missions'],
             ['link' => '?controller=gestionnaire&action=prestataires', 'name' => 'Prestataires'],
-            ['link' => '?controller=gestionnaire&action=commerciaux', 'name' => 'Commerciaux']
-        ];
+            ['link' => '?controller=gestionnaire&action=commerciaux', 'name' => 'Commerciaux']];
     }
 
     /**
@@ -158,7 +122,7 @@ class Controller_gestionnaire extends Controller
         if (isset($_GET['id'])) {
             $bd = Model::getModel();
             $data = [
-                'person' => $bd->getInfosPersonne(e($_GET['id'])),
+                'person' => $bd->getInfosPersonne(e($_GET['id'])), 
                 'menu' => $this->action_get_navbar()
             ];
             $this->render("infos_personne", $data);
@@ -166,26 +130,61 @@ class Controller_gestionnaire extends Controller
     }
 
     /**
-     * Renvoie la liste de toutes les composantes
+     * Renvoie la liste de toutes les clients avec leurs différentes composantes et les prestataires assigné avec la possibilité d'ajouter des prestataires
      * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
      * @return void
      */
-    public function action_composantes()
-    {
-        sessionstart();
+    public function action_composantes() {
+        session_start();
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
+    
+            // Récupérer tous les clients
+            $clients = $bd->getAllClients();
+    
+            // Organiser les données hiérarchiquement
+            $clientsData = [];
+            foreach ($clients as $client) {
+                $clientId = $client['id_client'];
+                $composantes = $bd->getComposantesSociete($clientId); // GetComposanteByClientId
+    
+                // Vérifier que $composantes est un tableau
+                if (!is_array($composantes)) {
+                    $composantes = [];
+                }
+    
+                foreach ($composantes as &$composante) {
+                    $composanteId = $composante['id_composante'];
+                    $prestataires = $bd->getPrestatairesComposante($composanteId); // GetPrestataireByIdComposante
+    
+                    // Vérifier que $prestataires est un tableau
+                    if (!is_array($prestataires)) {
+                        $prestataires = [];
+                    }
+    
+                    $composante['prestataires'] = $prestataires;
+                }
+    
+                // Assurer que 'composantes' est toujours un tableau
+                $client['composantes'] = $composantes;
+                $clientsData[] = $client;
+            }
+    
+            // Préparer les données pour la vue
             $data = [
                 'title' => 'Composantes',
-                'person' => $bd->getAllComposantes(),
+                'person' => $clientsData,
                 'buttonLink' => '?controller=gestionnaire&action=ajout_composante_form',
-                'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=Composantes',
+                'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=composante',
                 'cardLink' => '?controller=gestionnaire&action=infos_composante',
                 'menu' => $this->action_get_navbar()
             ];
-            $this->render("liste", $data);
+    
+            // Rendre la vue avec les données
+            $this->render("composante", $data, 'gestionnaire');
         }
     }
+    
 
     /**
      * Renvoie la liste de tous les clients
@@ -198,14 +197,14 @@ class Controller_gestionnaire extends Controller
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $data = [
-                'title' => 'Société',
-                'buttonLink' => '?controller=gestionnaire&action=ajout_client_form',
-                'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=client',
-                'cardLink' => '?controller=gestionnaire&action=infos_client',
-                'person' => $bd->getAllClients(),
+                'title' => 'Société', 
+                'buttonLink' => '?controller=gestionnaire&action=ajout_client_form', 
+                'rechercheLink'=> '?controller=gestionnaire&action=rechercher&role=client',
+                'cardLink' =>  '?controller=gestionnaire&action=infos_client', 
+                'person' => $bd->getAllClients(), 
                 'menu' => $this->action_get_navbar()
             ];
-            $this->render("client", $data, 'gestionnaire');
+            $this->render("client", $data,'gestionnaire');
         }
     }
 
@@ -221,15 +220,15 @@ class Controller_gestionnaire extends Controller
             $bd = Model::getModel();
 
             $data = [
-                'title' => 'Prestataires',
-                'cardLink' => "?controller=gestionnaire&action=infos_personne",
-                "buttonLink" => '?controller=gestionnaire&action=ajout_prestataire_form',
-                'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=prestataire',
-                "person" => $bd->getAllPrestataires(),
+                'title' => 'Prestataires', 
+                'cardLink' => "?controller=gestionnaire&action=infos_personne", 
+                "buttonLink" =>  '?controller=gestionnaire&action=ajout_prestataire_form',
+                'rechercheLink'=> '?controller=gestionnaire&action=rechercher&role=prestataire',
+                "person" => $bd->getAllPrestataires(), 
                 'menu' => $this->action_get_navbar()
             ];
             // pas liste mais prestataire
-            $this->render("prestataire", $data, 'gestionnaire');
+            $this->render("prestataire", $data,'gestionnaire');
         }
     }
 
@@ -238,22 +237,22 @@ class Controller_gestionnaire extends Controller
      * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
      * @return void
      */
-
+    
     public function action_commerciaux()
     {
         sessionstart();
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $data = [
-                'title' => 'Commerciaux',
-                'cardLink' => "?controller=gestionnaire&action=infos_personne",
-                'buttonLink' => '?controller=gestionnaire&action=ajout_commercial_form',
-                'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=commercial',
+                'title' => 'Commerciaux', 
+                'cardLink' => "?controller=gestionnaire&action=infos_personne", 
+                'buttonLink' => '?controller=gestionnaire&action=ajout_commercial_form', 
+                'rechercheLink'=> '?controller=gestionnaire&action=rechercher&role=commercial',
 
-                "person" => $bd->getAllCommerciaux(),
+                "person" => $bd->getAllCommerciaux(), 
                 'menu' => $this->action_get_navbar()
             ];
-            $this->render("commercial", $data, 'gestionnaire');
+            $this->render("commercial", $data,'gestionnaire');
         }
     }
 
@@ -262,15 +261,14 @@ class Controller_gestionnaire extends Controller
      * @return void
      */
     // TODO je ne trouve pas le render de cette action (A supprimer?)
-    public function action_mission_bdl()
-    {
+    public function action_mission_bdl(){
         $bd = Model::getModel();
         sessionstart();
-        if (isset($_GET['id']) && isset($_GET['id-prestataire'])) {
+        if(isset($_GET['id']) && isset($_GET['id-prestataire'])){
             $data = [
-                'title' => 'Bons de livraison',
-                'cardLink' => '?controller=gestionnaire&action=consulter_bdl',
-                'menu' => $this->action_get_navbar(),
+                'title' => 'Bons de livraison', 
+                'cardLink' => '?controller=gestionnaire&action=consulter_bdl', 
+                'menu' => $this->action_get_navbar(), 
                 'person' => $bd->getBdlsOfPrestataireByIdMission(e($_GET['id']), e($_GET['id-prestataire']))
             ];
             $this->render('liste', $data);
@@ -308,7 +306,7 @@ class Controller_gestionnaire extends Controller
         $data = [
             'menu' => $this->action_get_navbar()
         ];
-        $this->render('ajout_interlocuteur', $data, 'Ajouts');
+        $this->render('ajout_interlocuteur', $data,'Ajouts');
     }
 
     /**
@@ -321,7 +319,7 @@ class Controller_gestionnaire extends Controller
         $data = [
             'menu' => $this->action_get_navbar()
         ];
-        $this->render('ajout_composante', $data, 'gestionnaire');
+        $this->render('ajout_composante', $data,'gestionnaire');
     }
 
     /**
@@ -334,7 +332,7 @@ class Controller_gestionnaire extends Controller
         $data = [
             'menu' => $this->action_get_navbar()
         ];
-        $this->render('ajout_prestataire', $data, 'gestionnaire');
+        $this->render('ajout_prestataire', $data,'gestionnaire');
     }
 
     /**
@@ -347,7 +345,7 @@ class Controller_gestionnaire extends Controller
         $data = [
             'menu' => $this->action_get_navbar()
         ];
-        $this->render('ajout_mission', $data, 'gestionnaire');
+        $this->render('ajout_mission', $data,'gestionnaire');
     }
 
     /**
@@ -360,7 +358,7 @@ class Controller_gestionnaire extends Controller
         $data = [
             'menu' => $this->action_get_navbar()
         ];
-        $this->render('ajout_client', $data, 'gestionnaire');
+        $this->render('ajout_client', $data,'gestionnaire');
     }
 
     /**
@@ -373,7 +371,7 @@ class Controller_gestionnaire extends Controller
         $data = [
             'menu' => $this->action_get_navbar()
         ];
-        $this->render('ajout_commercial', $data, 'gestionnaire');
+        $this->render('ajout_commercial', $data,'gestionnaire');
     }
 
     /**
@@ -430,11 +428,10 @@ class Controller_gestionnaire extends Controller
     //     }
     //     $this->action_ajout_client_form();
     // }
-    public function action_is_client()
-    {
+    public function action_is_client() {
         session_start();
         $bd = Model::getModel();
-
+        
         if (isset($_POST['client'], $_POST['tel'])) {
             if (!$bd->checkSocieteExiste($_POST['client'])) {
                 // $bd->addClient($_POST['client'], $_POST['tel']);
@@ -449,12 +446,11 @@ class Controller_gestionnaire extends Controller
         }
         echo json_encode($response);
     }
-
-    public function action_is_composante()
-    {
+    
+    public function action_is_composante(){
 
     }
-
+    
 
     /**
      * Vérifie si la personne existe et la créée si ce n'est pas le cas
@@ -488,21 +484,20 @@ class Controller_gestionnaire extends Controller
             isset($_POST['ville']) &&
             !$bd->checkComposanteExiste($_POST['composante'], $_POST['client'])
         ) {
-            $bd->addComposante(
-                $_POST['type-voie'],
-                $_POST['cp'],
-                $_POST['numero-voie'],
-                $_POST['nom-voie'],
-                $_POST['client'],
-                $_POST['composante']
-            );
+            $bd->addComposante($_POST['type-voie'],
+            $_POST['cp'],
+            $_POST['numero-voie'],
+            $_POST['nom-voie'],
+            $_POST['client'],
+            $_POST['composante']);
             $this->action_ajout_interlocuteur_dans_composante();
             $this->action_ajout_commercial_dans_composante();
             $this->action_ajout_mission();
         }
-        if (isset($_POST['tel'])) {
+        if(isset($_POST['tel'])){
             $this->action_ajout_client_form();
-        } else {
+        }
+        else{
             $this->action_ajout_composante_form();
         }
     }
@@ -513,36 +508,33 @@ class Controller_gestionnaire extends Controller
      */
     public function action_ajout_mission()
     {
-
+        
         $bd = Model::getModel();
         if (
             !$bd->checkMissionExiste(e($_POST['mission']), e($_POST['composante']))
         ) {
-            $bd->addMission(
-                e($_POST['type-bdl']),
-                e($_POST['mission']),
-                e($_POST['date-mission']),
-                e($_POST['composante']),
-                e($_POST['client'])
-            );
+            $bd->addMission(e($_POST['type-bdl']),
+            e($_POST['mission']),
+            e($_POST['date-mission']),
+            e($_POST['composante']),
+            e($_POST['client']));
 
-
-        }
+            
     }
-
+        }
+        
 
     /**
      * Vérifie d'avoir toutes les informations d'un prestataire pour ensuite créer la personne et l'ajouter en tant que prestataire
      * @return void
      */
-    public function action_ajout_prestataire()
-    {
+    public function action_ajout_prestataire(){
         $bd = Model::getModel();
-        if (
+        if(
             isset($_POST['nom']) &&
             isset($_POST['prenom']) &&
             isset($_POST['email-prestataire'])
-        ) {
+        ){
             $this->action_ajout_personne(e($_POST['nom']), e($_POST['prenom']), e($_POST['email-prestataire']));
             $bd->addPrestataire(e($_POST['email-prestataire']));
         }
@@ -570,9 +562,9 @@ class Controller_gestionnaire extends Controller
         }
         if (
             isset($_GET['id-client']) &&
-            isset($_POST['email-interlocuteur']) &&
-            isset($_POST['nom-interlocuteur']) &&
-            isset($_POST['prenom-interlocuteur']) &&
+            isset($_POST['email-interlocuteur']) && 
+            isset($_POST['nom-interlocuteur']) && 
+            isset($_POST['prenom-interlocuteur']) && 
             isset($_POST['composante'])
         ) {
             if (!$bd->checkInterlocuteurExiste(e($_POST['email-interlocuteur']))) {
@@ -582,7 +574,7 @@ class Controller_gestionnaire extends Controller
             $bd->assignerInterlocuteurComposanteByIdClient(e($_GET['id-client']), e($_POST['email-interlocuteur']), e($_POST['composante']));
             $this->action_clients();
         }
-        if (isset($_POST['client']) && isset($_POST['composante'])) {
+        if (isset($_POST['client']) && isset($_POST['composante'])){
             $id = $bd->getIdComposante(e($_POST['composante']), e($_POST['client']));
             $bd->assignerInterlocuteurComposanteByIdComposante($id['id_composante'], e($_POST['email-interlocuteur']));
         }
@@ -596,9 +588,9 @@ class Controller_gestionnaire extends Controller
     {
         $bd = Model::getModel();
         if (
-            isset($_POST['mission']) &&
-            isset($_POST['email-prestataire']) &&
-            $_GET['id'] &&
+            isset($_POST['mission']) && 
+            isset($_POST['email-prestataire']) && 
+            $_GET['id'] && 
             $bd->checkPrestataireExiste(e($_POST['email-prestataire']))
         ) {
             $bd->assignerPrestataire(e($_POST['email-prestataire']), e($_POST['mission']), e($_GET['id']));
@@ -614,8 +606,8 @@ class Controller_gestionnaire extends Controller
     {
         $bd = Model::getModel();
         if (
-            isset($_POST['composante']) &&
-            isset($_POST['email-commercial']) &&
+            isset($_POST['composante']) && 
+            isset($_POST['email-commercial']) && 
             isset($_POST['client'])
         ) {
             $this->action_ajout_commercial();
@@ -642,7 +634,7 @@ class Controller_gestionnaire extends Controller
                 'prestataires' => $bd->getPrestatairesComposante(e($_GET['id'])),
                 'commerciaux' => $bd->getCommerciauxComposante(e($_GET['id'])),
                 'interlocuteurs' => $bd->getInterlocuteursComposante(e($_GET['id'])),
-                'bdl' => $bd->getBdlComposante(e($_GET['id'])),
+                'bdl' =>  $bd->getBdlComposante(e($_GET['id'])),
                 'cardLink' => '?controller=gestionnaire',
                 'menu' => $this->action_get_navbar()
             ];
@@ -673,25 +665,24 @@ class Controller_gestionnaire extends Controller
      * Vérifie qu'il existe dans l'url l'id qui fait référence au bon de livraison et renvoie la vue qui permet de consulter le bon de livraison
      * @return void
      */
-    public function action_consulter_bdl()
-    {
+    public function action_consulter_bdl(){
         $bd = Model::getModel();
         sessionstart();
         if (isset($_GET['id'])) {
             $typeBdl = $bd->getBdlTypeAndMonth(e($_GET['id']));
-            if ($typeBdl['type_bdl'] == 'Heure') {
+            if($typeBdl['type_bdl'] == 'Heure'){
                 $activites = $bd->getAllNbHeureActivite(e($_GET['id']));
             }
-            if ($typeBdl['type_bdl'] == 'Demi-journée') {
+            if($typeBdl['type_bdl'] == 'Demi-journée'){
                 $activites = $bd->getAllDemiJourActivite(e($_GET['id']));
             }
-            if ($typeBdl['type_bdl'] == 'Journée') {
+            if($typeBdl['type_bdl'] == 'Journée'){
                 $activites = $bd->getAllJourActivite(e($_GET['id']));
             }
 
             $data = [
-                'menu' => $this->action_get_navbar(),
-                'bdl' => $typeBdl,
+                'menu' => $this->action_get_navbar(), 
+                'bdl' => $typeBdl, 
                 'activites' => $activites
             ];
             $this->render("consulte_bdl", $data);
@@ -706,92 +697,113 @@ class Controller_gestionnaire extends Controller
      * Recherche un prestataire selon l'entrée de l'utilisateur dans la barre de recherche
      * @return void
      */
-    public function action_rechercher()
-    {
+    public function action_rechercher(){
         $m = Model::getModel();
         session_start();
-        if (isset($_GET['role'], $_POST['recherche'])) {
+        if(isset($_GET['role'],$_POST['recherche']) ){
+            $roles=['composante','client','prestataire','commercial'];
+            if(in_array($_GET['role'],$roles)){
 
-            $recherche = '';
-            $role = ucfirst($_GET['role']);
-            $fonction_recherche = "recherche{$role}";
-            $fonction_recuperation = "get{$role}ByIds";
+                $recherche = '';
+                $role= ucfirst($_GET['role']);
+                $fonction_recherche = "recherche{$role}";
+                $fonction_recuperation = "get{$role}ByIds";
 
-            $recherche = ucfirst(strtolower($_POST['recherche']));
-            $resultat = $m->$fonction_recherche($recherche);
-            $ids = array_column($resultat, 'id_personne');
-
-            $users = $m->$fonction_recuperation($ids);
-
-            $data = [
-                "title" => ucfirst($_GET['role']),
-                'cardLink' => "?controller=gestionnaire&action=infos_personne",
-                "buttonLink" => '?controller=gestionnaire&action=ajout_' . $_GET['role'] . '_form',
-                'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=' . $_GET['role'],
-                "person" => $users,
-                "val_rech" => $recherche,
-                'menu' => $this->action_get_navbar()
-            ];
-
-            $this->render($_GET['role'], $data, 'gestionnaire');
-        } else {
-            $this->render('message', [
-                'title' => 'Erreur de recherche',
-                'message' => 'EVITE DE MODIFIER L\'URL'
+                $recherche = ucfirst(strtolower($_POST['recherche']));
+                $resultat = $m->$fonction_recherche($recherche);
+                $ids = array_column($resultat, 'id_personne');
+        
+                $users = $m->$fonction_recuperation($ids);
+                if($_GET['role'] == 'composante'){
+                    // TODO faire le render de la composante
+                }
+                else if($_GET['role'] == 'client'){
+                    // TODO faire le render du client
+                }
+                else{
+                    $data = [
+                        "title" => ucfirst($_GET['role']),
+                        'cardLink' => "?controller=gestionnaire&action=infos_personne", 
+                        "buttonLink" => '?controller=gestionnaire&action=ajout_'. $_GET['role'] .'_form',
+                        'rechercheLink'=> '?controller=gestionnaire&action=rechercher&role='. $_GET['role'] , 
+                        "person" => $users,  
+                        "val_rech" => $recherche,
+                        'menu' => $this->action_get_navbar()
+                    ];
+                
+                    $this->render($_GET['role'], $data,'gestionnaire');
+                }
+                
+            }
+            else{
+                $this->render('message',[
+                    'title'=> 'Erreur de recherche',
+                    'message'=> 'Ne modifiez pas l\'url'
+                ]);
+            }
+        }
+        else{
+            $this->render('message',[
+                'title'=> 'Erreur de recherche',
+                'message'=> 'EVITE DE MODIFIER L\'URL'
             ]);
         }
-
+        
     }
+    // TODO Supprimer
     public function action_recherche()
     {
         $m = Model::getModel();
         session_start();
-        if (isset($_GET['role'], $_POST['recherche'])) {
+        if(isset($_GET['role'],$_POST['recherche']) ){
 
-            $roles = ['client', 'prestataire', 'commercial'];
+            $roles=['composantes','client','prestataire','commercial'];
 
-            if (in_array($_GET['role'], $roles)) {
+            if(in_array($_GET['role'],$roles)){
 
                 $recherche = '';
-
+            
                 $recherche = ucfirst(strtolower($_POST['recherche']));
-                $resultat = $m->recherche($recherche, $_GET['role']);
-                if ($_GET['role'] == 'client') {
+                $resultat = $m->rechercheGestionnaire($recherche,$_GET['role']);
+                if($_GET['role']== 'client'){
                     $ids = array_column($resultat, 'id_client');
-
-                } else {
-                    $ids = array_column($resultat, 'id_personne');
-
+    
                 }
-
+                else{
+                    $ids = array_column($resultat, 'id_personne');
+    
+                }
+        
                 $users = $m->recuperationRecherche($ids);
-
+              
                 $data = [
                     "title" => ucfirst($_GET['role']),
-                    'cardLink' => "?controller=gestionnaire&action=infos_personne",
-                    "buttonLink" => '?controller=gestionnaire&action=ajout_' . $_GET['role'] . '_form',
-                    'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=' . $_GET['role'],
-                    "person" => $users,
+                    'cardLink' => "?controller=gestionnaire&action=infos_personne", 
+                    "buttonLink" => '?controller=gestionnaire&action=ajout_'. $_GET['role'] .'_form',
+                    'rechercheLink'=> '?controller=gestionnaire&action=rechercher&role='. $_GET['role'] , 
+                    "person" => $users,  
                     "val_rech" => $recherche,
                     'menu' => $this->action_get_navbar()
                 ];
-
-                $this->render($_GET['role'], $data, 'gestionnaire');
-            } else {
-                $this->render('message', [
-                    'title' => 'Erreur de recherche',
-                    'message' => 'Ne modifiez pas l\'url'
+            
+                $this->render($_GET['role'], $data,'gestionnaire');
+            }
+            else{
+                $this->render('message',[
+                    'title'=> 'Erreur de recherche',
+                    'message'=> 'Ne modifiez pas l\'url'
                 ]);
             }
-
-        } else {
-            $this->render('message', [
-                'title' => 'Erreur de recherche',
-                'message' => 'Ne modifiez pas l\'url'
+            
+        }
+        else{
+            $this->render('message',[
+                'title'=> 'Erreur de recherche',
+                'message'=> 'Ne modifiez pas l\'url'
             ]);
         }
     }
-
+    
 }
 
 ?>

@@ -47,34 +47,34 @@ class Controller_prestataire extends Controller
     /**
      * Renvoie le tableau de bord du prestataire avec les variables adéquates
      * @return void
-    //  */
-    // public function action_dashboard()
-    // {
-    //     sessionstart();
-    //     if (isset($_SESSION['role'])) {
-    //         unset($_SESSION['role']);
-    //     }
-    //     $_SESSION['role'] = 'prestataire';
+     */
+    public function action_dashboard()
+    {
+        sessionstart();
+        if (isset($_SESSION['role'])) {
+            unset($_SESSION['role']);
+        }
+        $_SESSION['role'] = 'prestataire';
 
-    //     if (isset($_SESSION['id'])) {
-    //         $bd = Model::getModel();
-    //         $data = [
-    //             'menu' => $this->action_get_navbar(),
-    //             'bdlLink' => '?controller=prestataire&action=mission_bdl',
-    //             'header' => [
-    //                 'Société',
-    //                 'Composante',
-    //                 'Nom Mission',
-    //                 'Bon de livraison'
-    //             ],
-    //             'dashboard' => $bd->getDashboardPrestataire($_SESSION['id'])
-    //         ];
-    //         return $this->render('prestataire_missions', $data);
-    //     } else {
-    //         // TODO Réaliser un render de l'erreur
-    //         echo 'Une erreur est survenue lors du chargement du tableau de bord';
-    //     }
-    // }
+        if (isset($_SESSION['id'])) {
+            $bd = Model::getModel();
+            $data = [
+                'menu' => $this->action_get_navbar(),
+                'bdlLink' => '?controller=prestataire&action=mission_bdl',
+                'header' => [
+                    'Société',
+                    'Composante',
+                    'Nom Mission',
+                    'Bon de livraison'
+                ],
+                'dashboard' => $bd->getDashboardPrestataire($_SESSION['id'])
+            ];
+            return $this->render('prestataire_missions', $data);
+        } else {
+            // TODO Réaliser un render de l'erreur
+            echo 'Une erreur est survenue lors du chargement du tableau de bord';
+        }
+    }
 
 
     /**
