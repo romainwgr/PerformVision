@@ -107,7 +107,7 @@ class Controller_administrateur extends Controller
                 'cardLink' => '?controller=administrateur&action=infos_personne',
                 'buttonLink' => '?controller=administrateur&action=ajout_gestionnaire_form',
                 "person" => $bd->getAllGestionnaires(),
-                'menu' => $this->action_get_navbar()
+                'menu' => $this->action_get_navbar(),
             ];
             $this->render("liste", $data);
         }
@@ -119,9 +119,10 @@ class Controller_administrateur extends Controller
      * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
      * @return void
      */
+
     public function action_clients()
     {
-        sessionstart();
+        session_start(); // Corrige l'erreur de fonction, c'est session_start() et non sessionstart()
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $data = [
@@ -129,11 +130,13 @@ class Controller_administrateur extends Controller
                 'buttonLink' => '?controller=administrateur&action=ajout_client_form',
                 'cardLink' => '?controller=administrateur&action=infos_client',
                 'person' => $bd->getAllClients(),
-                'menu' => $this->action_get_navbar()
+                'menu' => $this->action_get_navbar(),
+                'id' => $_SESSION['id'] ?? null // Ajout de l'ID de session ou null par défaut
             ];
             $this->render("liste", $data);
         }
     }
+
 
     /**
      * Renvoie la liste de tous les prestataires
