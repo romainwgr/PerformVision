@@ -281,7 +281,7 @@ class Controller_administrateur extends Controller
      */
     public function action_infos_personne()
     {
-        sessionstart();
+        session_start();
         if (isset($_GET['id'])) {
             $bd = Model::getModel();
             $data = [
@@ -291,6 +291,8 @@ class Controller_administrateur extends Controller
             $this->render("infos_personne", $data);
         }
     }
+
+
 
     /**
      * Vérifie d'avoir un id dans l'url qui fait référence à la composante et renvoie la vue qui affiche les informations de la composante

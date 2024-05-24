@@ -345,7 +345,7 @@ class Model
     /**
      * Méthode permettant de récupérer la liste des prestataires d'une composante
      * @param $id
-     * @return array|false
+     * @return array|string
      */
     public function getPrestatairesComposante($id)
     {
@@ -360,7 +360,7 @@ class Model
         $req->execute();
         $result = $req->fetchAll(PDO::FETCH_ASSOC);
         if (empty($result)) {
-            return false; // Aucun prestataire trouvé
+            return 'Aucune prestataire trouvée pour cet composante.'; // Aucun prestataire trouvé
         }
         return $result;
     }
@@ -532,9 +532,16 @@ class Model
     {
         // Préparation de la requête SQL
         $req = $this->bd->prepare('
-            SELECT id_composante, nom_composante
-            FROM Composante
-            WHERE id_client = :id;
+            SELECT c.id_composante, c.nom_composante,
+            a.adresse,
+                a.code_postal
+
+            FROM Composante c
+            JOIN 
+                Client cl ON c.id_client = cl.id_client
+            JOIN 
+                Adresse a ON c.id_adresse = a.id_adresse
+            WHERE c.id_client = :id;
         ');
 
         // Liaison du paramètre id pour éviter les injections SQL
@@ -1609,16 +1616,15 @@ class Model
         $req->execute();
         return $req->fetchAll(PDO::FETCH_ASSOC);
     }
-    //Trouver une méthode (mercredi) pour lancer la fonction à partir d'un autre controller, ca doit etre l'id de la personne pour retourner les infos la concernant (commercial, interlocuteur,prestataire)
-    public function recherche($recherche, $role, $id = '')
+    public function rechercheCommercial($recherche)
     {
         $req = $this->bd->prepare("
             SELECT
                 p.id_personne 
             FROM 
                 PERSONNE p
-            JOIN PRESTATAIRE pr ON 
-                p.id_personne = pr.id_personne
+            JOIN Commercial c ON 
+                p.id_personne = c.id_personne
             WHERE 
                 p.nom LIKE :recherche OR p.prenom LIKE :recherche"
         );
@@ -1630,6 +1636,99 @@ class Model
         } else {
             return null; // ou retourner un message d'erreur spécifique ou lever une exception
         }
+    }
+
+
+    public function getCommercialByIds($ids)
+    {
+        $idsString = implode(',', array_map('intval', $ids));
+        if (empty($ids)) {
+            return 'Aucun commercial';
+        }
+
+        $req = $this->bd->prepare("
+        SELECT p.id_personne, p.nom, p.prenom, p.mail, p.telephone
+        FROM Personne p
+        JOIN Commercial c ON p.id_personne = c.id_personne
+            WHERE 
+                p.id_personne IN ($idsString)
+        ");
+
+        $req->execute();
+        return $req->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    // TODO supprimer car sah on a pas le temps j'ai le seum
+    //Trouver une méthode (mercredi) pour lancer la fonction à partir d'un autre controller, ca doit etre l'id de la personne pour retourner les infos la concernant (commercial, interlocuteur,prestataire)
+    public function rechercheGestionnaire($recherche, $role)
+    {
+        $req = $this->bd->prepare("
+            SELECT
+                p.id_personne 
+            FROM 
+                PERSONNE p
+            JOIN " . $role . " r ON 
+                p.id_personne = r.id_personne
+            WHERE 
+                p.nom LIKE :recherche OR p.prenom LIKE :recherche"
+        );
+        // Modification ici: Ajoutez '%' à la fin de la chaîne de recherche pour permettre la recherche de tout texte commençant par 'recherche'
+        $req->bindValue(':recherche', '%' . $recherche . '%', PDO::PARAM_STR);
+        $req->bindValue(':', $role);
+
+        if ($req->execute()) {
+            return $req->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return null; // ou retourner un message d'erreur spécifique ou lever une exception
+        }
+    }
+
+    public function rechercheClient($recherche)
+    {
+        //TODO 
+        $req = $this->bd->prepare("
+            SELECT 
+                c.id_client
+            FROM
+                Client c
+            WHERE c.nom_client LIKE :recherche OR c.prenom_client LIKE :recherche
+        ");
+        $req->bindValue(':recherche', '%' . $recherche . '%', PDO::PARAM_STR);
+
+        if ($req->execute()) {
+            return $req->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return null; // ou retourner un message d'erreur spécifique ou lever une exception
+        }
+    }
+    public function getClientByIds($ids)
+    {
+        // TODO
+        $idsString = implode(',', array_map('intval', $ids));
+        if (empty($ids)) {
+            return 'Aucune société';
+        }
+
+        $req = $this->bd->prepare("
+            SELECT 
+                id_client, nom_client, telephone_client 
+            FROM 
+                Client
+            WHERE 
+                p.id_personne IN ($idsString)
+        ");
+
+        $req->execute();
+        return $req->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function rechercheComposante($recherche, $role)
+    {
+        // TODO
+    }
+    public function getComposanteByIds($ids)
+    {
+        // TODO
     }
 
 }

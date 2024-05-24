@@ -100,19 +100,22 @@ require 'view_header.php';
                         <h2>Bons de livraison</h2>
                         <table>
                             <tr>
-                                <?php foreach ($bdl as $b): ?>
-                                    <td>
-                                        <?php if (isset($b['id_bdl'], $b['nom'], $b['prenom'], $b['mois'])): ?>
+                                <?php if (isset($b['id_bdl'], $b['nom'], $b['prenom'], $b['mois'])): ?>
+                                    <?php foreach ($bdl as $b): ?>
+                                        <td>
                                             <a href="?controller=<?= $_GET['controller'] ?>&action=consulter_bdl&id=<?= $b['id_bdl'] ?>"
                                                 class="block">
                                                 <h3><?= htmlspecialchars($b['nom']) . ' ' . htmlspecialchars($b['prenom']) . '<br>' . htmlspecialchars($b['mois']) ?>
                                                 </h3>
                                             </a>
-                                        <?php else: ?>
-                                            <p>Aucun bons de livraison pour ce composante</p>
-                                        <?php endif; ?>
+
+                                        </td>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <td>
+                                        <p>Aucun bons de livraison pour ce composante</p>
                                     </td>
-                                <?php endforeach; ?>
+                                <?php endif; ?>
                             </tr>
                         </table>
                         <?php if (!str_contains($_GET['controller'], 'commercial')): ?>

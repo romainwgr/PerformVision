@@ -1,8 +1,8 @@
 <!-- Formulaire permettant d'ajouter un nouveau commercial  -->
 
 <?php
-require 'view_begin.php';
-require 'view_header.php';
+require 'Views/view_begin.php';
+require 'Views/view_header.php';
 ?>
 <div class="add-container">
     <div class="form-abs">
@@ -60,5 +60,5 @@ require 'view_header.php';
 </div>
 
 <?php
-require 'view_end.php';
+require 'Views/view_end.php';
 ?>

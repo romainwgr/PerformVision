@@ -46,28 +46,28 @@ class Controller_interlocuteur extends Controller
      * Affiche le tableau de bord de l'interlocuteur client en récupérant les informations grâce à son id
      * @return void
      */
-    // public function action_dashboard()
-    // {
-    //     sessionstart();
-    //     if (isset($_SESSION['id'])) {
-    //         $bd = Model::getModel();
-    //         $data = [
-    //             'header' => [
-    //                 'Nom projet/société', 
-    //                 'Date', 
-    //                 'Prestataire assigné', 
-    //                 'Bon de livraison'
-    //             ], 
-    //             'menu' => $this->action_get_navbar(), 
-    //             'bdlLink' => '?controller=interlocuteur&action=mission_bdl', 
-    //             'dashboard' => $bd->getClientContactDashboardData()
-    //         ];
-    //         return $this->render('interlocuteur', $data);
-    //     } else {
-    //         // TODO Réaliser un render de l'erreur
-    //         echo 'Une erreur est survenue lors du chargement du tableau de bord';
-    //     }
-    // }
+    public function action_dashboard()
+    {
+        sessionstart();
+        if (isset($_SESSION['id'])) {
+            $bd = Model::getModel();
+            $data = [
+                'header' => [
+                    'Nom projet/société',
+                    'Date',
+                    'Prestataire assigné',
+                    'Bon de livraison'
+                ],
+                'menu' => $this->action_get_navbar(),
+                'bdlLink' => '?controller=interlocuteur&action=mission_bdl',
+                'dashboard' => $bd->getClientContactDashboardData()
+            ];
+            return $this->render('interlocuteur', $data);
+        } else {
+            // TODO Réaliser un render de l'erreur
+            echo 'Une erreur est survenue lors du chargement du tableau de bord';
+        }
+    }
 
     /**
      * Action qui retourne les éléments du menu pour l'interlocuteur
