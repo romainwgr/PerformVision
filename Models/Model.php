@@ -1695,22 +1695,14 @@ class Model
                 p.id_personne 
             FROM 
                 PERSONNE p
-<<<<<<< HEAD
             JOIN " . $role . " r ON 
-=======
-            JOIN " . $role ." r ON 
->>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
                 p.id_personne = r.id_personne
             WHERE 
                 p.nom LIKE :recherche OR p.prenom LIKE :recherche"
         );
         // Modification ici: Ajoutez '%' à la fin de la chaîne de recherche pour permettre la recherche de tout texte commençant par 'recherche'
         $req->bindValue(':recherche', '%' . $recherche . '%', PDO::PARAM_STR);
-<<<<<<< HEAD
         $req->bindValue(':', $role);
-=======
-        $req->bindValue(':',$role);
->>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
 
         if ($req->execute()) {
             return $req->fetchAll(PDO::FETCH_ASSOC);

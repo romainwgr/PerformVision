@@ -43,52 +43,6 @@ class Controller_gestionnaire extends Controller
         }
     }
 
-<<<<<<< HEAD
-    public function action_missions()
-    {
-        // Redirection vers l'action dashboard
-        $this->action_dashboard();
-    }
-
-    /**
-     * Renvoie le tableau de bord du gestionnaire avec les variables adéquates
-     * @return void
-     */
-    /**
-     * Renvoie le tableau de bord du gestionnaire avec les variables adéquates
-     * @return void
-     */
-    public function action_dashboard()
-    {
-        sessionstart(); // Fonction dans Utils pour lancer la session si elle n'est pas lancée 
-        if (isset($_SESSION['role'])) {
-            unset($_SESSION['role']);
-        }
-        $_SESSION['role'] = 'gestionnaire';
-        if (isset($_SESSION['id'])) {
-            $bd = Model::getModel();
-            $data = [
-                'menu' => $this->action_get_navbar(),
-                'bdlLink' => '?controller=gestionnaire&action=mission_bdl',
-                'buttonLink' => '?controller=gestionnaire&action=ajout_mission_form',
-                'header' => [
-                    'Société',
-                    'Composante',
-                    'Nom Mission',
-                    'Préstataire assigné',
-                    'Bon de livraison'
-                ],
-                'dashboard' => $bd->getDashboardGestionnaire()
-            ];
-            return $this->render('gestionnaire_missions', $data);
-        } else {
-            // TODO Réaliser un render de l'erreur
-            echo 'Une erreur est survenue lors du chargement du tableau de bord';
-        }
-    }
-
-=======
->>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
     /**
      * Action qui retourne les éléments du menu pour le gestionnaire
      * @return array[]
@@ -180,17 +134,6 @@ class Controller_gestionnaire extends Controller
      * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
      * @return void
      */
-<<<<<<< HEAD
-    public function action_composantes()
-    {
-        session_start();
-        if (isset($_SESSION['id'])) {
-            $bd = Model::getModel();
-
-            // Récupérer tous les clients
-            $clients = $bd->getAllClients();
-
-=======
     public function action_composantes() {
         session_start();
         if (isset($_SESSION['id'])) {
@@ -199,58 +142,34 @@ class Controller_gestionnaire extends Controller
             // Récupérer tous les clients
             $clients = $bd->getAllClients();
     
->>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
             // Organiser les données hiérarchiquement
             $clientsData = [];
             foreach ($clients as $client) {
                 $clientId = $client['id_client'];
                 $composantes = $bd->getComposantesSociete($clientId); // GetComposanteByClientId
-<<<<<<< HEAD
-
-=======
     
->>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
                 // Vérifier que $composantes est un tableau
                 if (!is_array($composantes)) {
                     $composantes = [];
                 }
-<<<<<<< HEAD
-
-                foreach ($composantes as &$composante) {
-                    $composanteId = $composante['id_composante'];
-                    $prestataires = $bd->getPrestatairesComposante($composanteId); // GetPrestataireByIdComposante
-
-=======
     
                 foreach ($composantes as &$composante) {
                     $composanteId = $composante['id_composante'];
                     $prestataires = $bd->getPrestatairesComposante($composanteId); // GetPrestataireByIdComposante
     
->>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
                     // Vérifier que $prestataires est un tableau
                     if (!is_array($prestataires)) {
                         $prestataires = [];
                     }
-<<<<<<< HEAD
-
-                    $composante['prestataires'] = $prestataires;
-                }
-
-=======
     
                     $composante['prestataires'] = $prestataires;
                 }
     
->>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
                 // Assurer que 'composantes' est toujours un tableau
                 $client['composantes'] = $composantes;
                 $clientsData[] = $client;
             }
-<<<<<<< HEAD
-
-=======
     
->>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
             // Préparer les données pour la vue
             $data = [
                 'title' => 'Composantes',
@@ -260,11 +179,7 @@ class Controller_gestionnaire extends Controller
                 'cardLink' => '?controller=gestionnaire&action=infos_composante',
                 'menu' => $this->action_get_navbar()
             ];
-<<<<<<< HEAD
-
-=======
     
->>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
             // Rendre la vue avec les données
             $this->render("composante", $data, 'gestionnaire');
         }
@@ -786,21 +701,12 @@ class Controller_gestionnaire extends Controller
     public function action_rechercher(){
         $m = Model::getModel();
         session_start();
-<<<<<<< HEAD
-        if (isset($_GET['role'], $_POST['recherche'])) {
-            $roles = ['composante', 'client', 'prestataire', 'commercial'];
-            if (in_array($_GET['role'], $roles)) {
-
-                $recherche = '';
-                $role = ucfirst($_GET['role']);
-=======
         if(isset($_GET['role'],$_POST['recherche']) ){
             $roles=['composante','client','prestataire','commercial'];
             if(in_array($_GET['role'],$roles)){
 
                 $recherche = '';
                 $role= ucfirst($_GET['role']);
->>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
 
                 $fonction_recherche = "recherche{$role}";
                 $fonction_recuperation = "get{$role}ByIds";
@@ -813,11 +719,7 @@ class Controller_gestionnaire extends Controller
                 // TODO faire la fonction de recupération pour la composante et la société
                 $users = $m->$fonction_recuperation($ids);
 
-<<<<<<< HEAD
-                if ($_GET['role'] == 'composante') {
-=======
                 if($_GET['role'] == 'composante'){
->>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
 
                     $data = [
                         'title' => ucfirst($_GET['role']),
@@ -828,46 +730,6 @@ class Controller_gestionnaire extends Controller
                         'menu' => $this->action_get_navbar()
                     ];
 
-<<<<<<< HEAD
-                    $this->render($_GET['role'], $data, 'gestionnaire');
-
-                } else if ($_GET['role'] == 'client') {
-
-                    $data = [
-                        'title' => 'Société',
-                        'buttonLink' => '?controller=gestionnaire&action=ajout_client_form',
-                        'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=client',
-                        'cardLink' => '?controller=gestionnaire&action=infos_client',
-                        'person' => $users,
-                        'val_rech' => $recherche,
-                        'menu' => $this->action_get_navbar()
-                    ];
-                    $this->render("client", $data, 'gestionnaire');
-                } else {
-                    $data = [
-                        "title" => ucfirst($_GET['role']),
-                        'cardLink' => "?controller=gestionnaire&action=infos_personne",
-                        "buttonLink" => '?controller=gestionnaire&action=ajout_' . $_GET['role'] . '_form',
-                        'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=' . $_GET['role'],
-                        "person" => $users,
-                        "val_rech" => $recherche,
-                        'menu' => $this->action_get_navbar()
-                    ];
-
-                    $this->render($_GET['role'], $data, 'gestionnaire');
-                }
-
-            } else {
-                $this->render('message', [
-                    'title' => 'Erreur de recherche',
-                    'message' => 'Ne modifiez pas l\'url'
-                ]);
-            }
-        } else {
-            $this->render('message', [
-                'title' => 'Erreur de recherche',
-                'message' => 'EVITE DE MODIFIER L\'URL'
-=======
                     $this->render($_GET['role'],$data,'gestionnaire');
 
                 }
@@ -910,7 +772,6 @@ class Controller_gestionnaire extends Controller
             $this->render('message',[
                 'title'=> 'Erreur de recherche',
                 'message'=> 'EVITE DE MODIFIER L\'URL'
->>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
             ]);
         }
         
@@ -922,24 +783,15 @@ class Controller_gestionnaire extends Controller
         session_start();
         if(isset($_GET['role'],$_POST['recherche']) ){
 
-<<<<<<< HEAD
-            $roles = ['composantes', 'client', 'prestataire', 'commercial'];
-=======
             $roles=['composantes','client','prestataire','commercial'];
->>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
 
             if(in_array($_GET['role'],$roles)){
 
                 $recherche = '';
             
                 $recherche = ucfirst(strtolower($_POST['recherche']));
-<<<<<<< HEAD
-                $resultat = $m->rechercheGestionnaire($recherche, $_GET['role']);
-                if ($_GET['role'] == 'client') {
-=======
                 $resultat = $m->rechercheGestionnaire($recherche,$_GET['role']);
                 if($_GET['role']== 'client'){
->>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
                     $ids = array_column($resultat, 'id_client');
     
                 }
