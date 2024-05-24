@@ -7,13 +7,7 @@ require 'Views/view_header.php';
     <div class="main-body">
         <div class="search_bar">
             <form method="post" action="<?= $rechercheLink ?>" class="search_form">
-<<<<<<< HEAD
-                <input type="text" name="recherche" placeholder="Rechercher des <?= strtolower($title) ?>..." value="<?php if (isset($val_rech)) {
-                      echo htmlspecialchars($val_rech);
-                  } ?>" class="search_input">
-=======
                 <input type="text" name="recherche" placeholder="Rechercher des <?= strtolower($title) ?>..." value="<?php if (isset($val_rech)) { echo htmlspecialchars($val_rech); } ?>" class="search_input">
->>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
                 <button type="submit" class="search_button">
                     <i class="fas fa-search"></i>
                 </button>
