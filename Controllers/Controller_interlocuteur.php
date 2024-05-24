@@ -53,6 +53,7 @@ class Controller_interlocuteur extends Controller
             $bd = Model::getModel();
             $data = [
                 'header' => [
+<<<<<<< HEAD
                     'Nom projet/société',
                     'Date',
                     'Prestataire assigné',
@@ -60,6 +61,15 @@ class Controller_interlocuteur extends Controller
                 ],
                 'menu' => $this->action_get_navbar(),
                 'bdlLink' => '?controller=interlocuteur&action=mission_bdl',
+=======
+                    'Nom projet/société', 
+                    'Date', 
+                    'Prestataire assigné', 
+                    'Bon de livraison'
+                ], 
+                'menu' => $this->action_get_navbar(), 
+                'bdlLink' => '?controller=interlocuteur&action=mission_bdl', 
+>>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
                 'dashboard' => $bd->getClientContactDashboardData()
             ];
             return $this->render('interlocuteur', $data);

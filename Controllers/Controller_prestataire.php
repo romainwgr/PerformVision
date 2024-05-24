@@ -64,6 +64,10 @@ class Controller_prestataire extends Controller
                 'header' => [
                     'Société',
                     'Composante',
+<<<<<<< HEAD
+=======
+                    'Nom Mission',
+>>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
                     'Bon de livraison'
                 ],
                 'dashboard' => $bd->getDashboardPrestataire($_SESSION['id'])
