@@ -13,7 +13,8 @@ Ces différents rôles sont visibles dans la base de données.
 Accès au projet : 
 Ce site web est développé grâce à plusieurs langages : PHP, CSS, HTML, JavaScript et PL/pgSQL. Afin d’accéder à ce site web, vous devez passer par le serveur Pédago Web. 
 [explication du processus pour y accéder]
-Vous arrivez alors sur une page de connexion. Pour vous connecter, vous avez plusieurs comptes de différents rôles disponibles pour l'instant (c’est encore l’ancienne base de donnée donc ceci changera) : 
+Vous arrivez alors sur une page de connexion.
+Pour vous connecter, vous avez plusieurs comptes de différents rôles disponibles pour l'instant (c’est encore l’ancienne base de donnée donc ceci changera) : 
 Prestataire : jean@example.com et mdp1
 Commercial : marie@example.com et mdp2
 Gestionnaire : ic@gmail.com et hihi
