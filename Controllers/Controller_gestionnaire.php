@@ -43,12 +43,6 @@ class Controller_gestionnaire extends Controller
         }
     }
 
-    public function action_missions()
-    {
-        // Redirection vers l'action dashboard
-        $this->action_dashboard();
-    }
-
     /**
      * Action qui retourne les éléments du menu pour le gestionnaire
      * @return array[]
@@ -156,19 +150,21 @@ class Controller_gestionnaire extends Controller
             foreach ($clients as $client) {
                 $clientId = $client['id_client'];
                 $composantes = $bd->getComposantesSociete($clientId); // GetComposanteByClientId
+
                 // Vérifier que $composantes est un tableau
                 if (!is_array($composantes)) {
                     $composantes = [];
                 }
+
                 foreach ($composantes as &$composante) {
                     $composanteId = $composante['id_composante'];
                     $prestataires = $bd->getPrestatairesComposante($composanteId); // GetPrestataireByIdComposante
-
 
                     // Vérifier que $prestataires est un tableau
                     if (!is_array($prestataires)) {
                         $prestataires = [];
                     }
+
                     $composante['prestataires'] = $prestataires;
                 }
 
@@ -176,6 +172,7 @@ class Controller_gestionnaire extends Controller
                 $client['composantes'] = $composantes;
                 $clientsData[] = $client;
             }
+
             // Préparer les données pour la vue
             $data = [
                 'title' => 'Composantes',
@@ -185,11 +182,11 @@ class Controller_gestionnaire extends Controller
                 'cardLink' => '?controller=gestionnaire&action=infos_composante',
                 'menu' => $this->action_get_navbar()
             ];
+
             // Rendre la vue avec les données
             $this->render("composante", $data, 'gestionnaire');
         }
     }
-
 
 
     /**
@@ -224,12 +221,15 @@ class Controller_gestionnaire extends Controller
         sessionstart();
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
-
+            if (isset($_GET['message'])) {
+                $message = "Le prestatataire a été ajouté";
+            }
             $data = [
                 'title' => 'Prestataires',
                 'cardLink' => "?controller=gestionnaire&action=infos_personne",
                 "buttonLink" => '?controller=gestionnaire&action=ajout_prestataire_form',
                 'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=prestataire',
+                'message' => $message ?? null,
                 "person" => $bd->getAllPrestataires(),
                 'menu' => $this->action_get_navbar()
             ];
@@ -249,12 +249,16 @@ class Controller_gestionnaire extends Controller
         sessionstart();
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
+
+            if (isset($_GET['message'])) {
+                $message = "Le commercial a été ajouté";
+            }
             $data = [
                 'title' => 'Commerciaux',
                 'cardLink' => "?controller=gestionnaire&action=infos_personne",
                 'buttonLink' => '?controller=gestionnaire&action=ajout_commercial_form',
                 'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=commercial',
-
+                'message' => $message ?? null,
                 "person" => $bd->getAllCommerciaux(),
                 'menu' => $this->action_get_navbar()
             ];
@@ -388,13 +392,34 @@ class Controller_gestionnaire extends Controller
     public function action_ajout_commercial()
     {
         $bd = Model::getModel();
-        if (
-            isset($_POST['email-commercial']) &&
-            $bd->checkPersonneExiste(e($_POST['email-commercial'])) &&
-            !$bd->checkCommercialExiste(e($_POST['email-commercial']))
-        ) {
-            $bd->addCommercial(e($_POST['email-commercial']));
+
+        if (isset($_POST['prenom'], $_POST['nom'], $_POST['email'], $_POST['tel'])) {
+            $prenom = $_POST['prenom'];
+            $nom = $_POST['nom'];
+            $email = $_POST['email'];
+            $tel = $_POST['tel'];
+            if (!$bd->checkPersonneExiste($email)) {
+                if ($bd->createPersonne($nom, $prenom, $email, genererMdp(), $tel)) {
+                    if ($bd->addCommercial($email)) {
+                        $validation = 'added';
+                        $response = ['success' => true, 'url' => 'index.php?controller=gestionnaire&action=commerciaux&message=' . $validation];
+                    } else {
+                        $response = ['success' => false, 'message' => 'Erreur lors de l\'ajout du commercial.'];
+                    }
+                } else {
+                    $response = ['success' => false, 'message' => "Erreur de création de la personne"];
+                }
+
+            } else {
+                $response = ['success' => false, 'message' => "L'adresse email est déjà utilisé!", 'field' => 'email'];
+            }
+            // Validation et ajout du prestataire
+
+        } else {
+            $response = ['success' => false, 'message' => 'Informations manquantes.'];
         }
+
+        echo json_encode($response);
     }
 
     /**
@@ -543,14 +568,34 @@ class Controller_gestionnaire extends Controller
     public function action_ajout_prestataire()
     {
         $bd = Model::getModel();
-        if (
-            isset($_POST['nom']) &&
-            isset($_POST['prenom']) &&
-            isset($_POST['email-prestataire'])
-        ) {
-            $this->action_ajout_personne(e($_POST['nom']), e($_POST['prenom']), e($_POST['email-prestataire']));
-            $bd->addPrestataire(e($_POST['email-prestataire']));
+
+        if (isset($_POST['prenom'], $_POST['nom'], $_POST['email'], $_POST['tel'])) {
+            $prenom = $_POST['prenom'];
+            $nom = $_POST['nom'];
+            $email = $_POST['email'];
+            $tel = $_POST['tel'];
+            if (!$bd->checkPersonneExiste($email)) {
+                if ($bd->createPersonne($nom, $prenom, $email, genererMdp(), $tel)) {
+                    if ($bd->addPrestataire($email)) {
+                        $validation = 'added';
+                        $response = ['success' => true, 'url' => 'index.php?controller=gestionnaire&action=prestataires&message=' . $validation];
+                    } else {
+                        $response = ['success' => false, 'message' => 'Erreur lors de l\'ajout du prestataire.'];
+                    }
+                } else {
+                    $response = ['success' => false, 'message' => "Erreur de création de la personne"];
+                }
+
+            } else {
+                $response = ['success' => false, 'message' => "L'adresse email est déjà utilisé!", 'field' => 'email'];
+            }
+            // Validation et ajout du prestataire
+
+        } else {
+            $response = ['success' => false, 'message' => 'Informations manquantes.'];
         }
+
+        echo json_encode($response);
     }
 
     /**
@@ -732,8 +777,8 @@ class Controller_gestionnaire extends Controller
                 $ids = array_column($resultat, 'id_personne');
                 // TODO faire la fonction de recupération pour la composante et la société
                 $users = $m->$fonction_recuperation($ids);
-                if ($_GET['role'] == 'composante') {
 
+                if ($_GET['role'] == 'composante') {
 
                     $data = [
                         'title' => ucfirst($_GET['role']),
@@ -743,6 +788,7 @@ class Controller_gestionnaire extends Controller
                         'cardLink' => '?controller=gestionnaire&action=infos_composante',
                         'menu' => $this->action_get_navbar()
                     ];
+
                     $this->render($_GET['role'], $data, 'gestionnaire');
 
                 } else if ($_GET['role'] == 'client') {
@@ -781,7 +827,6 @@ class Controller_gestionnaire extends Controller
             $this->render('message', [
                 'title' => 'Erreur de recherche',
                 'message' => 'EVITE DE MODIFIER L\'URL'
-
             ]);
         }
 
@@ -794,7 +839,6 @@ class Controller_gestionnaire extends Controller
         if (isset($_GET['role'], $_POST['recherche'])) {
 
             $roles = ['composantes', 'client', 'prestataire', 'commercial'];
-
 
             if (in_array($_GET['role'], $roles)) {
 
