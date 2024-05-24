@@ -168,10 +168,9 @@ class Controller_prestataire extends Controller
 
         if ($id_bdl !== null && $id_prestataire !== null) {
             // Récupérez les détails du BDL en utilisant l'ID du prestataire et l'ID du BDL
-            $bdl = $bd->getBdlPrestataireBybdlId($id_prestataire, $id_bdl);
+            $bdl = $bd->getBdlPrestataireBybdlId( $id_bdl);
 
             if (count($bdl) > 0) {
-                $bdl = $bdl[0]; // Récupérez la première (et unique) ligne
 
                 // Inclure la bibliothèque FPDF
                 require_once ('libraries/fpdf/fpdf.php');
@@ -188,7 +187,7 @@ class Controller_prestataire extends Controller
                 // Ajouter un titre
                 $pdf->SetFont('Arial', 'B', 18);
                 $pdf->SetTextColor(0, 51, 102); // Couleur bleue foncée
-                $pdf->Cell(0, 10, 'Détail du BDL', 0, 1, 'C');
+                $pdf->Cell(0, 10, 'DETAIL DU BDL', 0, 1, 'C');
                 $pdf->Ln(10);
 
                 // Ligne séparatrice
@@ -208,26 +207,26 @@ class Controller_prestataire extends Controller
                 $pdf->Cell(0, 10, 'ID BDL : ' . htmlspecialchars($bdl['id_bdl']), 0, 1, 'L', true);
                 $pdf->Ln(5);
 
-                // Nom Client
-                $pdf->SetFont('Arial', 'B', 12);
-                $pdf->SetFillColor(224, 235, 255); // Couleur de fond bleue claire
-                $pdf->Cell(0, 10, 'Nom Client :', 0, 1, 'L', true);
-                $pdf->SetFont('Arial', '', 12);
-                $pdf->SetTextColor(0);
-                $pdf->SetFillColor(255, 255, 255); // Couleur de fond blanche
-                $pdf->MultiCell(0, 10, htmlspecialchars($bdl['nom_client']), 0, 1);
-                $pdf->Ln(5);
+            // Nom Client
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->SetTextColor(0, 51, 102); // Couleur bleue foncée
+            $pdf->Cell(50, 10, 'Nom Client :', 0, 0, 'L', true);
+            $pdf->SetFont('Arial', '', 12);
+            $pdf->SetTextColor(0);
+            $pdf->SetFillColor(255, 255, 255); // Couleur de fond blanche
+            $pdf->MultiCell(0, 10, htmlspecialchars($bdl['nom_client']), 0, 'L');
+            $pdf->Ln(5);
 
-                // Nom Composante
-                $pdf->SetFont('Arial', 'B', 12);
-                $pdf->SetTextColor(0, 51, 102); // Couleur bleue foncée
-                $pdf->SetFillColor(240, 240, 240); // Couleur de fond grise claire
-                $pdf->Cell(0, 10, 'Nom Composante :', 0, 1, 'L', true);
-                $pdf->SetFont('Arial', '', 12);
-                $pdf->SetTextColor(0);
-                $pdf->SetFillColor(255, 255, 255); // Couleur de fond blanche
-                $pdf->MultiCell(0, 10, htmlspecialchars($bdl['nom_composante']), 0, 1);
-                $pdf->Ln(5);
+            // Nom Composante
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->SetTextColor(0, 51, 102); // Couleur bleue foncée
+            $pdf->Cell(50, 10, 'Nom Composante :', 0, 0, 'L', true);
+            $pdf->SetFont('Arial', '', 12);
+            $pdf->SetTextColor(0);
+            $pdf->SetFillColor(255, 255, 255); // Couleur de fond blanche
+            $pdf->MultiCell(0, 10, htmlspecialchars($bdl['nom_composante']), 0, 'L');
+            $pdf->Ln(5);
+
 
                 // Mois
                 $pdf->SetFont('Arial', 'B', 12);
@@ -245,6 +244,27 @@ class Controller_prestataire extends Controller
                 $pdf->SetDrawColor(0, 51, 102);
                 $pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY());
                 $pdf->Ln(10);
+                // Récupérer les heures du BDL
+                $hours = $bd->getHoursByIdBDL($id_bdl);
+
+                // Afficher les heures dans un tableau dans le PDF
+                $pdf->SetFont('Arial', 'B', 12);
+                $pdf->SetTextColor(0, 51, 102);
+                $pdf->Cell(0, 10, 'Heures travaillées :', 0, 1, 'L');
+                $pdf->Ln(5);
+
+                $pdf->SetFont('Arial', '', 12);
+                $pdf->SetTextColor(0);
+                $pdf->SetFillColor(224, 235, 255); // Couleur de fond bleue claire
+                $pdf->Cell(30, 10, 'Jour', 1, 0, 'C', true);
+                $pdf->Cell(40, 10, 'Nombre d\'heures', 1, 1, 'C', true);
+
+                foreach ($hours as $hour) {
+                    $pdf->Cell(30, 10, $hour['jour'], 1, 0, 'C');
+                    $pdf->Cell(40, 10, $hour['hours_worked'], 1, 1, 'C');
+                }
+                $pdf->Ln(10);
+
 
                 // Sauvegarder le PDF dans une variable
                 $pdf_content = $pdf->Output('', 'S'); // Retourne le contenu du PDF en tant que chaîne
@@ -258,7 +278,7 @@ class Controller_prestataire extends Controller
                 ];
 
                 // Rendre la vue avec les données
-                $this->render('afficher_bdl', $data);
+                $this->render('afficher_bdl', $data); 
             } else {
                 echo "<script>alert('Aucun BDL trouvé pour cet ID.'); window.location.href = '?controller=prestataire&action=liste_bdl';</script>";
                 exit;
@@ -405,6 +425,102 @@ class Controller_prestataire extends Controller
             'menu' => $this->action_get_navbar()
         ];
         $this->render('ajout_bdl', $data);
+
+    }
+    public function action_afficherFormulaire() {
+        session_start();
+        $bd = Model::getModel();
+        
+        // Vérifiez si l'ID du BDL est passé en GET
+        if (isset($_GET['id_bdl'])) {
+            // Récupérez l'ID du BDL
+            $id_bdl = $_GET['id_bdl'];
+            
+            // Utilisez l'ID du BDL pour récupérer les informations de la base de données
+            $bdl_info = $bd->getBdlPrestataireBybdlId($id_bdl); // Remplacez cette fonction par celle qui récupère les informations du BDL
+            
+            // Vérifiez si des informations ont été récupérées
+            if ($bdl_info) {
+                // Si oui, passez les informations à la vue
+                $data = [
+                    'client' => $bdl_info['nom_client'],
+                    'composante' => $bdl_info['nom_composante'],
+                    'mois' => $bdl_info['mois']
+                ];
+                
+                // Rendez la vue avec les données
+                $this->render('form_bdl', $data);
+            } else {
+                // Si aucune information n'a été trouvée pour l'ID du BDL, affichez un message d'erreur ou redirigez l'utilisateur
+                echo "Aucune information trouvée pour l'ID du BDL.";
+            }
+        } else {
+            // Si l'ID du BDL n'est pas passé en GET, affichez un message d'erreur ou redirigez l'utilisateur
+            echo "ID du BDL non spécifié.";
+        }
+    }
+    
+
+    public function action_addBdl(){
+        session_start();
+        $bd = Model::getModel();
+        $id_bdl = $_SESSION['id_bdl']; // Utilisez $_POST['key'] au lieu de $_POST('key')
+        $jour = $_POST['nombre_jour'];
+        $heures = $_POST['nombre_heures'];
+        
+    
+        $resultat = $bd->insertDailyHours($id_bdl, $jour, $heures); // Corrigez l'appel de méthode
+        if ($resultat == true ){
+            $message = "l'Ajout a été effectuer avec succès";
+        }
+        else {
+            $message = "Une erreur est survenue lors de l'ajout";
+        }
+            // Rétablir les données pour remplir à nouveau le formulaire
+        $client = $_POST['client'];
+        $composante = $_POST['composante'];
+        $mois = $_POST['mois'];
+
+        $this->render('form_bdl', ['message' => $message, 'client' => $client, 'composante' => $composante, 'mois' => $mois]);
+
+
+    }
+
+    public function action_addHalfDay() {
+        session_start();
+        $bd = Model::getModel();
+        $id_bdl = $_SESSION['id_bdl'];
+        $jour = $_POST['nombre_jour'];
+        $demi_journees = ($_POST['nombre_demi_journees'] * 4 );
+    
+        $resultat = $bd->insertDailyHours($id_bdl, $jour, $demi_journees);
+    
+        $message = $resultat ? 'L\'ajout de la demi-journée a été effectué avec succès.' : 'Erreur lors de l\'ajout de la demi-journée.';
+        // Rétablir les données pour remplir à nouveau le formulaire
+        $client = $_POST['client'];
+        $composante = $_POST['composante'];
+        $mois = $_POST['mois'];
+    
+        $this->render('form_bdl', ['message' => $message, 'client' => $client, 'composante' => $composante, 'mois' => $mois]);
+    
+    }
+    
+    public function action_addHourWithoutDay() {
+        session_start();
+        $bd = Model::getModel();
+        $id_bdl = $_SESSION['id_bdl'];
+        $heures_sans_jour = $_POST['nombre_heures_sans_jour'];
+    
+        $resultat = $bd->insertDailyHours($id_bdl,0, $heures_sans_jour);
+    
+        $message = $resultat ? 'L\'ajout des heures sans jour a été effectué avec succès.' : 'Erreur lors de l\'ajout des heures sans jour.';
+            // Rétablir les données pour remplir à nouveau le formulaire
+        $client = $_POST['client'];
+        $composante = $_POST['composante'];
+        $mois = $_POST['mois'];
+
+        $this->render('form_bdl', ['message' => $message, 'client' => $client, 'composante' => $composante, 'mois' => $mois]);
+
     }
 
     /**
@@ -420,4 +536,6 @@ class Controller_prestataire extends Controller
         }
         $this->action_ajout_bdl_form();
     }
+
+    
 }

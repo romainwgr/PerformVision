@@ -100,18 +100,24 @@ require 'view_header.php';
                             <?php endif; ?>
                         </div>
                     </div>
+                    <div class="button-container">
+                        <a href="?controller=prestataire&action=afficherFormulaire&id_bdl=<?= htmlspecialchars($p['id_bdl'] ?? $p['id']) ?>" class="button-primary">Ajouter Horaire</a>
+                    </div>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
 
         <?php if (
-            ((str_contains($_GET['controller'], 'gestionnaire') || str_contains($_GET['controller'], 'administrateur')) && !isset($_GET['id']))
-            || ((str_contains($_GET['controller'], 'prestataire') && isset($person[0]['id_bdl'])))
+            ((strstr($_GET['controller'], 'gestionnaire') || strstr($_GET['controller'], 'administrateur')) && !isset($_GET['id']))
+            || ((strstr($_GET['controller'], 'prestataire') && isset($person[0]['id_bdl'])))
         ): ?>
         <?php endif; ?>
     </div>
 </section>
 
-<?php
-require 'view_end.php';
-?>
+<script>
+    <?php if (count($bdl) == 0): ?>
+        document.getElementById('errorMessage').innerHTML = 'Aucun BDL trouvé pour cet ID.';
+        document.getElementById('errorMessage').style.display = 'block';
+    <?php endif; ?>
+</script>

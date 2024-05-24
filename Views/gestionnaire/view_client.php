@@ -36,8 +36,8 @@ require 'Views/view_header.php';
     <?php endforeach; ?>
 
 <?php endif; ?>
-<?php if (((str_contains($_GET['controller'], 'gestionnaire') || str_contains($_GET['controller'], 'administrateur')) && !isset($_GET['id']))
-            || ((str_contains($_GET['controller'], 'prestataire') && isset($person[0]['id_bdl'])))): ?>
+<?php if (((strstr($_GET['controller'], 'gestionnaire') || strstr($_GET['controller'], 'administrateur')) && !isset($_GET['id']))
+            || ((strstr($_GET['controller'], 'prestataire') && isset($person[0]['id_bdl'])))): ?>
             <button type="submit" class="button-primary"
                     onclick="window.location='<?= $buttonLink ?>'">Ajouter
             </button>

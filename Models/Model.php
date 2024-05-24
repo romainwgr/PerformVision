@@ -1006,13 +1006,31 @@ class Model
     }
 
 
-    public function getBdlPrestataireBybdlId($id_pr, $id_bdl)
+    public function getBdlPrestataireBybdlId( $id_bdl)
     {
-        $req = $this->bd->prepare("SELECT * FROM BDL JOIN prestataire ON BDL.id_prestataire = Prestataire.id_personne JOIN Composante USING (id_composante) join Client Using(id_client) WHERE Prestataire.id_personne = :id and BDL.id_bdl = :idb");
-        $req->bindValue(':id', $id_pr, PDO::PARAM_INT);
+        $req = $this->bd->prepare("SELECT * FROM BDL 
+        JOIN prestataire ON BDL.id_prestataire = Prestataire.id_personne 
+        JOIN Composante USING (id_composante) 
+        join Client Using(id_client) 
+        Join Personne On Prestataire.id_personne = Personne.id_personne
+        WHERE BDL.id_bdl = :idb");
         $req->bindValue(':idb', $id_bdl, PDO::PARAM_INT);
         $req->execute();
-        return $req->fetchall();
+        return $req->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // public function setSignTruePrestataireId($id_bdl)
+    // {
+    //     update BDL set signature_prestataire = false 
+    // }
+
+    public function getHoursByIdBDL ($id_bdl)
+    {
+        $req = $this->bd->prepare("SELECT * FROM dailyhours where id_bdl = :id");
+        $req->bindValue(':id', $id_bdl, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall(PDO::FETCH_ASSOC);
+
     }
 
 
@@ -1590,6 +1608,15 @@ class Model
         }
     }
 
+    public function getBdlInfoById($id)
+    {
+        $req = $this->bd->prepare(" SELECT * From BDL where id_bdl=:id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetchall();
+
+    }
+
 
     public function getPrestataireByIds($ids)
     {
@@ -1674,6 +1701,20 @@ class Model
             return $req->fetchAll(PDO::FETCH_ASSOC);
         } else {
             return null; // ou retourner un message d'erreur spécifique ou lever une exception
+        }
+    }
+
+    public function insertDailyHours($id_bdl, $jour, $hours_worked) {
+        try {
+            $query = "INSERT INTO DailyHours (id_bdl, jour, hours_worked) VALUES (:id_bdl, :jour, :hours_worked)";
+            $stmt = $this->bd->prepare($query);
+            $stmt->bindParam(':id_bdl', $id_bdl);
+            $stmt->bindParam(':jour', $jour);
+            $stmt->bindParam(':hours_worked', $hours_worked);
+            $stmt->execute();
+            return true; // Succès de l'insertion
+        } catch (PDOException $e) {
+            return false; // Échec de l'insertion
         }
     }
 
