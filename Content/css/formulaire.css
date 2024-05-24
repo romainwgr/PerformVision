@@ -48,50 +48,145 @@ html, body {
   padding: 1rem;
 }
 
+
+
 /* Barre de recherche */
-.search_bar {
+
+.box{
+  max-width: 400px;
+  width: 100%;
+}
+.box .search-box{
+  position: relative;
+  height: 50px;
+  max-width: 50px;
+  margin: auto;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+#check:checked ~ .search-box{
+  max-width: 380px;
+}
+.search-box input{
+ position: absolute;
+ height: 100%;
+ width: 100%;
+ border-radius: 25px;
+ background: #fff;
+ outline: none;
+ border: none;
+ padding-left: 20px;
+ font-size: 18px;
+}
+.search-box .icon{
+  position: absolute;
+  right: -2px;
+  top: 0;
+  width: 50px;
+  background: #FFF;
+  height: 100%;
+  text-align: center;
+  line-height: 50px;
+  color: #5db0cf;
+  font-size: 20px;
+  border-radius: 25px;
+}
+#check:checked ~ .search-box .icon{
+  background: #5db0cf;
+  color: #FFF;
+  width: 60px;
+  border-radius: 0 25px 25px 0;
+}
+#check{
+  display: none;
+}
+.search-box {
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 50px;
+  max-width: 380px;
+  margin: auto;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+
+.search-box input {
+  flex: 1;
+  height: 100%;
+  border-radius: 25px;
+  background: #fff;
+  outline: none;
+  border: none;
+  padding-left: 20px;
+  font-size: 18px;
+}
+
+.search-box .icon {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 50px;
+  background: #FFF;
+  height: 100%;
+  text-align: center;
+  line-height: 50px;
+  color: #5db0cf;
+  font-size: 20px;
+  border-radius: 25px;
+}
+
+
+
+
+
+
+/* Barre de recherche */
+/* .search_bar {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
-}
+} */
 
 /* Formulaire de recherche */
-.search_form {
+/* .search_form {
   display: flex;
   align-items: center;
   border: 2px solid #ccc;
-  border-radius: 8px; /* Coins arrondis */
+  border-radius: 8px; /* Coins arrondis *
   overflow: hidden;
-}
+} */
 
 /* Champ de recherche */
-.search_input {
+/* .search_input {
   flex: 1;
-  padding: 12px; /* Augmentation du padding */
+  padding: 12px; /* Augmentation du padding *
   border: none;
   background-color: transparent;
-  font-size: 18px; /* Augmentation de la taille de la police */
-}
+  font-size: 18px; /* Augmentation de la taille de la police *
+} */
 
 /* Bouton de recherche */
-.search_button {
+/* .search_button {
   background-color: #5db0cf;
   border: none;
-  padding: 12px 20px; /* Augmentation du padding */
+  padding: 17px 20px; /* Augmentation du padding *
   cursor: pointer;
   transition: background-color 0.3s ease;
-}
+} */
 
 /* Changement de couleur au survol du bouton */
-.search_button:hover {
+/* .search_button:hover {
   background-color: #4a96ae;
-}
+} */
 
 /* Icône du bouton de recherche */
-.search_button i {
+/* .search_button i {
   color: #fff;
-}
+} */
 
 /* Bouton principal */
 .button-primary {
@@ -102,6 +197,12 @@ html, body {
   cursor: pointer;
   color: #fff;
   margin-left: 10px;
+  transition: background-color 0.3s ease;
+
+}
+.font {
+  position: relative;
+  left: 500px;
 }
 
 /* Autres styles de la barre de recherche */
@@ -113,7 +214,7 @@ html, body {
 
 .search_bar input {
   width: 50%;
-  padding: 10px;
+  padding: 15px;
   border: 1px solid rgb(190, 190, 190);
 }
 
@@ -891,17 +992,6 @@ button {
   flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
-}
-
-/* Style des boutons de sélection */
-.button-primary {
-  padding: 10px 20px;
-  background-color: #5db0cf;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  color: #fff;
-  transition: background-color 0.3s ease;
 }
 
 .button-primary:hover {
