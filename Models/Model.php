@@ -532,9 +532,16 @@ class Model
     {
         // Préparation de la requête SQL
         $req = $this->bd->prepare('
-            SELECT id_composante, nom_composante
-            FROM Composante
-            WHERE id_client = :id;
+            SELECT c.id_composante, c.nom_composante,
+            a.adresse,
+                a.code_postal
+
+            FROM Composante c
+            JOIN 
+                Client cl ON c.id_client = cl.id_client
+            JOIN 
+                Adresse a ON c.id_adresse = a.id_adresse
+            WHERE c.id_client = :id;
         ');
 
         // Liaison du paramètre id pour éviter les injections SQL
@@ -1675,6 +1682,53 @@ class Model
         } else {
             return null; // ou retourner un message d'erreur spécifique ou lever une exception
         }
+    }
+
+    public function rechercheClient($recherche)
+    {
+        //TODO 
+        $req = $this->bd->prepare("
+            SELECT 
+                c.id_client
+            FROM
+                Client c
+            WHERE c.nom_client LIKE :recherche OR c.prenom_client LIKE :recherche
+        ");
+        $req->bindValue(':recherche', '%' . $recherche . '%', PDO::PARAM_STR);
+
+        if ($req->execute()) {
+            return $req->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return null; // ou retourner un message d'erreur spécifique ou lever une exception
+        }
+    }
+    public function getClientByIds($ids)
+    {
+        // TODO
+        $idsString = implode(',', array_map('intval', $ids));
+        if (empty($ids)) {
+            return 'Aucune société';
+        }
+
+        $req = $this->bd->prepare("
+            SELECT 
+                id_client, nom_client, telephone_client 
+            FROM 
+                Client
+            WHERE 
+                p.id_personne IN ($idsString)
+        ");
+
+        $req->execute();
+        return $req->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function rechercheComposante($recherche, $role)
+    {
+        // TODO
+    }
+    public function getComposanteByIds($ids)
+    {
+        // TODO
     }
 
 }

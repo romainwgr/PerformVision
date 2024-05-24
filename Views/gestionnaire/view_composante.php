@@ -29,6 +29,10 @@ require 'Views/view_header.php';
                                 <div class="text">
                                     <h3>Composante: <?= htmlspecialchars($composante['nom_composante']); ?></h3>
                                     <?php if (!empty($composante['prestataires'])): ?>
+                                        <p> Adresse: <?= e($composante['adresse']) ?></p>
+                                        <p>Code postal:  <?=  e($composante['code_postal'])?>
+
+                                    </p>
                                         <ul>
                                             <?php foreach ($composante['prestataires'] as $prestataire): ?>
                                                 <li><?= htmlspecialchars($prestataire['nom'] . ' ' . htmlspecialchars($prestataire['prenom'])); ?></li>

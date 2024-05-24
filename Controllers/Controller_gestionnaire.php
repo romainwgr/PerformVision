@@ -706,19 +706,44 @@ class Controller_gestionnaire extends Controller
 
                 $recherche = '';
                 $role= ucfirst($_GET['role']);
+
                 $fonction_recherche = "recherche{$role}";
                 $fonction_recuperation = "get{$role}ByIds";
 
                 $recherche = ucfirst(strtolower($_POST['recherche']));
+
                 $resultat = $m->$fonction_recherche($recherche);
+
                 $ids = array_column($resultat, 'id_personne');
-        
+                // TODO faire la fonction de recupération pour la composante et la société
                 $users = $m->$fonction_recuperation($ids);
+
                 if($_GET['role'] == 'composante'){
-                    // TODO faire le render de la composante
+
+                    $data = [
+                        'title' => ucfirst($_GET['role']),
+                        'person' => $users,
+                        'buttonLink' => '?controller=gestionnaire&action=ajout_composante_form',
+                        'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=composante',
+                        'cardLink' => '?controller=gestionnaire&action=infos_composante',
+                        'menu' => $this->action_get_navbar()
+                    ];
+
+                    $this->render($_GET['role'],$data,'gestionnaire');
+
                 }
                 else if($_GET['role'] == 'client'){
-                    // TODO faire le render du client
+
+                    $data = [
+                        'title' => 'Société', 
+                        'buttonLink' => '?controller=gestionnaire&action=ajout_client_form', 
+                        'rechercheLink'=> '?controller=gestionnaire&action=rechercher&role=client',
+                        'cardLink' =>  '?controller=gestionnaire&action=infos_client', 
+                        'person' => $users, 
+                        'val_rech' => $recherche,
+                        'menu' => $this->action_get_navbar()
+                    ];
+                    $this->render("client", $data,'gestionnaire');
                 }
                 else{
                     $data = [
