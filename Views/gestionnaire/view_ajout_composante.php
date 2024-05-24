@@ -1,8 +1,7 @@
 <!-- Formulaire permettant d'ajouter une nouvelle composante  -->
 <?php
-require 'view_begin.php'; ?>
-<?php
-require 'view_header.php';
+require 'Views/view_begin.php'; 
+require 'Views/view_header.php';
 ?>
 <div class="add-container">
     <div class="form-abs">
@@ -155,6 +154,6 @@ require 'view_header.php';
 </div>
 <div class="footer">
     <?php
-    require 'view_end.php';
+    require 'Views/view_end.php';
     ?>
 </div>

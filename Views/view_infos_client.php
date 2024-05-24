@@ -38,18 +38,22 @@ require 'view_header.php';
         <div class="infos-container">
             <div class="infos__colonne">
                 <h2>Interlocuteurs</h2>
-                <table>
-                    <tr>
-                        <?php foreach ($interlocuteurs as $i): ?>
-                            <td>
-                                <a href="?controller=<?= $_GET['controller'] ?>&action=infos_personne&id=<?= $i['id_personne'] ?>"
-                                    class="block">
-                                    <h3><?= $i['nom'] . ' ' . $i['prenom'] ?></h3>
-                                </a>
-                            </td>
-                        <?php endforeach; ?>
-                    </tr>
-                </table>
+                <?php if (!empty($interlocuteurs) && is_array($interlocuteurs)): ?>
+                    <table>
+                        <tr>
+                            <?php foreach ($interlocuteurs as $i): ?>
+                                <td>
+                                    <a href="?controller=<?= $_GET['controller'] ?>&action=infos_personne&id=<?= $i['id_personne'] ?>"
+                                        class="block">
+                                        <h3><?= $i['nom'] . ' ' . $i['prenom'] ?></h3>
+                                    </a>
+                                </td>
+                            <?php endforeach; ?>
+                        </tr>
+                    </table>
+                <?php else: ?>
+                    <p>Aucun interlocuteur trouvé.</p>
+                <?php endif; ?>
                 <a href="?controller=<?= $_GET['controller'] ?>&action=ajout_interlocuteur_form&id-client=<?= $_GET['id'] ?>"
                     class="ajout"><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
             </div>

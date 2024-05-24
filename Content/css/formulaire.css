@@ -363,6 +363,10 @@ h3 {
   font-size: 16px;
   text-align: center;
 }
+.job_action h4 {
+  font-size: 16px;
+  text-align: center;
+}
 
 /* Conteneur pour ajouter des éléments */
 .add-container {

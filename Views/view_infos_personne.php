@@ -12,7 +12,7 @@ require 'view_header.php';
                 <input type="text" placeholder="<?= $person['prenom'] ?>" name="prenom" class="input-case">
                 <input type="text" placeholder="<?= $person['nom'] ?>" name="nom" class="input-case">
             </div>
-            <input type="email" placeholder="<?= $person['email'] ?>" name='email' id='mail-1' class="input-case">
+            <input type="email" placeholder="<?= $person['mail'] ?>" name='email' id='mail-1' class="input-case">
             <div class="btns-group">
                 <input type="submit" value="Enregistrer" class="btn">
             </div>

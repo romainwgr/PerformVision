@@ -532,9 +532,16 @@ class Model
     {
         // Préparation de la requête SQL
         $req = $this->bd->prepare('
-            SELECT id_composante, nom_composante
-            FROM Composante
-            WHERE id_client = :id;
+            SELECT c.id_composante, c.nom_composante,
+            a.adresse,
+                a.code_postal
+
+            FROM Composante c
+            JOIN 
+                Client cl ON c.id_client = cl.id_client
+            JOIN 
+                Adresse a ON c.id_adresse = a.id_adresse
+            WHERE c.id_client = :id;
         ');
 
         // Liaison du paramètre id pour éviter les injections SQL
@@ -1688,33 +1695,27 @@ class Model
                 p.id_personne 
             FROM 
                 PERSONNE p
+<<<<<<< HEAD
+            JOIN " . $role . " r ON 
+=======
             JOIN " . $role ." r ON 
+>>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
                 p.id_personne = r.id_personne
             WHERE 
                 p.nom LIKE :recherche OR p.prenom LIKE :recherche"
         );
         // Modification ici: Ajoutez '%' à la fin de la chaîne de recherche pour permettre la recherche de tout texte commençant par 'recherche'
         $req->bindValue(':recherche', '%' . $recherche . '%', PDO::PARAM_STR);
+<<<<<<< HEAD
+        $req->bindValue(':', $role);
+=======
         $req->bindValue(':',$role);
+>>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
 
         if ($req->execute()) {
             return $req->fetchAll(PDO::FETCH_ASSOC);
         } else {
             return null; // ou retourner un message d'erreur spécifique ou lever une exception
-        }
-    }
-
-    public function insertDailyHours($id_bdl, $jour, $hours_worked) {
-        try {
-            $query = "INSERT INTO DailyHours (id_bdl, jour, hours_worked) VALUES (:id_bdl, :jour, :hours_worked)";
-            $stmt = $this->bd->prepare($query);
-            $stmt->bindParam(':id_bdl', $id_bdl);
-            $stmt->bindParam(':jour', $jour);
-            $stmt->bindParam(':hours_worked', $hours_worked);
-            $stmt->execute();
-            return true; // Succès de l'insertion
-        } catch (PDOException $e) {
-            return false; // Échec de l'insertion
         }
     }
 

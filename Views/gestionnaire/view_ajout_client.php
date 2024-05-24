@@ -1,6 +1,6 @@
 <?php
-require 'view_begin.php';
-require 'view_header.php';
+require 'Views/view_begin.php';
+require 'Views/view_header.php';
 ?>
 
 <div class="add-container" id="affiche">
@@ -159,5 +159,5 @@ require 'view_header.php';
     </div>
 </div>
 <?php
-require 'view_end.php';
+require 'Views/view_end.php';
 ?>
