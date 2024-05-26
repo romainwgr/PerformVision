@@ -23,6 +23,7 @@ require 'Views/view_header.php';
             </form>
         </div>
     </div>
+    <h1><?php if(isset($title)){echo $title;}?></h1>
     <div class="row">
         <p>Il y a plus de <span><?= count($person) ?></span> <?= strtolower($title) ?></p>
     </div>
