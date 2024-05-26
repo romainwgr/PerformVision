@@ -13,7 +13,7 @@ require 'Views/view_header.php';
                         <button type="button" class="button-primary font"
                             onclick="window.location='<?= htmlspecialchars($buttonLink) ?>'">Ajouter</button>
                     <?php endif; ?>
-                    <input type="text" placeholder="Rechercher une <?= strtolower($title) ?>..." value="<?php if (isset($val_rech)) {
+                    <input name="recherche"type="text" placeholder="Rechercher une <?= strtolower($title) ?>..." value="<?php if (isset($val_rech)) {
                           echo htmlspecialchars($val_rech);
                       } ?>">
                     <label for="check" class="icon">
@@ -26,7 +26,12 @@ require 'Views/view_header.php';
     <div class="row">
         <p>Il y a plus de <span><?= count($person) ?></span> <?= strtolower($title) ?></p>
     </div>
-
+    <h1>
+        <!-- TODO Binta tu peux mettre une classe qui affiche ca un peu mieux stp -->
+        <?php if (isset($message)) {
+            echo $message;
+        } ?>
+    </h1>
     <div class="element-block">
         <?php if (is_string($person)): ?>
             <p class=""><?= htmlspecialchars($person); ?></p>

@@ -178,7 +178,7 @@ class Controller_gestionnaire extends Controller
                 'title' => 'Composantes',
                 'person' => $clientsData,
                 'buttonLink' => '?controller=gestionnaire&action=ajout_composante_form',
-                'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=composante',
+                'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=client&composante=t',
                 'cardLink' => '?controller=gestionnaire&action=infos_composante',
                 'menu' => $this->action_get_navbar()
             ];
@@ -202,7 +202,7 @@ class Controller_gestionnaire extends Controller
             $data = [
                 'title' => 'Société',
                 'buttonLink' => '?controller=gestionnaire&action=ajout_client_form',
-                'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=client',
+                'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=client&composante=f',
                 'cardLink' => '?controller=gestionnaire&action=infos_client',
                 'person' => $bd->getAllClients(),
                 'menu' => $this->action_get_navbar()
@@ -287,20 +287,20 @@ class Controller_gestionnaire extends Controller
         $this->action_dashboard();
     }
 
-    /**
-     * Vérifie d'avoir les informations nécessaire à l'assignation d'un prestataire dans une mission
-     * @return void
-     */
-    public function action_assigner_prestataire()
-    {
-        sessionstart();
-        $bd = Model::getModel();
-        if (isset($_POST['email'])) {
-            // FIXME Il manque id_composante
-            $bd->assignerPrestataire(e($_POST['email']), e($_POST['mission']));
-        }
-        $this->action_dashboard();
-    }
+    // /**
+    //  * Vérifie d'avoir les informations nécessaire à l'assignation d'un prestataire dans une mission
+    //  * @return void
+    //  */
+    // public function action_assigner_prestataire()
+    // {
+    //     sessionstart();
+    //     $bd = Model::getModel();
+    //     if (isset($_POST['email'])) {
+    //         // FIXME Il manque id_composante
+    //         $bd->assignerPrestataire(e($_POST['email']), e($_POST['mission']));
+    //     }
+    //     $this->action_dashboard();
+    // }
 
 
     /*--------------------------------------------------------------------------------------*/
@@ -493,72 +493,72 @@ class Controller_gestionnaire extends Controller
      * @param $email
      * @return void
      */
-    public function action_ajout_personne($nom, $prenom, $email)
+    public function action_ajout_personne($nom, $prenom, $email,$tel)
     {
         $bd = Model::getModel();
         if (!$bd->checkPersonneExiste($email)) {
             // FIXME chiffrer le mot de passe et ucfirst sur nom prenom
-            $bd->createPersonne($nom, $prenom, $email, genererMdp());
+            $bd->createPersonne($nom, $prenom, $email, genererMdp(),$tel);
         }
     }
 
-    /**
-     * Fonction qui créée une composante, son interlocuteur, commercial et les assigne a elle, et créée la mission.
-     * @return void
-     */
-    public function action_ajout_composante()
-    {
-        $bd = Model::getModel();
-        if (
-            isset($_POST['composante']) &&
-            isset($_POST['numero-voie']) &&
-            isset($_POST['type-voie']) &&
-            isset($_POST['nom-voie']) &&
-            isset($_POST['cp']) &&
-            isset($_POST['ville']) &&
-            !$bd->checkComposanteExiste($_POST['composante'], $_POST['client'])
-        ) {
-            $bd->addComposante(
-                $_POST['type-voie'],
-                $_POST['cp'],
-                $_POST['numero-voie'],
-                $_POST['nom-voie'],
-                $_POST['client'],
-                $_POST['composante']
-            );
-            $this->action_ajout_interlocuteur_dans_composante();
-            $this->action_ajout_commercial_dans_composante();
-            $this->action_ajout_mission();
-        }
-        if (isset($_POST['tel'])) {
-            $this->action_ajout_client_form();
-        } else {
-            $this->action_ajout_composante_form();
-        }
-    }
+    // /**
+    //  * Fonction qui créée une composante, son interlocuteur, commercial et les assigne a elle, et créée la mission.
+    //  * @return void
+    //  */
+    // public function action_ajout_composante()
+    // {
+    //     $bd = Model::getModel();
+    //     if (
+    //         isset($_POST['composante']) &&
+    //         isset($_POST['numero-voie']) &&
+    //         isset($_POST['type-voie']) &&
+    //         isset($_POST['nom-voie']) &&
+    //         isset($_POST['cp']) &&
+    //         isset($_POST['ville']) &&
+    //         !$bd->checkComposanteExiste($_POST['composante'], $_POST['client'])
+    //     ) {
+    //         $bd->addComposante(
+    //             $_POST['type-voie'],
+    //             $_POST['cp'],
+    //             $_POST['numero-voie'],
+    //             $_POST['nom-voie'],
+    //             $_POST['client'],
+    //             $_POST['composante']
+    //         );
+    //         $this->action_ajout_interlocuteur_dans_composante();
+    //         $this->action_ajout_commercial_dans_composante();
+    //         $this->action_ajout_mission();
+    //     }
+    //     if (isset($_POST['tel'])) {
+    //         $this->action_ajout_client_form();
+    //     } else {
+    //         $this->action_ajout_composante_form();
+    //     }
+    // }
 
-    /**
-     * Vérifie que la mission n'existe pas pour ensuite la créer
-     * @return void
-     */
-    public function action_ajout_mission()
-    {
+    // /**
+    //  * Vérifie que la mission n'existe pas pour ensuite la créer
+    //  * @return void
+    //  */
+    // public function action_ajout_mission()
+    // {
 
-        $bd = Model::getModel();
-        if (
-            !$bd->checkMissionExiste(e($_POST['mission']), e($_POST['composante']))
-        ) {
-            $bd->addMission(
-                e($_POST['type-bdl']),
-                e($_POST['mission']),
-                e($_POST['date-mission']),
-                e($_POST['composante']),
-                e($_POST['client'])
-            );
+    //     $bd = Model::getModel();
+    //     if (
+    //         !$bd->checkMissionExiste(e($_POST['mission']), e($_POST['composante']))
+    //     ) {
+    //         $bd->addMission(
+    //             e($_POST['type-bdl']),
+    //             e($_POST['mission']),
+    //             e($_POST['date-mission']),
+    //             e($_POST['composante']),
+    //             e($_POST['client'])
+    //         );
 
 
-        }
-    }
+    //     }
+    // }
 
 
     /**
@@ -598,85 +598,85 @@ class Controller_gestionnaire extends Controller
         echo json_encode($response);
     }
 
-    /**
-     * Vérifie d'avoir toutes les informations nécessaires pour l'ajout d'un interlocuteur dans une composante
-     * @return void
-     */
-    public function action_ajout_interlocuteur_dans_composante()
-    {
-        $bd = Model::getModel();
-        if (
-            isset($_GET['id-composante']) &&
-            isset($_POST['email-interlocuteur']) &&
-            isset($_POST['nom-interlocuteur']) &&
-            isset($_POST['prenom-interlocuteur'])
-        ) {
-            if (!$bd->checkInterlocuteurExiste(e($_POST['email-interlocuteur']))) {
-                $this->action_ajout_personne(e($_POST['nom-interlocuteur']), e($_POST['prenom-interlocuteur']), e($_POST['email-interlocuteur']));
-                $bd->addInterlocuteur(e($_POST['email-interlocuteur']));
-            }
-            $bd->assignerInterlocuteurComposanteByIdComposante(e($_GET['id-composante']), e($_POST['email-interlocuteur']));
-            $this->action_composantes();
-        }
-        if (
-            isset($_GET['id-client']) &&
-            isset($_POST['email-interlocuteur']) &&
-            isset($_POST['nom-interlocuteur']) &&
-            isset($_POST['prenom-interlocuteur']) &&
-            isset($_POST['composante'])
-        ) {
-            if (!$bd->checkInterlocuteurExiste(e($_POST['email-interlocuteur']))) {
-                $this->action_ajout_personne(e($_POST['nom-interlocuteur']), e($_POST['prenom-interlocuteur']), e($_POST['email-interlocuteur']));
-                $bd->addInterlocuteur(e($_POST['email-interlocuteur']));
-            }
-            $bd->assignerInterlocuteurComposanteByIdClient(e($_GET['id-client']), e($_POST['email-interlocuteur']), e($_POST['composante']));
-            $this->action_clients();
-        }
-        if (isset($_POST['client']) && isset($_POST['composante'])) {
-            $id = $bd->getIdComposante(e($_POST['composante']), e($_POST['client']));
-            $bd->assignerInterlocuteurComposanteByIdComposante($id['id_composante'], e($_POST['email-interlocuteur']));
-        }
-    }
+    // /**
+    //  * Vérifie d'avoir toutes les informations nécessaires pour l'ajout d'un interlocuteur dans une composante
+    //  * @return void
+    //  */
+    // public function action_ajout_interlocuteur_dans_composante()
+    // {
+    //     $bd = Model::getModel();
+    //     if (
+    //         isset($_GET['id-composante']) &&
+    //         isset($_POST['email-interlocuteur']) &&
+    //         isset($_POST['nom-interlocuteur']) &&
+    //         isset($_POST['prenom-interlocuteur'])
+    //     ) {
+    //         if (!$bd->checkInterlocuteurExiste(e($_POST['email-interlocuteur']))) {
+    //             $this->action_ajout_personne(e($_POST['nom-interlocuteur']), e($_POST['prenom-interlocuteur']), e($_POST['email-interlocuteur']));
+    //             $bd->addInterlocuteur(e($_POST['email-interlocuteur']));
+    //         }
+    //         $bd->assignerInterlocuteurComposanteByIdComposante(e($_GET['id-composante']), e($_POST['email-interlocuteur']));
+    //         $this->action_composantes();
+    //     }
+    //     if (
+    //         isset($_GET['id-client']) &&
+    //         isset($_POST['email-interlocuteur']) &&
+    //         isset($_POST['nom-interlocuteur']) &&
+    //         isset($_POST['prenom-interlocuteur']) &&
+    //         isset($_POST['composante'])
+    //     ) {
+    //         if (!$bd->checkInterlocuteurExiste(e($_POST['email-interlocuteur']))) {
+    //             $this->action_ajout_personne(e($_POST['nom-interlocuteur']), e($_POST['prenom-interlocuteur']), e($_POST['email-interlocuteur']));
+    //             $bd->addInterlocuteur(e($_POST['email-interlocuteur']));
+    //         }
+    //         $bd->assignerInterlocuteurComposanteByIdClient(e($_GET['id-client']), e($_POST['email-interlocuteur']), e($_POST['composante']));
+    //         $this->action_clients();
+    //     }
+    //     if (isset($_POST['client']) && isset($_POST['composante'])) {
+    //         $id = $bd->getIdComposante(e($_POST['composante']), e($_POST['client']));
+    //         $bd->assignerInterlocuteurComposanteByIdComposante($id['id_composante'], e($_POST['email-interlocuteur']));
+    //     }
+    // }
 
-    /**
-     * Vérifie d'avoir les informations nécessaires pour l'ajout d'un prestataire dans une misison
-     * @return void
-     */
-    public function action_ajout_prestataire_dans_mission()
-    {
-        $bd = Model::getModel();
-        if (
-            isset($_POST['mission']) &&
-            isset($_POST['email-prestataire']) &&
-            $_GET['id'] &&
-            $bd->checkPrestataireExiste(e($_POST['email-prestataire']))
-        ) {
-            $bd->assignerPrestataire(e($_POST['email-prestataire']), e($_POST['mission']), e($_GET['id']));
-        }
-        $this->action_ajout_prestataire_form();
-    }
+    // /**
+    //  * Vérifie d'avoir les informations nécessaires pour l'ajout d'un prestataire dans une misison
+    //  * @return void
+    //  */
+    // public function action_ajout_prestataire_dans_mission()
+    // {
+    //     $bd = Model::getModel();
+    //     if (
+    //         isset($_POST['mission']) &&
+    //         isset($_POST['email-prestataire']) &&
+    //         $_GET['id'] &&
+    //         $bd->checkPrestataireExiste(e($_POST['email-prestataire']))
+    //     ) {
+    //         $bd->assignerPrestataire(e($_POST['email-prestataire']), e($_POST['mission']), e($_GET['id']));
+    //     }
+    //     $this->action_ajout_prestataire_form();
+    // }
 
-    /**
-     * Vérifie d'avoir les informations nécessaires pour l'ajout d'un commercial dans une composante
-     * @return void
-     */
-    public function action_ajout_commercial_dans_composante()
-    {
-        $bd = Model::getModel();
-        if (
-            isset($_POST['composante']) &&
-            isset($_POST['email-commercial']) &&
-            isset($_POST['client'])
-        ) {
-            $this->action_ajout_commercial();
-            $bd->assignerCommercial(e($_POST['email-commercial']), e($_POST['composante']), e($_POST['client']));
+    // /**
+    //  * Vérifie d'avoir les informations nécessaires pour l'ajout d'un commercial dans une composante
+    //  * @return void
+    //  */
+    // public function action_ajout_commercial_dans_composante()
+    // {
+    //     $bd = Model::getModel();
+    //     if (
+    //         isset($_POST['composante']) &&
+    //         isset($_POST['email-commercial']) &&
+    //         isset($_POST['client'])
+    //     ) {
+    //         $this->action_ajout_commercial();
+    //         $bd->assignerCommercial(e($_POST['email-commercial']), e($_POST['composante']), e($_POST['client']));
 
-        } elseif (isset($_POST['email-commercial']) && isset($_GET['id-composante'])) {
-            $this->action_ajout_commercial();
-            $bd->assignerCommercialByIdComposante(e($_POST['email-commercial']), e($_GET['id-composante']));
-            $this->action_ajout_commercial_form();
-        }
-    }
+    //     } elseif (isset($_POST['email-commercial']) && isset($_GET['id-composante'])) {
+    //         $this->action_ajout_commercial();
+    //         $bd->assignerCommercialByIdComposante(e($_POST['email-commercial']), e($_GET['id-composante']));
+    //         $this->action_ajout_commercial_form();
+    //     }
+    // }
 
     /**
      * Vérifie d'avoir un id dans l'url qui fait référence à la composante et renvoie la vue qui affiche les informations de la composante
@@ -719,37 +719,7 @@ class Controller_gestionnaire extends Controller
         }
     }
 
-    /**
-     * Vérifie qu'il existe dans l'url l'id qui fait référence au bon de livraison et renvoie la vue qui permet de consulter le bon de livraison
-     * @return void
-     */
-    public function action_consulter_bdl()
-    {
-        $bd = Model::getModel();
-        sessionstart();
-        if (isset($_GET['id'])) {
-            $typeBdl = $bd->getBdlTypeAndMonth(e($_GET['id']));
-            if ($typeBdl['type_bdl'] == 'Heure') {
-                $activites = $bd->getAllNbHeureActivite(e($_GET['id']));
-            }
-            if ($typeBdl['type_bdl'] == 'Demi-journée') {
-                $activites = $bd->getAllDemiJourActivite(e($_GET['id']));
-            }
-            if ($typeBdl['type_bdl'] == 'Journée') {
-                $activites = $bd->getAllJourActivite(e($_GET['id']));
-            }
 
-            $data = [
-                'menu' => $this->action_get_navbar(),
-                'bdl' => $typeBdl,
-                'activites' => $activites
-            ];
-            $this->render("consulte_bdl", $data);
-        } else {
-            // TODO Réaliser un render de l'erreur 
-            echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
-        }
-    }
     // Ajout d'une fonction pour rechercher un prestataire 10/05 Romain
     // ca recherche pas un gestionnaire mais obligé de mettre ça car leur site est cassé
     /**
@@ -761,7 +731,7 @@ class Controller_gestionnaire extends Controller
         $m = Model::getModel();
         session_start();
         if (isset($_GET['role'], $_POST['recherche'])) {
-            $roles = ['composante', 'client', 'prestataire', 'commercial'];
+            $roles = ['client', 'prestataire', 'commercial'];
             if (in_array($_GET['role'], $roles)) {
 
                 $recherche = '';
@@ -774,35 +744,76 @@ class Controller_gestionnaire extends Controller
 
                 $resultat = $m->$fonction_recherche($recherche);
 
-                $ids = array_column($resultat, 'id_personne');
+                if($_GET['role']== 'commercial' || $_GET['role']=='prestataire'){
+                    $ids = array_column($resultat, 'id_personne');
+
+                }
+                else{
+                    $ids = array_column($resultat, 'id_client');
+
+                }
                 // TODO faire la fonction de recupération pour la composante et la société
                 $users = $m->$fonction_recuperation($ids);
 
-                if ($_GET['role'] == 'composante') {
+                
 
-                    $data = [
-                        'title' => ucfirst($_GET['role']),
-                        'person' => $users,
-                        'buttonLink' => '?controller=gestionnaire&action=ajout_composante_form',
-                        'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=composante',
-                        'cardLink' => '?controller=gestionnaire&action=infos_composante',
-                        'menu' => $this->action_get_navbar()
-                    ];
-
-                    $this->render($_GET['role'], $data, 'gestionnaire');
-
-                } else if ($_GET['role'] == 'client') {
+                if ($_GET['role'] == 'client' && $_GET['composante']=='f') {
 
                     $data = [
                         'title' => 'Société',
                         'buttonLink' => '?controller=gestionnaire&action=ajout_client_form',
-                        'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=client',
+                        'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=client&composante=f',
                         'cardLink' => '?controller=gestionnaire&action=infos_client',
                         'person' => $users,
                         'val_rech' => $recherche,
                         'menu' => $this->action_get_navbar()
                     ];
                     $this->render("client", $data, 'gestionnaire');
+                }
+                else if ($_GET['composante'] == 't') {
+
+                        $clients = $users;
+    
+                        // Organiser les données hiérarchiquement
+                        $clientsData = [];
+                        foreach ($clients as $client) {
+                            $clientId = $client['id_client'];
+                            $composantes = $m->getComposantesSociete($clientId); // GetComposanteByClientId
+    
+                            // Vérifier que $composantes est un tableau
+                            if (!is_array($composantes)) {
+                                $composantes = [];
+                            }
+    
+                            foreach ($composantes as &$composante) {
+                                $composanteId = $composante['id_composante'];
+                                $prestataires = $m->getPrestatairesComposante($composanteId); // GetPrestataireByIdComposante
+    
+                                // Vérifier que $prestataires est un tableau
+                                if (!is_array($prestataires)) {
+                                    $prestataires = [];
+                                }
+    
+                                $composante['prestataires'] = $prestataires;
+                            }
+    
+                            // Assurer que 'composantes' est toujours un tableau
+                            $client['composantes'] = $composantes;
+                            $clientsData[] = $client;
+                        }
+    
+                        // Préparer les données pour la vue
+                        $data = [
+                            'title' => 'Composantes',
+                            'person' => $clientsData,
+                            'buttonLink' => '?controller=gestionnaire&action=ajout_composante_form',
+                            'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=client&composante=t',
+                            'val_rech' => $recherche,
+                            'cardLink' => '?controller=gestionnaire&action=infos_composante',
+                            'menu' => $this->action_get_navbar()
+                        ];
+                        $this->render('composante', $data, 'gestionnaire');
+                
                 } else {
                     $data = [
                         "title" => ucfirst($_GET['role']),
@@ -826,62 +837,12 @@ class Controller_gestionnaire extends Controller
         } else {
             $this->render('message', [
                 'title' => 'Erreur de recherche',
-                'message' => 'EVITE DE MODIFIER L\'URL'
+                'message' => 'EVITE DE MODIFIER L\'URL'. $_GET['role'], $_POST['recherche']
             ]);
         }
 
     }
-    // TODO Supprimer
-    public function action_recherche()
-    {
-        $m = Model::getModel();
-        session_start();
-        if (isset($_GET['role'], $_POST['recherche'])) {
-
-            $roles = ['composantes', 'client', 'prestataire', 'commercial'];
-
-            if (in_array($_GET['role'], $roles)) {
-
-                $recherche = '';
-
-                $recherche = ucfirst(strtolower($_POST['recherche']));
-                $resultat = $m->rechercheGestionnaire($recherche, $_GET['role']);
-                if ($_GET['role'] == 'client') {
-                    $ids = array_column($resultat, 'id_client');
-
-                } else {
-                    $ids = array_column($resultat, 'id_personne');
-
-                }
-
-                $users = $m->recuperationRecherche($ids);
-
-                $data = [
-                    "title" => ucfirst($_GET['role']),
-                    'cardLink' => "?controller=gestionnaire&action=infos_personne",
-                    "buttonLink" => '?controller=gestionnaire&action=ajout_' . $_GET['role'] . '_form',
-                    'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=' . $_GET['role'],
-                    "person" => $users,
-                    "val_rech" => $recherche,
-                    'menu' => $this->action_get_navbar()
-                ];
-
-                $this->render($_GET['role'], $data, 'gestionnaire');
-            } else {
-                $this->render('message', [
-                    'title' => 'Erreur de recherche',
-                    'message' => 'Ne modifiez pas l\'url'
-                ]);
-            }
-
-        } else {
-            $this->render('message', [
-                'title' => 'Erreur de recherche',
-                'message' => 'Ne modifiez pas l\'url'
-            ]);
-        }
-    }
-
+   
 }
 
 ?>
