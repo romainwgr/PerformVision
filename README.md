@@ -19,10 +19,15 @@ Ce site web est développé grâce à plusieurs langages : PHP, CSS, HTML, JavaS
 [explication du processus pour y accéder]
 Vous arrivez alors sur une page de connexion.
 Pour vous connecter, vous avez plusieurs comptes de différents rôles disponibles pour l'instant (c’est encore l’ancienne base de donnée donc ceci changera) : 
+
 Prestataire : jean@example.com et mdp1
+
 Commercial : marie@example.com et mdp2
+
 Gestionnaire : ic@gmail.com et hihi
+
 Interlocuteur de composantes: hebert@exemple.com et mdp5
+
 Administrateur : aucun pour le moment
 
 ## Ressources
@@ -42,5 +47,7 @@ Bootstrap : https://getbootstrap.com/docs/4.1/getting-started/introduction/
 
 ## Contacts
 Email de l’équipe : cinqpetales1@gmail.com
+
 GitLab : https://gitlab.sorbonne-paris-nord.fr/12311711/5-petales.git 
+
 Drive : https://drive.google.com/drive/folders/10VD9fi6LSZsVgMqUYcvj1uw1FDW38PDq?usp=sharing 
