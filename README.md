@@ -1,3 +1,5 @@
+#README du projet de CinqPétales
+
 Rédaction du README en cours de production !
 
 Nom de l'équipe : CinqPétales
