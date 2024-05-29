@@ -1730,4 +1730,19 @@ class Model
         return $req->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function insertDailyHours($id_bdl, $jour, $hours_worked) {
+        try {
+            $query = "INSERT INTO DailyHours (id_bdl, jour, hours_worked) VALUES (:id_bdl, :jour, :hours_worked)";
+            $stmt = $this->bd->prepare($query);
+            $stmt->bindParam(':id_bdl', $id_bdl);
+            $stmt->bindParam(':jour', $jour);
+            $stmt->bindParam(':hours_worked', $hours_worked);
+            $stmt->execute();
+            return true; // Succès de l'insertion
+        } catch (PDOException $e) {
+            return false; // Échec de l'insertion
+        }
+    }
+
+
 }

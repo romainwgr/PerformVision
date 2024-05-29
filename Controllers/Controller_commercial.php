@@ -45,32 +45,32 @@ class Controller_commercial extends Controller
      * Renvoie le tableau de bord du commercial avec les variables adéquates
      * @return void
      */
-    // public function action_dashboard()
-    // {
-    //     sessionstart();
-    //     $_SESSION['role'] = 'commercial';
-    //     if (isset($_SESSION['id'])) {
-    //         $bd = Model::getModel();
-    //         $data = [
-    //             'menu'=>$this->action_get_navbar(), 
-    //             'bdlLink' => '?controller=commercial&action=mission_bdl', 
-    //             'header' => [
-    //                 'Société', 
-    //                 'Composante',
-    //                 'Nom Mission',
-    //                 'Préstataire assigné', 
-    //                 'Bon de livraison'
-    //             ], 
-    //             'dashboard' => $bd->getdashboardCommercial($_SESSION['id'])
-    //         ];
-    //         return $this->render('prestataire_missions', $data);
-    //     } 
-    //     else 
-    //     {
-    //         // TODO Réaliser un render de l'erreur
-    //         echo 'Une erreur est survenue lors du chargement du tableau de bord';
-    //     }
-    // }
+    public function action_dashboard()
+    {
+        sessionstart();
+        $_SESSION['role'] = 'commercial';
+        if (isset($_SESSION['id'])) {
+            $bd = Model::getModel();
+            $data = [
+                'menu'=>$this->action_get_navbar(), 
+                'bdlLink' => '?controller=commercial&action=mission_bdl', 
+                'header' => [
+                    'Société', 
+                    'Composante',
+                    'Nom Mission',
+                    'Préstataire assigné', 
+                    'Bon de livraison'
+                ], 
+                'dashboard' => $bd->getdashboardCommercial($_SESSION['id'])
+            ];
+            return $this->render('prestataire_missions', $data);
+        } 
+        else 
+        {
+            // TODO Réaliser un render de l'erreur
+            echo 'Une erreur est survenue lors du chargement du tableau de bord';
+        }
+    }
 
     /**
      * Action qui retourne les éléments du menu pour le commercial
@@ -146,37 +146,37 @@ class Controller_commercial extends Controller
         $this->action_infos_composante();
     }
 
-    /**
-     * Vérifie qu'il existe dans l'url l'id qui fait référence au bon de livraison et renvoie la vue qui permet de consulter le bon de livraison
-     * @return void
-     */
-    public function action_consulter_bdl()
-    {
-        $bd = Model::getModel();
-        sessionstart();
-        if (isset($_GET['id'])) {
-            $typeBdl = $bd->getBdlTypeAndMonth(e($_GET['id']));
-            if ($typeBdl['type_bdl'] == 'Heure') {
-                $activites = $bd->getAllNbHeureActivite(e($_GET['id']));
-            }
-            if ($typeBdl['type_bdl'] == 'Demi-journée') {
-                $activites = $bd->getAllDemiJourActivite(e($_GET['id']));
-            }
-            if ($typeBdl['type_bdl'] == 'Journée') {
-                $activites = $bd->getAllJourActivite(e($_GET['id']));
-            }
+    // /**
+    //  * Vérifie qu'il existe dans l'url l'id qui fait référence au bon de livraison et renvoie la vue qui permet de consulter le bon de livraison
+    //  * @return void
+    //  */
+    // public function action_consulter_bdl()
+    // {
+    //     $bd = Model::getModel();
+    //     sessionstart();
+    //     if (isset($_GET['id'])) {
+    //         $typeBdl = $bd->getBdlTypeAndMonth(e($_GET['id']));
+    //         if ($typeBdl['type_bdl'] == 'Heure') {
+    //             $activites = $bd->getAllNbHeureActivite(e($_GET['id']));
+    //         }
+    //         if ($typeBdl['type_bdl'] == 'Demi-journée') {
+    //             $activites = $bd->getAllDemiJourActivite(e($_GET['id']));
+    //         }
+    //         if ($typeBdl['type_bdl'] == 'Journée') {
+    //             $activites = $bd->getAllJourActivite(e($_GET['id']));
+    //         }
 
-            $data = [
-                'menu' => $this->action_get_navbar(),
-                'bdl' => $typeBdl,
-                'activites' => $activites
-            ];
-            $this->render("consulte_bdl", $data);
-        } else {
-            // TODO Réaliser un render de l'erreur
-            echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
-        }
-    }
+    //         $data = [
+    //             'menu' => $this->action_get_navbar(),
+    //             'bdl' => $typeBdl,
+    //             'activites' => $activites
+    //         ];
+    //         $this->render("consulte_bdl", $data);
+    //     } else {
+    //         // TODO Réaliser un render de l'erreur
+    //         echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
+    //     }
+    // }
 
     /**
      * Renvoie la liste de tous les clients
@@ -261,57 +261,57 @@ class Controller_commercial extends Controller
         }
     }
 
-    /**
-     * Vérifie si la personne existe et la créée si ce n'est pas le cas
-     * @param $nom
-     * @param $prenom
-     * @param $email
-     * @return void
-     */
-    public function action_ajout_personne($nom, $prenom, $email)
-    {
-        $bd = Model::getModel();
-        if (!$bd->checkPersonneExiste($email)) {
-            // FIXME chiffrer le mot de passe
-            $bd->createPersonne($nom, $prenom, $email, genererMdp());
-        }
-    }
+    // /**
+    //  * Vérifie si la personne existe et la créée si ce n'est pas le cas
+    //  * @param $nom
+    //  * @param $prenom
+    //  * @param $email
+    //  * @return void
+    //  */
+    // public function action_ajout_personne($nom, $prenom, $email)
+    // {
+    //     $bd = Model::getModel();
+    //     if (!$bd->checkPersonneExiste($email)) {
+    //         // FIXME chiffrer le mot de passe
+    //         $bd->createPersonne($nom, $prenom, $email, genererMdp());
+    //     }
+    // }
 
-    /**
-     * Vérifie d'avoir toutes les informations nécessaires pour l'ajout d'un interlocuteur dans une composante
-     * @return void
-     */
-    public function action_ajout_interlocuteur_dans_composante()
-    {
-        $bd = Model::getModel();
-        if (
-            isset($_GET['id-composante']) &&
-            isset($_POST['email-interlocuteur']) &&
-            isset($_POST['nom-interlocuteur']) &&
-            isset($_POST['prenom-interlocuteur'])
-        ) {
-            if (!$bd->checkInterlocuteurExiste(e($_POST['email-interlocuteur']))) {
-                $this->action_ajout_personne(e($_POST['nom-interlocuteur']), e($_POST['prenom-interlocuteur']), e($_POST['email-interlocuteur']));
-                $bd->addInterlocuteur(e($_POST['email-interlocuteur']));
-            }
-            $bd->assignerInterlocuteurComposanteByIdComposante(e($_GET['id-composante']), e($_POST['email-interlocuteur']));
-            $this->action_composantes();
-        }
-        if (
-            isset($_GET['id-client']) &&
-            isset($_POST['email-interlocuteur']) &&
-            isset($_POST['nom-interlocuteur']) &&
-            isset($_POST['prenom-interlocuteur']) &&
-            isset($_POST['composante'])
-        ) {
-            if (!$bd->checkInterlocuteurExiste(e($_POST['email-interlocuteur']))) {
-                $this->action_ajout_personne(e($_POST['nom-interlocuteur']), e($_POST['prenom-interlocuteur']), e($_POST['email-interlocuteur']));
-                $bd->addInterlocuteur(e($_POST['email-interlocuteur']));
-            }
-            $bd->assignerInterlocuteurComposanteByIdClient(e($_GET['id-client']), e($_POST['email-interlocuteur']), e($_POST['composante']));
-            $this->action_clients();
-        }
-    }
+    // /**
+    //  * Vérifie d'avoir toutes les informations nécessaires pour l'ajout d'un interlocuteur dans une composante
+    //  * @return void
+    //  */
+    // public function action_ajout_interlocuteur_dans_composante()
+    // {
+    //     $bd = Model::getModel();
+    //     if (
+    //         isset($_GET['id-composante']) &&
+    //         isset($_POST['email-interlocuteur']) &&
+    //         isset($_POST['nom-interlocuteur']) &&
+    //         isset($_POST['prenom-interlocuteur'])
+    //     ) {
+    //         if (!$bd->checkInterlocuteurExiste(e($_POST['email-interlocuteur']))) {
+    //             $this->action_ajout_personne(e($_POST['nom-interlocuteur']), e($_POST['prenom-interlocuteur']), e($_POST['email-interlocuteur']));
+    //             $bd->addInterlocuteur(e($_POST['email-interlocuteur']));
+    //         }
+    //         $bd->assignerInterlocuteurComposanteByIdComposante(e($_GET['id-composante']), e($_POST['email-interlocuteur']));
+    //         $this->action_composantes();
+    //     }
+    //     if (
+    //         isset($_GET['id-client']) &&
+    //         isset($_POST['email-interlocuteur']) &&
+    //         isset($_POST['nom-interlocuteur']) &&
+    //         isset($_POST['prenom-interlocuteur']) &&
+    //         isset($_POST['composante'])
+    //     ) {
+    //         if (!$bd->checkInterlocuteurExiste(e($_POST['email-interlocuteur']))) {
+    //             $this->action_ajout_personne(e($_POST['nom-interlocuteur']), e($_POST['prenom-interlocuteur']), e($_POST['email-interlocuteur']));
+    //             $bd->addInterlocuteur(e($_POST['email-interlocuteur']));
+    //         }
+    //         $bd->assignerInterlocuteurComposanteByIdClient(e($_GET['id-client']), e($_POST['email-interlocuteur']), e($_POST['composante']));
+    //         $this->action_clients();
+    //     }
+    // }
 
     //Ajouter interlocuteur
 
@@ -394,29 +394,29 @@ class Controller_commercial extends Controller
             $this->render('infos_composante', $data);
         }
     }
-    public function action_rechercher_prestataire()
-    {
-        $m = Model::getModel();
-        session_start();
-        $recherche = '';
-        if (isset($_POST['recherche'])) {
-            $recherche = ucfirst(strtolower($_POST['recherche']));
-        }
-        $resultat = $m->recherchePrestataires($recherche);
-        $ids = array_column($resultat, 'id_personne');
+    // public function action_rechercher_prestataire()
+    // {
+    //     $m = Model::getModel();
+    //     session_start();
+    //     $recherche = '';
+    //     if (isset($_POST['recherche'])) {
+    //         $recherche = ucfirst(strtolower($_POST['recherche']));
+    //     }
+    //     $resultat = $m->recherchePrestataires($recherche);
+    //     $ids = array_column($resultat, 'id_personne');
 
-        $users = $m->getPrestatairesByIds($ids);
+    //     $users = $m->getPrestatairesByIds($ids);
 
-        $data = [
-            "title" => "Prestataires",
-            'cardLink' => "?controller=gestionnaire&action=infos_personne",
-            "buttonLink" => '?controller=gestionnaire&action=ajout_prestataire_form',
-            "person" => $users,
-            "val_rech" => $recherche,
-            'menu' => $this->action_get_navbar()
-        ];
+    //     $data = [
+    //         "title" => "Prestataires",
+    //         'cardLink' => "?controller=gestionnaire&action=infos_personne",
+    //         "buttonLink" => '?controller=gestionnaire&action=ajout_prestataire_form',
+    //         "person" => $users,
+    //         "val_rech" => $recherche,
+    //         'menu' => $this->action_get_navbar()
+    //     ];
 
-        $this->render("liste", $data);
-    }
+    //     $this->render("liste", $data);
+    // }
 
 }

@@ -117,91 +117,91 @@ class Controller_interlocuteur extends Controller
         }
     }
 
-    /**
-     * Vérifie qu'il existe dans l'url l'id qui fait référence au bon de livraison et renvoie la vue qui permet de consulter le bon de livraison
-     * @return void
-     */
-    public function action_consulter_bdl()
-    {
-        $bd = Model::getModel();
-        sessionstart();
-        if (isset($_GET['id'])) {
-            $typeBdl = $bd->getBdlTypeAndMonth($_GET['id']);
-            if ($typeBdl['type_bdl'] == 'Heure') {
-                $activites = $bd->getAllNbHeureActivite($_GET['id']);
-            }
-            if ($typeBdl['type_bdl'] == 'Demi-journée') {
-                $activites = $bd->getAllDemiJourActivite($_GET['id']);
-            }
-            if ($typeBdl['type_bdl'] == 'Journée') {
-                $activites = $bd->getAllJourActivite($_GET['id']);
-            }
+    // /**
+    //  * Vérifie qu'il existe dans l'url l'id qui fait référence au bon de livraison et renvoie la vue qui permet de consulter le bon de livraison
+    //  * @return void
+    //  */
+    // public function action_consulter_bdl()
+    // {
+    //     $bd = Model::getModel();
+    //     sessionstart();
+    //     if (isset($_GET['id'])) {
+    //         $typeBdl = $bd->getBdlTypeAndMonth($_GET['id']);
+    //         if ($typeBdl['type_bdl'] == 'Heure') {
+    //             $activites = $bd->getAllNbHeureActivite($_GET['id']);
+    //         }
+    //         if ($typeBdl['type_bdl'] == 'Demi-journée') {
+    //             $activites = $bd->getAllDemiJourActivite($_GET['id']);
+    //         }
+    //         if ($typeBdl['type_bdl'] == 'Journée') {
+    //             $activites = $bd->getAllJourActivite($_GET['id']);
+    //         }
 
-            $data = [
-                'bdl' => $typeBdl,
-                'menu' => $this->action_get_navbar(),
-                'activites' => $activites
-            ];
-            $this->render("consulte_bdl", $data);
-        } else {
-            // TODO Réaliser un render de l'erreur
-            echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
-        }
-    }
+    //         $data = [
+    //             'bdl' => $typeBdl,
+    //             'menu' => $this->action_get_navbar(),
+    //             'activites' => $activites
+    //         ];
+    //         $this->render("consulte_bdl", $data);
+    //     } else {
+    //         // TODO Réaliser un render de l'erreur
+    //         echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
+    //     }
+    // }
 
-    /**
-     * Met à jour la colonne valide de la table BON_DE_LIVRAISON pour indiquer que le bon de livraison est validé
-     * @return void
-     */
-    public function action_valider_bdl()
-    {
-        $bd = Model::getModel();
-        sessionstart();
-        if (isset($_GET['id']) && isset($_GET['valide'])) {
-            $bd->setEstValideBdl(e($_GET['id']), $_SESSION['id'], e($_GET['valide']));
-            $this->action_consulter_bdl();
-        } else {
-            // TODO Réaliser un render de l'erreur
-            echo 'Une erreur est survenue lors de la validation de ce bon de livraison';
-        }
-    }
+    // /**
+    //  * Met à jour la colonne valide de la table BON_DE_LIVRAISON pour indiquer que le bon de livraison est validé
+    //  * @return void
+    //  */
+    // public function action_valider_bdl()
+    // {
+    //     $bd = Model::getModel();
+    //     sessionstart();
+    //     if (isset($_GET['id']) && isset($_GET['valide'])) {
+    //         $bd->setEstValideBdl(e($_GET['id']), $_SESSION['id'], e($_GET['valide']));
+    //         $this->action_consulter_bdl();
+    //     } else {
+    //         // TODO Réaliser un render de l'erreur
+    //         echo 'Une erreur est survenue lors de la validation de ce bon de livraison';
+    //     }
+    // }
 
 
-    /**
-     * Envoie un email au(x) commercial/commerciaux assigné(s) à la mission de l'interlocuteur client
-     * @return void
-     */
-    public function action_envoyer_email()
-    {
-        // DONE title mit dans $data pour envoyer sur view_message
-        session_start();
-        $bd = Model::getModel();
-        if (isset($_SESSION['id']) && $bd->getComponentCommercialsEmails($_SESSION['id'])) {
-            $destinatairesEmails = implode(', ', array_column($bd->getComponentCommercialsEmails($_SESSION['id']), 'email'));
-            $emetteur = $_SESSION['email'];
-            $objet = $_POST['objet'];
-            $message = e($_POST['message']);
+    // /**
+    //  * Envoie un email au(x) commercial/commerciaux assigné(s) à la mission de l'interlocuteur client
+    //  * @return void
+    //  */
+    // public function action_envoyer_email()
+    // {
+    //     // DONE title mit dans $data pour envoyer sur view_message
+    //     session_start();
+    //     $bd = Model::getModel();
+    //     if (isset($_SESSION['id']) && $bd->getComponentCommercialsEmails($_SESSION['id'])) {
+    //         $destinatairesEmails = implode(', ', array_column($bd->getComponentCommercialsEmails($_SESSION['id']), 'email'));
+    //         $emetteur = $_SESSION['email'];
+    //         $objet = $_POST['objet'];
+    //         $message = e($_POST['message']);
 
-            //header pour l'envoie du mail
-            $headers = "MIME-Version: 1.0" . "\r\n";
-            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-            $headers .= 'From: <' . $emetteur . '>' . "\r\n";
+    //         //header pour l'envoie du mail
+    //         $headers = "MIME-Version: 1.0" . "\r\n";
+    //         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    //         $headers .= 'From: <' . $emetteur . '>' . "\r\n";
 
-            if (mail($destinatairesEmails, $objet, $message, $headers)) {
-                $data = [
-                    'title' => 'Email',
-                    'message' => 'Le mail a été envoyé !'
-                ];
-                $this->render('message', $data);
-            } else {
-                $data = [
-                    'title' => 'Email',
-                    'message' => "Une erreur est survenue lors de l'envoie du mail !"
-                ];
-                $this->render('message', $data);
-            }
-        }
-    }
+    //         if (mail($destinatairesEmails, $objet, $message, $headers)) {
+    //             $data = [
+    //                 'title' => 'Email',
+    //                 'message' => 'Le mail a été envoyé !'
+    //             ];
+    //             $this->render('message', $data);
+    //         } else {
+    //             $data = [
+    //                 'title' => 'Email',
+    //                 'message' => "Une erreur est survenue lors de l'envoie du mail !"
+    //             ];
+    //             $this->render('message', $data);
+    //         }
+    //     }
+    // }
 
 
     // TODO Fonction qui télécharge un fichier ? A tester
