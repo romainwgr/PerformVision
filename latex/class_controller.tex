@@ -22,6 +22,11 @@ Graphe d\textquotesingle{}héritage de Controller\+:\begin{figure}[H]
 \end{DoxyCompactItemize}
 
 
+\doxysubsection{Description détaillée}
+Classe abstraite \doxylink{class_controller}{Controller}
+
+Cette classe sert de base pour tous les contrôleurs. Elle gère les actions et le rendu des vues. Les classes filles doivent implémenter la méthode {\ttfamily action\+\_\+default}. 
+
 \doxysubsection{Documentation des constructeurs et destructeur}
 \Hypertarget{class_controller_acd649140a4353af09a3a181ae5b00d2e}\label{class_controller_acd649140a4353af09a3a181ae5b00d2e} 
 \index{Controller@{Controller}!\_\_construct@{\_\_construct}}
@@ -29,7 +34,9 @@ Graphe d\textquotesingle{}héritage de Controller\+:\begin{figure}[H]
 \doxysubsubsection{\texorpdfstring{\_\_construct()}{\_\_construct()}}
 {\footnotesize\ttfamily Controller\+::\+\_\+\+\_\+construct (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-Constructeur. Lance l\textquotesingle{}action correspondante 
+Constructeur. Lance l\textquotesingle{}action correspondante.
+
+Le constructeur vérifie s\textquotesingle{}il existe dans l\textquotesingle{}URL un paramètre {\ttfamily action} correspondant à une action du contrôleur. Si c\textquotesingle{}est le cas, il appelle cette action, sinon il appelle l\textquotesingle{}action par défaut. 
 
 \doxysubsection{Documentation des fonctions membres}
 \Hypertarget{class_controller_a9f72d755c6eec81f5e4bd1138798606f}\label{class_controller_a9f72d755c6eec81f5e4bd1138798606f} 
@@ -38,7 +45,9 @@ Constructeur. Lance l\textquotesingle{}action correspondante
 \doxysubsubsection{\texorpdfstring{action\_default()}{action\_default()}}
 {\footnotesize\ttfamily Controller\+::action\+\_\+default (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}}
 
-Action par défaut du contrôleur (à définir dans les classes filles) 
+Action par défaut du contrôleur.
+
+Cette méthode doit être définie dans les classes filles. 
 
 Réimplémentée dans \mbox{\hyperlink{class_controller__administrateur_a8e5663d1a66800daee4982ac354cb2fc}{Controller\+\_\+administrateur}}, \mbox{\hyperlink{class_controller__commercial_adfea4c6a8e5a3322dd28079085546cfd}{Controller\+\_\+commercial}}, \mbox{\hyperlink{class_controller__gestionnaire_a72cd74fe55b4ce454f0001a327f1579b}{Controller\+\_\+gestionnaire}}, \mbox{\hyperlink{class_controller__interlocuteur_a861b9c2be4d749ea9956b8a361f200e6}{Controller\+\_\+interlocuteur}}, \mbox{\hyperlink{class_controller__login_ac85c99182a73a006b5f0d2f1c010de05}{Controller\+\_\+login}}, et \mbox{\hyperlink{class_controller__prestataire_a2372c437cb356f6ffcb0074a384069f5}{Controller\+\_\+prestataire}}.
 
@@ -48,13 +57,15 @@ Réimplémentée dans \mbox{\hyperlink{class_controller__administrateur_a8e5663d
 \doxysubsubsection{\texorpdfstring{action\_error()}{action\_error()}}
 {\footnotesize\ttfamily Controller\+::action\+\_\+error (\begin{DoxyParamCaption}\item[{}]{\$message = {\ttfamily \textquotesingle{}\textquotesingle{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
-Méthode affichant une page d\textquotesingle{}erreur 
+Méthode affichant une page d\textquotesingle{}erreur.
+
+
 \begin{DoxyParams}[1]{Paramètres}
-string & {\em \$message} & Message d\textquotesingle{}erreur à afficher \\
+string & {\em \$message} & (optionnel) Le message d\textquotesingle{}erreur à afficher. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Renvoie}
-aucun 
+void 
 \end{DoxyReturn}
 \Hypertarget{class_controller_a8ca8f26bb68f435facc0e19e54c96019}\label{class_controller_a8ca8f26bb68f435facc0e19e54c96019} 
 \index{Controller@{Controller}!render@{render}}
@@ -62,15 +73,19 @@ aucun
 \doxysubsubsection{\texorpdfstring{render()}{render()}}
 {\footnotesize\ttfamily Controller\+::render (\begin{DoxyParamCaption}\item[{}]{\$vue,  }\item[{}]{\$data = {\ttfamily \mbox{[}\mbox{]}},  }\item[{}]{\$dossier = {\ttfamily \textquotesingle{}\textquotesingle{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
-Affiche la vue 
+Affiche la vue.
+
+
 \begin{DoxyParams}[1]{Paramètres}
-string & {\em \$vue} & nom de la vue \\
+string & {\em \$vue} & Le nom de la vue à afficher. \\
 \hline
-array & {\em \$data} & tableau contenant les données à passer à la vue \\
+array & {\em \$data} & (optionnel) Tableau associatif contenant les données à passer à la vue. \\
+\hline
+string & {\em \$dossier} & (optionnel) Le dossier où se trouve la vue. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Renvoie}
-aucun 
+void 
 \end{DoxyReturn}
 
 

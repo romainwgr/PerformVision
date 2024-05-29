@@ -109,7 +109,10 @@ Fonctions membres protégées</h2></td></tr>
 <tr class="memitem:a6491f58f6d7703fc7f780ce47f258645" id="r_a6491f58f6d7703fc7f780ce47f258645"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6491f58f6d7703fc7f780ce47f258645">action_error</a> ($message='')</td></tr>
 <tr class="separator:a6491f58f6d7703fc7f780ce47f258645"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Documentation des constructeurs et destructeur</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
+<div class="textblock"><p>Classe abstraite <a class="el" href="class_controller.html">Controller</a></p>
+<p>Cette classe sert de base pour tous les contrôleurs. Elle gère les actions et le rendu des vues. Les classes filles doivent implémenter la méthode <code>action_default</code>. </p>
+</div><h2 class="groupheader">Documentation des constructeurs et destructeur</h2>
 <a id="acd649140a4353af09a3a181ae5b00d2e" name="acd649140a4353af09a3a181ae5b00d2e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acd649140a4353af09a3a181ae5b00d2e">&#9670;&#160;</a></span>__construct()</h2>
 
@@ -124,7 +127,8 @@ Fonctions membres protégées</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Constructeur. Lance l'action correspondante </p>
+<p>Constructeur. Lance l'action correspondante.</p>
+<p>Le constructeur vérifie s'il existe dans l'URL un paramètre <code>action</code> correspondant à une action du contrôleur. Si c'est le cas, il appelle cette action, sinon il appelle l'action par défaut. </p>
 
 </div>
 </div>
@@ -151,7 +155,8 @@ Fonctions membres protégées</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Action par défaut du contrôleur (à définir dans les classes filles) </p>
+<p>Action par défaut du contrôleur.</p>
+<p>Cette méthode doit être définie dans les classes filles. </p>
 
 <p>Réimplémentée dans <a class="el" href="class_controller__administrateur.html#a8e5663d1a66800daee4982ac354cb2fc">Controller_administrateur</a>, <a class="el" href="class_controller__commercial.html#adfea4c6a8e5a3322dd28079085546cfd">Controller_commercial</a>, <a class="el" href="class_controller__gestionnaire.html#a72cd74fe55b4ce454f0001a327f1579b">Controller_gestionnaire</a>, <a class="el" href="class_controller__interlocuteur.html#a861b9c2be4d749ea9956b8a361f200e6">Controller_interlocuteur</a>, <a class="el" href="class_controller__login.html#ac85c99182a73a006b5f0d2f1c010de05">Controller_login</a>, et <a class="el" href="class_controller__prestataire.html#a2372c437cb356f6ffcb0074a384069f5">Controller_prestataire</a>.</p>
 
@@ -179,13 +184,14 @@ Fonctions membres protégées</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Méthode affichant une page d'erreur </p><dl class="params"><dt>Paramètres</dt><dd>
+<p>Méthode affichant une page d'erreur.</p>
+<dl class="params"><dt>Paramètres</dt><dd>
   <table class="params">
-    <tr><td class="paramtype">string</td><td class="paramname">$message</td><td>Message d'erreur à afficher </td></tr>
+    <tr><td class="paramtype">string</td><td class="paramname">$message</td><td>(optionnel) Le message d'erreur à afficher. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Renvoie</dt><dd>aucun </dd></dl>
+<dl class="section return"><dt>Renvoie</dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -220,14 +226,16 @@ Fonctions membres protégées</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Affiche la vue </p><dl class="params"><dt>Paramètres</dt><dd>
+<p>Affiche la vue.</p>
+<dl class="params"><dt>Paramètres</dt><dd>
   <table class="params">
-    <tr><td class="paramtype">string</td><td class="paramname">$vue</td><td>nom de la vue </td></tr>
-    <tr><td class="paramtype">array</td><td class="paramname">$data</td><td>tableau contenant les données à passer à la vue </td></tr>
+    <tr><td class="paramtype">string</td><td class="paramname">$vue</td><td>Le nom de la vue à afficher. </td></tr>
+    <tr><td class="paramtype">array</td><td class="paramname">$data</td><td>(optionnel) Tableau associatif contenant les données à passer à la vue. </td></tr>
+    <tr><td class="paramtype">string</td><td class="paramname">$dossier</td><td>(optionnel) Le dossier où se trouve la vue. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Renvoie</dt><dd>aucun </dd></dl>
+<dl class="section return"><dt>Renvoie</dt><dd>void </dd></dl>
 
 </div>
 </div>

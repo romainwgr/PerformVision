@@ -146,8 +146,7 @@ Classe \doxylink{class_model}{Model} contenant le modèle de l\textquotesingle{}
 \item 
 \mbox{\hyperlink{class_model_ab5b91d88f97fb06e38869d5c29886b7b}{get\+Commercial\+By\+Ids}} (\$ids)
 \item 
-\Hypertarget{class_model_a17b41f8cc2185b45c87e92fdcd4c062d}\label{class_model_a17b41f8cc2185b45c87e92fdcd4c062d} 
-{\bfseries insert\+Daily\+Hours} (\$id\+\_\+bdl, \$jour, \$hours\+\_\+worked)
+\mbox{\hyperlink{class_model_a17b41f8cc2185b45c87e92fdcd4c062d}{insert\+Daily\+Hours}} (\$id\+\_\+bdl, \$jour, \$hours\+\_\+worked)
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Fonctions membres publiques statiques}
 \begin{DoxyCompactItemize}
@@ -801,6 +800,21 @@ array\texorpdfstring{$\vert$}{|}string Un tableau du résultat de la requête si
 Méthode vérifiant les rôles de la personne. Si il n\textquotesingle{}y a qu\textquotesingle{}un seul rôle elle retourne simplement le nom de ce rôle. Si il y a plusieurs rôles, une liste des rôles sous forme de tableau. \begin{DoxyReturn}{Renvoie}
 array\texorpdfstring{$\vert$}{|}string 
 \end{DoxyReturn}
+\Hypertarget{class_model_a17b41f8cc2185b45c87e92fdcd4c062d}\label{class_model_a17b41f8cc2185b45c87e92fdcd4c062d} 
+\index{Model@{Model}!insertDailyHours@{insertDailyHours}}
+\index{insertDailyHours@{insertDailyHours}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{insertDailyHours()}{insertDailyHours()}}
+{\footnotesize\ttfamily Model\+::insert\+Daily\+Hours (\begin{DoxyParamCaption}\item[{}]{\$id\+\_\+bdl,  }\item[{}]{\$jour,  }\item[{}]{\$hours\+\_\+worked }\end{DoxyParamCaption})}
+
+Fonction permettant d\textquotesingle{}ajouter des heures pour le jour et bon de livraison spéficié 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id\+\_\+bdl} & \\
+\hline
+int & {\em \$jour} & \\
+\hline
+flaot & {\em \$hours\+\_\+worked} & \\
+\hline
+\end{DoxyParams}
 \Hypertarget{class_model_af9758fd9b75b679bde92c722e5c5d715}\label{class_model_af9758fd9b75b679bde92c722e5c5d715} 
 \index{Model@{Model}!mailExists@{mailExists}}
 \index{mailExists@{mailExists}!Model@{Model}}
