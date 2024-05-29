@@ -1,9 +1,14 @@
 <?php
+/**
+ * @brief Classe du gestionnaire contenant toutes les fonctionnalités du gestionnaire
+ * 
+*/
 
 class Controller_gestionnaire extends Controller
 {
     /**
      * @inheritDoc
+     * Action par défaut qui appelle l'action clients
      */
     public function action_default()
     {
@@ -51,10 +56,7 @@ class Controller_gestionnaire extends Controller
     {
         return [
             ['link' => '?controller=gestionnaire&action=clients', 'name' => 'Société'],
-            // ['link' => '?controller=gestionnaire&action=composantes', 'name' => 'Composantes'],
-            // FIXME action_missions pas défini c'est surement mission_bdl
             ['link' => '?controller=gestionnaire&action=composantes', 'name' => 'Composantes'],
-            // ['link' => '?controller=gestionnaire&action=mission_bdl', 'name' => 'Missions'],
             ['link' => '?controller=gestionnaire&action=prestataires', 'name' => 'Prestataires'],
             ['link' => '?controller=gestionnaire&action=commerciaux', 'name' => 'Commerciaux']
         ];
@@ -266,26 +268,26 @@ class Controller_gestionnaire extends Controller
         }
     }
 
-    /**
-     * Vérifie d'avoir les informations nécessaire pour renvoyer la vue liste avec les bonnes variables pour afficher la liste des bons de livraisons d'un prestataire en fonction de la mission
-     * @return void
-     */
-    // TODO je ne trouve pas le render de cette action (A supprimer?)
-    public function action_mission_bdl()
-    {
-        $bd = Model::getModel();
-        sessionstart();
-        if (isset($_GET['id']) && isset($_GET['id-prestataire'])) {
-            $data = [
-                'title' => 'Bons de livraison',
-                'cardLink' => '?controller=gestionnaire&action=consulter_bdl',
-                'menu' => $this->action_get_navbar(),
-                'person' => $bd->getBdlsOfPrestataireByIdMission(e($_GET['id']), e($_GET['id-prestataire']))
-            ];
-            $this->render('liste', $data);
-        }
-        $this->action_dashboard();
-    }
+    // /**
+    //  * Vérifie d'avoir les informations nécessaire pour renvoyer la vue liste avec les bonnes variables pour afficher la liste des bons de livraisons d'un prestataire en fonction de la mission
+    //  * @return void
+    //  */
+    // // TODO je ne trouve pas le render de cette action (A supprimer?)
+    // public function action_mission_bdl()
+    // {
+    //     $bd = Model::getModel();
+    //     sessionstart();
+    //     if (isset($_GET['id']) && isset($_GET['id-prestataire'])) {
+    //         $data = [
+    //             'title' => 'Bons de livraison',
+    //             'cardLink' => '?controller=gestionnaire&action=consulter_bdl',
+    //             'menu' => $this->action_get_navbar(),
+    //             'person' => $bd->getBdlsOfPrestataireByIdMission(e($_GET['id']), e($_GET['id-prestataire']))
+    //         ];
+    //         $this->render('liste', $data);
+    //     }
+    //     $this->action_dashboard();
+    // }
 
     // /**
     //  * Vérifie d'avoir les informations nécessaire à l'assignation d'un prestataire dans une mission
@@ -422,11 +424,10 @@ class Controller_gestionnaire extends Controller
         echo json_encode($response);
     }
 
-    /**
-     * Vérifie qu'il y'a toutes les informations nécessaire pour l'ajout d'un(e) client/société
-     * @return void
-     */
-    // TODO pourquoi autant d'arguments pour en utiliser que deux wsh
+    // /**
+    //  * Vérifie qu'il y'a toutes les informations nécessaire pour l'ajout d'un(e) client/société
+    //  * @return void
+    //  */
     // public function action_ajout_client()
     // {
     //     $bd = Model::getModel();
@@ -460,6 +461,19 @@ class Controller_gestionnaire extends Controller
     //     }
     //     $this->action_ajout_client_form();
     // }
+
+    /**
+    * Action permettant de savoir si un client existe déjà ou non, réalisée avec AJAX.
+    *
+    * Cette méthode vérifie si les informations du client sont fournies via une requête POST.
+    * Si le client n'existe pas, il ajoute les informations du client à la session et retourne un succès.
+    * Sinon, il retourne un message indiquant que le client existe déjà.
+    * Si les informations du client sont manquantes, un message d'erreur est retourné.
+    *
+    * @return void La méthode retourne une réponse JSON contenant :
+    * - `success` : Booléen indiquant le succès ou l'échec de l'opération.
+    * - `message` : Un message d'erreur en cas d'échec.
+    */
     public function action_is_client()
     {
         session_start();
@@ -480,6 +494,7 @@ class Controller_gestionnaire extends Controller
         echo json_encode($response);
     }
 
+
     public function action_is_composante()
     {
 
@@ -487,7 +502,7 @@ class Controller_gestionnaire extends Controller
 
 
     /**
-     * Vérifie si la personne existe et la créée si ce n'est pas le cas
+     * Action permettant de savoir si une personne existe et la créée si ce n'est pas le cas
      * @param $nom
      * @param $prenom
      * @param $email
@@ -500,6 +515,7 @@ class Controller_gestionnaire extends Controller
             // FIXME chiffrer le mot de passe et ucfirst sur nom prenom
             $bd->createPersonne($nom, $prenom, $email, genererMdp(),$tel);
         }
+        // TODO que faire si elle existe dejà?
     }
 
     // /**
@@ -560,43 +576,53 @@ class Controller_gestionnaire extends Controller
     //     }
     // }
 
+/**
+ * Vérifie d'avoir toutes les informations d'un prestataire pour ensuite créer la personne et l'ajouter en tant que prestataire.
+ *
+ * Cette méthode est appelée via une requête AJAX et vérifie si toutes les informations nécessaires du prestataire sont présentes
+ * dans la requête POST. Elle procède ensuite à la création de la personne et à son ajout en tant que prestataire.
+ *
+ * @return void La méthode retourne une réponse JSON contenant :
+ * - `success` : Booléen indiquant le succès ou l'échec de l'opération.
+ * - `url` : L'URL de redirection en cas de succès.
+ * - `message` : Un message d'erreur en cas d'échec.
+ * - `field` : Le champ qui a causé l'erreur, le cas échéant.
+ *
+ */
+public function action_ajout_prestataire()
+{
+    $bd = Model::getModel();
 
-    /**
-     * Vérifie d'avoir toutes les informations d'un prestataire pour ensuite créer la personne et l'ajouter en tant que prestataire
-     * @return void
-     */
-    public function action_ajout_prestataire()
-    {
-        $bd = Model::getModel();
-
-        if (isset($_POST['prenom'], $_POST['nom'], $_POST['email'], $_POST['tel'])) {
-            $prenom = $_POST['prenom'];
-            $nom = $_POST['nom'];
-            $email = $_POST['email'];
-            $tel = $_POST['tel'];
-            if (!$bd->checkPersonneExiste($email)) {
-                if ($bd->createPersonne($nom, $prenom, $email, genererMdp(), $tel)) {
-                    if ($bd->addPrestataire($email)) {
-                        $validation = 'added';
-                        $response = ['success' => true, 'url' => 'index.php?controller=gestionnaire&action=prestataires&message=' . $validation];
-                    } else {
-                        $response = ['success' => false, 'message' => 'Erreur lors de l\'ajout du prestataire.'];
-                    }
+    if (isset($_POST['prenom'], $_POST['nom'], $_POST['email'], $_POST['tel'])) {
+        $prenom = $_POST['prenom'];
+        $nom = $_POST['nom'];
+        $email = $_POST['email'];
+        $tel = $_POST['tel'];
+        
+        // Validation de l'existence de la personne
+        if (!$bd->checkPersonneExiste($email)) {
+            // Création de la personne
+            if ($bd->createPersonne($nom, $prenom, $email, genererMdp(), $tel)) {
+                // Ajout en tant que prestataire
+                if ($bd->addPrestataire($email)) {
+                    $validation = 'added';
+                    $response = ['success' => true, 'url' => 'index.php?controller=gestionnaire&action=prestataires&message=' . $validation];
                 } else {
-                    $response = ['success' => false, 'message' => "Erreur de création de la personne"];
+                    $response = ['success' => false, 'message' => 'Erreur lors de l\'ajout du prestataire.'];
                 }
-
             } else {
-                $response = ['success' => false, 'message' => "L'adresse email est déjà utilisé!", 'field' => 'email'];
+                $response = ['success' => false, 'message' => "Erreur de création de la personne"];
             }
-            // Validation et ajout du prestataire
-
         } else {
-            $response = ['success' => false, 'message' => 'Informations manquantes.'];
+            $response = ['success' => false, 'message' => "L'adresse email est déjà utilisé!", 'field' => 'email'];
         }
-
-        echo json_encode($response);
+    } else {
+        $response = ['success' => false, 'message' => 'Informations manquantes.'];
     }
+
+    echo json_encode($response);
+}
+
 
     // /**
     //  * Vérifie d'avoir toutes les informations nécessaires pour l'ajout d'un interlocuteur dans une composante
@@ -723,7 +749,12 @@ class Controller_gestionnaire extends Controller
     // Ajout d'une fonction pour rechercher un prestataire 10/05 Romain
     // ca recherche pas un gestionnaire mais obligé de mettre ça car leur site est cassé
     /**
-     * Recherche un prestataire selon l'entrée de l'utilisateur dans la barre de recherche
+     * Recherche des personnes selon l'entrée de l'utilisateur dans la barre de recherche
+     * 
+     * L'action récupère le rôle pour rechercher des personnes selon leur rôle 
+     * Par exemple dans la page des prestataires, cette méthode est appelée avec 'role=prestataire' dans la barre de recherche, ce qui recherche uniquement des prestataires
+     * 
+     * Cette action renvoie la vue correspondant au role
      * @return void
      */
     public function action_rechercher()

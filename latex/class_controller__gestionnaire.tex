@@ -1,5 +1,10 @@
 \doxysection{Référence de la classe Controller\+\_\+gestionnaire}
 \hypertarget{class_controller__gestionnaire}{}\label{class_controller__gestionnaire}\index{Controller\_gestionnaire@{Controller\_gestionnaire}}
+
+
+Classe du gestionnaire contenant toutes les fonctionnalités du gestionnaire.  
+
+
 Graphe d\textquotesingle{}héritage de Controller\+\_\+gestionnaire\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -34,8 +39,6 @@ Graphe d\textquotesingle{}héritage de Controller\+\_\+gestionnaire\+:\begin{fig
 \mbox{\hyperlink{class_controller__gestionnaire_ad52f7332918bc19a7295e97af98202b3}{action\+\_\+prestataires}} ()
 \item 
 \mbox{\hyperlink{class_controller__gestionnaire_a102826b82109389e5945b8b2882e59f3}{action\+\_\+commerciaux}} ()
-\item 
-\mbox{\hyperlink{class_controller__gestionnaire_af944695ccac933b58f5021841151c48f}{action\+\_\+mission\+\_\+bdl}} ()
 \item 
 \mbox{\hyperlink{class_controller__gestionnaire_a180f75203d22f5dce6fc40b17c54ac67}{action\+\_\+ajout\+\_\+interlocuteur\+\_\+form}} ()
 \item 
@@ -80,6 +83,9 @@ Graphe d\textquotesingle{}héritage de Controller\+\_\+gestionnaire\+:\begin{fig
 \mbox{\hyperlink{class_controller_a6491f58f6d7703fc7f780ce47f258645}{action\+\_\+error}} (\$message=\textquotesingle{}\textquotesingle{})
 \end{DoxyCompactItemize}
 
+
+\doxysubsection{Description détaillée}
+Classe du gestionnaire contenant toutes les fonctionnalités du gestionnaire. 
 
 \doxysubsection{Documentation des fonctions membres}
 \Hypertarget{class_controller__gestionnaire_a8b8a7bc2592edffd43f81de064e9a04a}\label{class_controller__gestionnaire_a8b8a7bc2592edffd43f81de064e9a04a} 
@@ -142,7 +148,7 @@ void
 \doxysubsubsection{\texorpdfstring{action\_ajout\_personne()}{action\_ajout\_personne()}}
 {\footnotesize\ttfamily Controller\+\_\+gestionnaire\+::action\+\_\+ajout\+\_\+personne (\begin{DoxyParamCaption}\item[{}]{\$nom,  }\item[{}]{\$prenom,  }\item[{}]{\$email,  }\item[{}]{\$tel }\end{DoxyParamCaption})}
 
-Vérifie si la personne existe et la créée si ce n\textquotesingle{}est pas le cas 
+Action permettant de savoir si une personne existe et la créée si ce n\textquotesingle{}est pas le cas 
 \begin{DoxyParams}{Paramètres}
 {\em \$nom} & \\
 \hline
@@ -160,8 +166,18 @@ void
 \doxysubsubsection{\texorpdfstring{action\_ajout\_prestataire()}{action\_ajout\_prestataire()}}
 {\footnotesize\ttfamily Controller\+\_\+gestionnaire\+::action\+\_\+ajout\+\_\+prestataire (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-Vérifie d\textquotesingle{}avoir toutes les informations d\textquotesingle{}un prestataire pour ensuite créer la personne et l\textquotesingle{}ajouter en tant que prestataire \begin{DoxyReturn}{Renvoie}
-void 
+Vérifie d\textquotesingle{}avoir toutes les informations d\textquotesingle{}un prestataire pour ensuite créer la personne et l\textquotesingle{}ajouter en tant que prestataire.
+
+Cette méthode est appelée via une requête AJAX et vérifie si toutes les informations nécessaires du prestataire sont présentes dans la requête POST. Elle procède ensuite à la création de la personne et à son ajout en tant que prestataire.
+
+\begin{DoxyReturn}{Renvoie}
+void La méthode retourne une réponse JSON contenant \+:
+\begin{DoxyItemize}
+\item {\ttfamily success} \+: Booléen indiquant le succès ou l\textquotesingle{}échec de l\textquotesingle{}opération.
+\item {\ttfamily url} \+: L\textquotesingle{}URL de redirection en cas de succès.
+\item {\ttfamily message} \+: Un message d\textquotesingle{}erreur en cas d\textquotesingle{}échec.
+\item {\ttfamily field} \+: Le champ qui a causé l\textquotesingle{}erreur, le cas échéant. 
+\end{DoxyItemize}
 \end{DoxyReturn}
 \Hypertarget{class_controller__gestionnaire_a955e3370d6a25aecc2c558444164cd22}\label{class_controller__gestionnaire_a955e3370d6a25aecc2c558444164cd22} 
 \index{Controller\_gestionnaire@{Controller\_gestionnaire}!action\_ajout\_prestataire\_form@{action\_ajout\_prestataire\_form}}
@@ -214,7 +230,7 @@ void
 \doxysubsubsection{\texorpdfstring{action\_default()}{action\_default()}}
 {\footnotesize\ttfamily Controller\+\_\+gestionnaire\+::action\+\_\+default (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-@inherit\+Doc 
+@inherit\+Doc Action par défaut qui appelle l\textquotesingle{}action clients 
 
 Réimplémentée à partir de \mbox{\hyperlink{class_controller_a9f72d755c6eec81f5e4bd1138798606f}{Controller}}.
 
@@ -269,8 +285,16 @@ void
 \doxysubsubsection{\texorpdfstring{action\_is\_client()}{action\_is\_client()}}
 {\footnotesize\ttfamily Controller\+\_\+gestionnaire\+::action\+\_\+is\+\_\+client (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-Vérifie qu\textquotesingle{}il y\textquotesingle{}a toutes les informations nécessaire pour l\textquotesingle{}ajout d\textquotesingle{}un(e) client/société \begin{DoxyReturn}{Renvoie}
-void 
+Action permettant de savoir si un client existe déjà ou non, réalisée avec AJAX.
+
+Cette méthode vérifie si les informations du client sont fournies via une requête POST. Si le client n\textquotesingle{}existe pas, il ajoute les informations du client à la session et retourne un succès. Sinon, il retourne un message indiquant que le client existe déjà. Si les informations du client sont manquantes, un message d\textquotesingle{}erreur est retourné.
+
+\begin{DoxyReturn}{Renvoie}
+void La méthode retourne une réponse JSON contenant \+:
+\begin{DoxyItemize}
+\item {\ttfamily success} \+: Booléen indiquant le succès ou l\textquotesingle{}échec de l\textquotesingle{}opération.
+\item {\ttfamily message} \+: Un message d\textquotesingle{}erreur en cas d\textquotesingle{}échec. 
+\end{DoxyItemize}
 \end{DoxyReturn}
 \Hypertarget{class_controller__gestionnaire_a3851f104e655a3d5acef73f5428926c9}\label{class_controller__gestionnaire_a3851f104e655a3d5acef73f5428926c9} 
 \index{Controller\_gestionnaire@{Controller\_gestionnaire}!action\_maj\_infos@{action\_maj\_infos}}
@@ -308,15 +332,6 @@ void
 Met à jour les informations de la personne \begin{DoxyReturn}{Renvoie}
 void 
 \end{DoxyReturn}
-\Hypertarget{class_controller__gestionnaire_af944695ccac933b58f5021841151c48f}\label{class_controller__gestionnaire_af944695ccac933b58f5021841151c48f} 
-\index{Controller\_gestionnaire@{Controller\_gestionnaire}!action\_mission\_bdl@{action\_mission\_bdl}}
-\index{action\_mission\_bdl@{action\_mission\_bdl}!Controller\_gestionnaire@{Controller\_gestionnaire}}
-\doxysubsubsection{\texorpdfstring{action\_mission\_bdl()}{action\_mission\_bdl()}}
-{\footnotesize\ttfamily Controller\+\_\+gestionnaire\+::action\+\_\+mission\+\_\+bdl (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
-
-Vérifie d\textquotesingle{}avoir les informations nécessaire pour renvoyer la vue liste avec les bonnes variables pour afficher la liste des bons de livraisons d\textquotesingle{}un prestataire en fonction de la mission \begin{DoxyReturn}{Renvoie}
-void 
-\end{DoxyReturn}
 \Hypertarget{class_controller__gestionnaire_ad52f7332918bc19a7295e97af98202b3}\label{class_controller__gestionnaire_ad52f7332918bc19a7295e97af98202b3} 
 \index{Controller\_gestionnaire@{Controller\_gestionnaire}!action\_prestataires@{action\_prestataires}}
 \index{action\_prestataires@{action\_prestataires}!Controller\_gestionnaire@{Controller\_gestionnaire}}
@@ -332,7 +347,11 @@ void
 \doxysubsubsection{\texorpdfstring{action\_rechercher()}{action\_rechercher()}}
 {\footnotesize\ttfamily Controller\+\_\+gestionnaire\+::action\+\_\+rechercher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-Recherche un prestataire selon l\textquotesingle{}entrée de l\textquotesingle{}utilisateur dans la barre de recherche \begin{DoxyReturn}{Renvoie}
+Recherche des personnes selon l\textquotesingle{}entrée de l\textquotesingle{}utilisateur dans la barre de recherche
+
+L\textquotesingle{}action récupère le rôle pour rechercher des personnes selon leur rôle Par exemple dans la page des prestataires, cette méthode est appelée avec \textquotesingle{}role=prestataire\textquotesingle{} dans la barre de recherche, ce qui recherche uniquement des prestataires
+
+Cette action renvoie la vue correspondant au role \begin{DoxyReturn}{Renvoie}
 void 
 \end{DoxyReturn}
 

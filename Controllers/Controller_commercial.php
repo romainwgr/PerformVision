@@ -1,12 +1,27 @@
 <?php
 
+/**
+ * @brief Classe du commercial contenant toutes les fonctionnalités du commercial
+ * 
+ * Pas encore fonctionnelle
+ * 
+*/
 class Controller_commercial extends Controller
 {
+
+    /**
+     * Action par défaut qui appelle l'action accueil
+     */
     public function action_default()
     {
         $this->action_accueil();
     }
 
+    /**
+     * 
+     * Action qui retourne le tableau de bord du commercial
+     * @return void
+     */
     public function action_accueil()
     {
         sessionstart(); // Fonction dans Utils pour lancer la session si elle n'est pas lancée 
@@ -27,50 +42,50 @@ class Controller_commercial extends Controller
                     'Préstataire assigné',
                     'Bon de livraison'
                 ],
-                'dashboard' => $bd->getDashboardCommercial($_SESSION['id'])
+               // 'dashboard' => $bd->getDashboardCommercial($_SESSION['id'])
             ];
             $this->render('accueil', $data);
         }
         $this->render('accueil');
     }
 
-    public function action_missions()
-    {
-        // Redirection vers l'action dashboard
-        $this->action_dashboard();
-    }
+    // public function action_missions()
+    // {
+    //     // Redirection vers l'action dashboard
+    //     $this->action_dashboard();
+    // }
 
 
-    /**
-     * Renvoie le tableau de bord du commercial avec les variables adéquates
-     * @return void
-     */
-    public function action_dashboard()
-    {
-        sessionstart();
-        $_SESSION['role'] = 'commercial';
-        if (isset($_SESSION['id'])) {
-            $bd = Model::getModel();
-            $data = [
-                'menu'=>$this->action_get_navbar(), 
-                'bdlLink' => '?controller=commercial&action=mission_bdl', 
-                'header' => [
-                    'Société', 
-                    'Composante',
-                    'Nom Mission',
-                    'Préstataire assigné', 
-                    'Bon de livraison'
-                ], 
-                'dashboard' => $bd->getdashboardCommercial($_SESSION['id'])
-            ];
-            return $this->render('prestataire_missions', $data);
-        } 
-        else 
-        {
-            // TODO Réaliser un render de l'erreur
-            echo 'Une erreur est survenue lors du chargement du tableau de bord';
-        }
-    }
+    // /**
+    //  * Renvoie le tableau de bord du commercial avec les variables adéquates
+    //  * @return void
+    //  */
+    // public function action_dashboard()
+    // {
+    //     sessionstart();
+    //     $_SESSION['role'] = 'commercial';
+    //     if (isset($_SESSION['id'])) {
+    //         $bd = Model::getModel();
+    //         $data = [
+    //             'menu'=>$this->action_get_navbar(), 
+    //             'bdlLink' => '?controller=commercial&action=mission_bdl', 
+    //             'header' => [
+    //                 'Société', 
+    //                 'Composante',
+    //                 'Nom Mission',
+    //                 'Préstataire assigné', 
+    //                 'Bon de livraison'
+    //             ], 
+    //             'dashboard' => $bd->getdashboardCommercial($_SESSION['id'])
+    //         ];
+    //         return $this->render('prestataire_missions', $data);
+    //     } 
+    //     else 
+    //     {
+    //         // TODO Réaliser un render de l'erreur
+    //         echo 'Une erreur est survenue lors du chargement du tableau de bord';
+    //     }
+    // }
 
     /**
      * Action qui retourne les éléments du menu pour le commercial
@@ -86,25 +101,25 @@ class Controller_commercial extends Controller
         ];
     }
 
-    /**
-     * Vérifie d'avoir les informations nécessaire pour renvoyer la vue liste avec les bonnes variables pour afficher la liste des bons de livraisons d'un prestataire en fonction de la mission
-     * @return void
-     */
-    public function action_mission_bdl()
-    {
-        $bd = Model::getModel();
-        sessionstart();
-        if (isset($_GET['id']) && isset($_GET['id-prestataire'])) {
-            $data = [
-                'title' => 'Bons de livraison',
-                'cardLink' => '?controller=commercial&action=consulter_bdl',
-                'menu' => $this->action_get_navbar(),
-                'person' => $bd->getBdlsOfPrestataireByIdMission(e($_GET['id']), e($_GET['id-prestataire']))
-            ];
-            $this->render('liste', $data);
-        }
-        $this->action_dashboard();
-    }
+    // /**
+    //  * Vérifie d'avoir les informations nécessaire pour renvoyer la vue liste avec les bonnes variables pour afficher la liste des bons de livraisons d'un prestataire en fonction de la mission
+    //  * @return void
+    //  */
+    // public function action_mission_bdl()
+    // {
+    //     $bd = Model::getModel();
+    //     sessionstart();
+    //     if (isset($_GET['id']) && isset($_GET['id-prestataire'])) {
+    //         $data = [
+    //             'title' => 'Bons de livraison',
+    //             'cardLink' => '?controller=commercial&action=consulter_bdl',
+    //             'menu' => $this->action_get_navbar(),
+    //             'person' => $bd->getBdlsOfPrestataireByIdMission(e($_GET['id']), e($_GET['id-prestataire']))
+    //         ];
+    //         $this->render('liste', $data);
+    //     }
+    //     $this->action_dashboard();
+    // }
 
     /**
      * Met à jour les informations de l'utilisateur connecté
@@ -199,67 +214,67 @@ class Controller_commercial extends Controller
         }
     }
 
-    /**
-     * Renvoie la liste de toutes les composantes
-     * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
-     * @return void
-     */
-    public function action_composantes()
-    {
-        sessionstart();
-        if (isset($_SESSION['id'])) {
-            $bd = Model::getModel();
-            $data = [
-                'title' => 'Composantes',
-                'person' => $bd->getComposantesForCommercial($_SESSION['id']),
-                'cardLink' => '?controller=commercial&action=infos_composante',
-                'menu' => $this->action_get_navbar()
-            ];
-            $this->render("liste", $data);
-        }
-    }
+    // /**
+    //  * Renvoie la liste de toutes les composantes
+    //  * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
+    //  * @return void
+    //  */
+    // public function action_composantes()
+    // {
+    //     sessionstart();
+    //     if (isset($_SESSION['id'])) {
+    //         $bd = Model::getModel();
+    //         $data = [
+    //             'title' => 'Composantes',
+    //             'person' => $bd->getComposantesForCommercial($_SESSION['id']),
+    //             'cardLink' => '?controller=commercial&action=infos_composante',
+    //             'menu' => $this->action_get_navbar()
+    //         ];
+    //         $this->render("liste", $data);
+    //     }
+    // }
 
-    /**
-     * Renvoie la liste des interlocuteurs des composantes assignées au commercial connecté
-     * @return void
-     */
-    public function action_commercial_interlocuteurs()
-    {
-        sessionstart();
-        if (isset($_SESSION['id'])) {
-            $bd = Model::getModel();
-            $data = [
-                $bd->getInterlocuteurForCommercial($_SESSION['id'])
-            ];
-            $this->render("liste", $data);
-        } else {
-            // TODO Réaliser un render de l'erreur
-            echo 'Une erreur est survenue lors du chargement des clients.';
-        }
-    }
+    // /**
+    //  * Renvoie la liste des interlocuteurs des composantes assignées au commercial connecté
+    //  * @return void
+    //  */
+    // public function action_commercial_interlocuteurs()
+    // {
+    //     sessionstart();
+    //     if (isset($_SESSION['id'])) {
+    //         $bd = Model::getModel();
+    //         $data = [
+    //             $bd->getInterlocuteurForCommercial($_SESSION['id'])
+    //         ];
+    //         $this->render("liste", $data);
+    //     } else {
+    //         // TODO Réaliser un render de l'erreur
+    //         echo 'Une erreur est survenue lors du chargement des clients.';
+    //     }
+    // }
 
-    /**
-     * Renvoie la liste de tous les prestataires
-     * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
-     * @return void
-     */
-    public function action_prestataires()
-    {
-        sessionstart();
-        if (isset($_SESSION['id'])) {
-            $bd = Model::getModel();
-            $data = [
-                'title' => 'Prestataires',
-                'cardLink' => "?controller=commercial&action=infos_personne",
-                "person" => $bd->getPrestataireForCommercial($_SESSION['id']),
-                'menu' => $this->action_get_navbar()
-            ];
-            $this->render("liste", $data);
-        } else {
-            // TODO Réaliser un render de l'erreur
-            echo 'Une erreur est survenue lors du chargement des prestataire.';
-        }
-    }
+    // /**
+    //  * Renvoie la liste de tous les prestataires
+    //  * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
+    //  * @return void
+    //  */
+    // public function action_prestataires()
+    // {
+    //     sessionstart();
+    //     if (isset($_SESSION['id'])) {
+    //         $bd = Model::getModel();
+    //         $data = [
+    //             'title' => 'Prestataires',
+    //             'cardLink' => "?controller=commercial&action=infos_personne",
+    //             "person" => $bd->getPrestataireForCommercial($_SESSION['id']),
+    //             'menu' => $this->action_get_navbar()
+    //         ];
+    //         $this->render("liste", $data);
+    //     } else {
+    //         // TODO Réaliser un render de l'erreur
+    //         echo 'Une erreur est survenue lors du chargement des prestataire.';
+    //     }
+    // }
 
     // /**
     //  * Vérifie si la personne existe et la créée si ce n'est pas le cas
@@ -375,7 +390,7 @@ class Controller_commercial extends Controller
     }
 
     /**
-     * Vérifie d'avoir un id dans l'url qui fait référence à la composante et renvoie la vue qui affiche les informations de la composante
+     * Action qui renvoie la vue qui affiche les informations de la composante
      * @return void
      */
     public function action_infos_composante()
@@ -394,29 +409,6 @@ class Controller_commercial extends Controller
             $this->render('infos_composante', $data);
         }
     }
-    // public function action_rechercher_prestataire()
-    // {
-    //     $m = Model::getModel();
-    //     session_start();
-    //     $recherche = '';
-    //     if (isset($_POST['recherche'])) {
-    //         $recherche = ucfirst(strtolower($_POST['recherche']));
-    //     }
-    //     $resultat = $m->recherchePrestataires($recherche);
-    //     $ids = array_column($resultat, 'id_personne');
-
-    //     $users = $m->getPrestatairesByIds($ids);
-
-    //     $data = [
-    //         "title" => "Prestataires",
-    //         'cardLink' => "?controller=gestionnaire&action=infos_personne",
-    //         "buttonLink" => '?controller=gestionnaire&action=ajout_prestataire_form',
-    //         "person" => $users,
-    //         "val_rech" => $recherche,
-    //         'menu' => $this->action_get_navbar()
-    //     ];
-
-    //     $this->render("liste", $data);
-    // }
+    // TODO Ajouter la fonction de recherche mais il faut ajouter des contraintes car il ne peut voir que ceux qui sont relié a lui
 
 }

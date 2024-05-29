@@ -1,15 +1,26 @@
 <?php
-
+/**
+ * @brief Classe de l'interlocuteur contenant toutes les fonctionnalités de l'interlocuteur
+ * 
+ * Cette classe n'est pas encore fonctionnelle
+ */
 class Controller_interlocuteur extends Controller
 {
     /**
      * @inheritDoc
+     * Action par défaut qui appelle l'action accueil
+     * @return void
      */
     public function action_default()
     {
         $this->action_accueil();
     }
 
+    /**
+     * Action accueil qui renvoie le tableau de bord de l'interlocuteur
+     * @return void
+     *
+     */
     public function action_accueil()
     {
         sessionstart(); // Fonction dans Utils pour lancer la session si elle n'est pas lancée 
@@ -37,37 +48,37 @@ class Controller_interlocuteur extends Controller
         $this->render('accueil');
     }
 
-    public function action_missions()
-    {
-        // Redirection vers l'action dashboard
-        $this->action_dashboard();
-    }
-    /**
-     * Affiche le tableau de bord de l'interlocuteur client en récupérant les informations grâce à son id
-     * @return void
-     */
-    public function action_dashboard()
-    {
-        sessionstart();
-        if (isset($_SESSION['id'])) {
-            $bd = Model::getModel();
-            $data = [
-                'header' => [
-                    'Nom projet/société',
-                    'Date',
-                    'Prestataire assigné',
-                    'Bon de livraison'
-                ],
-                'menu' => $this->action_get_navbar(),
-                'bdlLink' => '?controller=interlocuteur&action=mission_bdl',
-                'dashboard' => $bd->getClientContactDashboardData()
-            ];
-            return $this->render('interlocuteur', $data);
-        } else {
-            // TODO Réaliser un render de l'erreur
-            echo 'Une erreur est survenue lors du chargement du tableau de bord';
-        }
-    }
+    // public function action_missions()
+    // {
+    //     // Redirection vers l'action dashboard
+    //     $this->action_dashboard();
+    // }
+    // /**
+    //  * Affiche le tableau de bord de l'interlocuteur client en récupérant les informations grâce à son id
+    //  * @return void
+    //  */
+    // public function action_dashboard()
+    // {
+    //     sessionstart();
+    //     if (isset($_SESSION['id'])) {
+    //         $bd = Model::getModel();
+    //         $data = [
+    //             'header' => [
+    //                 'Nom projet/société',
+    //                 'Date',
+    //                 'Prestataire assigné',
+    //                 'Bon de livraison'
+    //             ],
+    //             'menu' => $this->action_get_navbar(),
+    //             'bdlLink' => '?controller=interlocuteur&action=mission_bdl',
+    //             'dashboard' => $bd->getClientContactDashboardData()
+    //         ];
+    //         return $this->render('interlocuteur', $data);
+    //     } else {
+    //         // TODO Réaliser un render de l'erreur
+    //         echo 'Une erreur est survenue lors du chargement du tableau de bord';
+    //     }
+    // }
 
     /**
      * Action qui retourne les éléments du menu pour l'interlocuteur
@@ -92,30 +103,34 @@ class Controller_interlocuteur extends Controller
         $this->render('infos', $data);
     }
 
+    /**
+     * Met à jour les informations de la personne
+     * @return void
+     */
     public function action_maj_infos()
     {
         maj_infos_personne(); // fonction dans Utils
         $this->action_infos();
     }
 
-    /**
-     * Met à jour les informations de l'utilisateur connecté
-     * @return void
-     */
-    public function action_mission_bdl()
-    {
-        $bd = Model::getModel();
-        sessionstart();
-        if (isset($_GET['id']) && isset($_GET['id-prestataire'])) {
-            $data = [
-                'title' => 'Bons de livraison',
-                'menu' => $this->action_get_navbar(),
-                'cardLink' => '?controller=interlocuteur&action=consulter_bdl',
-                'person' => $bd->getBdlsOfPrestataireByIdMission(e($_GET['id']), e($_GET['id-prestataire']))
-            ];
-            $this->render('liste', $data);
-        }
-    }
+    // /**
+    //  * Met à jour les informations de l'utilisateur connecté
+    //  * @return void
+    //  */
+    // public function action_mission_bdl()
+    // {
+    //     $bd = Model::getModel();
+    //     sessionstart();
+    //     if (isset($_GET['id']) && isset($_GET['id-prestataire'])) {
+    //         $data = [
+    //             'title' => 'Bons de livraison',
+    //             'menu' => $this->action_get_navbar(),
+    //             'cardLink' => '?controller=interlocuteur&action=consulter_bdl',
+    //             'person' => $bd->getBdlsOfPrestataireByIdMission(e($_GET['id']), e($_GET['id-prestataire']))
+    //         ];
+    //         $this->render('liste', $data);
+    //     }
+    // }
 
     // /**
     //  * Vérifie qu'il existe dans l'url l'id qui fait référence au bon de livraison et renvoie la vue qui permet de consulter le bon de livraison
@@ -206,7 +221,7 @@ class Controller_interlocuteur extends Controller
 
     // TODO Fonction qui télécharge un fichier ? A tester
     /**
-     * Lecture du fichier correspondant au bon de livraison pour l'envoyer au client
+     * Méthode qui permet de lire fichier pdf correspondant au bon de livraison pour l'envoyer au client
      * @return void
      */
     public function telecharger_bdl()

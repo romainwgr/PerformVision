@@ -1,5 +1,10 @@
 \doxysection{Référence de la classe Model}
 \hypertarget{class_model}{}\label{class_model}\index{Model@{Model}}
+
+
+Classe \doxylink{class_model}{Model} contenant le modèle de l\textquotesingle{}application permettant d\textquotesingle{}effectuer des requêtes sur la base de données.  
+
+
 \doxysubsubsection*{Fonctions membres publiques}
 \begin{DoxyCompactItemize}
 \item 
@@ -99,52 +104,15 @@
 \item 
 \mbox{\hyperlink{class_model_a9da49d6df9e8767f6965b83fb1bd46c8}{update\+Bdl}} (\$id\+\_\+composante, \$annee, \$mois, \$commentaire, \$heures)
 \item 
-\Hypertarget{class_model_af4447be706ec4539e7b0b1437397678d}\label{class_model_af4447be706ec4539e7b0b1437397678d} 
-{\bfseries get\+Dashboard\+Commercial} (\$id\+\_\+co)
-\item 
 \Hypertarget{class_model_a805805819d9026a66acb77991e8bf66e}\label{class_model_a805805819d9026a66acb77991e8bf66e} 
 {\bfseries get\+Dashboard\+Prestataire} (\$id\+\_\+prestataire)
-\item 
-\Hypertarget{class_model_a73900ed23f7e75048f0d18de051aa27e}\label{class_model_a73900ed23f7e75048f0d18de051aa27e} 
-{\bfseries get\+Interlocuteur\+For\+Commercial} (\$id\+\_\+co)
-\item 
-\Hypertarget{class_model_adfcae8782addf751eb504d71fcc5880f}\label{class_model_adfcae8782addf751eb504d71fcc5880f} 
-{\bfseries get\+Prestataire\+For\+Commercial} (\$id\+\_\+co)
-\item 
-\Hypertarget{class_model_a536889c76c975875457d69d6261a15ad}\label{class_model_a536889c76c975875457d69d6261a15ad} 
-{\bfseries get\+Composantes\+For\+Commercial} (\$id\+\_\+commercial)
-\item 
-\Hypertarget{class_model_aa1d7daac55caffe65802da02e2a1d7b1}\label{class_model_aa1d7daac55caffe65802da02e2a1d7b1} 
-{\bfseries get\+Bdl\+Type\+And\+Month} (\$id\+\_\+bdl)
-\item 
-\Hypertarget{class_model_a9f5cbbabaec9ba3ba83524a0922698b6}\label{class_model_a9f5cbbabaec9ba3ba83524a0922698b6} 
-{\bfseries get\+Bdls\+Of\+Prestataire\+By\+Id\+Mission} (\$id\+\_\+mission, \$id\+\_\+prestataire)
-\item 
-\Hypertarget{class_model_abc1fb0fc2193e275a115463430e4f71e}\label{class_model_abc1fb0fc2193e275a115463430e4f71e} 
-{\bfseries get\+Id\+Activite} (\$date\+\_\+activite, \$id\+\_\+bdl)
-\item 
-\Hypertarget{class_model_ad0b63efb27115cfb10d87a0497fec4b6}\label{class_model_ad0b63efb27115cfb10d87a0497fec4b6} 
-{\bfseries dashboard\+Interlocuteur} (\$id\+\_\+in)
-\item 
-\Hypertarget{class_model_a88fa93b288b7c7c346137d5bbd88d0c8}\label{class_model_a88fa93b288b7c7c346137d5bbd88d0c8} 
-{\bfseries getmail\+Commercial\+For\+Interlocuteur} (\$id\+\_\+in)
-\item 
-\mbox{\hyperlink{class_model_afc2fcf5a2a2f2599638cf4a29817c158}{get\+Client\+Contact\+Dashboard\+Data}} ()
 \item 
 \Hypertarget{class_model_a0929b80a3e1fb989ccc8d0b75ccca25d}\label{class_model_a0929b80a3e1fb989ccc8d0b75ccca25d} 
 {\bfseries get\+Client\+For\+Commercial} ()
 \item 
-\mbox{\hyperlink{class_model_aef539d0c1c29c9c0c802998490f7e9e8}{get\+Component\+Commercialsmails}} (\$id\+Client\+Contact)
-\item 
 \mbox{\hyperlink{class_model_a2bdf6eab077b662a715aa93a9a435cdd}{getmail\+By\+Id}} (\$id)
 \item 
 \mbox{\hyperlink{class_model_af9758fd9b75b679bde92c722e5c5d715}{mail\+Exists}} (\$mail)
-\item 
-\Hypertarget{class_model_a9ce286a21fc6342b872d9f53617bb3f3}\label{class_model_a9ce286a21fc6342b872d9f53617bb3f3} 
-{\bfseries get\+Bdl\+Presta\+For\+Interlocuteur} (\$id\+\_\+pr, \$id\+\_\+in)
-\item 
-\Hypertarget{class_model_a6dac41bdb75ab6b034e226a60f1d8fb0}\label{class_model_a6dac41bdb75ab6b034e226a60f1d8fb0} 
-{\bfseries get\+Interlocuteur\+For\+Prestataire} (\$id\+\_\+pr)
 \item 
 \mbox{\hyperlink{class_model_a077378a9696d18947c07657e8a730be1}{check\+Mail\+Password}} (\$mail, \$password)
 \item 
@@ -177,6 +145,9 @@
 \mbox{\hyperlink{class_model_a47ee5c01192ea3b8766bc2f85e218951}{get\+Client\+By\+Ids}} (\$ids)
 \item 
 \mbox{\hyperlink{class_model_ab5b91d88f97fb06e38869d5c29886b7b}{get\+Commercial\+By\+Ids}} (\$ids)
+\item 
+\Hypertarget{class_model_a17b41f8cc2185b45c87e92fdcd4c062d}\label{class_model_a17b41f8cc2185b45c87e92fdcd4c062d} 
+{\bfseries insert\+Daily\+Hours} (\$id\+\_\+bdl, \$jour, \$hours\+\_\+worked)
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Fonctions membres publiques statiques}
 \begin{DoxyCompactItemize}
@@ -184,6 +155,9 @@
 static \mbox{\hyperlink{class_model_a851c38f53f2ba648559d2e883961ffcc}{get\+Model}} ()
 \end{DoxyCompactItemize}
 
+
+\doxysubsection{Description détaillée}
+Classe \doxylink{class_model}{Model} contenant le modèle de l\textquotesingle{}application permettant d\textquotesingle{}effectuer des requêtes sur la base de données. 
 
 \doxysubsection{Documentation des fonctions membres}
 \Hypertarget{class_model_a6b6a8ba429997c9f49ec9e1b6d00128c}\label{class_model_a6b6a8ba429997c9f49ec9e1b6d00128c} 
@@ -212,21 +186,7 @@ int\texorpdfstring{$\vert$}{|}false
 \doxysubsubsection{\texorpdfstring{addBdl()}{addBdl()}}
 {\footnotesize\ttfamily Model\+::add\+Bdl (\begin{DoxyParamCaption}\item[{}]{\$id\+\_\+composante,  }\item[{}]{\$id\+\_\+prestataire,  }\item[{}]{\$id\+\_\+gestionnaire,  }\item[{}]{\$id\+\_\+interlocuteur,  }\item[{}]{\$mois,  }\item[{}]{\$annee = {\ttfamily 2024},  }\item[{}]{\$signature\+\_\+interlocuteur = {\ttfamily false},  }\item[{}]{\$signature\+\_\+prestataire = {\ttfamily null},  }\item[{}]{\$commentaire = {\ttfamily "{}"{}},  }\item[{}]{\$heures = {\ttfamily 0} }\end{DoxyParamCaption})}
 
-Méthode permettant d\textquotesingle{}ajouter un bon de livraison dans la table BON\+\_\+\+DE\+\_\+\+LIVRAISON avec seulement les informations comme le mois, la mission et le prestataire. 
-\begin{DoxyParams}{Paramètres}
-{\em \$nom\+\_\+mission} & \\
-\hline
-{\em \$nom\+\_\+composante} & \\
-\hline
-{\em \$mois} & \\
-\hline
-{\em \$id\+\_\+prestataire} & \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Renvoie}
-bool\texorpdfstring{$\vert$}{|}void Méthode permettant d\textquotesingle{}ajouter un bon de livraison (BDL) 
-\end{DoxyReturn}
-
+Méthode permettant d\textquotesingle{}ajouter un bon de livraison (BDL) 
 \begin{DoxyParams}[1]{Paramètres}
 int & {\em \$id\+\_\+composante} & \\
 \hline
@@ -612,15 +572,6 @@ array & {\em \$ids} & \\
 \begin{DoxyReturn}{Renvoie}
 array 
 \end{DoxyReturn}
-\Hypertarget{class_model_afc2fcf5a2a2f2599638cf4a29817c158}\label{class_model_afc2fcf5a2a2f2599638cf4a29817c158} 
-\index{Model@{Model}!getClientContactDashboardData@{getClientContactDashboardData}}
-\index{getClientContactDashboardData@{getClientContactDashboardData}!Model@{Model}}
-\doxysubsubsection{\texorpdfstring{getClientContactDashboardData()}{getClientContactDashboardData()}}
-{\footnotesize\ttfamily Model\+::get\+Client\+Contact\+Dashboard\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
-
-Récupère les informations de l\textquotesingle{}interlocuteur client par rapport à sa mission \begin{DoxyReturn}{Renvoie}
-array\texorpdfstring{$\vert$}{|}false 
-\end{DoxyReturn}
 \Hypertarget{class_model_ab5b91d88f97fb06e38869d5c29886b7b}\label{class_model_ab5b91d88f97fb06e38869d5c29886b7b} 
 \index{Model@{Model}!getCommercialByIds@{getCommercialByIds}}
 \index{getCommercialByIds@{getCommercialByIds}!Model@{Model}}
@@ -648,20 +599,6 @@ int & {\em \$id} & identifiant de la composante \\
 \end{DoxyParams}
 \begin{DoxyReturn}{Renvoie}
 array\texorpdfstring{$\vert$}{|}string Un tableau du résultat de la requête sinon un message d\textquotesingle{}erreur 
-\end{DoxyReturn}
-\Hypertarget{class_model_aef539d0c1c29c9c0c802998490f7e9e8}\label{class_model_aef539d0c1c29c9c0c802998490f7e9e8} 
-\index{Model@{Model}!getComponentCommercialsmails@{getComponentCommercialsmails}}
-\index{getComponentCommercialsmails@{getComponentCommercialsmails}!Model@{Model}}
-\doxysubsubsection{\texorpdfstring{getComponentCommercialsmails()}{getComponentCommercialsmails()}}
-{\footnotesize\ttfamily Model\+::get\+Component\+Commercialsmails (\begin{DoxyParamCaption}\item[{}]{\$id\+Client\+Contact }\end{DoxyParamCaption})}
-
-Renvoie la liste des mails des commerciaux assignées à la mission de l\textquotesingle{}interlocuteur client 
-\begin{DoxyParams}{Paramètres}
-{\em \$id\+Client\+Contact} & \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Renvoie}
-void 
 \end{DoxyReturn}
 \Hypertarget{class_model_a1c13c67981cba862362e461db6a76fea}\label{class_model_a1c13c67981cba862362e461db6a76fea} 
 \index{Model@{Model}!getComposantesSociete@{getComposantesSociete}}
@@ -1058,4 +995,4 @@ bool
 
 La documentation de cette classe a été générée à partir du fichier suivant \+:\begin{DoxyCompactItemize}
 \item 
-Models/\mbox{\hyperlink{_model_8php}{Model.\+php}}\end{DoxyCompactItemize}
+Models/Model.\+php\end{DoxyCompactItemize}

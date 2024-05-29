@@ -1,16 +1,24 @@
 <?php
+/**
+ * @brief Classe du prestataire contenant toutes les fonctionnalités du prestataire
+ * 
+ */
 header('Content-Type: text/html; charset=utf-8');
 
 class Controller_prestataire extends Controller
 {
     /**
      * @inheritDoc
+     * Action par défaut qui appelle l'action accueil
      */
     public function action_default()
     {
         $this->action_accueil();
     }
-
+    /**
+     * Action qui renvoie la vue accueil avec les informations comprenant les bon de livraison 
+     * @return void
+     */
     public function action_accueil()
     {
         sessionstart(); // Fonction dans Utils pour lancer la session si elle n'est pas lancée 
@@ -45,7 +53,7 @@ class Controller_prestataire extends Controller
     }
 
     /**
-     * Renvoie le tableau de bord du prestataire avec les variables adéquates
+     * Méthode qui renvoie le tableau de bord du prestataire 
      * @return void
      */
     public function action_dashboard()
@@ -121,10 +129,10 @@ class Controller_prestataire extends Controller
     //     }
     // }
 
-    /**
-     * Renvoie la vue qui lui permet de remplir son bon de livraion avec le bon type
-     * @return void
-     */
+    // /**
+    //  * Renvoie la vue qui lui permet de remplir son bon de livraion avec le bon type
+    //  * @return void
+    //  */
     // public function action_afficher_bdl()
     // {
     //     $bd = Model::getModel();
@@ -150,6 +158,10 @@ class Controller_prestataire extends Controller
     //     }
     // }
 
+    /**
+     * Méthode permettant d'afficher le bon de livraison en PDF
+     * @return void
+     */
     public function action_afficher_bdl()
     {
         session_start();
@@ -279,12 +291,15 @@ class Controller_prestataire extends Controller
                 // Rendre la vue avec les données
                 $this->render('afficher_bdl', $data);
             } else {
+                // TODO faire un render
                 echo "<script>alert('Aucun BDL trouvé pour cet ID.'); window.location.href = '?controller=prestataire&action=liste_bdl';</script>";
                 exit;
 
                 // echo "Aucun BDL trouvé pour cet ID.";
             }
         } else {
+                            // TODO faire un render
+
             echo "ID BDL ou ID Prestataire non défini.";
         }
     }
@@ -296,30 +311,30 @@ class Controller_prestataire extends Controller
 
 
 
-    /**
-     * Vérifie d'avoir les informations nécessaire pour renvoyer la vue liste avec les bonnes variables pour afficher la liste des bons de livraisons du prestataire en fonction de la mission
-     * @return void
-     */
-    public function action_mission_bdl()
-    {
-        $bd = Model::getModel();
-        sessionstart();
-        if (isset($_GET['id'])) {
-            $data = [
-                'title' => 'Bons de livraison',
-                'buttonLink' => '?controller=prestataire&action=ajout_bdl_form',
-                'cardLink' => '?controller=prestataire&action=afficher_bdl',
-                'menu' => $this->action_get_navbar(),
-                'person' => $bd->getBdlsOfPrestataireByIdMission($_GET['id'], $_SESSION['id'])
-            ];
-            $this->render('liste', $data);
-        }
-    }
+    // /**
+    //  * Méthode qui renvoie la vue liste pour afficher la liste des bons de livraisons du prestataire en fonction de la mission
+    //  * @return void
+    //  */
+    // public function action_mission_bdl()
+    // {
+    //     $bd = Model::getModel();
+    //     sessionstart();
+    //     if (isset($_GET['id'])) {
+    //         $data = [
+    //             'title' => 'Bons de livraison',
+    //             'buttonLink' => '?controller=prestataire&action=ajout_bdl_form',
+    //             'cardLink' => '?controller=prestataire&action=afficher_bdl',
+    //             'menu' => $this->action_get_navbar(),
+    //             'person' => $bd->getBdlsOfPrestataireByIdMission($_GET['id'], $_SESSION['id'])
+    //         ];
+    //         $this->render('liste', $data);
+    //     }
+    // }
 
-    /**
-     * Renvoie la liste des bons de livraison du prestataire connecté
-     * @return void
-     */
+    // /**
+    //  * Renvoie la liste des bons de livraison du prestataire connecté
+    //  * @return void
+    //  */
     // public function action_liste_bdl()
     // {
     //     $bd = Model::getModel();
@@ -335,7 +350,10 @@ class Controller_prestataire extends Controller
     //         $this->render("liste", $data);
     //     }
     // }
-
+    /**
+     * Action qui liste les bons de livraison
+     * @return void
+     */
     public function action_liste_bdl()
     {
         $bd = Model::getModel();
@@ -462,7 +480,10 @@ class Controller_prestataire extends Controller
         }
     }
 
-
+    /**
+     * Action permettant d'ajouter un bon de livraison avec le nombre d'heures et de jours
+     * @return void
+     */
     public function action_addBdl()
     {
         session_start();
@@ -488,6 +509,10 @@ class Controller_prestataire extends Controller
 
     }
 
+    /**
+     * Action permettant d'ajouter une demi journée à un bon de livraison
+     * @return void
+     */
     public function action_addHalfDay()
     {
         session_start();
@@ -508,6 +533,10 @@ class Controller_prestataire extends Controller
 
     }
 
+    /**
+     * Action permettant d'ajouter des heures à un bon de livraison 
+     * @return void 
+     */
     public function action_addHourWithoutDay()
     {
         session_start();
