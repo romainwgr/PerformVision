@@ -2,7 +2,8 @@
 
 Rédaction du README en cours de production !
 
-Nom de l'équipe : CinqPétales
+## Nom de l'équipe
+CinqPétales
 
 Membres de l'équipe : Safiya AZOUAGH, Binta TANDIAN, Houssna BOUTAJAR, Romain WAGNER et Camélia ANTOINE.
 
