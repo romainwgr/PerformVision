@@ -1,4 +1,4 @@
-#README du projet de CinqPétales
+# README du projet de CinqPétales
 
 Rédaction du README en cours de production !
 
