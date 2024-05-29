@@ -1,9 +1,10 @@
 <?php
+header('Content-Type: text/html; charset=utf-8');
+
 /**
  * @brief Classe du prestataire contenant toutes les fonctionnalités du prestataire
  * 
 */
-header('Content-Type: text/html; charset=utf-8');
 
 class Controller_prestataire extends Controller
 {
