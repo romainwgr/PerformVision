@@ -27,11 +27,17 @@ Administrateur : aucun pour le moment
 
 ## Ressources
 VisualStudio : https://code.visualstudio.com/docs
+
 PHP : https://www.php.net/docs.php et https://www.php.net/manual/fr/
+
 CSS : https://developer.mozilla.org/fr/docs/Web/CSS
+
 HTML : https://developer.mozilla.org/fr/docs/Web/HTML 
+
 JavaScript : https://developer.mozilla.org/fr/docs/Web/JavaScript 
+
 Pl/pgSQL : https://www.postgresql.org/docs/current/plpgsql.html 
+
 Bootstrap : https://getbootstrap.com/docs/4.1/getting-started/introduction/ 
 
 ## Contacts
