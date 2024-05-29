@@ -2,7 +2,7 @@
 /**
  * @brief Classe du prestataire contenant toutes les fonctionnalités du prestataire
  * 
- */
+*/
 header('Content-Type: text/html; charset=utf-8');
 
 class Controller_prestataire extends Controller
@@ -46,6 +46,9 @@ class Controller_prestataire extends Controller
         $this->render('accueil');
     }
 
+    /**
+     * Action qui renvoit vers l'action dashboard pour afficher le tableau de bord
+     */
     public function action_missions()
     {
         // Redirection vers l'action dashboard
@@ -444,6 +447,11 @@ class Controller_prestataire extends Controller
         $this->render('ajout_bdl', $data);
 
     }
+
+    /**
+     * Fonction qui permet d'afficher le formulaire avec les informations correspondant au bon de livraison
+     * @return void
+     */
     public function action_afficherFormulaire()
     {
         session_start();

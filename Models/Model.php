@@ -1732,6 +1732,12 @@ class Model
         return $req->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Fonction permettant d'ajouter des heures pour le jour et bon de livraison spéficié
+     * @param int $id_bdl
+     * @param int $jour 
+     * @param flaot $hours_worked 
+     */
     public function insertDailyHours($id_bdl, $jour, $hours_worked) {
         try {
             $query = "INSERT INTO DailyHours (id_bdl, jour, hours_worked) VALUES (:id_bdl, :jour, :hours_worked)";

@@ -495,10 +495,10 @@ class Controller_gestionnaire extends Controller
     }
 
 
-    public function action_is_composante()
-    {
-
-    }
+    // public function action_is_composante()
+    // {
+    //     //TODO en ajax
+    // }
 
 
     /**
