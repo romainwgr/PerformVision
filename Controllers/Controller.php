@@ -1,6 +1,6 @@
 <?php
 /**
- * Classe abstraite Controller
+ * @brief Classe abstraite Controller
  * 
  * Cette classe sert de base pour tous les contrôleurs. Elle gère les actions et le rendu des vues.
  * Les classes filles doivent implémenter la méthode `action_default`.
