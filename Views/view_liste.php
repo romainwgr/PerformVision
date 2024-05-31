@@ -5,29 +5,9 @@ require 'view_header.php';
 
 <section class="main">
     <div class="main-body">
-        <div class="box">
-            <form action="<?= $rechercheLink ?>" method="post" class="search_form">
-                <input type="checkbox" id="check">
-                <div class="search-box">
-                    <?php if (!empty($buttonLink)): ?>
-                        <button type="button" class="button-primary font"
-                            onclick="window.location='<?= htmlspecialchars($buttonLink) ?>'">Ajouter</button>
-                    <?php endif; ?>
-                    <input name="recherche" type="text" placeholder="Rechercher une <?= strtolower($title) ?>..." value="<?php if (isset($val_rech)) {
-                          echo htmlspecialchars($val_rech);
-                      } ?>">
-                    <label for="check" class="icon">
-                        <i class="fas fa-search"></i>
-                    </label>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- <section class="main">
-    <div class="main-body">
         <div class="search-box">
             <form action="<?= $rechercheLink ?>" method="post" class="search_form">
-                <input type="text" placeholder="Rechercher un/une <?= strtolower($title) ?>..." value="<?php if (isset($val_rech)) {
+                <input name="recherche" type="text" placeholder="Rechercher une <?= strtolower($title) ?>..." value="<?php if (isset($val_rech)) {
                       echo htmlspecialchars($val_rech);
                   } ?>">
                 <div class="search-icon">
@@ -44,7 +24,7 @@ require 'view_header.php';
                     onclick="window.location='<?= htmlspecialchars($buttonLink) ?>'">Ajouter</button>
             <?php endif; ?>
         </div>
-    </div> -->
+    </div>
 
     <div class="row">
         <p>Il y a plus de <span><?= isset($person) && is_array($person) ? count($person) : 0 ?></span>

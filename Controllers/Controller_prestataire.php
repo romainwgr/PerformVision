@@ -4,7 +4,7 @@ header('Content-Type: text/html; charset=utf-8');
 /**
  * @brief Classe du prestataire contenant toutes les fonctionnalités du prestataire
  * 
-*/
+ */
 
 class Controller_prestataire extends Controller
 {
@@ -302,7 +302,7 @@ class Controller_prestataire extends Controller
                 // echo "Aucun BDL trouvé pour cet ID.";
             }
         } else {
-                            // TODO faire un render
+            // TODO faire un render
 
             echo "ID BDL ou ID Prestataire non défini.";
         }
@@ -369,6 +369,7 @@ class Controller_prestataire extends Controller
                 'buttonLink' => '?controller=prestataire&action=ajout_bdl_form',
                 'cardLink' => '?controller=prestataire&action=afficher_bdl',
                 'menu' => $this->action_get_navbar(),
+                'rechercheLink' => '',
                 'person' => $person
             ];
             $this->render("liste", $data);

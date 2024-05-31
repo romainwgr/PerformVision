@@ -25,9 +25,9 @@ require 'Views/view_header.php';
             <?php endif; ?>
         </div>
     </div>
-    <h1><?php if (isset($title)) {
+    <!-- <h1><?php if (isset($title)) {
         echo $title;
-    } ?></h1>
+    } ?></h1> -->
 
     <div class="row">
         <p>Il y a plus de <span><?= count($person) ?></span> <?= strtolower($title) ?></p>
