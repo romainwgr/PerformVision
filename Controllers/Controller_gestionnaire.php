@@ -756,6 +756,7 @@ class Controller_gestionnaire extends Controller
      * Recherche un prestataire selon l'entrée de l'utilisateur dans la barre de recherche
      * @return void
      */
+
     public function action_rechercher()
     {
         $m = Model::getModel();
@@ -777,8 +778,8 @@ class Controller_gestionnaire extends Controller
                 $ids = array_column($resultat, 'id_personne');
                 // TODO faire la fonction de recupération pour la composante et la société
                 $users = $m->$fonction_recuperation($ids);
-
                 if ($_GET['role'] == 'composante') {
+
 
                     $data = [
                         'title' => ucfirst($_GET['role']),
@@ -788,7 +789,6 @@ class Controller_gestionnaire extends Controller
                         'cardLink' => '?controller=gestionnaire&action=infos_composante',
                         'menu' => $this->action_get_navbar()
                     ];
-
                     $this->render($_GET['role'], $data, 'gestionnaire');
 
                 } else if ($_GET['role'] == 'client') {
@@ -827,6 +827,7 @@ class Controller_gestionnaire extends Controller
             $this->render('message', [
                 'title' => 'Erreur de recherche',
                 'message' => 'EVITE DE MODIFIER L\'URL'
+
             ]);
         }
 
@@ -839,6 +840,7 @@ class Controller_gestionnaire extends Controller
         if (isset($_GET['role'], $_POST['recherche'])) {
 
             $roles = ['composantes', 'client', 'prestataire', 'commercial'];
+
 
             if (in_array($_GET['role'], $roles)) {
 
@@ -881,6 +883,57 @@ class Controller_gestionnaire extends Controller
             ]);
         }
     }
+
+    // TODO Supprimer
+    // public function action_recherche()
+    // {
+    //     $m = Model::getModel();
+    //     session_start();
+    //     if (isset($_GET['role'], $_POST['recherche'])) {
+
+    //         $roles = ['composantes', 'client', 'prestataire', 'commercial'];
+
+    //         if (in_array($_GET['role'], $roles)) {
+
+    //             $recherche = '';
+
+    //             $recherche = ucfirst(strtolower($_POST['recherche']));
+    //             $resultat = $m->rechercheGestionnaire($recherche, $_GET['role']);
+    //             if ($_GET['role'] == 'client') {
+    //                 $ids = array_column($resultat, 'id_client');
+
+    //             } else {
+    //                 $ids = array_column($resultat, 'id_personne');
+
+    //             }
+
+    //             $users = $m->recuperationRecherche($ids);
+
+    //             $data = [
+    //                 "title" => ucfirst($_GET['role']),
+    //                 'cardLink' => "?controller=gestionnaire&action=infos_personne",
+    //                 "buttonLink" => '?controller=gestionnaire&action=ajout_' . $_GET['role'] . '_form',
+    //                 'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=' . $_GET['role'],
+    //                 "person" => $users,
+    //                 "val_rech" => $recherche,
+    //                 'menu' => $this->action_get_navbar()
+    //             ];
+
+    //             $this->render($_GET['role'], $data, 'gestionnaire');
+    //         } else {
+    //             $this->render('message', [
+    //                 'title' => 'Erreur de recherche',
+    //                 'message' => 'Ne modifiez pas l\'url'
+    //             ]);
+    //         }
+
+    //     } else {
+    //         $this->render('message', [
+    //             'title' => 'Erreur de recherche',
+    //             'message' => 'Ne modifiez pas l\'url'
+    //         ]);
+    //     }
+    // }
 
 }
 

@@ -59,18 +59,22 @@ require 'view_header.php';
             </div>
             <div class="infos__colonne">
                 <h2>Composantes</h2>
-                <table>
-                    <tr>
-                        <?php foreach ($composantes as $c): ?>
-                            <td>
-                                <a href='?controller=<?= $_GET['controller'] ?>&action=infos_composante&id=<?= $c['id_composante'] ?>'
-                                    class="block">
-                                    <h3><?= $c['nom_composante'] ?></h3>
-                                </a>
-                            </td>
-                        <?php endforeach; ?>
-                    </tr>
-                </table>
+                <?php if (!empty($composantes) && is_array($composantes)): ?>
+                    <table>
+                        <tr>
+                            <?php foreach ($composantes as $c): ?>
+                                <td>
+                                    <a href='?controller=<?= $_GET['controller'] ?>&action=infos_composante&id=<?= $c['id_composante'] ?>'
+                                        class="block">
+                                        <h3><?= htmlspecialchars($c['nom_composante']) ?></h3>
+                                    </a>
+                                </td>
+                            <?php endforeach; ?>
+                        </tr>
+                    </table>
+                <?php else: ?>
+                    <p>Aucun composante trouvé.</p>
+                <?php endif; ?>
                 <?php if (!str_contains('commercial', $_GET['controller'])): ?>
                     <a href="?controller=<?= $_GET['controller'] ?>&action=ajout_composante_form" class="ajout"><i
                             class="fa fa-solid fa-user-plus"></i>
@@ -79,7 +83,6 @@ require 'view_header.php';
                     <a href="" class="ajout"></a>
                 <?php endif; ?>
             </div>
-
             <div class="add-container" id="caheaffiche" style="display: none;">
                 <div class="form-abs">
                     <span class="close-icon" onclick="closeForm()"> <!-- Ajout de l'icône de fermeture -->

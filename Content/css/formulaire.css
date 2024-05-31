@@ -52,141 +52,99 @@ html, body {
 
 /* Barre de recherche */
 
-.box{
-  max-width: 400px;
-  width: 100%;
-}
-.box .search-box{
-  position: relative;
-  height: 50px;
-  max-width: 50px;
-  margin: auto;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
-  border-radius: 25px;
-  transition: all 0.3s ease;
-}
-#check:checked ~ .search-box{
-  max-width: 380px;
-}
-.search-box input{
- position: absolute;
- height: 100%;
- width: 100%;
- border-radius: 25px;
- background: #fff;
- outline: none;
- border: none;
- padding-left: 20px;
- font-size: 18px;
-}
-.search-box .icon{
-  position: absolute;
-  right: -2px;
-  top: 0;
-  width: 50px;
-  background: #FFF;
-  height: 100%;
-  text-align: center;
-  line-height: 50px;
-  color: #5db0cf;
-  font-size: 20px;
-  border-radius: 25px;
-}
-#check:checked ~ .search-box .icon{
-  background: #5db0cf;
-  color: #FFF;
-  width: 60px;
-  border-radius: 0 25px 25px 0;
-}
-#check{
-  display: none;
-}
 .search-box {
-  display: flex;
+  /* display: flex; */
   align-items: center;
   position: relative;
-  height: 50px;
+  height: 60px;
+  width: 60px;
   max-width: 380px;
-  margin: auto;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
-  border-radius: 25px;
-  transition: all 0.3s ease;
+  /* margin: auto; */
+  border-radius: 50%;
+  box-shadow: 5px 5px 30px rgba(0, 0, 0, .2);
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
-
 .search-box input {
-  flex: 1;
+  position: absolute;
+  width: 100%;
   height: 100%;
-  border-radius: 25px;
+  border: none;
+  border-radius: 50px;
   background: #fff;
   outline: none;
-  border: none;
-  padding-left: 20px;
+  padding: 0 60px 0 20px;
   font-size: 18px;
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.search-box .icon {
+.search-box.active {
+  width: 400px;
+}
+.search-box input.active {
+  opacity: 1;
+}
+
+.search-box input::placeholder {
+  color: #a6a6a6;
+}
+
+.search-box .search-icon {
   position: absolute;
-  right: 0;
-  top: 0;
-  width: 50px;
-  background: #FFF;
-  height: 100%;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 60px;
+  width: 60px;
+  background: #fff;
+  border-radius: 50%;
   text-align: center;
-  line-height: 50px;
+  line-height: 60px;
+  font-size: 22px;
   color: #5db0cf;
-  font-size: 20px;
-  border-radius: 25px;
+  cursor: pointer;
+  z-index: 1;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-
-
-
-
-
-/* Barre de recherche */
-/* .search_bar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-} */
-
-/* Formulaire de recherche */
-/* .search_form {
-  display: flex;
-  align-items: center;
-  border: 2px solid #ccc;
-  border-radius: 8px; /* Coins arrondis *
-  overflow: hidden;
-} */
-
-/* Champ de recherche */
-/* .search_input {
-  flex: 1;
-  padding: 12px; /* Augmentation du padding *
-  border: none;
-  background-color: transparent;
-  font-size: 18px; /* Augmentation de la taille de la police *
-} */
-
-/* Bouton de recherche */
-/* .search_button {
-  background-color: #5db0cf;
-  border: none;
-  padding: 17px 20px; /* Augmentation du padding *
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-} */
-
-/* Changement de couleur au survol du bouton */
-/* .search_button:hover {
-  background-color: #4a96ae;
-} */
-
-/* Icône du bouton de recherche */
-/* .search_button i {
+.search-box .search-icon.active {
+  right: 5px;
+  height: 50px;
+  line-height: 50px;
+  width: 50px;
+  font-size: 20px;
+  background: #5db0cf;
   color: #fff;
-} */
+  transform: translateY(-50%) rotate(360deg);
+}
+
+.search-box .cancel-icon {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 25px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.5s 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.search-box .cancel-icon.active {
+  right: -40px;
+  transform: translateY(-50%) rotate(360deg);
+}
+
+.search-box .search-data {
+  text-align: center;
+  padding-top: 7px;
+  color: #fff;
+  font-size: 18px;
+  word-wrap: break-word;
+}
+
+.search-box .search-data.active {
+  display: none;
+}
 
 /* Bouton principal */
 .button-primary {
@@ -204,6 +162,8 @@ html, body {
   position: relative;
   left: 500px;
 }
+
+
 
 
 
@@ -479,11 +439,29 @@ h3 {
   padding: 20px;
 }
 
+/* .diffencice{
+  width: 50%!important;
+} */
+
 /* Formulaire en position absolue */
+
+.form-container {
+  display: flex;
+  align-items: flex-start; /* Alignement du début de l'axe principal */
+  gap: 30px; /* Espace entre les boutons et le formulaire */
+}
+
+.form-selector-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-selector-vertical .btn-selection {
+  margin-bottom: 10px; /* Espace entre les boutons */
+}
+
 .form-abs {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-35%);
+  flex-grow: 1; /* Pour que le formulaire prenne l'espace restant */
   background-color: #fff;
   padding: 20px;
   padding-left: 40px;
@@ -491,6 +469,11 @@ h3 {
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
+  position: relative; /* Retirer l'absolu pour permettre la réactivité */
+}
+
+.gauche{
+  margin-left: 30%;
 }
 
 /* Conteneur d'informations */
@@ -937,6 +920,45 @@ button {
 .container #flip {
   display: none;
 }
+
+
+/* Styles pour le popup2 pour savoir si l'ajout a reussi */
+.popup2 {
+  display: none; 
+  position: fixed; 
+  z-index: 1; 
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
+}
+
+.popup-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  margin-right: 15%;
+  padding: 10px;
+  border: 1px solid #888;
+  width: 53%; 
+}
+
+.close-btn {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 
 /* Styles pour le fond flou */
 .background-blur {

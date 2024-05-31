@@ -37,6 +37,62 @@ prevBtns.forEach((btn) => {
   });
 });
 
+// barre de navigation
+
+const searchBox = document.querySelector(".search-box");
+const searchBtn = document.querySelector(".search-icon");
+const cancelBtn = document.querySelector(".cancel-icon");
+const searchInput = document.querySelector("input");
+const searchData = document.querySelector(".search-data");
+searchBtn.onclick = () => {
+  searchBox.classList.add("active");
+  searchBtn.classList.add("active");
+  searchInput.classList.add("active");
+  cancelBtn.classList.add("active");
+  searchInput.focus();
+  if (searchInput.value != "") {
+    var values = searchInput.value;
+    searchData.classList.remove("active");
+    searchData.innerHTML =
+      "You just typed " +
+      "<span style='font-weight: 500;'>" +
+      values +
+      "</span>";
+  } else {
+    searchData.textContent = "";
+  }
+};
+cancelBtn.onclick = () => {
+  searchBox.classList.remove("active");
+  searchBtn.classList.remove("active");
+  searchInput.classList.remove("active");
+  cancelBtn.classList.remove("active");
+  searchData.classList.toggle("active");
+  searchInput.value = "";
+};
+
+// pour affiche si l'ajout a fonctionner ou non
+document.addEventListener("DOMContentLoaded", function () {
+  var popup = document.getElementById("messagePopup");
+  var closeBtn = document.getElementsByClassName("close-btn")[0];
+  var message = popup.getAttribute("data-message");
+
+  if (message) {
+    document.getElementById("popupMessage").textContent = message;
+    popup.style.display = "block";
+  }
+
+  closeBtn.onclick = function () {
+    popup.style.display = "none";
+  };
+
+  window.onclick = function (event) {
+    if (event.target == popup) {
+      popup.style.display = "none";
+    }
+  };
+});
+
 // etape du formulaire
 function updateFormSteps() {
   formSteps.forEach((formStep) => {
@@ -92,90 +148,8 @@ function closeFormajout() {
     window.history.back();
   });
 }
-// // jQuery section
-// $(document).ready(function () {
-//   function isValidPhoneNumber(phone) {
-//     console.log("Vérification du numéro de téléphone:", phone); // Pour confirmer l'appel
 
-//     var phoneRegex =
-//       /^[+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,4}[-\s\.]?[0-9]{1,4}$/;
-//     return phoneRegex.test(phone);
-//   }
-//   // Cacher toutes les étapes sauf la première au chargement
-//   $(".step").not("#step1").hide();
-
-//   $(".next-btn").click(function () {
-//     var currentStep = $(this).closest(".step");
-//     var stepId = currentStep.attr("id");
-
-//     switch (stepId) {
-//       case "step1":
-//         handleStep1(currentStep);
-//         break;
-//       case "step2":
-//         handleStep2(currentStep);
-//         break;
-//       case "step3":
-//         handleStep3(currentStep);
-//         break;
-//       default:
-//         break;
-//     }
-
-//     function handleStep1(currentStep) {
-//       var societe = $("#sté").val();
-//       var telephone = $("#phone").val();
-//       $("#sté").css("border", "");
-//       $("#client-error").hide();
-//       if (!isValidPhoneNumber(telephone)) {
-//         $("#phone").css("border", "1px solid red");
-//         $("#phone-error").text("Numéro de téléphone non valide.").show();
-//         return;
-//       }
-
-//       var data = {
-//         client: societe,
-//         tel: telephone,
-//       };
-
-//       console.log("Envoi des données:", data);
-
-//       $.ajax({
-//         url: "index.php?controller=gestionnaire&action=is_client",
-//         type: "POST",
-//         data: data,
-//         dataType: "json",
-//         success: function (response) {
-//           console.log("Réponse reçue:", response);
-//           if (response.success) {
-//             currentStep.hide();
-//             currentStep.next(".step").show();
-//           } else {
-//             $("#phone").css("border", ""); // Enlève la bordure rouge
-//             $("#phone-error").hide(); // Cache le message d'erreur
-//             currentStep.find("#sté").css("border", "1px solid red"); // Ajoute une bordure rouge
-//             $("#client-error").text(response.message).show();
-//           }
-//         },
-//         error: function (xhr, status, error) {
-//           console.error("Erreur AJAX:", status, error);
-//           alert("Erreur lors de l'envoi des données.");
-//         },
-//       });
-//     }
-
-//     function handleStep2(currentStep) {}
-
-//     function handleStep3(currentStep) {}
-//   });
-
-//   $(".prev-btn").click(function () {
-//     var currentStep = $(this).closest(".step");
-//     currentStep.hide();
-//     currentStep.prev(".step").show();
-//   });
-// });
-
+// ajax
 $(document).ready(function () {
   function isValidPhoneNumber(phone) {
     console.log("Vérification du numéro de téléphone:", phone); // Pour confirmer l'appel
