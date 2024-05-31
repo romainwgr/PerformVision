@@ -108,9 +108,13 @@ require 'view_header.php';
                     </div>
                 </div>
                 <div class="button-container">
-                    <a href="?controller=prestataire&action=afficherFormulaire&id_bdl=<?= htmlspecialchars($p['id_bdl'] ?? $p['id']) ?>"
-                        class="button-primary">Ajouter Horaire</a>
-                </div>
+                        <?php if ($p['signature_prestataire']): ?>
+                            <p>BDL Validé</p>
+                        <?php else: ?>
+                            <a href="?controller=prestataire&action=afficherFormulaire&id_bdl=<?= htmlspecialchars($p['id_bdl'] ?? $p['id']) ?>" class="button-primary">Ajouter Horaire</a>
+                        <?php endif; ?>
+                    </div>
+
             </div>
         <?php endforeach; ?>
     <?php endif; ?>
@@ -129,3 +133,4 @@ require 'view_header.php';
         document.getElementById('errorMessage').style.display = 'block';
     <?php endif; ?>
 </script>
+

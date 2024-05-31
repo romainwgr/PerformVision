@@ -122,6 +122,11 @@ require 'view_header.php';
                 </div>
             </form>
         </div>
+        <form id="form-validate-bdl" action="?controller=prestataire&action=validerbdl" method="post" onsubmit="return confirmSubmit()">
+            <div>
+                <button type="submit">Valider le bon de livraison</button>
+            </div>
+        </form>
     </div>
 </section>
 
@@ -142,8 +147,19 @@ require 'view_header.php';
             showForm(selectedForm);
         }
     });
-</script>
 
+
+
+// Fonction pour afficher une fenêtre pop-up avec un message spécifique
+function showPopup(message) {
+    alert(message);
+}
+
+// Fonction pour demander une confirmation avant de soumettre le formulaire
+function confirmSubmit() {
+    return confirm("Êtes-vous sûr de vouloir valider le bon de livraison ? Une fois validé, plus aucun changement ne sera possible.");
+}
+</script>
 <?php
 require 'view_end.php';
 ?>
