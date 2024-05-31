@@ -1,16 +1,25 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
 
+/**
+ * @brief Classe du prestataire contenant toutes les fonctionnalités du prestataire
+ * 
+*/
+
 class Controller_prestataire extends Controller
 {
     /**
      * @inheritDoc
+     * Action par défaut qui appelle l'action accueil
      */
     public function action_default()
     {
         $this->action_accueil();
     }
-
+    /**
+     * Action qui renvoie la vue accueil avec les informations comprenant les bon de livraison 
+     * @return void
+     */
     public function action_accueil()
     {
         sessionstart(); // Fonction dans Utils pour lancer la session si elle n'est pas lancée 
@@ -38,6 +47,9 @@ class Controller_prestataire extends Controller
         $this->render('accueil');
     }
 
+    /**
+     * Action qui renvoit vers l'action dashboard pour afficher le tableau de bord
+     */
     public function action_missions()
     {
         // Redirection vers l'action dashboard
@@ -45,7 +57,7 @@ class Controller_prestataire extends Controller
     }
 
     /**
-     * Renvoie le tableau de bord du prestataire avec les variables adéquates
+     * Méthode qui renvoie le tableau de bord du prestataire 
      * @return void
      */
     public function action_dashboard()
@@ -100,31 +112,31 @@ class Controller_prestataire extends Controller
 
     // TEST
 
-    /**
-     * Ajoute dans la base de données la date à laquelle le prestataire est absent
-     * @return void
-     */
-    public function action_prestataire_creer_absences()
-    {
-        $bd = Model::getModel();
-        if (
-            isset($_POST['prenom']) &&
-            isset($_POST['nom']) &&
-            isset($_POST['email']) &&
-            isset($_POST['Date']) &&
-            isset($_POST['motif'])
-        ) {
-            // FIXME Fonction non déclaré dans le modèle
-            $bd->addAbsenceForPrestataire($_POST['prenom'], $_POST['nom'], $_POST['email'], $_POST['Date'], $_POST['motif']);
-        } else {
-            $this->action_error("données incomplètes");
-        }
-    }
+    // /**
+    //  * Ajoute dans la base de données la date à laquelle le prestataire est absent
+    //  * @return void
+    //  */
+    // public function action_prestataire_creer_absences()
+    // {
+    //     $bd = Model::getModel();
+    //     if (
+    //         isset($_POST['prenom']) &&
+    //         isset($_POST['nom']) &&
+    //         isset($_POST['email']) &&
+    //         isset($_POST['Date']) &&
+    //         isset($_POST['motif'])
+    //     ) {
+    //         // FIXME Fonction non déclaré dans le modèle
+    //         $bd->addAbsenceForPrestataire($_POST['prenom'], $_POST['nom'], $_POST['email'], $_POST['Date'], $_POST['motif']);
+    //     } else {
+    //         $this->action_error("données incomplètes");
+    //     }
+    // }
 
-    /**
-     * Renvoie la vue qui lui permet de remplir son bon de livraion avec le bon type
-     * @return void
-     */
+    // /**
+    //  * Renvoie la vue qui lui permet de remplir son bon de livraion avec le bon type
+    //  * @return void
+    //  */
     // public function action_afficher_bdl()
     // {
     //     $bd = Model::getModel();
@@ -150,6 +162,10 @@ class Controller_prestataire extends Controller
     //     }
     // }
 
+    /**
+     * Méthode permettant d'afficher le bon de livraison en PDF
+     * @return void
+     */
     public function action_afficher_bdl()
     {
         session_start();
@@ -279,12 +295,15 @@ class Controller_prestataire extends Controller
                 // Rendre la vue avec les données
                 $this->render('afficher_bdl', $data);
             } else {
+                // TODO faire un render
                 echo "<script>alert('Aucun BDL trouvé pour cet ID.'); window.location.href = '?controller=prestataire&action=liste_bdl';</script>";
                 exit;
 
                 // echo "Aucun BDL trouvé pour cet ID.";
             }
         } else {
+                            // TODO faire un render
+
             echo "ID BDL ou ID Prestataire non défini.";
         }
     }
@@ -296,30 +315,30 @@ class Controller_prestataire extends Controller
 
 
 
-    /**
-     * Vérifie d'avoir les informations nécessaire pour renvoyer la vue liste avec les bonnes variables pour afficher la liste des bons de livraisons du prestataire en fonction de la mission
-     * @return void
-     */
-    public function action_mission_bdl()
-    {
-        $bd = Model::getModel();
-        sessionstart();
-        if (isset($_GET['id'])) {
-            $data = [
-                'title' => 'Bons de livraison',
-                'buttonLink' => '?controller=prestataire&action=ajout_bdl_form',
-                'cardLink' => '?controller=prestataire&action=afficher_bdl',
-                'menu' => $this->action_get_navbar(),
-                'person' => $bd->getBdlsOfPrestataireByIdMission($_GET['id'], $_SESSION['id'])
-            ];
-            $this->render('liste', $data);
-        }
-    }
+    // /**
+    //  * Méthode qui renvoie la vue liste pour afficher la liste des bons de livraisons du prestataire en fonction de la mission
+    //  * @return void
+    //  */
+    // public function action_mission_bdl()
+    // {
+    //     $bd = Model::getModel();
+    //     sessionstart();
+    //     if (isset($_GET['id'])) {
+    //         $data = [
+    //             'title' => 'Bons de livraison',
+    //             'buttonLink' => '?controller=prestataire&action=ajout_bdl_form',
+    //             'cardLink' => '?controller=prestataire&action=afficher_bdl',
+    //             'menu' => $this->action_get_navbar(),
+    //             'person' => $bd->getBdlsOfPrestataireByIdMission($_GET['id'], $_SESSION['id'])
+    //         ];
+    //         $this->render('liste', $data);
+    //     }
+    // }
 
-    /**
-     * Renvoie la liste des bons de livraison du prestataire connecté
-     * @return void
-     */
+    // /**
+    //  * Renvoie la liste des bons de livraison du prestataire connecté
+    //  * @return void
+    //  */
     // public function action_liste_bdl()
     // {
     //     $bd = Model::getModel();
@@ -335,7 +354,10 @@ class Controller_prestataire extends Controller
     //         $this->render("liste", $data);
     //     }
     // }
-
+    /**
+     * Action qui liste les bons de livraison
+     * @return void
+     */
     public function action_liste_bdl()
     {
         $bd = Model::getModel();
@@ -354,65 +376,65 @@ class Controller_prestataire extends Controller
     }
 
 
-    /**
-     * Vérifie d'avoir les informations nécessaires pour créer un bon de livraison
-     * @return void
-     */
-    public function action_prestataire_creer_bdl()
-    {
-        $bd = Model::getModel();
-        sessionstart();
-        if (isset($_SESSION['id']) && isset($_POST['mission'])) {
-            // FIXME Fonction non déclaré dans le modèle 
-            $bd->addBdlForPrestataire($_SESSION['id'], e($_POST['mission']));
-        } else {
-            // TODO Réaliser un render de l'erreur
-            echo 'Une erreur est survenue lors de la création du bon de livraison';
-        }
-    }
+    // /**
+    //  * Vérifie d'avoir les informations nécessaires pour créer un bon de livraison
+    //  * @return void
+    //  */
+    // public function action_prestataire_creer_bdl()
+    // {
+    //     $bd = Model::getModel();
+    //     sessionstart();
+    //     if (isset($_SESSION['id']) && isset($_POST['mission'])) {
+    //         // FIXME Fonction non déclaré dans le modèle 
+    //         $bd->addBdlForPrestataire($_SESSION['id'], e($_POST['mission']));
+    //     } else {
+    //         // TODO Réaliser un render de l'erreur
+    //         echo 'Une erreur est survenue lors de la création du bon de livraison';
+    //     }
+    // }
 
-    /**
-     * Récupère le tableau renvoyé par le JavaScript et rempli les lignes du bon de livraison en fonction de son type
-     * @return void
-     */
-    // TODO a tester
-    public function action_completer_bdl()
-    {
-        $bd = Model::getModel();
-        sessionstart();
-        // Récupérer les données depuis la requête POST
-        $data = json_decode(file_get_contents("php://input"), true);
+    // /**
+    //  * Récupère le tableau renvoyé par le JavaScript et rempli les lignes du bon de livraison en fonction de son type
+    //  * @return void
+    //  */
+    // // TODO a tester
+    // public function action_completer_bdl()
+    // {
+    //     $bd = Model::getModel();
+    //     sessionstart();
+    //     // Récupérer les données depuis la requête POST
+    //     $data = json_decode(file_get_contents("php://input"), true);
 
-        // Vérifier si les données sont présentes
-        if ($data && is_array($data)) {
-            // Parcourir chaque ligne du tableau
-            foreach ($data as $row) {
-                // Vérifier si l'activite existe avant de l'ajouter, sinon la modifier
-                if ($bd->checkActiviteExiste($_GET['id'], $row[0])) {
-                    $id_activite = $bd->getIdActivite($row[0], $_GET['id']);
-                    if ($row[1] && $_GET['type'] == 'Heure') {
-                        $bd->setNbHeure($id_activite, (int) $row[1]);
-                    } elseif ($row[1] >= 0 && $row[1] <= 1 && $_GET['type'] == 'Journée') {
-                        $bd->setJourneeJour($id_activite, (int) $row[1]);
-                    } elseif ($row[1] >= 0 && $row[1] <= 2 && $_GET['type'] == 'Demi-journée') {
-                        $bd->setDemiJournee($id_activite, (int) $row[1]);
-                    }
-                    if ($row[2]) {
-                        $bd->setCommentaireActivite($id_activite, $row[2]);
-                    }
-                } elseif ($row[1]) {
-                    if ($row[1] && $_GET['type'] == 'Heure') {
-                        $bd->addNbHeureActivite($row[2], $_GET['id'], $_SESSION['id'], $row[0], (int) $row[1]);
-                    } elseif ($row[1] >= 0 && $row[1] <= 1 && $_GET['type'] == 'Journée') {
-                        $bd->addJourneeJour($row[2], $_GET['id'], $_SESSION['id'], $row[0], (int) $row[1]);
-                    } elseif ($row[1] >= 0 && $row[1] <= 2 && $_GET['type'] == 'Demi-journée') {
-                        $bd->addDemiJournee($row[2], $_GET['id'], $_SESSION['id'], $row[0], (int) $row[1]);
-                    }
-                }
-            }
-        }
-        $this->render('dashboard');
-    }
+    //     // Vérifier si les données sont présentes
+    //     if ($data && is_array($data)) {
+    //         // Parcourir chaque ligne du tableau
+    //         foreach ($data as $row) {
+    //             // Vérifier si l'activite existe avant de l'ajouter, sinon la modifier
+    //             if ($bd->checkActiviteExiste($_GET['id'], $row[0])) {
+    //                 $id_activite = $bd->getIdActivite($row[0], $_GET['id']);
+    //                 if ($row[1] && $_GET['type'] == 'Heure') {
+    //                     $bd->setNbHeure($id_activite, (int) $row[1]);
+    //                 } elseif ($row[1] >= 0 && $row[1] <= 1 && $_GET['type'] == 'Journée') {
+    //                     $bd->setJourneeJour($id_activite, (int) $row[1]);
+    //                 } elseif ($row[1] >= 0 && $row[1] <= 2 && $_GET['type'] == 'Demi-journée') {
+    //                     $bd->setDemiJournee($id_activite, (int) $row[1]);
+    //                 }
+    //                 if ($row[2]) {
+    //                     $bd->setCommentaireActivite($id_activite, $row[2]);
+    //                 }
+    //             } elseif ($row[1]) {
+    //                 if ($row[1] && $_GET['type'] == 'Heure') {
+    //                     $bd->addNbHeureActivite($row[2], $_GET['id'], $_SESSION['id'], $row[0], (int) $row[1]);
+    //                 } elseif ($row[1] >= 0 && $row[1] <= 1 && $_GET['type'] == 'Journée') {
+    //                     $bd->addJourneeJour($row[2], $_GET['id'], $_SESSION['id'], $row[0], (int) $row[1]);
+    //                 } elseif ($row[1] >= 0 && $row[1] <= 2 && $_GET['type'] == 'Demi-journée') {
+    //                     $bd->addDemiJournee($row[2], $_GET['id'], $_SESSION['id'], $row[0], (int) $row[1]);
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     $this->render('dashboard');
+    // }
 
     /**
      * Renvoie le formulaire pour ajouter un bon de livraison
@@ -426,6 +448,11 @@ class Controller_prestataire extends Controller
         $this->render('ajout_bdl', $data);
 
     }
+
+    /**
+     * Fonction qui permet d'afficher le formulaire avec les informations correspondant au bon de livraison
+     * @return void
+     */
     public function action_afficherFormulaire()
     {
         session_start();
@@ -462,7 +489,10 @@ class Controller_prestataire extends Controller
         }
     }
 
-
+    /**
+     * Action permettant d'ajouter un bon de livraison avec le nombre d'heures et de jours
+     * @return void
+     */
     public function action_addBdl()
     {
         session_start();
@@ -488,6 +518,10 @@ class Controller_prestataire extends Controller
 
     }
 
+    /**
+     * Action permettant d'ajouter une demi journée à un bon de livraison
+     * @return void
+     */
     public function action_addHalfDay()
     {
         session_start();
@@ -508,6 +542,10 @@ class Controller_prestataire extends Controller
 
     }
 
+    /**
+     * Action permettant d'ajouter des heures à un bon de livraison 
+     * @return void 
+     */
     public function action_addHourWithoutDay()
     {
         session_start();
@@ -527,19 +565,19 @@ class Controller_prestataire extends Controller
 
     }
 
-    /**
-     * Vérifie d'avoir les informations nécessaire pour ajouter un bon de livraison à une mission
-     * @return void
-     */
-    public function action_ajout_bdl()
-    {
-        $bd = Model::getModel();
-        sessionstart();
-        if ($_POST['mission'] && $_POST['mois'] && $_POST['composante']) {
-            $bd->addBdlInMission(e($_POST['mission']), e($_POST['composante']), e($_POST['mois']), $_SESSION['id']);
-        }
-        $this->action_ajout_bdl_form();
-    }
+    // /**
+    //  * Vérifie d'avoir les informations nécessaire pour ajouter un bon de livraison à une mission
+    //  * @return void
+    //  */
+    // public function action_ajout_bdl()
+    // {
+    //     $bd = Model::getModel();
+    //     sessionstart();
+    //     if ($_POST['mission'] && $_POST['mois'] && $_POST['composante']) {
+    //         $bd->addBdlInMission(e($_POST['mission']), e($_POST['composante']), e($_POST['mois']), $_SESSION['id']);
+    //     }
+    //     $this->action_ajout_bdl_form();
+    // }
 
 
 }

@@ -1,60 +1,63 @@
 <?php
-
+/**
+ * @brief Classe abstraite Controller
+ * 
+ * Cette classe sert de base pour tous les contrôleurs. Elle gère les actions et le rendu des vues.
+ * Les classes filles doivent implémenter la méthode `action_default`.
+ */
 abstract class Controller
 {
     /**
-     * Constructeur. Lance l'action correspondante
+     * Constructeur. Lance l'action correspondante.
+     * 
+     * Le constructeur vérifie s'il existe dans l'URL un paramètre `action` correspondant à une action
+     * du contrôleur. Si c'est le cas, il appelle cette action, sinon il appelle l'action par défaut.
      */
     public function __construct()
     {
-
-        //On détermine s'il existe dans l'url un paramètre action correspondant à une action du contrôleur
-        if (isset($_GET['action']) and method_exists($this, "action_" . $_GET["action"])) {
-            //Si c'est le cas, on appelle cette action
+        if (isset($_GET['action']) && method_exists($this, "action_" . $_GET["action"])) {
             $action = "action_" . $_GET["action"];
             $this->$action();
         } else {
-            //Sinon, on appelle l'action par défaut
             $this->action_default();
         }
     }
 
     /**
-     * Action par défaut du contrôleur (à définir dans les classes filles)
+     * Action par défaut du contrôleur.
+     * 
+     * Cette méthode doit être définie dans les classes filles.
      */
     abstract public function action_default();
 
     /**
-     * Affiche la vue
-     * @param string $vue nom de la vue
-     * @param array $data tableau contenant les données à passer à la vue
-     * @return aucun
+     * Affiche la vue.
+     * 
+     * @param string $vue Le nom de la vue à afficher.
+     * @param array $data (optionnel) Tableau associatif contenant les données à passer à la vue.
+     * @param string $dossier (optionnel) Le dossier où se trouve la vue.
+     * @return void
      */
     protected function render($vue, $data = [], $dossier = '')
     {
-
-        //On extrait les données à afficher
         extract($data);
         if (!empty($dossier)) {
             $dossier = $dossier . '/';
         }
-        //On teste si la vue existe
         $file_name = "Views/" . $dossier . "view_" . $vue . '.php';
         if (file_exists($file_name)) {
-            //Si oui, on l'affiche
             include $file_name;
         } else {
-            //Sinon, on affiche la page d'->action_error
             $this->action_error("La vue n'existe pas !");
         }
-        // Pour terminer le script
         die();
     }
 
     /**
-     * Méthode affichant une page d'erreur
-     * @param string $message Message d'erreur à afficher
-     * @return aucun
+     * Méthode affichant une page d'erreur.
+     * 
+     * @param string $message (optionnel) Le message d'erreur à afficher.
+     * @return void
      */
     protected function action_error($message = '')
     {
@@ -64,5 +67,5 @@ abstract class Controller
         ];
         $this->render("message", $data);
     }
-
 }
+?>

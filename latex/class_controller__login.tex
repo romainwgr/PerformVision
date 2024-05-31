@@ -1,0 +1,77 @@
+\doxysection{Référence de la classe Controller\+\_\+login}
+\hypertarget{class_controller__login}{}\label{class_controller__login}\index{Controller\_login@{Controller\_login}}
+
+
+Classe qui prend en charge la connexion de l\textquotesingle{}utilisateur.  
+
+
+Graphe d\textquotesingle{}héritage de Controller\+\_\+login\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_controller__login}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Fonctions membres publiques}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_controller__login_ac85c99182a73a006b5f0d2f1c010de05}{action\+\_\+default}} ()
+\item 
+\Hypertarget{class_controller__login_ac07628b4bb059274c271842711d6d7c9}\label{class_controller__login_ac07628b4bb059274c271842711d6d7c9} 
+{\bfseries action\+\_\+login\+\_\+form} ()
+\item 
+\mbox{\hyperlink{class_controller__login_abfbcfa04037d427fff2c1fbcf6387724}{action\+\_\+check\+\_\+pswd}} ()
+\item 
+\mbox{\hyperlink{class_controller__login_a96d60f1937abd16739fb0f194db2de40}{action\+\_\+check\+\_\+mail}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Fonctions membres publiques hérités de \mbox{\hyperlink{class_controller}{Controller}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_controller_acd649140a4353af09a3a181ae5b00d2e}{\+\_\+\+\_\+construct}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Membres hérités additionnels}
+\doxysubsection*{Fonctions membres protégées hérités de \mbox{\hyperlink{class_controller}{Controller}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_controller_a8ca8f26bb68f435facc0e19e54c96019}{render}} (\$vue, \$data=\mbox{[}$\,$\mbox{]}, \$dossier=\textquotesingle{}\textquotesingle{})
+\item 
+\mbox{\hyperlink{class_controller_a6491f58f6d7703fc7f780ce47f258645}{action\+\_\+error}} (\$message=\textquotesingle{}\textquotesingle{})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+Classe qui prend en charge la connexion de l\textquotesingle{}utilisateur. 
+
+\doxysubsection{Documentation des fonctions membres}
+\Hypertarget{class_controller__login_a96d60f1937abd16739fb0f194db2de40}\label{class_controller__login_a96d60f1937abd16739fb0f194db2de40} 
+\index{Controller\_login@{Controller\_login}!action\_check\_mail@{action\_check\_mail}}
+\index{action\_check\_mail@{action\_check\_mail}!Controller\_login@{Controller\_login}}
+\doxysubsubsection{\texorpdfstring{action\_check\_mail()}{action\_check\_mail()}}
+{\footnotesize\ttfamily Controller\+\_\+login\+::action\+\_\+check\+\_\+mail (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Cette fonction va être appelée eu fur et à mesure que l\textquotesingle{}utilisateur tape son email afin de lui indiquer si son email existe Elle vérifie si l\textquotesingle{}email existe dans la base de donnée, renvoie true si oui, false sinon \begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_controller__login_abfbcfa04037d427fff2c1fbcf6387724}\label{class_controller__login_abfbcfa04037d427fff2c1fbcf6387724} 
+\index{Controller\_login@{Controller\_login}!action\_check\_pswd@{action\_check\_pswd}}
+\index{action\_check\_pswd@{action\_check\_pswd}!Controller\_login@{Controller\_login}}
+\doxysubsubsection{\texorpdfstring{action\_check\_pswd()}{action\_check\_pswd()}}
+{\footnotesize\ttfamily Controller\+\_\+login\+::action\+\_\+check\+\_\+pswd (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Vérifie que le mot de passe correspond au mail \begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+\Hypertarget{class_controller__login_ac85c99182a73a006b5f0d2f1c010de05}\label{class_controller__login_ac85c99182a73a006b5f0d2f1c010de05} 
+\index{Controller\_login@{Controller\_login}!action\_default@{action\_default}}
+\index{action\_default@{action\_default}!Controller\_login@{Controller\_login}}
+\doxysubsubsection{\texorpdfstring{action\_default()}{action\_default()}}
+{\footnotesize\ttfamily Controller\+\_\+login\+::action\+\_\+default (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+@inherit\+Doc 
+
+Réimplémentée à partir de \mbox{\hyperlink{class_controller_a9f72d755c6eec81f5e4bd1138798606f}{Controller}}.
+
+
+
+La documentation de cette classe a été générée à partir du fichier suivant \+:\begin{DoxyCompactItemize}
+\item 
+Controllers/Controller\+\_\+login.\+php\end{DoxyCompactItemize}

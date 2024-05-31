@@ -1,0 +1,1012 @@
+\doxysection{Référence de la classe Model}
+\hypertarget{class_model}{}\label{class_model}\index{Model@{Model}}
+
+
+Classe \doxylink{class_model}{Model} contenant le modèle de l\textquotesingle{}application permettant d\textquotesingle{}effectuer des requêtes sur la base de données.  
+
+
+\doxysubsubsection*{Fonctions membres publiques}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_model_ace39f135799a34975ebc0634bd63e020}{create\+Personne}} (\$nom, \$prenom, \$mail, \$mot\+\_\+de\+\_\+passe, \$telephone)
+\item 
+\mbox{\hyperlink{class_model_aec7efa8b01055730d2b0b58b4a29569d}{get\+Dashboard\+Gestionnaire}} ()
+\item 
+\mbox{\hyperlink{class_model_a2ed37314dc6e163400030e8f6cf9767d}{get\+All\+Composantes}} ()
+\item 
+\mbox{\hyperlink{class_model_a13ed4a2f759e50232d833e828cb552d2}{get\+All\+Commerciaux}} ()
+\item 
+\mbox{\hyperlink{class_model_a7f313499fb87bcac19a72fadb4cb4623}{get\+All\+Prestataires}} ()
+\item 
+\mbox{\hyperlink{class_model_a2e0340baf70e4d62ec6caf2257524fcf}{get\+All\+Clients}} ()
+\item 
+\mbox{\hyperlink{class_model_a0059f66bd4640daa435e230a142d49c0}{get\+All\+Gestionnaires}} ()
+\item 
+\mbox{\hyperlink{class_model_a1da1a231c36c6becef2b332a21bf8e1b}{get\+Infos\+Personne}} (\$id)
+\item 
+\mbox{\hyperlink{class_model_a775225b15e5b732623d1917ab32432c1}{get\+Personnes\+By\+Ids}} (\$ids)
+\item 
+\mbox{\hyperlink{class_model_a3da24c6337bd280dcba836cee8bef9b1}{get\+Id\+Composante}} (\$nom\+\_\+composante, \$nom\+\_\+client)
+\item 
+\mbox{\hyperlink{class_model_a11374e7e5ac7890a2d3a17652a678813}{get\+Infos\+Composante}} (\$id)
+\item 
+\mbox{\hyperlink{class_model_aebfb147067b24b6ed229b94c28b95888}{get\+Prestataires\+Composante}} (\$id)
+\item 
+\mbox{\hyperlink{class_model_aa42a494bc03206d39e6fc59a7560df57}{get\+Commerciaux\+Composante}} (\$id)
+\item 
+\mbox{\hyperlink{class_model_a0b5a4ab01a3fcbd64ad2a1f0f8e391c8}{get\+Interlocuteurs\+Composante}} (\$id)
+\item 
+\mbox{\hyperlink{class_model_a126a839a45f31c4129d1f6d5e369ec8a}{get\+Bdl\+Composante}} (\$id\+\_\+composante)
+\item 
+\mbox{\hyperlink{class_model_a02d45d041f88445b9855550e073060cf}{get\+Interlocuteurs\+Societe}} (\$id)
+\item 
+\mbox{\hyperlink{class_model_aecc0177eec676cf35793179a9f66cef4}{get\+Infos\+Societe}} (\$id)
+\item 
+\mbox{\hyperlink{class_model_a1c13c67981cba862362e461db6a76fea}{get\+Composantes\+Societe}} (\$id)
+\item 
+\mbox{\hyperlink{class_model_abdcfba9b0b1edc63684cfe818422d643}{assigner\+Interlocuteur\+Composante\+By\+Id\+Composante}} (\$id\+\_\+composante, \$mail)
+\item 
+\mbox{\hyperlink{class_model_a3ed9962f295784cf144414f83c70e33d}{assigner\+Interlocuteur\+Composante\+By\+Id\+Client}} (\$id\+\_\+client, \$mail, \$composante)
+\item 
+\mbox{\hyperlink{class_model_aa445f1bf3685f567e058870c28f84098}{add\+Prestataire}} (\$mail)
+\item 
+\mbox{\hyperlink{class_model_ad04c8758b922b6bb59eb2b384817a5f4}{add\+Interlocuteur}} (\$mail)
+\item 
+\mbox{\hyperlink{class_model_a415773e73166465cb2b47e5e678f52e6}{add\+Commercial}} (\$mail)
+\item 
+\mbox{\hyperlink{class_model_af7445e75a4dcc36582e788c316704c48}{add\+Gestionnaire}} (\$mail)
+\item 
+\mbox{\hyperlink{class_model_a44cdeff512c15198a35dec894df3831b}{add\+Client}} (\$client, \$tel)
+\item 
+\mbox{\hyperlink{class_model_a6b6a8ba429997c9f49ec9e1b6d00128c}{add\+Adresse}} (\$adresse, \$code\+\_\+postal, \$ville, \$type\+\_\+de\+\_\+voie)
+\item 
+\mbox{\hyperlink{class_model_aaa6a30d283b2fa209f7bec778bfa4708}{add\+Composante}} (\$nom\+\_\+composante, \$id\+\_\+adresse, \$id\+\_\+client)
+\item 
+\mbox{\hyperlink{class_model_a69b3bcced171526bc8ca7c78d4bdb94c}{add\+Bdl}} (\$id\+\_\+composante, \$id\+\_\+prestataire, \$id\+\_\+gestionnaire, \$id\+\_\+interlocuteur, \$mois, \$annee=2024, \$signature\+\_\+interlocuteur=false, \$signature\+\_\+prestataire=null, \$commentaire="{}"{}, \$heures=0)
+\item 
+\mbox{\hyperlink{class_model_a77e73aa78d2043234c1168652cf53dcb}{get\+All\+Bdl\+Prestataire}} (\$id\+\_\+pr)
+\item 
+\mbox{\hyperlink{class_model_ad0ec4ad19fe2c5328a9be46fbaf94894}{get\+Bdl\+Prestataire\+Bybdl\+Id}} (\$id\+\_\+bdl)
+\item 
+\mbox{\hyperlink{class_model_a4235319720ec835c97cd60b187d60b5b}{get\+Hours\+By\+Id\+BDL}} (\$id\+\_\+bdl)
+\item 
+\mbox{\hyperlink{class_model_ab744631d028a66c3c844095ccbc03a46}{set\+Nom\+Personne}} (\$id, \$nom)
+\item 
+\mbox{\hyperlink{class_model_ad46fee266ee65c203f47eeb447e44926}{set\+Prenom\+Personne}} (\$id, \$prenom)
+\item 
+\mbox{\hyperlink{class_model_a451f3ff3a17565c1cd95c4811efc70c8}{setmail\+Personne}} (\$id, \$mail)
+\item 
+\mbox{\hyperlink{class_model_ae74f236d45a79c946bc803e2dfb1b0eb}{setmot\+\_\+de\+\_\+passe\+Personne}} (\$id, \$mot\+\_\+de\+\_\+passe)
+\item 
+\mbox{\hyperlink{class_model_abbe8010ba1b075fbdbeac1e843f6a0e0}{set\+Nom\+Client}} (\$id, \$nom)
+\item 
+\mbox{\hyperlink{class_model_a8695ad48c4c935e6695a7276a6772609}{set\+Tel\+Client}} (\$id, \$tel)
+\item 
+\mbox{\hyperlink{class_model_a569ae5ec673ac4e3a7e1164d6aeca4e9}{set\+Nom\+Composante}} (\$id, \$nom)
+\item 
+\Hypertarget{class_model_a1d3b622c2096f47739e29e503123715c}\label{class_model_a1d3b622c2096f47739e29e503123715c} 
+{\bfseries set\+Numero\+Adresse} (\$id, \$num)
+\item 
+\Hypertarget{class_model_aa210cdbeedcbd508392cf8859c8229b9}\label{class_model_aa210cdbeedcbd508392cf8859c8229b9} 
+{\bfseries set\+Nom\+Voie\+Adresse} (\$id, \$nom)
+\item 
+\Hypertarget{class_model_a399364f38202bc46da63689b7a51a958}\label{class_model_a399364f38202bc46da63689b7a51a958} 
+{\bfseries setcode\+\_\+postal\+Localite} (\$id, \$code\+\_\+postal)
+\item 
+\Hypertarget{class_model_a1030d2439e3cd1778a632fb005204bf8}\label{class_model_a1030d2439e3cd1778a632fb005204bf8} 
+{\bfseries set\+Ville\+Localite} (\$id, \$ville)
+\item 
+\Hypertarget{class_model_a99758b5fb0a724c84aa4f1ac3048d76e}\label{class_model_a99758b5fb0a724c84aa4f1ac3048d76e} 
+{\bfseries set\+Libelletype\+\_\+de\+\_\+voie} (\$id, \$libelle)
+\item 
+\Hypertarget{class_model_a9cde4dfd6316b48826d07ef38423f1c8}\label{class_model_a9cde4dfd6316b48826d07ef38423f1c8} 
+{\bfseries set\+Client\+Composante} (\$id, \$client)
+\item 
+\mbox{\hyperlink{class_model_a9da49d6df9e8767f6965b83fb1bd46c8}{update\+Bdl}} (\$id\+\_\+composante, \$annee, \$mois, \$commentaire, \$heures)
+\item 
+\Hypertarget{class_model_a805805819d9026a66acb77991e8bf66e}\label{class_model_a805805819d9026a66acb77991e8bf66e} 
+{\bfseries get\+Dashboard\+Prestataire} (\$id\+\_\+prestataire)
+\item 
+\Hypertarget{class_model_a0929b80a3e1fb989ccc8d0b75ccca25d}\label{class_model_a0929b80a3e1fb989ccc8d0b75ccca25d} 
+{\bfseries get\+Client\+For\+Commercial} ()
+\item 
+\mbox{\hyperlink{class_model_a2bdf6eab077b662a715aa93a9a435cdd}{getmail\+By\+Id}} (\$id)
+\item 
+\mbox{\hyperlink{class_model_af9758fd9b75b679bde92c722e5c5d715}{mail\+Exists}} (\$mail)
+\item 
+\mbox{\hyperlink{class_model_a077378a9696d18947c07657e8a730be1}{check\+Mail\+Password}} (\$mail, \$password)
+\item 
+\mbox{\hyperlink{class_model_a4a0266c65edc52ec6fdf768c0e0065b3}{has\+Several\+Roles}} ()
+\item 
+\mbox{\hyperlink{class_model_a93b232485bd35647381d93e21a82fc1b}{check\+Personne\+Existe}} (\$mail)
+\item 
+\mbox{\hyperlink{class_model_a48fabe8faab93676e1e9f3c8a3ee84c4}{check\+Composante\+Existe}} (\$nom\+\_\+compo, \$nom\+\_\+client)
+\item 
+\mbox{\hyperlink{class_model_abc43609ab3ce9705e92aba1fce4e583f}{check\+Societe\+Existe}} (\$nom\+\_\+client)
+\item 
+\mbox{\hyperlink{class_model_a5670b36ac745222e8171a97dcd6e62ab}{check\+Interlocuteur\+Existe}} (\$mail)
+\item 
+\mbox{\hyperlink{class_model_a443a47aa54b53706cc11c8b9357383c0}{check\+Commercial\+Existe}} (\$mail)
+\item 
+\mbox{\hyperlink{class_model_a51f0ced92e43f71b3a39df75da4dabd2}{check\+Prestataire\+Existe}} (\$mail)
+\item 
+\mbox{\hyperlink{class_model_a24988cbd404b0f99462a2f44b71faf35}{check\+Gestionnaire\+Existe}} (\$mail)
+\item 
+\mbox{\hyperlink{class_model_a0d06c301f83ad56aea23e21bbc328f53}{recherche\+Prestataire}} (\$recherche)
+\item 
+\mbox{\hyperlink{class_model_a82a8af9fdc7c505b581b7b3dba48f799}{get\+Bdl\+Info\+By\+Id}} (\$id)
+\item 
+\mbox{\hyperlink{class_model_a7f9e31048c1b53cea45e7ece76cbc856}{get\+Prestataire\+By\+Ids}} (\$ids)
+\item 
+\mbox{\hyperlink{class_model_a8c12c77b5e0a148e6acd088186c2bdd6}{recherche\+Commercial}} (\$recherche)
+\item 
+\mbox{\hyperlink{class_model_a0e2023c0a82b3a486e9a2bf445b1b6b2}{recherche\+Client}} (\$recherche)
+\item 
+\mbox{\hyperlink{class_model_a47ee5c01192ea3b8766bc2f85e218951}{get\+Client\+By\+Ids}} (\$ids)
+\item 
+\mbox{\hyperlink{class_model_ab5b91d88f97fb06e38869d5c29886b7b}{get\+Commercial\+By\+Ids}} (\$ids)
+\item 
+\mbox{\hyperlink{class_model_a17b41f8cc2185b45c87e92fdcd4c062d}{insert\+Daily\+Hours}} (\$id\+\_\+bdl, \$jour, \$hours\+\_\+worked)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Fonctions membres publiques statiques}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{class_model_a851c38f53f2ba648559d2e883961ffcc}{get\+Model}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+Classe \doxylink{class_model}{Model} contenant le modèle de l\textquotesingle{}application permettant d\textquotesingle{}effectuer des requêtes sur la base de données. 
+
+\doxysubsection{Documentation des fonctions membres}
+\Hypertarget{class_model_a6b6a8ba429997c9f49ec9e1b6d00128c}\label{class_model_a6b6a8ba429997c9f49ec9e1b6d00128c} 
+\index{Model@{Model}!addAdresse@{addAdresse}}
+\index{addAdresse@{addAdresse}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{addAdresse()}{addAdresse()}}
+{\footnotesize\ttfamily Model\+::add\+Adresse (\begin{DoxyParamCaption}\item[{}]{\$adresse,  }\item[{}]{\$code\+\_\+postal,  }\item[{}]{\$ville,  }\item[{}]{\$type\+\_\+de\+\_\+voie }\end{DoxyParamCaption})}
+
+Méthode permettant de créer une adresse 
+\begin{DoxyParams}[1]{Paramètres}
+string & {\em \$adresse} & \\
+\hline
+int & {\em \$code\+\_\+postal} & \\
+\hline
+string & {\em \$ville} & \\
+\hline
+string & {\em \$type\+\_\+de\+\_\+voie} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+int\texorpdfstring{$\vert$}{|}false 
+\end{DoxyReturn}
+\Hypertarget{class_model_a69b3bcced171526bc8ca7c78d4bdb94c}\label{class_model_a69b3bcced171526bc8ca7c78d4bdb94c} 
+\index{Model@{Model}!addBdl@{addBdl}}
+\index{addBdl@{addBdl}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{addBdl()}{addBdl()}}
+{\footnotesize\ttfamily Model\+::add\+Bdl (\begin{DoxyParamCaption}\item[{}]{\$id\+\_\+composante,  }\item[{}]{\$id\+\_\+prestataire,  }\item[{}]{\$id\+\_\+gestionnaire,  }\item[{}]{\$id\+\_\+interlocuteur,  }\item[{}]{\$mois,  }\item[{}]{\$annee = {\ttfamily 2024},  }\item[{}]{\$signature\+\_\+interlocuteur = {\ttfamily false},  }\item[{}]{\$signature\+\_\+prestataire = {\ttfamily null},  }\item[{}]{\$commentaire = {\ttfamily "{}"{}},  }\item[{}]{\$heures = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+Méthode permettant d\textquotesingle{}ajouter un bon de livraison (BDL) 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id\+\_\+composante} & \\
+\hline
+int & {\em \$id\+\_\+prestataire} & \\
+\hline
+int & {\em \$annee} & \\
+\hline
+string & {\em \$mois} & \\
+\hline
+bool | false & {\em \$signature\+\_\+interlocuteur} & \\
+\hline
+bool | false & {\em \$signature\+\_\+prestataire} & \\
+\hline
+ & {\em string\texorpdfstring{$\vert$}{|}\textquotesingle{}\textquotesingle{}} & \$commentaire \\
+\hline
+float | 0 & {\em \$heures} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_a44cdeff512c15198a35dec894df3831b}\label{class_model_a44cdeff512c15198a35dec894df3831b} 
+\index{Model@{Model}!addClient@{addClient}}
+\index{addClient@{addClient}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{addClient()}{addClient()}}
+{\footnotesize\ttfamily Model\+::add\+Client (\begin{DoxyParamCaption}\item[{}]{\$client,  }\item[{}]{\$tel }\end{DoxyParamCaption})}
+
+Méthode permettant d\textquotesingle{}ajouter un client dans la table client avec ses informations 
+\begin{DoxyParams}[1]{Paramètres}
+string & {\em \$client} & \\
+\hline
+string & {\em \$tel} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_a415773e73166465cb2b47e5e678f52e6}\label{class_model_a415773e73166465cb2b47e5e678f52e6} 
+\index{Model@{Model}!addCommercial@{addCommercial}}
+\index{addCommercial@{addCommercial}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{addCommercial()}{addCommercial()}}
+{\footnotesize\ttfamily Model\+::add\+Commercial (\begin{DoxyParamCaption}\item[{}]{\$mail }\end{DoxyParamCaption})}
+
+Méthode permettant d\textquotesingle{}ajouter une personne dans la table commercial en connaissant son mail 
+\begin{DoxyParams}[1]{Paramètres}
+string & {\em \$mail} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_aaa6a30d283b2fa209f7bec778bfa4708}\label{class_model_aaa6a30d283b2fa209f7bec778bfa4708} 
+\index{Model@{Model}!addComposante@{addComposante}}
+\index{addComposante@{addComposante}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{addComposante()}{addComposante()}}
+{\footnotesize\ttfamily Model\+::add\+Composante (\begin{DoxyParamCaption}\item[{}]{\$nom\+\_\+composante,  }\item[{}]{\$id\+\_\+adresse,  }\item[{}]{\$id\+\_\+client }\end{DoxyParamCaption})}
+
+Méthode ajoutant une composante 
+\begin{DoxyParams}[1]{Paramètres}
+string & {\em \$nom\+\_\+composante} & \\
+\hline
+int & {\em \$id\+\_\+adresse} & \\
+\hline
+ & {\em int} & @id\+\_\+client \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_af7445e75a4dcc36582e788c316704c48}\label{class_model_af7445e75a4dcc36582e788c316704c48} 
+\index{Model@{Model}!addGestionnaire@{addGestionnaire}}
+\index{addGestionnaire@{addGestionnaire}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{addGestionnaire()}{addGestionnaire()}}
+{\footnotesize\ttfamily Model\+::add\+Gestionnaire (\begin{DoxyParamCaption}\item[{}]{\$mail }\end{DoxyParamCaption})}
+
+Méthode permettant d\textquotesingle{}ajouter une personne dans la table gestionnaire en connaissant son mail 
+\begin{DoxyParams}[1]{Paramètres}
+string & {\em \$mail} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_ad04c8758b922b6bb59eb2b384817a5f4}\label{class_model_ad04c8758b922b6bb59eb2b384817a5f4} 
+\index{Model@{Model}!addInterlocuteur@{addInterlocuteur}}
+\index{addInterlocuteur@{addInterlocuteur}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{addInterlocuteur()}{addInterlocuteur()}}
+{\footnotesize\ttfamily Model\+::add\+Interlocuteur (\begin{DoxyParamCaption}\item[{}]{\$mail }\end{DoxyParamCaption})}
+
+Méthode permettant d\textquotesingle{}ajouter une personne dans la table interlocuteur en connaissant son mail 
+\begin{DoxyParams}[1]{Paramètres}
+string & {\em \$mail} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_aa445f1bf3685f567e058870c28f84098}\label{class_model_aa445f1bf3685f567e058870c28f84098} 
+\index{Model@{Model}!addPrestataire@{addPrestataire}}
+\index{addPrestataire@{addPrestataire}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{addPrestataire()}{addPrestataire()}}
+{\footnotesize\ttfamily Model\+::add\+Prestataire (\begin{DoxyParamCaption}\item[{}]{\$mail }\end{DoxyParamCaption})}
+
+Méthode permettant d\textquotesingle{}ajouter une personne dans la table prestataire en connaissant son mail 
+\begin{DoxyParams}[1]{Paramètres}
+string & {\em \$mail} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_a3ed9962f295784cf144414f83c70e33d}\label{class_model_a3ed9962f295784cf144414f83c70e33d} 
+\index{Model@{Model}!assignerInterlocuteurComposanteByIdClient@{assignerInterlocuteurComposanteByIdClient}}
+\index{assignerInterlocuteurComposanteByIdClient@{assignerInterlocuteurComposanteByIdClient}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{assignerInterlocuteurComposanteByIdClient()}{assignerInterlocuteurComposanteByIdClient()}}
+{\footnotesize\ttfamily Model\+::assigner\+Interlocuteur\+Composante\+By\+Id\+Client (\begin{DoxyParamCaption}\item[{}]{\$id\+\_\+client,  }\item[{}]{\$mail,  }\item[{}]{\$composante }\end{DoxyParamCaption})}
+
+Méthode permettant d\textquotesingle{}assigner un interlocuteur à une composante en connaissant le nom de la composante et l\textquotesingle{}identifiant de la société 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id\+\_\+client} & \\
+\hline
+string & {\em \$mail} & \\
+\hline
+string & {\em \$composante} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_abdcfba9b0b1edc63684cfe818422d643}\label{class_model_abdcfba9b0b1edc63684cfe818422d643} 
+\index{Model@{Model}!assignerInterlocuteurComposanteByIdComposante@{assignerInterlocuteurComposanteByIdComposante}}
+\index{assignerInterlocuteurComposanteByIdComposante@{assignerInterlocuteurComposanteByIdComposante}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{assignerInterlocuteurComposanteByIdComposante()}{assignerInterlocuteurComposanteByIdComposante()}}
+{\footnotesize\ttfamily Model\+::assigner\+Interlocuteur\+Composante\+By\+Id\+Composante (\begin{DoxyParamCaption}\item[{}]{\$id\+\_\+composante,  }\item[{}]{\$mail }\end{DoxyParamCaption})}
+
+Méthode permettant d\textquotesingle{}assigner un interlocuteur à une composante en connaissant l\textquotesingle{}identifiant de la composante 
+\begin{DoxyParams}[1]{Paramètres}
+ont & {\em \$id\+\_\+composante} & \\
+\hline
+string & {\em \$mail} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_a443a47aa54b53706cc11c8b9357383c0}\label{class_model_a443a47aa54b53706cc11c8b9357383c0} 
+\index{Model@{Model}!checkCommercialExiste@{checkCommercialExiste}}
+\index{checkCommercialExiste@{checkCommercialExiste}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{checkCommercialExiste()}{checkCommercialExiste()}}
+{\footnotesize\ttfamily Model\+::check\+Commercial\+Existe (\begin{DoxyParamCaption}\item[{}]{\$mail }\end{DoxyParamCaption})}
+
+Méthode vérifiant si un commercial existe 
+\begin{DoxyParams}[1]{Paramètres}
+string & {\em \$mail} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_a48fabe8faab93676e1e9f3c8a3ee84c4}\label{class_model_a48fabe8faab93676e1e9f3c8a3ee84c4} 
+\index{Model@{Model}!checkComposanteExiste@{checkComposanteExiste}}
+\index{checkComposanteExiste@{checkComposanteExiste}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{checkComposanteExiste()}{checkComposanteExiste()}}
+{\footnotesize\ttfamily Model\+::check\+Composante\+Existe (\begin{DoxyParamCaption}\item[{}]{\$nom\+\_\+compo,  }\item[{}]{\$nom\+\_\+client }\end{DoxyParamCaption})}
+
+Méthode vérifiant si une composante existe 
+\begin{DoxyParams}[1]{Paramètres}
+string & {\em \$nom\+\_\+compo} & \\
+\hline
+string & {\em \$nom\+\_\+client} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_a24988cbd404b0f99462a2f44b71faf35}\label{class_model_a24988cbd404b0f99462a2f44b71faf35} 
+\index{Model@{Model}!checkGestionnaireExiste@{checkGestionnaireExiste}}
+\index{checkGestionnaireExiste@{checkGestionnaireExiste}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{checkGestionnaireExiste()}{checkGestionnaireExiste()}}
+{\footnotesize\ttfamily Model\+::check\+Gestionnaire\+Existe (\begin{DoxyParamCaption}\item[{}]{\$mail }\end{DoxyParamCaption})}
+
+Méthode vérifiant si un gestionnaire existe 
+\begin{DoxyParams}[1]{Paramètres}
+string & {\em \$mail} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_a5670b36ac745222e8171a97dcd6e62ab}\label{class_model_a5670b36ac745222e8171a97dcd6e62ab} 
+\index{Model@{Model}!checkInterlocuteurExiste@{checkInterlocuteurExiste}}
+\index{checkInterlocuteurExiste@{checkInterlocuteurExiste}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{checkInterlocuteurExiste()}{checkInterlocuteurExiste()}}
+{\footnotesize\ttfamily Model\+::check\+Interlocuteur\+Existe (\begin{DoxyParamCaption}\item[{}]{\$mail }\end{DoxyParamCaption})}
+
+Méthode vérifiant si un interlocuteur existe 
+\begin{DoxyParams}[1]{Paramètres}
+string & {\em \$mail} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_a077378a9696d18947c07657e8a730be1}\label{class_model_a077378a9696d18947c07657e8a730be1} 
+\index{Model@{Model}!checkMailPassword@{checkMailPassword}}
+\index{checkMailPassword@{checkMailPassword}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{checkMailPassword()}{checkMailPassword()}}
+{\footnotesize\ttfamily Model\+::check\+Mail\+Password (\begin{DoxyParamCaption}\item[{}]{\$mail,  }\item[{}]{\$password }\end{DoxyParamCaption})}
+
+Vérifie que le mot de passe correspond bien au mail. Si ils correspondent, une session avec les informations de la personne lié au mail débute. \Hypertarget{class_model_a93b232485bd35647381d93e21a82fc1b}\label{class_model_a93b232485bd35647381d93e21a82fc1b} 
+\index{Model@{Model}!checkPersonneExiste@{checkPersonneExiste}}
+\index{checkPersonneExiste@{checkPersonneExiste}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{checkPersonneExiste()}{checkPersonneExiste()}}
+{\footnotesize\ttfamily Model\+::check\+Personne\+Existe (\begin{DoxyParamCaption}\item[{}]{\$mail }\end{DoxyParamCaption})}
+
+Méthode vérifiant si une personne existe ou non avec son mail 
+\begin{DoxyParams}[1]{Paramètres}
+string & {\em \$mail} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_a51f0ced92e43f71b3a39df75da4dabd2}\label{class_model_a51f0ced92e43f71b3a39df75da4dabd2} 
+\index{Model@{Model}!checkPrestataireExiste@{checkPrestataireExiste}}
+\index{checkPrestataireExiste@{checkPrestataireExiste}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{checkPrestataireExiste()}{checkPrestataireExiste()}}
+{\footnotesize\ttfamily Model\+::check\+Prestataire\+Existe (\begin{DoxyParamCaption}\item[{}]{\$mail }\end{DoxyParamCaption})}
+
+Méthode vérifiant si un prestataire existe 
+\begin{DoxyParams}[1]{Paramètres}
+string & {\em \$mail} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_abc43609ab3ce9705e92aba1fce4e583f}\label{class_model_abc43609ab3ce9705e92aba1fce4e583f} 
+\index{Model@{Model}!checkSocieteExiste@{checkSocieteExiste}}
+\index{checkSocieteExiste@{checkSocieteExiste}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{checkSocieteExiste()}{checkSocieteExiste()}}
+{\footnotesize\ttfamily Model\+::check\+Societe\+Existe (\begin{DoxyParamCaption}\item[{}]{\$nom\+\_\+client }\end{DoxyParamCaption})}
+
+Méthode vérifiant si une société existe 
+\begin{DoxyParams}[1]{Paramètres}
+string & {\em \$nom\+\_\+client} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_ace39f135799a34975ebc0634bd63e020}\label{class_model_ace39f135799a34975ebc0634bd63e020} 
+\index{Model@{Model}!createPersonne@{createPersonne}}
+\index{createPersonne@{createPersonne}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{createPersonne()}{createPersonne()}}
+{\footnotesize\ttfamily Model\+::create\+Personne (\begin{DoxyParamCaption}\item[{}]{\$nom,  }\item[{}]{\$prenom,  }\item[{}]{\$mail,  }\item[{}]{\$mot\+\_\+de\+\_\+passe,  }\item[{}]{\$telephone }\end{DoxyParamCaption})}
+
+Méthode permettant d\textquotesingle{}insérer une ligne dans la table personne 
+\begin{DoxyParams}{Paramètres}
+{\em \$nom} & \\
+\hline
+{\em \$prenom} & \\
+\hline
+{\em \$mail} & \\
+\hline
+{\em \$mot\+\_\+de\+\_\+passe} & \\
+\hline
+{\em \$telephone} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_a77e73aa78d2043234c1168652cf53dcb}\label{class_model_a77e73aa78d2043234c1168652cf53dcb} 
+\index{Model@{Model}!getAllBdlPrestataire@{getAllBdlPrestataire}}
+\index{getAllBdlPrestataire@{getAllBdlPrestataire}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getAllBdlPrestataire()}{getAllBdlPrestataire()}}
+{\footnotesize\ttfamily Model\+::get\+All\+Bdl\+Prestataire (\begin{DoxyParamCaption}\item[{}]{\$id\+\_\+pr }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer tous les bons de livraison associés à un prestataire 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id\+\_\+pr} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}false 
+\end{DoxyReturn}
+\Hypertarget{class_model_a2e0340baf70e4d62ec6caf2257524fcf}\label{class_model_a2e0340baf70e4d62ec6caf2257524fcf} 
+\index{Model@{Model}!getAllClients@{getAllClients}}
+\index{getAllClients@{getAllClients}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getAllClients()}{getAllClients()}}
+{\footnotesize\ttfamily Model\+::get\+All\+Clients (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer la liste de toutes les sociétés \begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}string Un tableau du résultat de la requête sinon un message d\textquotesingle{}erreur 
+\end{DoxyReturn}
+\Hypertarget{class_model_a13ed4a2f759e50232d833e828cb552d2}\label{class_model_a13ed4a2f759e50232d833e828cb552d2} 
+\index{Model@{Model}!getAllCommerciaux@{getAllCommerciaux}}
+\index{getAllCommerciaux@{getAllCommerciaux}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getAllCommerciaux()}{getAllCommerciaux()}}
+{\footnotesize\ttfamily Model\+::get\+All\+Commerciaux (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer la liste de tous les commerciaux \begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}string Un tableau du résultat de la requête sinon un message d\textquotesingle{}erreur 
+\end{DoxyReturn}
+\Hypertarget{class_model_a2ed37314dc6e163400030e8f6cf9767d}\label{class_model_a2ed37314dc6e163400030e8f6cf9767d} 
+\index{Model@{Model}!getAllComposantes@{getAllComposantes}}
+\index{getAllComposantes@{getAllComposantes}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getAllComposantes()}{getAllComposantes()}}
+{\footnotesize\ttfamily Model\+::get\+All\+Composantes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer la liste des composantes \begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}string Un tableau du résultat de la requête sinon un message d\textquotesingle{}erreur 
+\end{DoxyReturn}
+\Hypertarget{class_model_a0059f66bd4640daa435e230a142d49c0}\label{class_model_a0059f66bd4640daa435e230a142d49c0} 
+\index{Model@{Model}!getAllGestionnaires@{getAllGestionnaires}}
+\index{getAllGestionnaires@{getAllGestionnaires}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getAllGestionnaires()}{getAllGestionnaires()}}
+{\footnotesize\ttfamily Model\+::get\+All\+Gestionnaires (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer la liste de tous les gestionnaires \begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}string Un tableau du résultat de la requête sinon un message d\textquotesingle{}erreur 
+\end{DoxyReturn}
+\Hypertarget{class_model_a7f313499fb87bcac19a72fadb4cb4623}\label{class_model_a7f313499fb87bcac19a72fadb4cb4623} 
+\index{Model@{Model}!getAllPrestataires@{getAllPrestataires}}
+\index{getAllPrestataires@{getAllPrestataires}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getAllPrestataires()}{getAllPrestataires()}}
+{\footnotesize\ttfamily Model\+::get\+All\+Prestataires (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer la liste de tous les prestataires avec leur bon de livraison associé \begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}string Un tableau du résultat de la requête sinon un message d\textquotesingle{}erreur 
+\end{DoxyReturn}
+\Hypertarget{class_model_a126a839a45f31c4129d1f6d5e369ec8a}\label{class_model_a126a839a45f31c4129d1f6d5e369ec8a} 
+\index{Model@{Model}!getBdlComposante@{getBdlComposante}}
+\index{getBdlComposante@{getBdlComposante}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getBdlComposante()}{getBdlComposante()}}
+{\footnotesize\ttfamily Model\+::get\+Bdl\+Composante (\begin{DoxyParamCaption}\item[{}]{\$id\+\_\+composante }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer la liste des bons de livraison liés à partir de l\textquotesingle{}indentifiant d\textquotesingle{}une composante 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id\+\_\+composante} & identifiant d\textquotesingle{}une composante \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}string Un tableau du résultat de la requête sinon un message d\textquotesingle{}erreur 
+\end{DoxyReturn}
+\Hypertarget{class_model_a82a8af9fdc7c505b581b7b3dba48f799}\label{class_model_a82a8af9fdc7c505b581b7b3dba48f799} 
+\index{Model@{Model}!getBdlInfoById@{getBdlInfoById}}
+\index{getBdlInfoById@{getBdlInfoById}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getBdlInfoById()}{getBdlInfoById()}}
+{\footnotesize\ttfamily Model\+::get\+Bdl\+Info\+By\+Id (\begin{DoxyParamCaption}\item[{}]{\$id }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer les informations d\textquotesingle{}un bon de livraison à partir de son id 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array 
+\end{DoxyReturn}
+\Hypertarget{class_model_ad0ec4ad19fe2c5328a9be46fbaf94894}\label{class_model_ad0ec4ad19fe2c5328a9be46fbaf94894} 
+\index{Model@{Model}!getBdlPrestataireBybdlId@{getBdlPrestataireBybdlId}}
+\index{getBdlPrestataireBybdlId@{getBdlPrestataireBybdlId}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getBdlPrestataireBybdlId()}{getBdlPrestataireBybdlId()}}
+{\footnotesize\ttfamily Model\+::get\+Bdl\+Prestataire\+Bybdl\+Id (\begin{DoxyParamCaption}\item[{}]{\$id\+\_\+bdl }\end{DoxyParamCaption})}
+
+Méthode récupérant les prestataires à partir de l\textquotesingle{}identifiant d\textquotesingle{}un bon de livraison 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id\+\_\+bdl} & \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_model_a47ee5c01192ea3b8766bc2f85e218951}\label{class_model_a47ee5c01192ea3b8766bc2f85e218951} 
+\index{Model@{Model}!getClientByIds@{getClientByIds}}
+\index{getClientByIds@{getClientByIds}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getClientByIds()}{getClientByIds()}}
+{\footnotesize\ttfamily Model\+::get\+Client\+By\+Ids (\begin{DoxyParamCaption}\item[{}]{\$ids }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer les informations sur les clients à partir d\textquotesingle{}une liste d\textquotesingle{}identifiants 
+\begin{DoxyParams}[1]{Paramètres}
+array & {\em \$ids} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array 
+\end{DoxyReturn}
+\Hypertarget{class_model_ab5b91d88f97fb06e38869d5c29886b7b}\label{class_model_ab5b91d88f97fb06e38869d5c29886b7b} 
+\index{Model@{Model}!getCommercialByIds@{getCommercialByIds}}
+\index{getCommercialByIds@{getCommercialByIds}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getCommercialByIds()}{getCommercialByIds()}}
+{\footnotesize\ttfamily Model\+::get\+Commercial\+By\+Ids (\begin{DoxyParamCaption}\item[{}]{\$ids }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer les informations sur les commerciaux à partir d\textquotesingle{}une liste d\textquotesingle{}identifiants 
+\begin{DoxyParams}[1]{Paramètres}
+array & {\em \$ids} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array 
+\end{DoxyReturn}
+\Hypertarget{class_model_aa42a494bc03206d39e6fc59a7560df57}\label{class_model_aa42a494bc03206d39e6fc59a7560df57} 
+\index{Model@{Model}!getCommerciauxComposante@{getCommerciauxComposante}}
+\index{getCommerciauxComposante@{getCommerciauxComposante}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getCommerciauxComposante()}{getCommerciauxComposante()}}
+{\footnotesize\ttfamily Model\+::get\+Commerciaux\+Composante (\begin{DoxyParamCaption}\item[{}]{\$id }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer la liste des commerciaux à partir de l\textquotesingle{}identifiant d\textquotesingle{}une composante 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id} & identifiant de la composante \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}string Un tableau du résultat de la requête sinon un message d\textquotesingle{}erreur 
+\end{DoxyReturn}
+\Hypertarget{class_model_a1c13c67981cba862362e461db6a76fea}\label{class_model_a1c13c67981cba862362e461db6a76fea} 
+\index{Model@{Model}!getComposantesSociete@{getComposantesSociete}}
+\index{getComposantesSociete@{getComposantesSociete}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getComposantesSociete()}{getComposantesSociete()}}
+{\footnotesize\ttfamily Model\+::get\+Composantes\+Societe (\begin{DoxyParamCaption}\item[{}]{\$id }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer la liste des composantes d\textquotesingle{}une société 
+\begin{DoxyParams}{Paramètres}
+{\em \$id} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}string Un tableau du résultat de la requête sinon un message d\textquotesingle{}erreur 
+\end{DoxyReturn}
+\Hypertarget{class_model_aec7efa8b01055730d2b0b58b4a29569d}\label{class_model_aec7efa8b01055730d2b0b58b4a29569d} 
+\index{Model@{Model}!getDashboardGestionnaire@{getDashboardGestionnaire}}
+\index{getDashboardGestionnaire@{getDashboardGestionnaire}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getDashboardGestionnaire()}{getDashboardGestionnaire()}}
+{\footnotesize\ttfamily Model\+::get\+Dashboard\+Gestionnaire (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer toutes les informations des missions en fonction de la composante, la société et les prestataires assignés \begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}false 
+\end{DoxyReturn}
+\Hypertarget{class_model_a4235319720ec835c97cd60b187d60b5b}\label{class_model_a4235319720ec835c97cd60b187d60b5b} 
+\index{Model@{Model}!getHoursByIdBDL@{getHoursByIdBDL}}
+\index{getHoursByIdBDL@{getHoursByIdBDL}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getHoursByIdBDL()}{getHoursByIdBDL()}}
+{\footnotesize\ttfamily Model\+::get\+Hours\+By\+Id\+BDL (\begin{DoxyParamCaption}\item[{}]{\$id\+\_\+bdl }\end{DoxyParamCaption})}
+
+Méthode récupérant les heures réalisées à partir de l\textquotesingle{}identifiant du bon de livraison 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id\+\_\+bdl} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array 
+\end{DoxyReturn}
+\Hypertarget{class_model_a3da24c6337bd280dcba836cee8bef9b1}\label{class_model_a3da24c6337bd280dcba836cee8bef9b1} 
+\index{Model@{Model}!getIdComposante@{getIdComposante}}
+\index{getIdComposante@{getIdComposante}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getIdComposante()}{getIdComposante()}}
+{\footnotesize\ttfamily Model\+::get\+Id\+Composante (\begin{DoxyParamCaption}\item[{}]{\$nom\+\_\+composante,  }\item[{}]{\$nom\+\_\+client }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer l\textquotesingle{}id d\textquotesingle{}un composant à l\textquotesingle{}aide de son nom et la société à laquelle il appartient 
+\begin{DoxyParams}[1]{Paramètres}
+string & {\em \$composante} & nom de la composante \\
+\hline
+string & {\em \$client} & nom du client \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}string Un tableau du résultat de la requête sinon un message d\textquotesingle{}erreur 
+\end{DoxyReturn}
+\Hypertarget{class_model_a11374e7e5ac7890a2d3a17652a678813}\label{class_model_a11374e7e5ac7890a2d3a17652a678813} 
+\index{Model@{Model}!getInfosComposante@{getInfosComposante}}
+\index{getInfosComposante@{getInfosComposante}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getInfosComposante()}{getInfosComposante()}}
+{\footnotesize\ttfamily Model\+::get\+Infos\+Composante (\begin{DoxyParamCaption}\item[{}]{\$id }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer les informations d\textquotesingle{}une composante à partir de son identifiant 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id} & identifiant de la composante \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}string Un tableau du résultat de la requête sinon un message d\textquotesingle{}erreur 
+\end{DoxyReturn}
+\Hypertarget{class_model_a1da1a231c36c6becef2b332a21bf8e1b}\label{class_model_a1da1a231c36c6becef2b332a21bf8e1b} 
+\index{Model@{Model}!getInfosPersonne@{getInfosPersonne}}
+\index{getInfosPersonne@{getInfosPersonne}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getInfosPersonne()}{getInfosPersonne()}}
+{\footnotesize\ttfamily Model\+::get\+Infos\+Personne (\begin{DoxyParamCaption}\item[{}]{\$id }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer le nom, prenom et mail d\textquotesingle{}une personne en fonction de son identifiant 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}string Un tableau du résultat de la requête sinon un message d\textquotesingle{}erreur 
+\end{DoxyReturn}
+\Hypertarget{class_model_aecc0177eec676cf35793179a9f66cef4}\label{class_model_aecc0177eec676cf35793179a9f66cef4} 
+\index{Model@{Model}!getInfosSociete@{getInfosSociete}}
+\index{getInfosSociete@{getInfosSociete}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getInfosSociete()}{getInfosSociete()}}
+{\footnotesize\ttfamily Model\+::get\+Infos\+Societe (\begin{DoxyParamCaption}\item[{}]{\$id }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer les informations d\textquotesingle{}une société 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id} & id de la société \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}string Un tableau du résultat de la requête sinon un message d\textquotesingle{}erreur 
+\end{DoxyReturn}
+\Hypertarget{class_model_a0b5a4ab01a3fcbd64ad2a1f0f8e391c8}\label{class_model_a0b5a4ab01a3fcbd64ad2a1f0f8e391c8} 
+\index{Model@{Model}!getInterlocuteursComposante@{getInterlocuteursComposante}}
+\index{getInterlocuteursComposante@{getInterlocuteursComposante}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getInterlocuteursComposante()}{getInterlocuteursComposante()}}
+{\footnotesize\ttfamily Model\+::get\+Interlocuteurs\+Composante (\begin{DoxyParamCaption}\item[{}]{\$id }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer la liste des interlocuteurs à partir de l\textquotesingle{}identifiant d\textquotesingle{}une composante 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id} & identifiant de la composante \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}string Un tableau du résultat de la requête sinon un message d\textquotesingle{}erreur 
+\end{DoxyReturn}
+\Hypertarget{class_model_a02d45d041f88445b9855550e073060cf}\label{class_model_a02d45d041f88445b9855550e073060cf} 
+\index{Model@{Model}!getInterlocuteursSociete@{getInterlocuteursSociete}}
+\index{getInterlocuteursSociete@{getInterlocuteursSociete}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getInterlocuteursSociete()}{getInterlocuteursSociete()}}
+{\footnotesize\ttfamily Model\+::get\+Interlocuteurs\+Societe (\begin{DoxyParamCaption}\item[{}]{\$id }\end{DoxyParamCaption})}
+
+Méthode peremettant de récupérer la liste des interlocuteurs de l\textquotesingle{}identifiant d\textquotesingle{}une société 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id} & identifiant d\textquotesingle{}une société \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}string Un tableau du résultat de la requête sinon un message d\textquotesingle{}erreur 
+\end{DoxyReturn}
+\Hypertarget{class_model_a2bdf6eab077b662a715aa93a9a435cdd}\label{class_model_a2bdf6eab077b662a715aa93a9a435cdd} 
+\index{Model@{Model}!getmailById@{getmailById}}
+\index{getmailById@{getmailById}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getmailById()}{getmailById()}}
+{\footnotesize\ttfamily Model\+::getmail\+By\+Id (\begin{DoxyParamCaption}\item[{}]{\$id }\end{DoxyParamCaption})}
+
+Récupère le mail dans la base de données grâce à l\textquotesingle{}identifiant de la personne 
+\begin{DoxyParams}{Paramètres}
+{\em \$id} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+\Hypertarget{class_model_a851c38f53f2ba648559d2e883961ffcc}\label{class_model_a851c38f53f2ba648559d2e883961ffcc} 
+\index{Model@{Model}!getModel@{getModel}}
+\index{getModel@{getModel}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getModel()}{getModel()}}
+{\footnotesize\ttfamily static Model\+::get\+Model (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Méthode statique pour récupérer l\textquotesingle{}unique instance de \doxylink{class_model}{Model}.
+
+Cette méthode crée l\textquotesingle{}instance si elle n\textquotesingle{}existe pas encore et la retourne.
+
+\begin{DoxyReturn}{Renvoie}
+\doxylink{class_model}{Model} L\textquotesingle{}unique instance de la classe \doxylink{class_model}{Model}. 
+\end{DoxyReturn}
+\Hypertarget{class_model_a775225b15e5b732623d1917ab32432c1}\label{class_model_a775225b15e5b732623d1917ab32432c1} 
+\index{Model@{Model}!getPersonnesByIds@{getPersonnesByIds}}
+\index{getPersonnesByIds@{getPersonnesByIds}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getPersonnesByIds()}{getPersonnesByIds()}}
+{\footnotesize\ttfamily Model\+::get\+Personnes\+By\+Ids (\begin{DoxyParamCaption}\item[{}]{\$ids }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer une ou plusieurs personnes ç l\textquotesingle{}aide d\textquotesingle{}un tableau de Ids 
+\begin{DoxyParams}{Paramètres}
+{\em array} & @ids Tableau d\textquotesingle{}Ids \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}string Un tableau du résultat de la requête sinon un message d\textquotesingle{}erreur 
+\end{DoxyReturn}
+\Hypertarget{class_model_a7f9e31048c1b53cea45e7ece76cbc856}\label{class_model_a7f9e31048c1b53cea45e7ece76cbc856} 
+\index{Model@{Model}!getPrestataireByIds@{getPrestataireByIds}}
+\index{getPrestataireByIds@{getPrestataireByIds}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getPrestataireByIds()}{getPrestataireByIds()}}
+{\footnotesize\ttfamily Model\+::get\+Prestataire\+By\+Ids (\begin{DoxyParamCaption}\item[{}]{\$ids }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer les informations sur les prestataires à partir d\textquotesingle{}une liste d\textquotesingle{}identifiants 
+\begin{DoxyParams}[1]{Paramètres}
+array & {\em \$ids} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array 
+\end{DoxyReturn}
+\Hypertarget{class_model_aebfb147067b24b6ed229b94c28b95888}\label{class_model_aebfb147067b24b6ed229b94c28b95888} 
+\index{Model@{Model}!getPrestatairesComposante@{getPrestatairesComposante}}
+\index{getPrestatairesComposante@{getPrestatairesComposante}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{getPrestatairesComposante()}{getPrestatairesComposante()}}
+{\footnotesize\ttfamily Model\+::get\+Prestataires\+Composante (\begin{DoxyParamCaption}\item[{}]{\$id }\end{DoxyParamCaption})}
+
+Méthode permettant de récupérer la liste des prestataires à partir de l\textquotesingle{}identifiant de la composante 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id} & identifiant de la composante \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}string Un tableau du résultat de la requête sinon un message d\textquotesingle{}erreur 
+\end{DoxyReturn}
+\Hypertarget{class_model_a4a0266c65edc52ec6fdf768c0e0065b3}\label{class_model_a4a0266c65edc52ec6fdf768c0e0065b3} 
+\index{Model@{Model}!hasSeveralRoles@{hasSeveralRoles}}
+\index{hasSeveralRoles@{hasSeveralRoles}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{hasSeveralRoles()}{hasSeveralRoles()}}
+{\footnotesize\ttfamily Model\+::has\+Several\+Roles (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Méthode vérifiant les rôles de la personne. Si il n\textquotesingle{}y a qu\textquotesingle{}un seul rôle elle retourne simplement le nom de ce rôle. Si il y a plusieurs rôles, une liste des rôles sous forme de tableau. \begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}string 
+\end{DoxyReturn}
+\Hypertarget{class_model_a17b41f8cc2185b45c87e92fdcd4c062d}\label{class_model_a17b41f8cc2185b45c87e92fdcd4c062d} 
+\index{Model@{Model}!insertDailyHours@{insertDailyHours}}
+\index{insertDailyHours@{insertDailyHours}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{insertDailyHours()}{insertDailyHours()}}
+{\footnotesize\ttfamily Model\+::insert\+Daily\+Hours (\begin{DoxyParamCaption}\item[{}]{\$id\+\_\+bdl,  }\item[{}]{\$jour,  }\item[{}]{\$hours\+\_\+worked }\end{DoxyParamCaption})}
+
+Fonction permettant d\textquotesingle{}ajouter des heures pour le jour et bon de livraison spéficié 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id\+\_\+bdl} & \\
+\hline
+int & {\em \$jour} & \\
+\hline
+flaot & {\em \$hours\+\_\+worked} & \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_model_af9758fd9b75b679bde92c722e5c5d715}\label{class_model_af9758fd9b75b679bde92c722e5c5d715} 
+\index{Model@{Model}!mailExists@{mailExists}}
+\index{mailExists@{mailExists}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{mailExists()}{mailExists()}}
+{\footnotesize\ttfamily Model\+::mail\+Exists (\begin{DoxyParamCaption}\item[{}]{\$mail }\end{DoxyParamCaption})}
+
+Méthode permettant de vérifier que le mail saisi existe bien. 
+\begin{DoxyParams}{Paramètres}
+{\em \$mail} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+integer 
+\end{DoxyReturn}
+\Hypertarget{class_model_a0e2023c0a82b3a486e9a2bf445b1b6b2}\label{class_model_a0e2023c0a82b3a486e9a2bf445b1b6b2} 
+\index{Model@{Model}!rechercheClient@{rechercheClient}}
+\index{rechercheClient@{rechercheClient}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{rechercheClient()}{rechercheClient()}}
+{\footnotesize\ttfamily Model\+::recherche\+Client (\begin{DoxyParamCaption}\item[{}]{\$recherche }\end{DoxyParamCaption})}
+
+Méthode permettant de rechercher un client à partir de l\textquotesingle{}entrée de l\textquotesingle{}utilisateur 
+\begin{DoxyParams}[1]{Paramètres}
+string & {\em \$recherche} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}false 
+\end{DoxyReturn}
+\Hypertarget{class_model_a8c12c77b5e0a148e6acd088186c2bdd6}\label{class_model_a8c12c77b5e0a148e6acd088186c2bdd6} 
+\index{Model@{Model}!rechercheCommercial@{rechercheCommercial}}
+\index{rechercheCommercial@{rechercheCommercial}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{rechercheCommercial()}{rechercheCommercial()}}
+{\footnotesize\ttfamily Model\+::recherche\+Commercial (\begin{DoxyParamCaption}\item[{}]{\$recherche }\end{DoxyParamCaption})}
+
+Méthode permettant de rechercher un commercial à partir de l\textquotesingle{}entrée de l\textquotesingle{}utilisateur 
+\begin{DoxyParams}[1]{Paramètres}
+string & {\em \$recherche} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}false 
+\end{DoxyReturn}
+\Hypertarget{class_model_a0d06c301f83ad56aea23e21bbc328f53}\label{class_model_a0d06c301f83ad56aea23e21bbc328f53} 
+\index{Model@{Model}!recherchePrestataire@{recherchePrestataire}}
+\index{recherchePrestataire@{recherchePrestataire}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{recherchePrestataire()}{recherchePrestataire()}}
+{\footnotesize\ttfamily Model\+::recherche\+Prestataire (\begin{DoxyParamCaption}\item[{}]{\$recherche }\end{DoxyParamCaption})}
+
+Méthode permettant de rechercher un prestataire à partir de l\textquotesingle{}entrée de l\textquotesingle{}utilisateur 
+\begin{DoxyParams}[1]{Paramètres}
+string & {\em \$recherche} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+array\texorpdfstring{$\vert$}{|}false 
+\end{DoxyReturn}
+\Hypertarget{class_model_a451f3ff3a17565c1cd95c4811efc70c8}\label{class_model_a451f3ff3a17565c1cd95c4811efc70c8} 
+\index{Model@{Model}!setmailPersonne@{setmailPersonne}}
+\index{setmailPersonne@{setmailPersonne}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{setmailPersonne()}{setmailPersonne()}}
+{\footnotesize\ttfamily Model\+::setmail\+Personne (\begin{DoxyParamCaption}\item[{}]{\$id,  }\item[{}]{\$mail }\end{DoxyParamCaption})}
+
+Méthode permettant de changer le mail d\textquotesingle{}une personne 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id} & \\
+\hline
+string & {\em \$mail} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_ae74f236d45a79c946bc803e2dfb1b0eb}\label{class_model_ae74f236d45a79c946bc803e2dfb1b0eb} 
+\index{Model@{Model}!setmot\_de\_passePersonne@{setmot\_de\_passePersonne}}
+\index{setmot\_de\_passePersonne@{setmot\_de\_passePersonne}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{setmot\_de\_passePersonne()}{setmot\_de\_passePersonne()}}
+{\footnotesize\ttfamily Model\+::setmot\+\_\+de\+\_\+passe\+Personne (\begin{DoxyParamCaption}\item[{}]{\$id,  }\item[{}]{\$mot\+\_\+de\+\_\+passe }\end{DoxyParamCaption})}
+
+Méthode permettant de changer le mot de passe d\textquotesingle{}une personne 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id} & \\
+\hline
+string & {\em \$mot\+\_\+de\+\_\+passe} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_abbe8010ba1b075fbdbeac1e843f6a0e0}\label{class_model_abbe8010ba1b075fbdbeac1e843f6a0e0} 
+\index{Model@{Model}!setNomClient@{setNomClient}}
+\index{setNomClient@{setNomClient}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{setNomClient()}{setNomClient()}}
+{\footnotesize\ttfamily Model\+::set\+Nom\+Client (\begin{DoxyParamCaption}\item[{}]{\$id,  }\item[{}]{\$nom }\end{DoxyParamCaption})}
+
+Méthode permettant de changer le nom d\textquotesingle{}un client 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id} & \\
+\hline
+string & {\em \$nom} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_a569ae5ec673ac4e3a7e1164d6aeca4e9}\label{class_model_a569ae5ec673ac4e3a7e1164d6aeca4e9} 
+\index{Model@{Model}!setNomComposante@{setNomComposante}}
+\index{setNomComposante@{setNomComposante}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{setNomComposante()}{setNomComposante()}}
+{\footnotesize\ttfamily Model\+::set\+Nom\+Composante (\begin{DoxyParamCaption}\item[{}]{\$id,  }\item[{}]{\$nom }\end{DoxyParamCaption})}
+
+Méthode permettant de changer le nom d\textquotesingle{}une composante 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id} & \\
+\hline
+string & {\em \$nom} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_ab744631d028a66c3c844095ccbc03a46}\label{class_model_ab744631d028a66c3c844095ccbc03a46} 
+\index{Model@{Model}!setNomPersonne@{setNomPersonne}}
+\index{setNomPersonne@{setNomPersonne}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{setNomPersonne()}{setNomPersonne()}}
+{\footnotesize\ttfamily Model\+::set\+Nom\+Personne (\begin{DoxyParamCaption}\item[{}]{\$id,  }\item[{}]{\$nom }\end{DoxyParamCaption})}
+
+Méthode permettant de changer le nom d\textquotesingle{}une personne 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id} & \\
+\hline
+string & {\em \$nom} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_ad46fee266ee65c203f47eeb447e44926}\label{class_model_ad46fee266ee65c203f47eeb447e44926} 
+\index{Model@{Model}!setPrenomPersonne@{setPrenomPersonne}}
+\index{setPrenomPersonne@{setPrenomPersonne}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{setPrenomPersonne()}{setPrenomPersonne()}}
+{\footnotesize\ttfamily Model\+::set\+Prenom\+Personne (\begin{DoxyParamCaption}\item[{}]{\$id,  }\item[{}]{\$prenom }\end{DoxyParamCaption})}
+
+Méthode permettant de changer le prénom d\textquotesingle{}une personne 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id} & \\
+\hline
+string & {\em \$prenom} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_a8695ad48c4c935e6695a7276a6772609}\label{class_model_a8695ad48c4c935e6695a7276a6772609} 
+\index{Model@{Model}!setTelClient@{setTelClient}}
+\index{setTelClient@{setTelClient}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{setTelClient()}{setTelClient()}}
+{\footnotesize\ttfamily Model\+::set\+Tel\+Client (\begin{DoxyParamCaption}\item[{}]{\$id,  }\item[{}]{\$tel }\end{DoxyParamCaption})}
+
+Méthode permettant de changer le téléphone d\textquotesingle{}un client 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id} & \\
+\hline
+string & {\em \$tel} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+\Hypertarget{class_model_a9da49d6df9e8767f6965b83fb1bd46c8}\label{class_model_a9da49d6df9e8767f6965b83fb1bd46c8} 
+\index{Model@{Model}!updateBdl@{updateBdl}}
+\index{updateBdl@{updateBdl}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{updateBdl()}{updateBdl()}}
+{\footnotesize\ttfamily Model\+::update\+Bdl (\begin{DoxyParamCaption}\item[{}]{\$id\+\_\+composante,  }\item[{}]{\$annee,  }\item[{}]{\$mois,  }\item[{}]{\$commentaire,  }\item[{}]{\$heures }\end{DoxyParamCaption})}
+
+Méthode permettant de mettre à jour le commentaire et les heures d\textquotesingle{}un bon de livraison 
+\begin{DoxyParams}[1]{Paramètres}
+int & {\em \$id\+\_\+composante} & \\
+\hline
+int & {\em \$annee} & \\
+\hline
+string & {\em \$mois} & \\
+\hline
+string & {\em \$commentaire} & \\
+\hline
+float & {\em \$heures} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+bool 
+\end{DoxyReturn}
+
+
+La documentation de cette classe a été générée à partir du fichier suivant \+:\begin{DoxyCompactItemize}
+\item 
+Models/Model.\+php\end{DoxyCompactItemize}
