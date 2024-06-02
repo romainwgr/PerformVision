@@ -2,7 +2,7 @@
 /**
  * @brief Classe qui prend en charge la connexion de l'utilisateur
  * 
-*/
+ */
 
 class Controller_login extends Controller
 {

@@ -1012,7 +1012,8 @@ class Model
         }
     }
 
-    public function insertDailyHours($id_bdl, $jour, $hours_worked) {
+    public function insertDailyHours($id_bdl, $jour, $hours_worked)
+    {
         try {
             $query = "INSERT INTO DailyHours (id_bdl, jour, hours_worked) VALUES (:id_bdl, :jour, :hours_worked)";
             $stmt = $this->bd->prepare($query);
@@ -1027,17 +1028,17 @@ class Model
     }
 
 
-
-
-
     public function getBdlPrestataireBybdlId($id_bdl)
     {
-        $req = $this->bd->prepare("SELECT * FROM BDL 
-        JOIN prestataire ON BDL.id_prestataire = Prestataire.id_personne 
-        JOIN Composante USING (id_composante) 
-        join Client Using(id_client) 
-        Join Personne On Prestataire.id_personne = Personne.id_personne
-        WHERE BDL.id_bdl = :idb");
+        $req = $this->bd->prepare("
+            SELECT BDL.*, Prestataire.*, Composante.nom_composante, Client.nom_client, Client.telephone_client, Adresse.adresse AS adresse_livraison
+            FROM BDL 
+            JOIN Prestataire ON BDL.id_prestataire = Prestataire.id_personne 
+            JOIN Composante USING (id_composante) 
+            JOIN Client USING (id_client)
+            JOIN Adresse ON Composante.id_adresse = Adresse.id_adresse
+            WHERE BDL.id_bdl = :idb
+        ");
         $req->bindValue(':idb', $id_bdl, PDO::PARAM_INT);
         $req->execute();
         return $req->fetch(PDO::FETCH_ASSOC);
@@ -1046,17 +1047,17 @@ class Model
     public function setSignTruePrestataireId($id_bdl)
     {
         $req = $this->bd->prepare("UPDATE BDL SET signature_prestataire = true WHERE id_bdl = :id");
-    
+
         $req->bindValue(':id', $id_bdl, PDO::PARAM_INT);
         $req->execute();
-        
+
         if ($req->rowCount() > 0) {
-            return true; 
+            return true;
         } else {
-            return false; 
+            return false;
         }
     }
-    
+
 
     public function getHoursByIdBDL($id_bdl)
     {
@@ -1723,9 +1724,6 @@ class Model
             FROM 
                 PERSONNE p
             JOIN " . $role . " r ON 
-=======
-            JOIN " . $role . " r ON 
->>>>>>> d33881af4552de5d4bdb1c89b72e6b2c95a40c4b
                 p.id_personne = r.id_personne
             WHERE 
                 p.nom LIKE :recherche OR p.prenom LIKE :recherche"
@@ -1740,5 +1738,19 @@ class Model
             return null; // ou retourner un message d'erreur spécifique ou lever une exception
         }
     }
+
+//     public function getBdlPrestataireBybdlId($id_bdl)
+// {
+//     $req = $this->bd->prepare("
+//         SELECT bdl.*, prestataire.nom AS nom_prestataire
+//         FROM BDL bdl
+//         JOIN Prestataire prestataire ON bdl.id_prestataire = prestataire.id_personne
+//         WHERE bdl.id_bdl = :id_bdl
+//     ");
+//     $req->bindValue(':id_bdl', $id_bdl, PDO::PARAM_INT);
+//     $req->execute();
+//     return $req->fetch(PDO::FETCH_ASSOC);
+// }
+
 
 }

@@ -1,10 +1,16 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
+// sessionstart();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 
 /**
  * @brief Classe du prestataire contenant toutes les fonctionnalités du prestataire
  * 
-*/
+ */
 
 class Controller_prestataire extends Controller
 {
@@ -18,7 +24,7 @@ class Controller_prestataire extends Controller
 
     public function action_accueil()
     {
-        sessionstart(); // Fonction dans Utils pour lancer la session si elle n'est pas lancée 
+        // sessionstart(); // Fonction dans Utils pour lancer la session si elle n'est pas lancée 
         if (isset($_SESSION['role'])) {
             unset($_SESSION['role']);
         }
@@ -55,7 +61,7 @@ class Controller_prestataire extends Controller
      */
     public function action_dashboard()
     {
-        sessionstart();
+        // sessionstart();
         if (isset($_SESSION['role'])) {
             unset($_SESSION['role']);
         }
@@ -99,7 +105,7 @@ class Controller_prestataire extends Controller
      */
     public function action_infos()
     {
-        sessionstart();
+        // sessionstart();
         $this->render('infos', ['menu' => $this->action_get_navbar()]);
     }
 
@@ -130,36 +136,11 @@ class Controller_prestataire extends Controller
      * Renvoie la vue qui lui permet de remplir son bon de livraion avec le bon type
      * @return void
      */
-    // public function action_afficher_bdl()
-    // {
-    //     $bd = Model::getModel();
-    //     sessionstart();
-    //     if (isset($_GET['id'])) {
-    //         $typeBdl = $bd->getBdlTypeAndMonth($_GET['id']);
-    //         if ($typeBdl['type_bdl'] == 'Heure') {
-    //             $infosBdl = $bd->getAllNbHeureActivite($_GET['id']);
-    //         } elseif ($typeBdl['type_bdl'] == 'Journée') {
-    //             $infosBdl = $bd->getAllJourActivite($_GET['id']);
-    //         } elseif ($typeBdl['type_bdl'] == 'Demi-journée') {
-    //             $infosBdl = $bd->getAllDemiJourActivite($_GET['id']);
-    //         }
-    //         $data = [
-    //             'menu' => $this->action_get_navbar(), 
-    //             'bdl' => $typeBdl, 
-    //             'infosBdl' => $infosBdl
-    //         ];
-    //         $this->render("activite", $data);
-    //     } else {
-    //         // TODO Réaliser un render de l'erreur
-    //         echo 'Une erreur est survenue lors du chargement de ce bon de livraison';
-    //     }
-    // }
-
-    public function action_afficher_bdl()
+        public function action_afficher_bdl()
     {
         $bd = Model::getModel();
     
-        // Vérifiez si l'ID du BDL est passé en POST
+        // Vérifiez si l'ID du BDL est passé en GET
         if (isset($_GET['id_bdl'])) {
             // Stockez l'ID du BDL dans la session
             $_SESSION['id_bdl'] = $_GET['id_bdl'];
@@ -172,9 +153,9 @@ class Controller_prestataire extends Controller
         if ($id_bdl !== null && $id_prestataire !== null) {
             // Récupérez les détails du BDL en utilisant l'ID du prestataire et l'ID du BDL
             $bdl = $bd->getBdlPrestataireBybdlId($id_bdl);
+
     
-            if (count($bdl) > 0) {
-    
+            if ($bdl) {
                 // Inclure la bibliothèque FPDF
                 require_once('libraries/fpdf/fpdf.php');
     
@@ -183,102 +164,107 @@ class Controller_prestataire extends Controller
                 $pdf->AddPage();
                 $pdf->SetMargins(20, 20, 20);
     
+               // Ajouter les polices UTF-8 compatibles
+               $pdf->AddFont('FreeSerif', '', 'FreeSerif.php');
+               $pdf->AddFont('FreeSerif', 'B', 'FreeSerifBold.php');
+               $pdf->AddFont('FreeSerif', 'I', 'FreeSerifItalic.php');
+               $pdf->SetFont('FreeSerif', '', 12);
+    
                 // Ajouter un logo
-                $pdf->Image('Content/images/logo3.png', 10, 10, 20);
-                $pdf->SetFont('Arial', 'B', 18);
-                $pdf->SetTextColor(0, 174, 239); // Couleur bleue ciel
-                $pdf->Cell(0, 10, 'Bon de livraison', 0, 1, 'C');
+                $pdf->Image('Content/images/logo3.png', 170, 10, 20);
+    
+                // Titre du document
+                $pdf->SetFont('FreeSerif', 'B', 24);
+                $pdf->SetTextColor(0, 153, 204); // Couleur bleue ciel
+                $pdf->Cell(0, 20, iconv('UTF-8', 'ISO-8859-1', 'Bon de livraison'), 0, 1, 'L');
+                $pdf->Ln(5);
+                $pdf->SetDrawColor(0, 153, 204);
+                $pdf->SetLineWidth(1);
+                $pdf->Line(20, 35, 190, 35);
                 $pdf->Ln(10);
     
-                // Informations générales du BDL
-                $pdf->SetFont('Arial', 'B', 12);
-                $pdf->SetTextColor(0);
-                $pdf->Cell(0, 10, 'Bon de livraison N°: ' . htmlspecialchars($bdl['id_bdl']), 0, 1, 'L');
-                $pdf->SetFont('Arial', '', 12);
-                $pdf->Cell(0, 10,'Nom Client: ' . htmlspecialchars($bdl['nom_client']), 0, 1, 'L');
-                $pdf->Cell(0, 10, 'Nom Composante: ' . htmlspecialchars($bdl['nom_composante']), 0, 1, 'L');
-                $pdf->Cell(0, 10, 'Mois: ' . htmlspecialchars($bdl['mois']), 0, 1, 'L');
+                // Détails de l'entreprise
+                $pdf->SetFont('FreeSerif', 'B', 12);
+                $pdf->SetTextColor(0, 0, 0);
+                $pdf->Cell(0, 10, iconv('UTF-8', 'ISO-8859-1', 'SAS Perform Vision'), 0, 1, 'L');
+                $pdf->SetFont('FreeSerif', '', 12);
+                $pdf->Cell(0, 10, iconv('UTF-8', 'ISO-8859-1', 'Président: Slim ELLOUZE'), 0, 1, 'L');
                 $pdf->Ln(10);
-                // Détails du BDL
-            $pdf->SetFont('Arial', 'B', 12);
-            $pdf->Cell(100, 10, 'Bon de livraison N° : ' . htmlspecialchars($bdl['id_bdl']), 0, 0, 'L');
-            $pdf->Cell(0, 10, 'Date : ' . date('d/m/Y'), 0, 1, 'L');
-            $pdf->Cell(100, 10, 'Code client : ' . htmlspecialchars($bdl['code_client']), 0, 0, 'L');
-            $pdf->Cell(0, 10, 'Nom de commande : ' . htmlspecialchars($bdl['nom_commande']), 0, 1, 'L');
-            $pdf->Cell(100, 10, 'Adresse de livraison :', 0, 0, 'L');
-            $pdf->Cell(0, 10, htmlspecialchars($bdl['adresse_livraison']), 0, 1, 'L');
-            $pdf->Ln(10);
+    
+                // Détails du bon de livraison
+                $pdf->SetFont('FreeSerif', 'B', 12);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Bon de livraison N°: ') . htmlspecialchars($bdl['id_bdl']), 0, 0);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Destinataire'), 0, 1);
+                $pdf->SetFont('FreeSerif', '', 12);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Date : ') . date('d/m/Y'), 0, 0);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['nom_client'])), 0, 1);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Lieu : ') . iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['adresse_livraison'])), 0, 0);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['adresse_livraison'])), 0, 1);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Numéro de commande : ') . htmlspecialchars($bdl['id_bdl']), 0, 0);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Téléphone : ') . htmlspecialchars($bdl['telephone_client']), 0, 1);
+                $pdf->Ln(10);
+    
+                // Informations supplémentaires
+                $pdf->SetFont('FreeSerif', 'B', 12);
+                $pdf->Cell(0, 10, iconv('UTF-8', 'ISO-8859-1', 'Informations supplémentaires'), 0, 1, 'L');
+                $pdf->SetFont('FreeSerif', '', 12);
+                $pdf->Cell(0, 10, iconv('UTF-8', 'ISO-8859-1', 'Merci d\'avoir choisi SAS Perform Vision pour nos services.'), 0, 1, 'L');
+                $pdf->Ln(10);
+    
+                // Tableau des heures travaillées et des commentaires
+                $pdf->SetFont('FreeSerif', 'B', 12);
+                $pdf->SetFillColor(224, 235, 255); // Couleur de fond bleue claire
+                $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', 'Nombre d\'heures travaillées'), 1, 0, 'C', true);
+                $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', 'Commentaires'), 1, 1, 'C', true);
+    
+                $pdf->SetFont('FreeSerif', '', 12);
+                $pdf->Cell(90, 10, htmlspecialchars($bdl['heures']), 1, 0, 'C');
+                $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['commentaire'])), 1, 1, 'C');
+                $pdf->Ln(10);
+    
+                // Ajouter un espacement avant les signatures
+                $pdf->Ln(20);
+                // Vérifiez si le prestataire a signé
+                $signature_prestataire = $bdl['signature_prestataire'] ? htmlspecialchars($bdl['nom_client']) : '__________________';
+                // $signature_gestionnaire = $bdl['signature_gestionnaire'] ? htmlspecialchars($bdl['nom_client']) : '__________________';
 
-            // Détails du destinataire
-            $pdf->SetFont('Arial', 'B', 12);
-            $pdf->Cell(0, 10, 'Destinataire', 0, 1, 'L');
-            $pdf->SetFont('Arial', '', 12);
-            $pdf->Cell(0, 10, htmlspecialchars($bdl['nom_client']), 0, 1, 'L');
-            $pdf->Cell(0, 10, htmlspecialchars($bdl['adresse_client']), 0, 1, 'L');
-            $pdf->Cell(0, 10, 'telephone : ' . htmlspecialchars($bdl['tel_client']), 0, 1, 'L');
-            $pdf->Ln(10);
-
-            // Informations supplémentaires
-            $pdf->SetFont('Arial', 'B', 12);
-            $pdf->Cell(0, 10, 'Informations supplémentaires', 0, 1, 'L');
-            $pdf->SetFont('Arial', '', 12);
-            $pdf->MultiCell(0, 10, htmlspecialchars($bdl['info_supplementaires']), 0, 'L');
-            $pdf->Ln(10);
-
-            // Tableau des produits
-            $pdf->SetFont('Arial', 'B', 12);
-            $pdf->SetFillColor(224, 235, 255); // Couleur de fond bleue claire
-            $pdf->Cell(30, 10, 'NR produit', 1, 0, 'C', true);
-            $pdf->Cell(80, 10, 'Description', 1, 0, 'C', true);
-            $pdf->Cell(40, 10, 'Quantité commandée', 1, 0, 'C', true);
-            $pdf->Cell(40, 10, 'unité', 1, 1, 'C', true);
-
-            $pdf->SetFont('Arial', '', 12);
-            foreach ($bdl['produits'] as $produit) {
-                $pdf->Cell(30, 10, htmlspecialchars($produit['nr_produit']), 1, 0, 'C');
-                $pdf->Cell(80, 10, htmlspecialchars($produit['description']), 1, 0, 'C');
-                $pdf->Cell(40, 10, htmlspecialchars($produit['quantite']), 1, 0, 'C');
-                $pdf->Cell(40, 10, htmlspecialchars($produit['unite']), 1, 1, 'C');
-            }
-            $pdf->Ln(10);
-
-            // Signatures
-            $pdf->Cell(0, 10, 'Signature du client', 0, 1, 'L');
-            $pdf->Cell(0, 10, 'Signature du fournisseur', 0, 1, 'R');
-            $pdf->Ln(20);
-
-            // Sauvegarder le PDF dans une variable
-            $pdf_content = $pdf->Output('', 'S'); // Retourne le contenu du PDF en tant que chaîne
-
-            // Passer les données des BDLs et le contenu du PDF à la vue
-            $data = [
-                'menu' => $this->action_get_navbar(),
-                'title' => 'Affichage des BDLs',
-                'bdl' => $bdl, // Passer les données du BDL à la vue
-                'pdf_content' => $pdf_content // Passer le contenu du PDF à la vue
-            ];
-
-                // Rendre la vue avec les données
-                $this->render('afficher_bdl', $data);
-            } else {
-                // TODO faire un render
-                echo "<script>alert('Aucun BDL trouvé pour cet ID.'); window.location.href = '?controller=prestataire&action=liste_bdl';</script>";
-                exit;
-
-                // echo "Aucun BDL trouvé pour cet ID.";
-            }
+                // Signatures
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du client:  '). $signature_prestataire, 0, 0);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du fournisseur: __________________') ,0, 1);
+                $pdf->Ln(20);
+    
+        
+    
+                // Sauvegarder le PDF dans une variable
+                $pdf_content = $pdf->Output('', 'S'); // Retourne le contenu du PDF en tant que chaîne
+    
+    //             // Passer les données des BDLs et le contenu du PDF à la vue
+    //             $data = [
+    //                 'menu' => $this->action_get_navbar(),
+    //                 'title' => 'Affichage des BDLs',
+    //                 'bdl' => $bdl, // Passer les données du BDL à la vue
+    //                 'pdf_content' => $pdf_content // Passer le contenu du PDF à la vue
+    //             ];
+    
+    //             // Rendre la vue avec les données
+    //             $this->render('afficher_bdl', $data);
+    //         } else {
+    //             echo "<script>alert('Aucun BDL trouvé pour cet ID.'); window.location.href = '?controller=prestataire&action=liste_bdl';</script>";
+    //             exit;
+    //         }
+    //     } else {
+    //         echo "ID BDL ou ID Prestataire non défini.";
+    //     }
+    // }
+            // Sortie du PDF
+        $pdf->Output('I', 'bon_de_livraison.pdf');
         } else {
-                            // TODO faire un render
-
-            echo "ID BDL ou ID Prestataire non défini.";
+            echo "Détails du bon de livraison introuvables.";
+        }
+        } else {
+        echo "ID du bon de livraison ou prestataire manquant.";
         }
     }
-
-
-
-
-
-
 
 
 
@@ -290,7 +276,7 @@ class Controller_prestataire extends Controller
     public function action_mission_bdl()
     {
         $bd = Model::getModel();
-        sessionstart();
+        // sessionstart();
         if (isset($_GET['id'])) {
             $data = [
                 'title' => 'Bons de livraison',
@@ -307,38 +293,117 @@ class Controller_prestataire extends Controller
      * Renvoie la liste des bons de livraison du prestataire connecté
      * @return void
      */
-    // public function action_liste_bdl()
+
+    // public function action_validerbdl()
     // {
     //     $bd = Model::getModel();
-    //     sessionstart();
-    //     if (isset($_SESSION['id'])) {
-    //         $data = [
-    //             'title' => 'Mes Bons de livraison',
-    //             'buttonLink' => '?controller=prestataire&action=ajout_bdl_form',
-    //             'cardLink' => '?controller=prestataire&action=afficher_bdl',
-    //             'menu' => $this->action_get_navbar(),
-    //             "person" => $bd->getAllBdlPrestataire($_SESSION['id'])
-    //         ];
-    //         $this->render("liste", $data);
+    //     $id_bdl = $_SESSION['id_bdl'];
+
+    //     // Vérifier que l'ID est défini et est un entier valide
+    //     if (isset($id_bdl)) {
+    //         $result = $bd->setSignTruePrestataireId($id_bdl);
+    //         if ($result) {
+    //             if (isset($_SESSION['id'])) {
+    //                 $person = $bd->getAllBdlPrestataire($_SESSION['id']);
+    //                 $data = [
+    //                     'title' => 'Mes Bons de livraison',
+    //                     'buttonLink' => '?controller=prestataire&action=ajout_bdl_form',
+    //                     'cardLink' => '?controller=prestataire&action=afficher_bdl',
+    //                     'menu' => $this->action_get_navbar(),
+    //                     'rechercheLink' => '',
+    //                     'person' => $person
+    //                 ];
+    //                 $this->render("liste", $data);
+    //                 exit();
+    //             } else {
+    //                 $this->render('form_bdl', ['error' => 'Une erreur est survenue lors de la validation du bon de livraison.']);
+    //             }
+    //         } else {
+    //             $this->render('form_bdl', ['error' => 'ID de bon de livraison non valide.']);
+    //         }
     //     }
     // }
+    public function action_validerbdl()
+    {
+        $bd = Model::getModel();
+        $id_bdl = $_SESSION['id_bdl'];
+
+        if (isset($id_bdl)) {
+            $result = $bd->setSignTruePrestataireId($id_bdl);
+            if ($result) {
+                if (isset($_SESSION['id'])) {
+                    $person = $bd->getAllBdlPrestataire($_SESSION['id']); // Récupérer les données nécessaires
+
+                    // Définir les données et l'indicateur de redirection dans la session
+                    $_SESSION['redirect'] = true;
+                    // $_SESSION['data'] = [
+                    //     'title' => 'Mes Bons de livraison',
+                    //     'buttonLink' => '?controller=prestataire&action=ajout_bdl_form',
+                    //     'cardLink' => '?controller=prestataire&action=afficher_bdl',
+                    //     'menu' => $this->action_get_navbar(),
+                    //     'rechercheLink' => '',
+                    //     'person' => $person
+                    // ];
+                    header('Location: ?controller=prestataire&action=liste_bdl');
+                    exit();
+                } else {
+                    $this->render('form_bdl', ['error' => 'Une erreur est survenue lors de la validation du bon de livraison.']);
+                }
+            } else {
+                $this->render('form_bdl', ['error' => 'ID de bon de livraison non valide.']);
+            }
+        } else {
+            $this->render('form_bdl', ['error' => 'ID de bon de livraison non défini.']);
+        }
+    }
+
 
     public function action_liste_bdl()
     {
+        // Vérifier l'indicateur de redirection et les données dans la session
+        $redirect = isset($_SESSION['redirect']) ? $_SESSION['redirect'] : false;
+        // $data = isset($_SESSION['data']) ? $_SESSION['data'] : [];
+
+        unset($_SESSION['redirect']); // Supprimer l'indicateur après l'avoir récupéré
+        // unset($_SESSION['data']); // Supprimer les données après les avoir récupérées
+
         $bd = Model::getModel();
+
         if (isset($_SESSION['id'])) {
-            $person = $bd->getAllBdlPrestataire($_SESSION['id']);
-            $data = [
-                'title' => 'Mes Bons de livraison',
-                'buttonLink' => '?controller=prestataire&action=ajout_bdl_form',
-                'cardLink' => '?controller=prestataire&action=afficher_bdl',
-                'menu' => $this->action_get_navbar(),
-                'rechercheLink' => '',
-                'person' => $person
-            ];
+            if (empty($data)) {
+                $person = $bd->getAllBdlPrestataire($_SESSION['id']);
+
+                $data = [
+                    'title' => 'Mes Bons de livraison',
+                    'buttonLink' => '?controller=prestataire&action=ajout_bdl_form',
+                    'cardLink' => '?controller=prestataire&action=afficher_bdl',
+                    'menu' => $this->action_get_navbar(),
+                    'rechercheLink' => '',
+                    'person' => $person,
+                    'redirect' => $redirect // Ajouter l'indicateur de redirection aux données
+                ];
+            } else {
+                // Ajouter l'indicateur de redirection aux données récupérées de la session
+                $data['redirect'] = $redirect;
+            }
             $this->render("liste", $data);
+        } else {
+            $this->render('form_bdl', ['error' => 'Utilisateur non authentifié.']);
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /**
@@ -348,7 +413,7 @@ class Controller_prestataire extends Controller
     public function action_prestataire_creer_bdl()
     {
         $bd = Model::getModel();
-        sessionstart();
+        // sessionstart();
         if (isset($_SESSION['id']) && isset($_POST['mission'])) {
             // FIXME Fonction non déclaré dans le modèle 
             $bd->addBdlForPrestataire($_SESSION['id'], e($_POST['mission']));
@@ -357,6 +422,7 @@ class Controller_prestataire extends Controller
             echo 'Une erreur est survenue lors de la création du bon de livraison';
         }
     }
+    
 
     /**
      * Récupère le tableau renvoyé par le JavaScript et rempli les lignes du bon de livraison en fonction de son type
@@ -366,7 +432,7 @@ class Controller_prestataire extends Controller
     public function action_completer_bdl()
     {
         $bd = Model::getModel();
-        sessionstart();
+        // sessionstart();
         // Récupérer les données depuis la requête POST
         $data = json_decode(file_get_contents("php://input"), true);
 
@@ -420,10 +486,8 @@ class Controller_prestataire extends Controller
         // Vérifiez si l'ID du BDL est passé en GET
         if (isset($_GET['id_bdl'])) {
             // Récupérez l'ID du BDL
-            if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
-                $_SESSION['id'] = null;}
             $id_bdl = $_GET['id_bdl'];
-            $_SESSION["id_bdl"]= $id_bdl;
+            $_SESSION["id_bdl"] = $id_bdl;
 
             // Utilisez l'ID du BDL pour récupérer les informations de la base de données
             $bdl_info = $bd->getBdlPrestataireBybdlId($id_bdl); // Remplacez cette fonction par celle qui récupère les informations du BDL
@@ -450,6 +514,8 @@ class Controller_prestataire extends Controller
             echo "ID du BDL non spécifié.";
         }
     }
+
+
 
 
     public function action_addBdl()
@@ -498,7 +564,7 @@ class Controller_prestataire extends Controller
     public function action_addHourWithoutDay()
     {
 
-        $bd = Model::getModel(); 
+        $bd = Model::getModel();
         $id_bdl = $_SESSION["id_bdl"];
         $heures_sans_jour = $_POST['nombre_heures_sans_jour'];
 
@@ -518,38 +584,5 @@ class Controller_prestataire extends Controller
      * Vérifie d'avoir les informations nécessaire pour ajouter un bon de livraison à une mission
      * @return void
      */
-  
 
-     public function action_validerbdl() {
-        $bd = Model::getModel();
-        $id_bdl = $_SESSION['id_bdl'];
-        
-        // Vérifier que l'ID est défini et est un entier valide
-        if (isset($id_bdl) ) {
-            $result = $bd->setSignTruePrestataireId($id_bdl);
-            if ($result) {
-                if (isset($_SESSION['id'])) {
-                    $person = $bd->getAllBdlPrestataire($_SESSION['id']);
-                    $data = [
-                        'title' => 'Mes Bons de livraison',
-                        'buttonLink' => '?controller=prestataire&action=ajout_bdl_form',
-                        'cardLink' => '?controller=prestataire&action=afficher_bdl',
-                        'menu' => $this->action_get_navbar(),
-                        'person' => $person
-                    ];
-                    $this->render("liste", $data);
-                exit();
-            } else {
-                $this->render('form_bdl', ['error' => 'Une erreur est survenue lors de la validation du bon de livraison.']);
-            }
-        } else {
-            $this->render('form_bdl', ['error' => 'ID de bon de livraison non valide.']);
-        }
-    }
-    
-    
-    
-
-
-}
 }

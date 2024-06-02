@@ -16,7 +16,6 @@ class Controller_gestionnaire extends Controller
      */
     public function action_dashboard()
     {
-        sessionstart(); // Fonction dans Utils pour lancer la session si elle n'est pas lancée 
         if (isset($_SESSION['role'])) {
             unset($_SESSION['role']);
         }
@@ -138,7 +137,6 @@ class Controller_gestionnaire extends Controller
      */
     public function action_composantes()
     {
-        session_start();
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
 
@@ -462,7 +460,6 @@ class Controller_gestionnaire extends Controller
     // }
     public function action_is_client()
     {
-        session_start();
         $bd = Model::getModel();
 
         if (isset($_POST['client'], $_POST['tel'])) {
@@ -760,7 +757,6 @@ class Controller_gestionnaire extends Controller
     public function action_rechercher()
     {
         $m = Model::getModel();
-        session_start();
         if (isset($_GET['role'], $_POST['recherche'])) {
             $roles = ['composante', 'client', 'prestataire', 'commercial'];
             if (in_array($_GET['role'], $roles)) {
@@ -836,7 +832,6 @@ class Controller_gestionnaire extends Controller
     public function action_recherche()
     {
         $m = Model::getModel();
-        session_start();
         if (isset($_GET['role'], $_POST['recherche'])) {
 
             $roles = ['composantes', 'client', 'prestataire', 'commercial'];
