@@ -735,13 +735,28 @@ class Model
      * @param $mail
      * @return bool
      */
-    public function addGestionnaire($mail)
-    {
-        $req = $this->bd->prepare("INSERT INTO Gestionnaire (id_personne) SELECT id_personne FROM personne WHERE mail = :mail");
-        $req->bindValue(':mail', $mail, PDO::PARAM_STR);
+    public function addPerson($prenom, $nom, $email, $mot_de_passe, $telephone) {
+        $req = $this->bd->prepare("INSERT INTO Personne (prenom, nom, mail, mot_de_passe, telephone) VALUES (:prenom, :nom, :mail, :mot_de_passe, :telephone)");
+        $req->bindValue(':prenom', $prenom, PDO::PARAM_STR);
+        $req->bindValue(':nom', $nom, PDO::PARAM_STR);
+        $req->bindValue(':mail', $email, PDO::PARAM_STR);
+        $req->bindValue(':mot_de_passe', password_hash($mot_de_passe, PASSWORD_BCRYPT), PDO::PARAM_STR); // Hash le mot de passe
+        $req->bindValue(':telephone', $telephone, PDO::PARAM_STR);
         $req->execute();
-        return (bool) $req->rowCount();
+        
+        // Retourner l'ID de la nouvelle personne
+        return $this->bd->lastInsertId();
     }
+
+    // Insérer un nouveau gestionnaire dans la table Gestionnaire
+    public function addGestionnaire($id_personne) {
+        $req = $this->bd->prepare("INSERT INTO Gestionnaire (id_personne) VALUES (:id_personne)");
+        $req->bindValue(':id_personne', $id_personne, PDO::PARAM_INT);
+        $req->execute();
+    }
+
+    
+    
 
     /**
      * Méthode permettant d'ajouter un client dans la table client avec ses informations
@@ -1012,6 +1027,56 @@ class Model
         }
     }
 
+    public function getAllBdlInterlocuteur($id_pr)
+    {
+        try {
+            // Préparation de la requête SQL pour récupérer les bons de livraison associés à un prestataire
+            $req = $this->bd->prepare("
+                SELECT bdl.id_bdl, bdl.id_composante, bdl.annee, bdl.mois, bdl.signature_interlocuteur, 
+                       bdl.signature_prestataire, bdl.commentaire, bdl.heures,
+                       c.nom_composante, cl.nom_client, cl.telephone_client
+                FROM bdl
+                JOIN Interlocuteur pr ON bdl.id_interlocuteur = pr.id_personne
+                JOIN Composante c ON bdl.id_composante = c.id_composante
+                JOIN Client cl ON c.id_client = cl.id_client
+                WHERE pr.id_personne = :id_pr
+                and signature_prestataire = true
+            ");
+
+            // Liaison des paramètres pour éviter les injections SQL
+            $req->bindValue(':id_pr', $id_pr, PDO::PARAM_INT);
+
+            // Exécution de la requête
+            $req->execute();
+
+            // Récupération des résultats
+            $result = $req->fetchAll(PDO::FETCH_ASSOC);
+
+            // Vérifier si des résultats ont été trouvés
+            if (!empty($result)) {
+                return $result;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            echo 'Erreur : ' . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function getPrestataireByComposante($id_interlocuteur){
+        $req=$this->bd->prepare(" SELECT distinct nom, prenom , mail , telephone from bdl JOIN Prestataire pr ON bdl.id_prestataire = pr.id_personne join Personne per on bdl.id_prestataire = per.id_personne where bdl.id_interlocuteur = :id " );
+         // Liaison des paramètres pour éviter les injections SQL
+         $req->bindValue(':id', $id_interlocuteur, PDO::PARAM_INT);
+
+         // Exécution de la requête
+         $req->execute();
+
+         // Récupération des résultats
+         $result = $req->fetchAll(PDO::FETCH_ASSOC); 
+         return $result;   
+    }
+
     public function insertDailyHours($id_bdl, $jour, $hours_worked)
     {
         try {
@@ -1043,6 +1108,18 @@ class Model
         $req->execute();
         return $req->fetch(PDO::FETCH_ASSOC);
     }
+    public function getBdlInterlocuteurBybdlId($id_bdl)
+    {
+        $req = $this->bd->prepare(" SELECT * FROM BDL
+        JOIN interlocuteur ON BDL.id_interlocuteur = Interlocuteur.id_personne
+        JOIN Composante USING (id_composante)
+        join Client Using(id_client)
+        Join Personne On Interlocuteur.id_personne = Personne.id_personne
+        WHERE BDL.id_bdl = :idb");
+        $req->bindValue(':idb', $id_bdl, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetch(PDO::FETCH_ASSOC);
+    }
 
     public function setSignTruePrestataireId($id_bdl)
     {
@@ -1057,6 +1134,21 @@ class Model
             return false;
         }
     }
+
+    public function setSignTrueInterlocuteurId($id_bdl)
+    {
+        $req = $this->bd->prepare("UPDATE BDL SET signature_interlocuteur = true WHERE id_bdl = :id");
+    
+        $req->bindValue(':id', $id_bdl, PDO::PARAM_INT);
+        $req->execute();
+        
+        if ($req->rowCount() > 0) {
+            return true; 
+        } else {
+            return false; 
+        }
+    }
+    
 
 
     public function getHoursByIdBDL($id_bdl)

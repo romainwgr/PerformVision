@@ -1,8 +1,6 @@
-<!-- Formulaire permettant à l'administrateur d'ajouter un nouveau gestionnaire  -->
-
 <?php
-require 'view_begin.php';
-require 'view_header.php';
+require 'Views/view_begin.php';
+require 'Views/view_header.php';
 ?>
 <div class="add-container">
     <div class="form-abs">
@@ -11,33 +9,45 @@ require 'view_header.php';
         </span>
         <h1 class="text-center">Ajout Gestionnaire</h1>
 
-        <form action=" ?controller=administrateur&action=ajout_gestionnaire" method="post" class="form">
+        <?php if (isset($success)): ?>
+            <p class="success-message"><?= htmlspecialchars($success) ?></p>
+        <?php endif; ?>
+
+        <?php if (isset($error)): ?>
+            <p class="error-message"><?= htmlspecialchars($error) ?></p>
+        <?php endif; ?>
+
+        <form action="?controller=administrateur&action=ajouter_gestionnaire" method="post" class="form">
             <!-- Steps -->
             <div class="form-step form-step-active">
                 <h2>Informations personnelles</h2>
                 <div class="input-group">
-                    <label for="sté">Prénom</label>
-                    <input type="text" placeholder="Prénom" id="sté" name="prenom" class="input-case">
+                    <label for="prenom">Prénom</label>
+                    <input type="text" placeholder="Prénom" id="prenom" name="prenom" class="input-case" required>
                 </div>
                 <div class="input-group">
-                    <label for="sté">Nom</label>
-                    <input type="text" placeholder="Nom" id="sté" name="nom" class="input-case">
+                    <label for="nom">Nom</label>
+                    <input type="text" placeholder="Nom" id="nom" name="nom" class="input-case" required>
                 </div>
                 <div class="input-group">
-                    <label for="sté">Email</label>
-                    <input type="email" placeholder="Adresse email" id="sté" name="email-gestionnaire"
-                        class="input-case">
-
+                    <label for="email-gestionnaire">Email</label>
+                    <input type="email" placeholder="Adresse email" id="email-gestionnaire" name="email-gestionnaire" class="input-case" required>
+                </div>
+                <div class="input-group">
+                    <label for="mot_de_passe">Mot de passe</label>
+                    <input type="password" placeholder="Mot de passe" id="mot_de_passe" name="mot_de_passe" class="input-case" required>
+                </div>
+                <div class="input-group">
+                    <label for="telephone">Téléphone</label>
+                    <input type="tel" placeholder="Numéro de téléphone" id="telephone" name="telephone" class="input-case">
                 </div>
             </div>
             <div class="btns-group">
                 <input type="submit" value="Créer" class="btn">
             </div>
         </form>
-
     </div>
 </div>
-
 <?php
-require 'view_end.php';
+require 'Views/view_end.php';
 ?>

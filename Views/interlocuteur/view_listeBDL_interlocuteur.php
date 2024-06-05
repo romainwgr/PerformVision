@@ -1,6 +1,6 @@
 <?php
-require 'view_begin.php';
-require 'view_header.php';
+require 'Views/view_begin.php';
+require 'Views/view_header.php';
 ?>
 
 <section class="main">
@@ -19,7 +19,6 @@ require 'view_header.php';
                 <div class="search-data">
                 </div>
             </form>
-            
         </div>
     </div>
 
@@ -41,21 +40,19 @@ require 'view_header.php';
                     <div class="text">
                         <?php
                         // Vérifie si le paramètre 'controller' est 'prestataire' et si le paramètre 'action' est 'liste_bdl'
-                        if (isset($_GET['controller']) && $_GET['controller'] === 'prestataire' && isset($_GET['action']) && $_GET['action'] === 'liste_bdl'): ?>
+                        if (isset($_GET['controller']) && $_GET['controller'] === 'interlocuteur' && isset($_GET['action']) && $_GET['action'] === 'liste_bdl'): ?>
                             <!-- Si la condition est vraie, crée un lien avec l'action 'afficher_bdl' et l'ID depuis le tableau $p -->
-                            <a href="?controller=prestataire&action=afficher_bdl&id_bdl=<?= htmlspecialchars($p['id_bdl'] ?? $p['id']) ?>"
+                            <a href="?controller=interlocuteur&action=afficher_bdl&id_bdl=<?= htmlspecialchars($p['id_bdl'] ?? $p['id']) ?>"
                                 class="block">
-                                <h2>
-                                    <?php
-                                    if (array_key_exists('nom', $p)):
-                                        echo htmlspecialchars($p['nom'] . ' ' . $p['prenom']);
-                                    elseif (array_key_exists('nom_client', $p) && array_key_exists('telephone_client', $p)):
-                                        echo htmlspecialchars($p['nom_client']);
-                                    elseif (array_key_exists('nom_composante', $p) && array_key_exists('nom_client', $p)):
-                                        echo htmlspecialchars($p['nom_composante']);
-                                    endif;
-                                    ?>
-                                </h2>
+                                <h2><?php
+                                if (array_key_exists('nom', $p)):
+                                    echo htmlspecialchars($p['nom'] . ' ' . $p['prenom']);
+                                elseif (array_key_exists('nom_client', $p) && array_key_exists('telephone_client', $p)):
+                                    echo htmlspecialchars($p['nom_client']);
+                                elseif (array_key_exists('nom_composante', $p) && array_key_exists('nom_client', $p)):
+                                    echo htmlspecialchars($p['nom_composante']);
+                                endif;
+                                ?></h2>
                                 <span><?php
                                 if (array_key_exists('mois', $p)):
                                     echo htmlspecialchars($p['mois']);
@@ -71,8 +68,7 @@ require 'view_header.php';
                                 ?></span>
                             </a>
                         <?php else: ?>
-                            <!-- Si la condition est fausse, crée un lien avec l'ID depuis le tableau $p et le lien
-                    prédéfini $cardLink -->
+                            <!-- Si la condition est fausse, crée un lien avec l'ID depuis le tableau $p et le lien prédéfini $cardLink -->
                             <a href='<?= $cardLink ?>&id=<?php
                               // Vérifie si 'id_bdl' est défini dans le tableau $p
                               if (isset($p['id_bdl'])):
@@ -108,13 +104,18 @@ require 'view_header.php';
                     </div>
                 </div>
                 <div class="button-container">
-                    <?php if ($p['signature_prestataire']): ?>
-                        <p>BDL Validé</p>
-                    <?php else: ?>
-                        <a href="?controller=prestataire&action=afficherFormulaire&id_bdl=<?= htmlspecialchars($p['id_bdl'] ?? $p['id']) ?>"
-                            class="button-primary">Ajouter Horaire</a>
-                    <?php endif; ?>
-                </div>
+                <?php if ($p['signature_interlocuteur']): ?>
+                    <p>BDL Validé</p>
+                <?php else: ?>
+                    <form id="form-validate-bdl" action="?controller=interlocuteur&action=validerbdl" method="post" onsubmit="return confirmSubmit()">
+                        <input type="hidden" name="id_bdl" value="<?= htmlspecialchars($p["id_bdl"]) ?>">
+                        <div>
+                            <button type="submit">Valider le bon de livraison</button>
+                        </div>
+                    </form>
+                <?php endif; ?>
+            </div>
+
             </div>
         <?php endforeach; ?>
     <?php endif; ?>
@@ -126,9 +127,12 @@ require 'view_header.php';
     <?php endif; ?>
     </div>
 </section>
+
 <script>
     <?php if (count($bdl) == 0): ?>
         document.getElementById('errorMessage').innerHTML = 'Aucun BDL trouvé pour cet ID.';
         document.getElementById('errorMessage').style.display = 'block';
     <?php endif; ?>
 </script>
+
+<?php require 'Views/view_end.php';?>

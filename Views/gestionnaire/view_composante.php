@@ -94,7 +94,7 @@ require 'Views/view_header.php';
                             </span>
                         </div>
                         <div class="job_action">
-                            <?php if (((str_contains($_GET['controller'], 'gestionnaire') || str_contains($_GET['controller'], 'administrateur')) && !isset($_GET['id']))): ?>
+                            <?php if (((strstr($_GET['controller'], 'gestionnaire') || strstr($_GET['controller'], 'administrateur')) && !isset($_GET['id']))): ?>
                                 <button type="button" class="button-primary"
                                     onclick="window.location='<?= htmlspecialchars($buttonLink) ?>'">Ajouter</button>
                             <?php endif; ?>

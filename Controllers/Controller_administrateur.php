@@ -13,41 +13,43 @@ class Controller_administrateur extends Controller
      */
     public function action_default()
     {
-        $this->action_clients();
+        $this->action_ajouter_gestionnaire();
     }
+
+
 
     /**
      * Renvoie le tableau de bord du gestionnaire avec les variables adéquates
      * @return void
      */
-    public function action_dashboard()
-    {
-        sessionstart(); // Fonction dans Utils pour lancer la session si elle n'est pas lancée 
-        if (isset($_SESSION['role'])) {
-            unset($_SESSION['role']);
-        }
-        $_SESSION['role'] = 'gestionnaire';
-        if (isset($_SESSION['id'])) {
-            $bd = Model::getModel();
-            $data = [
-                'menu' => $this->action_get_navbar(),
-                'bdlLink' => '?controller=gestionnaire&action=mission_bdl',
-                'buttonLink' => '?controller=gestionnaire&action=ajout_mission_form',
-                'header' => [
-                    'Société',
-                    'Composante',
-                    'Nom Mission',
-                    'Préstataire assigné',
-                    'Bon de livraison'
-                ],
-                'dashboard' => $bd->getDashboardGestionnaire()
-            ];
-            return $this->render('gestionnaire_missions', $data);
-        } else {
-            // TODO Réaliser un render de l'erreur
-            echo 'Une erreur est survenue lors du chargement du tableau de bord';
-        }
-    }
+    // public function action_dashboard()
+    // {
+    //     sessionstart(); // Fonction dans Utils pour lancer la session si elle n'est pas lancée 
+    //     if (isset($_SESSION['role'])) {
+    //         unset($_SESSION['role']);
+    //     }
+    //     $_SESSION['role'] = 'gestionnaire';
+    //     if (isset($_SESSION['id'])) {
+    //         $bd = Model::getModel();
+    //         $data = [
+    //             'menu' => $this->action_get_navbar(),
+    //             'bdlLink' => '?controller=gestionnaire&action=mission_bdl',
+    //             'buttonLink' => '?controller=gestionnaire&action=ajout_mission_form',
+    //             'header' => [
+    //                 'Société',
+    //                 'Composante',
+    //                 'Nom Mission',
+    //                 'Préstataire assigné',
+    //                 'Bon de livraison'
+    //             ],
+    //             'dashboard' => $bd->getDashboardGestionnaire()
+    //         ];
+    //         return $this->render('gestionnaire_missions', $data);
+    //     } else {
+    //         // TODO Réaliser un render de l'erreur
+    //         echo 'Une erreur est survenue lors du chargement du tableau de bord';
+    //     }
+    // }
 
     /**
      * Action qui retourne les éléments du menu pour le gestionnaire
@@ -56,12 +58,41 @@ class Controller_administrateur extends Controller
     public function action_get_navbar()
     {
         return [
-            ['link' => '?controller=gestionnaire&action=clients', 'name' => 'Société'],
-            ['link' => '?controller=gestionnaire&action=composantes', 'name' => 'Composantes'],
-            ['link' => '?controller=gestionnaire&action=prestataires', 'name' => 'Prestataires'],
-            ['link' => '?controller=gestionnaire&action=commerciaux', 'name' => 'Commerciaux']
+            ['link ' => '?controller=administateur&action=ajouter_gestionnaire','name'=>'Ajout Gestionnaire']
         ];
     }
+
+    public function action_ajouter_gestionnaire() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Récupérer les données du formulaire
+            $prenom = $_POST['prenom'];
+            $nom = $_POST['nom'];
+            $email = $_POST['email-gestionnaire'];
+            $mot_de_passe = $_POST['mot_de_passe'];
+            $telephone = $_POST['telephone'];
+    
+            // Vérifier que les champs ne sont pas vides
+            if (!empty($prenom) && !empty($nom) && !empty($email) && !empty($mot_de_passe)) {
+                $bd = Model::getModel();
+    
+                // Ajouter la personne et obtenir l'ID généré
+                $id_personne = $bd->addPerson($prenom, $nom, $email, $mot_de_passe, $telephone);
+    
+                // Ajouter le gestionnaire avec l'ID de la personne
+                $bd->addGestionnaire($id_personne);
+    
+                // Rediriger ou afficher un message de succès
+                $this->render('ajout_gestionnaire', ['success' => 'Gestionnaire ajouté avec succès.'], "administrateur");
+            } else {
+                // Afficher un message d'erreur si des champs sont vides
+                $this->render('ajout_gestionnaire', ['error' => 'Tous les champs sont requis.'], "administrateur");
+            }
+        } else {
+            $this->render('ajout_gestionnaire', [], "administrateur");
+        }
+    }
+    
+    
 
     /**
      * Renvoie la vue qui montre les informations de l'utilisateur connecté

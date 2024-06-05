@@ -19,7 +19,7 @@ class Controller_prestataire extends Controller
      */
     public function action_default()
     {
-        $this->action_accueil();
+        $this->action_liste_bdl();
     }
 
     public function action_accueil()
@@ -28,25 +28,25 @@ class Controller_prestataire extends Controller
         if (isset($_SESSION['role'])) {
             unset($_SESSION['role']);
         }
-        $_SESSION['role'] = 'gestionnaire';
+        $_SESSION['role'] = 'prestataire';
+
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $data = [
                 'menu' => $this->action_get_navbar(),
-                'bdlLink' => '?controller=gestionnaire&action=mission_bdl',
-                'buttonLink' => '?controller=gestionnaire&action=ajout_mission_form',
+                'bdlLink' => '?controller=prestataire&action=mission_bdl',
                 'header' => [
                     'Société',
                     'Composante',
-                    'Nom Mission',
-                    'Préstataire assigné',
                     'Bon de livraison'
                 ],
                 'dashboard' => $bd->getDashboardPrestataire($_SESSION['id'])
             ];
-            $this->render('accueil', $data);
-        }
-        $this->render('accueil');
+            return $this->render('prestataire_missions', $data);
+        } else {
+            // TODO Réaliser un render de l'erreur
+            echo 'Une erreur est survenue lors du chargement du tableau de bord';
+        } 
     }
 
     public function action_missions()
@@ -94,7 +94,7 @@ class Controller_prestataire extends Controller
     public function action_get_navbar()
     {
         return [
-            ['link' => '?controller=prestataire&action=dashboard', 'name' => 'Missions'],
+          //  ['link' => '?controller=prestataire&action=dashboard', 'name' => 'Missions'],
             ['link' => '?controller=prestataire&action=liste_bdl', 'name' => 'Bons de livraison']
         ];
     }
@@ -194,7 +194,7 @@ class Controller_prestataire extends Controller
                 // Détails du bon de livraison
                 $pdf->SetFont('FreeSerif', 'B', 12);
                 $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Bon de livraison N°: ') . htmlspecialchars($bdl['id_bdl']), 0, 0);
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Destinataire'), 0, 1);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Composante'), 0, 1);
                 $pdf->SetFont('FreeSerif', '', 12);
                 $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Date : ') . date('d/m/Y'), 0, 0);
                 $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['nom_client'])), 0, 1);
