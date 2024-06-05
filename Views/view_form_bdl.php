@@ -125,7 +125,7 @@ require 'view_header.php';
         <form id="form-validate-bdl" action="?controller=prestataire&action=validerbdl" method="post"
             onsubmit="return confirmSubmit()">
             <div>
-                <button type="submit">Valider le bon de livraison</button>
+                <button type="submit" class="btne">Valider le bon de livraison</button>
             </div>
         </form>
     </div>

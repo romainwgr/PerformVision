@@ -7,7 +7,7 @@
  */
 class Controller_administrateur extends Controller
 {
-     /**
+    /**
      * @inheritDoc
      * Action par défaut qui appelle l'action clients
      */
@@ -55,44 +55,70 @@ class Controller_administrateur extends Controller
      * Action qui retourne les éléments du menu pour le gestionnaire
      * @return array[]
      */
+
     public function action_get_navbar()
     {
         return [
-            ['link ' => '?controller=administateur&action=ajouter_gestionnaire','name'=>'Ajout Gestionnaire']
+            ['link' => '?controller=administrateur&action=ajouter_gestionnaire', 'name' => 'Ajout Gestionnaire']
         ];
     }
 
-    public function action_ajouter_gestionnaire() {
+    // public function action_ajouter_gestionnaire()
+    // {
+    //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    //         // Récupérer les données du formulaire
+    //         $prenom = $_POST['prenom'];
+    //         $nom = $_POST['nom'];
+    //         $email = $_POST['email-gestionnaire'];
+    //         $mot_de_passe = $_POST['mot_de_passe'];
+    //         $telephone = $_POST['telephone'];
+
+    //         // Vérifier que les champs ne sont pas vides
+    //         if (!empty($prenom) && !empty($nom) && !empty($email) && !empty($mot_de_passe)) {
+    //             $bd = Model::getModel();
+
+    //             // Ajouter la personne et obtenir l'ID généré
+    //             $id_personne = $bd->addPerson($prenom, $nom, $email, $mot_de_passe, $telephone);
+
+    //             // Ajouter le gestionnaire avec l'ID de la personne
+    //             $bd->addGestionnaire($id_personne);
+    //             // Rediriger ou afficher un message de succès
+    //             $this->render('ajout_gestionnaire', ['success' => 'Gestionnaire ajouté avec succès.', 'menu' => $this->action_get_navbar()], "administrateur");
+    //         } else {
+    //             // Afficher un message d'erreur si des champs sont vides
+    //             $this->render('ajout_gestionnaire', ['error' => 'Tous les champs sont requis.', 'menu' => $this->action_get_navbar()], "administrateur");
+    //         }
+    //     } else {
+    //         $this->render('ajout_gestionnaire', ['menu' => $this->action_get_navbar()], "administrateur");
+    //     }
+    // }
+
+    public function action_ajouter_gestionnaire()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Récupérer les données du formulaire
-            $prenom = $_POST['prenom'];
-            $nom = $_POST['nom'];
-            $email = $_POST['email-gestionnaire'];
-            $mot_de_passe = $_POST['mot_de_passe'];
-            $telephone = $_POST['telephone'];
-    
-            // Vérifier que les champs ne sont pas vides
-            if (!empty($prenom) && !empty($nom) && !empty($email) && !empty($mot_de_passe)) {
-                $bd = Model::getModel();
-    
-                // Ajouter la personne et obtenir l'ID généré
-                $id_personne = $bd->addPerson($prenom, $nom, $email, $mot_de_passe, $telephone);
-    
-                // Ajouter le gestionnaire avec l'ID de la personne
-                $bd->addGestionnaire($id_personne);
-    
-                // Rediriger ou afficher un message de succès
-                $this->render('ajout_gestionnaire', ['success' => 'Gestionnaire ajouté avec succès.'], "administrateur");
+            if (!empty($_POST['nom']) && !empty($_POST['email'])) {
+
+                $this->render('ajout_gestionnaire', [
+                    'success' => 'Gestionnaire ajouté avec succès.',
+                    'menu' => $this->action_get_navbar()
+                ], "administrateur");
             } else {
-                // Afficher un message d'erreur si des champs sont vides
-                $this->render('ajout_gestionnaire', ['error' => 'Tous les champs sont requis.'], "administrateur");
+                $this->render('ajout_gestionnaire', [
+                    'error' => 'Tous les champs sont requis.',
+                    'menu' => $this->action_get_navbar()
+                ], "administrateur");
             }
         } else {
-            $this->render('ajout_gestionnaire', [], "administrateur");
+            $this->render('ajout_gestionnaire', [
+                'menu' => $this->action_get_navbar()
+            ], "administrateur");
         }
     }
-    
-    
+
+
+
+
+
 
     /**
      * Renvoie la vue qui montre les informations de l'utilisateur connecté
@@ -495,17 +521,17 @@ class Controller_administrateur extends Controller
     // }
 
     /**
-    * Action permettant de savoir si un client existe déjà ou non, réalisée avec AJAX.
-    *
-    * Cette méthode vérifie si les informations du client sont fournies via une requête POST.
-    * Si le client n'existe pas, il ajoute les informations du client à la session et retourne un succès.
-    * Sinon, il retourne un message indiquant que le client existe déjà.
-    * Si les informations du client sont manquantes, un message d'erreur est retourné.
-    *
-    * @return void La méthode retourne une réponse JSON contenant :
-    * - `success` : Booléen indiquant le succès ou l'échec de l'opération.
-    * - `message` : Un message d'erreur en cas d'échec.
-    */
+     * Action permettant de savoir si un client existe déjà ou non, réalisée avec AJAX.
+     *
+     * Cette méthode vérifie si les informations du client sont fournies via une requête POST.
+     * Si le client n'existe pas, il ajoute les informations du client à la session et retourne un succès.
+     * Sinon, il retourne un message indiquant que le client existe déjà.
+     * Si les informations du client sont manquantes, un message d'erreur est retourné.
+     *
+     * @return void La méthode retourne une réponse JSON contenant :
+     * - `success` : Booléen indiquant le succès ou l'échec de l'opération.
+     * - `message` : Un message d'erreur en cas d'échec.
+     */
     public function action_is_client()
     {
         session_start();
@@ -529,7 +555,7 @@ class Controller_administrateur extends Controller
 
     // public function action_is_composante()
     // {
-        // TODO en ajax
+    // TODO en ajax
     // }
 
 
@@ -540,12 +566,12 @@ class Controller_administrateur extends Controller
      * @param $email
      * @return void
      */
-    public function action_ajout_personne($nom, $prenom, $email,$tel)
+    public function action_ajout_personne($nom, $prenom, $email, $tel)
     {
         $bd = Model::getModel();
         if (!$bd->checkPersonneExiste($email)) {
             // FIXME chiffrer le mot de passe et ucfirst sur nom prenom
-            $bd->createPersonne($nom, $prenom, $email, genererMdp(),$tel);
+            $bd->createPersonne($nom, $prenom, $email, genererMdp(), $tel);
         }
         // TODO que faire si elle existe dejà?
     }
@@ -608,52 +634,52 @@ class Controller_administrateur extends Controller
     //     }
     // }
 
-/**
- * Vérifie d'avoir toutes les informations d'un prestataire pour ensuite créer la personne et l'ajouter en tant que prestataire.
- *
- * Cette méthode est appelée via une requête AJAX et vérifie si toutes les informations nécessaires du prestataire sont présentes
- * dans la requête POST. Elle procède ensuite à la création de la personne et à son ajout en tant que prestataire.
- *
- * @return void La méthode retourne une réponse JSON contenant :
- * - `success` : Booléen indiquant le succès ou l'échec de l'opération.
- * - `url` : L'URL de redirection en cas de succès.
- * - `message` : Un message d'erreur en cas d'échec.
- * - `field` : Le champ qui a causé l'erreur, le cas échéant.
- *
- */
-public function action_ajout_prestataire()
-{
-    $bd = Model::getModel();
+    /**
+     * Vérifie d'avoir toutes les informations d'un prestataire pour ensuite créer la personne et l'ajouter en tant que prestataire.
+     *
+     * Cette méthode est appelée via une requête AJAX et vérifie si toutes les informations nécessaires du prestataire sont présentes
+     * dans la requête POST. Elle procède ensuite à la création de la personne et à son ajout en tant que prestataire.
+     *
+     * @return void La méthode retourne une réponse JSON contenant :
+     * - `success` : Booléen indiquant le succès ou l'échec de l'opération.
+     * - `url` : L'URL de redirection en cas de succès.
+     * - `message` : Un message d'erreur en cas d'échec.
+     * - `field` : Le champ qui a causé l'erreur, le cas échéant.
+     *
+     */
+    public function action_ajout_prestataire()
+    {
+        $bd = Model::getModel();
 
-    if (isset($_POST['prenom'], $_POST['nom'], $_POST['email'], $_POST['tel'])) {
-        $prenom = $_POST['prenom'];
-        $nom = $_POST['nom'];
-        $email = $_POST['email'];
-        $tel = $_POST['tel'];
-        
-        // Validation de l'existence de la personne
-        if (!$bd->checkPersonneExiste($email)) {
-            // Création de la personne
-            if ($bd->createPersonne($nom, $prenom, $email, genererMdp(), $tel)) {
-                // Ajout en tant que prestataire
-                if ($bd->addPrestataire($email)) {
-                    $validation = 'added';
-                    $response = ['success' => true, 'url' => 'index.php?controller=gestionnaire&action=prestataires&message=' . $validation];
+        if (isset($_POST['prenom'], $_POST['nom'], $_POST['email'], $_POST['tel'])) {
+            $prenom = $_POST['prenom'];
+            $nom = $_POST['nom'];
+            $email = $_POST['email'];
+            $tel = $_POST['tel'];
+
+            // Validation de l'existence de la personne
+            if (!$bd->checkPersonneExiste($email)) {
+                // Création de la personne
+                if ($bd->createPersonne($nom, $prenom, $email, genererMdp(), $tel)) {
+                    // Ajout en tant que prestataire
+                    if ($bd->addPrestataire($email)) {
+                        $validation = 'added';
+                        $response = ['success' => true, 'url' => 'index.php?controller=gestionnaire&action=prestataires&message=' . $validation];
+                    } else {
+                        $response = ['success' => false, 'message' => 'Erreur lors de l\'ajout du prestataire.'];
+                    }
                 } else {
-                    $response = ['success' => false, 'message' => 'Erreur lors de l\'ajout du prestataire.'];
+                    $response = ['success' => false, 'message' => "Erreur de création de la personne"];
                 }
             } else {
-                $response = ['success' => false, 'message' => "Erreur de création de la personne"];
+                $response = ['success' => false, 'message' => "L'adresse email est déjà utilisé!", 'field' => 'email'];
             }
         } else {
-            $response = ['success' => false, 'message' => "L'adresse email est déjà utilisé!", 'field' => 'email'];
+            $response = ['success' => false, 'message' => 'Informations manquantes.'];
         }
-    } else {
-        $response = ['success' => false, 'message' => 'Informations manquantes.'];
-    }
 
-    echo json_encode($response);
-}
+        echo json_encode($response);
+    }
 
 
     // /**
@@ -807,20 +833,19 @@ public function action_ajout_prestataire()
 
                 $resultat = $m->$fonction_recherche($recherche);
 
-                if($_GET['role']== 'commercial' || $_GET['role']=='prestataire'){
+                if ($_GET['role'] == 'commercial' || $_GET['role'] == 'prestataire') {
                     $ids = array_column($resultat, 'id_personne');
 
-                }
-                else{
+                } else {
                     $ids = array_column($resultat, 'id_client');
 
                 }
                 // TODO faire la fonction de recupération pour la composante et la société
                 $users = $m->$fonction_recuperation($ids);
 
-                
 
-                if ($_GET['role'] == 'client' && $_GET['composante']=='f') {
+
+                if ($_GET['role'] == 'client' && $_GET['composante'] == 'f') {
 
                     $data = [
                         'title' => 'Société',
@@ -832,51 +857,50 @@ public function action_ajout_prestataire()
                         'menu' => $this->action_get_navbar()
                     ];
                     $this->render("client", $data, 'gestionnaire');
-                }
-                else if ($_GET['composante'] == 't') {
+                } else if ($_GET['composante'] == 't') {
 
-                        $clients = $users;
-    
-                        // Organiser les données hiérarchiquement
-                        $clientsData = [];
-                        foreach ($clients as $client) {
-                            $clientId = $client['id_client'];
-                            $composantes = $m->getComposantesSociete($clientId); // GetComposanteByClientId
-    
-                            // Vérifier que $composantes est un tableau
-                            if (!is_array($composantes)) {
-                                $composantes = [];
-                            }
-    
-                            foreach ($composantes as &$composante) {
-                                $composanteId = $composante['id_composante'];
-                                $prestataires = $m->getPrestatairesComposante($composanteId); // GetPrestataireByIdComposante
-    
-                                // Vérifier que $prestataires est un tableau
-                                if (!is_array($prestataires)) {
-                                    $prestataires = [];
-                                }
-    
-                                $composante['prestataires'] = $prestataires;
-                            }
-    
-                            // Assurer que 'composantes' est toujours un tableau
-                            $client['composantes'] = $composantes;
-                            $clientsData[] = $client;
+                    $clients = $users;
+
+                    // Organiser les données hiérarchiquement
+                    $clientsData = [];
+                    foreach ($clients as $client) {
+                        $clientId = $client['id_client'];
+                        $composantes = $m->getComposantesSociete($clientId); // GetComposanteByClientId
+
+                        // Vérifier que $composantes est un tableau
+                        if (!is_array($composantes)) {
+                            $composantes = [];
                         }
-    
-                        // Préparer les données pour la vue
-                        $data = [
-                            'title' => 'Composantes',
-                            'person' => $clientsData,
-                            'buttonLink' => '?controller=gestionnaire&action=ajout_composante_form',
-                            'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=client&composante=t',
-                            'val_rech' => $recherche,
-                            'cardLink' => '?controller=gestionnaire&action=infos_composante',
-                            'menu' => $this->action_get_navbar()
-                        ];
-                        $this->render('composante', $data, 'gestionnaire');
-                
+
+                        foreach ($composantes as &$composante) {
+                            $composanteId = $composante['id_composante'];
+                            $prestataires = $m->getPrestatairesComposante($composanteId); // GetPrestataireByIdComposante
+
+                            // Vérifier que $prestataires est un tableau
+                            if (!is_array($prestataires)) {
+                                $prestataires = [];
+                            }
+
+                            $composante['prestataires'] = $prestataires;
+                        }
+
+                        // Assurer que 'composantes' est toujours un tableau
+                        $client['composantes'] = $composantes;
+                        $clientsData[] = $client;
+                    }
+
+                    // Préparer les données pour la vue
+                    $data = [
+                        'title' => 'Composantes',
+                        'person' => $clientsData,
+                        'buttonLink' => '?controller=gestionnaire&action=ajout_composante_form',
+                        'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=client&composante=t',
+                        'val_rech' => $recherche,
+                        'cardLink' => '?controller=gestionnaire&action=infos_composante',
+                        'menu' => $this->action_get_navbar()
+                    ];
+                    $this->render('composante', $data, 'gestionnaire');
+
                 } else {
                     $data = [
                         "title" => ucfirst($_GET['role']),
@@ -900,7 +924,8 @@ public function action_ajout_prestataire()
         } else {
             $this->render('message', [
                 'title' => 'Erreur de recherche',
-                'message' => 'EVITE DE MODIFIER L\'URL'. $_GET['role'], $_POST['recherche']
+                'message' => 'EVITE DE MODIFIER L\'URL' . $_GET['role'],
+                $_POST['recherche']
             ]);
         }
 

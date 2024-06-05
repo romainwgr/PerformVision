@@ -46,45 +46,45 @@ class Controller_prestataire extends Controller
         } else {
             // TODO Réaliser un render de l'erreur
             echo 'Une erreur est survenue lors du chargement du tableau de bord';
-        } 
+        }
     }
 
-    public function action_missions()
-    {
-        // Redirection vers l'action dashboard
-        $this->action_dashboard();
-    }
+    // public function action_missions()
+    // {
+    //     // Redirection vers l'action dashboard
+    //     $this->action_dashboard();
+    // }
 
     /**
      * Renvoie le tableau de bord du prestataire avec les variables adéquates
      * @return void
      */
-    public function action_dashboard()
-    {
-        // sessionstart();
-        if (isset($_SESSION['role'])) {
-            unset($_SESSION['role']);
-        }
-        $_SESSION['role'] = 'prestataire';
+    // public function action_dashboard()
+    // {
+    //     // sessionstart();
+    //     if (isset($_SESSION['role'])) {
+    //         unset($_SESSION['role']);
+    //     }
+    //     $_SESSION['role'] = 'prestataire';
 
-        if (isset($_SESSION['id'])) {
-            $bd = Model::getModel();
-            $data = [
-                'menu' => $this->action_get_navbar(),
-                'bdlLink' => '?controller=prestataire&action=mission_bdl',
-                'header' => [
-                    'Société',
-                    'Composante',
-                    'Bon de livraison'
-                ],
-                'dashboard' => $bd->getDashboardPrestataire($_SESSION['id'])
-            ];
-            return $this->render('prestataire_missions', $data);
-        } else {
-            // TODO Réaliser un render de l'erreur
-            echo 'Une erreur est survenue lors du chargement du tableau de bord';
-        }
-    }
+    //     if (isset($_SESSION['id'])) {
+    //         $bd = Model::getModel();
+    //         $data = [
+    //             'menu' => $this->action_get_navbar(),
+    //             'bdlLink' => '?controller=prestataire&action=mission_bdl',
+    //             'header' => [
+    //                 'Société',
+    //                 'Composante',
+    //                 'Bon de livraison'
+    //             ],
+    //             'dashboard' => $bd->getDashboardPrestataire($_SESSION['id'])
+    //         ];
+    //         return $this->render('prestataire_missions', $data);
+    //     } else {
+    //         // TODO Réaliser un render de l'erreur
+    //         echo 'Une erreur est survenue lors du chargement du tableau de bord';
+    //     }
+    // }
 
 
     /**
@@ -94,8 +94,10 @@ class Controller_prestataire extends Controller
     public function action_get_navbar()
     {
         return [
-          //  ['link' => '?controller=prestataire&action=dashboard', 'name' => 'Missions'],
-            ['link' => '?controller=prestataire&action=liste_bdl', 'name' => 'Bons de livraison']
+
+            // ['link' => '?controller=prestataire&action=dashboard', 'name' => 'Missions'],
+            ['link' => '?controller=prestataire&action=liste_bdl', 'name' => 'Bons de livraison'],
+            ['link' => '?controller=prestataire&action=absence', 'name' => 'Declaration absence']
         ];
     }
 
@@ -111,68 +113,48 @@ class Controller_prestataire extends Controller
 
     // TEST
 
-    /**
-     * Ajoute dans la base de données la date à laquelle le prestataire est absent
-     * @return void
-     */
-    public function action_prestataire_creer_absences()
-    {
-        $bd = Model::getModel();
-        if (
-            isset($_POST['prenom']) &&
-            isset($_POST['nom']) &&
-            isset($_POST['email']) &&
-            isset($_POST['Date']) &&
-            isset($_POST['motif'])
-        ) {
-            // FIXME Fonction non déclaré dans le modèle
-            $bd->addAbsenceForPrestataire($_POST['prenom'], $_POST['nom'], $_POST['email'], $_POST['Date'], $_POST['motif']);
-        } else {
-            $this->action_error("données incomplètes");
-        }
-    }
 
     /**
      * Renvoie la vue qui lui permet de remplir son bon de livraion avec le bon type
      * @return void
      */
-        public function action_afficher_bdl()
+    public function action_afficher_bdl()
     {
         $bd = Model::getModel();
-    
+
         // Vérifiez si l'ID du BDL est passé en GET
         if (isset($_GET['id_bdl'])) {
             // Stockez l'ID du BDL dans la session
             $_SESSION['id_bdl'] = $_GET['id_bdl'];
         }
-    
+
         // Récupérez l'ID du BDL et du prestataire depuis la session
         $id_bdl = isset($_SESSION['id_bdl']) ? $_SESSION['id_bdl'] : null;
         $id_prestataire = isset($_SESSION['id']) ? $_SESSION['id'] : null;
-    
+
         if ($id_bdl !== null && $id_prestataire !== null) {
             // Récupérez les détails du BDL en utilisant l'ID du prestataire et l'ID du BDL
             $bdl = $bd->getBdlPrestataireBybdlId($id_bdl);
 
-    
+
             if ($bdl) {
                 // Inclure la bibliothèque FPDF
-                require_once('libraries/fpdf/fpdf.php');
-    
+                require_once ('libraries/fpdf/fpdf.php');
+
                 // Créer un nouvel objet FPDF
                 $pdf = new FPDF();
                 $pdf->AddPage();
                 $pdf->SetMargins(20, 20, 20);
-    
-               // Ajouter les polices UTF-8 compatibles
-               $pdf->AddFont('FreeSerif', '', 'FreeSerif.php');
-               $pdf->AddFont('FreeSerif', 'B', 'FreeSerifBold.php');
-               $pdf->AddFont('FreeSerif', 'I', 'FreeSerifItalic.php');
-               $pdf->SetFont('FreeSerif', '', 12);
-    
+
+                // Ajouter les polices UTF-8 compatibles
+                $pdf->AddFont('FreeSerif', '', 'FreeSerif.php');
+                $pdf->AddFont('FreeSerif', 'B', 'FreeSerifBold.php');
+                $pdf->AddFont('FreeSerif', 'I', 'FreeSerifItalic.php');
+                $pdf->SetFont('FreeSerif', '', 12);
+
                 // Ajouter un logo
                 $pdf->Image('Content/images/logo3.png', 170, 10, 20);
-    
+
                 // Titre du document
                 $pdf->SetFont('FreeSerif', 'B', 24);
                 $pdf->SetTextColor(0, 153, 204); // Couleur bleue ciel
@@ -182,7 +164,7 @@ class Controller_prestataire extends Controller
                 $pdf->SetLineWidth(1);
                 $pdf->Line(20, 35, 190, 35);
                 $pdf->Ln(10);
-    
+
                 // Détails de l'entreprise
                 $pdf->SetFont('FreeSerif', 'B', 12);
                 $pdf->SetTextColor(0, 0, 0);
@@ -190,7 +172,7 @@ class Controller_prestataire extends Controller
                 $pdf->SetFont('FreeSerif', '', 12);
                 $pdf->Cell(0, 10, iconv('UTF-8', 'ISO-8859-1', 'Président: Slim ELLOUZE'), 0, 1, 'L');
                 $pdf->Ln(10);
-    
+
                 // Détails du bon de livraison
                 $pdf->SetFont('FreeSerif', 'B', 12);
                 $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Bon de livraison N°: ') . htmlspecialchars($bdl['id_bdl']), 0, 0);
@@ -203,66 +185,64 @@ class Controller_prestataire extends Controller
                 $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Numéro de commande : ') . htmlspecialchars($bdl['id_bdl']), 0, 0);
                 $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Téléphone : ') . htmlspecialchars($bdl['telephone_client']), 0, 1);
                 $pdf->Ln(10);
-    
+
                 // Informations supplémentaires
                 $pdf->SetFont('FreeSerif', 'B', 12);
                 $pdf->Cell(0, 10, iconv('UTF-8', 'ISO-8859-1', 'Informations supplémentaires'), 0, 1, 'L');
                 $pdf->SetFont('FreeSerif', '', 12);
                 $pdf->Cell(0, 10, iconv('UTF-8', 'ISO-8859-1', 'Merci d\'avoir choisi SAS Perform Vision pour nos services.'), 0, 1, 'L');
                 $pdf->Ln(10);
-    
+
                 // Tableau des heures travaillées et des commentaires
                 $pdf->SetFont('FreeSerif', 'B', 12);
                 $pdf->SetFillColor(224, 235, 255); // Couleur de fond bleue claire
                 $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', 'Nombre d\'heures travaillées'), 1, 0, 'C', true);
                 $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', 'Commentaires'), 1, 1, 'C', true);
-    
+
                 $pdf->SetFont('FreeSerif', '', 12);
                 $pdf->Cell(90, 10, htmlspecialchars($bdl['heures']), 1, 0, 'C');
                 $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['commentaire'])), 1, 1, 'C');
-                $pdf->Ln(10);
-    
                 // Ajouter un espacement avant les signatures
-                $pdf->Ln(20);
+                $pdf->Ln(30);
                 // Vérifiez si le prestataire a signé
                 $signature_prestataire = $bdl['signature_prestataire'] ? htmlspecialchars($bdl['nom_client']) : '__________________';
                 // $signature_gestionnaire = $bdl['signature_gestionnaire'] ? htmlspecialchars($bdl['nom_client']) : '__________________';
 
                 // Signatures
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du client:  '). $signature_prestataire, 0, 0);
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du fournisseur: __________________') ,0, 1);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du client:  ') . $signature_prestataire, 0, 0);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du fournisseur: __________________'), 0, 1);
                 $pdf->Ln(20);
-    
-        
-    
+
+
+
                 // Sauvegarder le PDF dans une variable
                 $pdf_content = $pdf->Output('', 'S'); // Retourne le contenu du PDF en tant que chaîne
-    
-    //             // Passer les données des BDLs et le contenu du PDF à la vue
-    //             $data = [
-    //                 'menu' => $this->action_get_navbar(),
-    //                 'title' => 'Affichage des BDLs',
-    //                 'bdl' => $bdl, // Passer les données du BDL à la vue
-    //                 'pdf_content' => $pdf_content // Passer le contenu du PDF à la vue
-    //             ];
-    
-    //             // Rendre la vue avec les données
-    //             $this->render('afficher_bdl', $data);
-    //         } else {
-    //             echo "<script>alert('Aucun BDL trouvé pour cet ID.'); window.location.href = '?controller=prestataire&action=liste_bdl';</script>";
-    //             exit;
-    //         }
-    //     } else {
-    //         echo "ID BDL ou ID Prestataire non défini.";
-    //     }
-    // }
-            // Sortie du PDF
-        $pdf->Output('I', 'bon_de_livraison.pdf');
+
+                //             // Passer les données des BDLs et le contenu du PDF à la vue
+                //             $data = [
+                //                 'menu' => $this->action_get_navbar(),
+                //                 'title' => 'Affichage des BDLs',
+                //                 'bdl' => $bdl, // Passer les données du BDL à la vue
+                //                 'pdf_content' => $pdf_content // Passer le contenu du PDF à la vue
+                //             ];
+
+                //             // Rendre la vue avec les données
+                //             $this->render('afficher_bdl', $data);
+                //         } else {
+                //             echo "<script>alert('Aucun BDL trouvé pour cet ID.'); window.location.href = '?controller=prestataire&action=liste_bdl';</script>";
+                //             exit;
+                //         }
+                //     } else {
+                //         echo "ID BDL ou ID Prestataire non défini.";
+                //     }
+                // }
+                // Sortie du PDF
+                $pdf->Output('I', 'bon_de_livraison.pdf');
+            } else {
+                echo "Détails du bon de livraison introuvables.";
+            }
         } else {
-            echo "Détails du bon de livraison introuvables.";
-        }
-        } else {
-        echo "ID du bon de livraison ou prestataire manquant.";
+            echo "ID du bon de livraison ou prestataire manquant.";
         }
     }
 
@@ -422,7 +402,7 @@ class Controller_prestataire extends Controller
             echo 'Une erreur est survenue lors de la création du bon de livraison';
         }
     }
-    
+
 
     /**
      * Récupère le tableau renvoyé par le JavaScript et rempli les lignes du bon de livraison en fonction de son type
@@ -537,7 +517,7 @@ class Controller_prestataire extends Controller
         $composante = $_POST['composante'];
         $mois = $_POST['mois'];
 
-        $this->render('form_bdl', ['message' => $message, 'client' => $client, 'composante' => $composante, 'mois' => $mois]);
+        $this->render('form_bdl', ['message' => $message, 'client' => $client, 'composante' => $composante, 'mois' => $mois, 'menu' => $this->action_get_navbar(),]);
 
 
     }
@@ -557,7 +537,7 @@ class Controller_prestataire extends Controller
         $composante = $_POST['composante'];
         $mois = $_POST['mois'];
 
-        $this->render('form_bdl', ['message' => $message, 'client' => $client, 'composante' => $composante, 'mois' => $mois]);
+        $this->render('form_bdl', ['message' => $message, 'client' => $client, 'composante' => $composante, 'mois' => $mois, 'menu' => $this->action_get_navbar(),]);
 
     }
 
@@ -576,13 +556,78 @@ class Controller_prestataire extends Controller
         $composante = $_POST['composante'];
         $mois = $_POST['mois'];
 
-        $this->render('form_bdl', ['message' => $message, 'client' => $client, 'composante' => $composante, 'mois' => $mois]);
+
+        $this->render('form_bdl', ['message' => $message, 'client' => $client, 'composante' => $composante, 'mois' => $mois, 'menu' => $this->action_get_navbar(),]);
 
     }
 
     /**
-     * Vérifie d'avoir les informations nécessaire pour ajouter un bon de livraison à une mission
+     * Ajoute dans la base de données la date à laquelle le prestataire est absent
      * @return void
      */
+    public function action_absence()
+    {
+        $redirect = isset($_SESSION['redirect']) ? $_SESSION['redirect'] : false;
+        unset($_SESSION['redirect']); // Supprimer l'indicateur après l'avoir récupéré
+
+        // Si l'indicateur de redirection est vrai, rediriger vers une autre page
+        if ($redirect) {
+            header("Location: index.php?controller=prestataire&action=absence");
+            exit(); // Assurez-vous d'arrêter l'exécution du script après la redirection
+        }
+
+        $bd = Model::getModel();
+        $message = isset($_SESSION['message']) ? $_SESSION['message'] : null;
+        unset($_SESSION['message']);
+        // Récupère les absences pour l'utilisateur
+        $id_personne = $_SESSION['id'];
+        $absences = $bd->getAbsencesByPersonId($id_personne);
+        $data = [
+            'menu' => $this->action_get_navbar(),
+            'message' => $message,
+            'absences' => $absences,
+            'rechercheLink' => '',
+            'redirect' => $redirect // Ajouter l'indicateur de redirection aux données
+        ];
+        $this->render('absences', $data);
+    }
+
+    public function action_creer_absence()
+    {
+        $bd = Model::getModel();
+
+        if (isset($_SESSION['id']) && isset($_POST['date']) && isset($_POST['motif'])) {
+            $_SESSION['redirect'] = true;
+            $id_personne = $_SESSION['id'];
+            $date_absence = $_POST['date'];
+            $motif = $_POST['motif'];
+
+            $resultat = $bd->addAbsenceForPrestataire($id_personne, $date_absence, $motif);
+            if ($resultat == true) {
+                $_SESSION['message'] = "L'absence a été déclarée avec succès.";
+            } else {
+                $_SESSION['message'] = "Échec de la déclaration de l'absence. Veuillez réessayer.";
+            }
+        } else {
+            $_SESSION['message'] = "Données incomplètes. Veuillez remplir tous les champs.";
+        }
+        $this->action_absence();
+    }
+    public function action_infosAbsence()
+    {
+        $bd = Model::getModel();
+        $id_absence = $_GET['id_absence'];
+
+        // Récupère les détails de l'absence par ID
+        $absence = $bd->getAbsenceById($id_absence);
+
+        // Passe les détails de l'absence à la vue
+        $this->render('infosAbsence', [
+            'menu' => $this->action_get_navbar(),
+            'absence' => $absence
+        ]);
+    }
+
+
 
 }

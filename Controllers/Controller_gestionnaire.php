@@ -14,33 +14,33 @@ class Controller_gestionnaire extends Controller
      * Renvoie le tableau de bord du gestionnaire avec les variables adéquates
      * @return void
      */
-    public function action_dashboard()
-    {
-        if (isset($_SESSION['role'])) {
-            unset($_SESSION['role']);
-        }
-        $_SESSION['role'] = 'gestionnaire';
-        if (isset($_SESSION['id'])) {
-            $bd = Model::getModel();
-            $data = [
-                'menu' => $this->action_get_navbar(),
-                'bdlLink' => '?controller=gestionnaire&action=mission_bdl',
-                'buttonLink' => '?controller=gestionnaire&action=ajout_mission_form',
-                'header' => [
-                    'Société',
-                    'Composante',
-                    'Nom Mission',
-                    'Préstataire assigné',
-                    'Bon de livraison'
-                ],
-                'dashboard' => $bd->getDashboardGestionnaire()
-            ];
-            return $this->render('gestionnaire_missions', $data);
-        } else {
-            // TODO Réaliser un render de l'erreur
-            echo 'Une erreur est survenue lors du chargement du tableau de bord';
-        }
-    }
+    // public function action_dashboard()
+    // {
+    //     if (isset($_SESSION['role'])) {
+    //         unset($_SESSION['role']);
+    //     }
+    //     $_SESSION['role'] = 'gestionnaire';
+    //     if (isset($_SESSION['id'])) {
+    //         $bd = Model::getModel();
+    //         $data = [
+    //             'menu' => $this->action_get_navbar(),
+    //             'bdlLink' => '?controller=gestionnaire&action=mission_bdl',
+    //             'buttonLink' => '?controller=gestionnaire&action=ajout_mission_form',
+    //             'header' => [
+    //                 'Société',
+    //                 'Composante',
+    //                 'Nom Mission',
+    //                 'Préstataire assigné',
+    //                 'Bon de livraison'
+    //             ],
+    //             'dashboard' => $bd->getDashboardGestionnaire()
+    //         ];
+    //         return $this->render('gestionnaire_missions', $data);
+    //     } else {
+    //         // TODO Réaliser un render de l'erreur
+    //         echo 'Une erreur est survenue lors du chargement du tableau de bord';
+    //     }
+    // }
 
     /**
      * Action qui retourne les éléments du menu pour le gestionnaire

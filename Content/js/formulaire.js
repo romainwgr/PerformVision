@@ -150,12 +150,23 @@ jobCardLink.addEventListener("click", function (event) {
     formContainer.style.display = "none";
   }
 });
-
-// pour revenir a la page precedent qd on appuie sur l'icone de fermeture
-function closeFormajout() {
+var formVisible = false;
+function closeForm() {
   document.getElementById("close-form").addEventListener("click", function () {
     window.history.back();
+    if (formVisible) {
+      // Revenir à la page précédente uniquement si le formulaire était visible
+      window.history.back();
+      formVisible = false; // Mettre à jour l'état du formulaire
+    }
   });
+}
+
+function closeFormajout() {
+  // Sélectionne l'élément contenant le formulaire
+  var formContainer = document.getElementById("caheaffiche");
+  // Masque l'élément en modifiant son style
+  formContainer.style.display = "none";
 }
 
 // ajax

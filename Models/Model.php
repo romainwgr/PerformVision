@@ -65,32 +65,32 @@ class Model
      * @return array|false
      */
     //TODO A faire
-    public function getDashboardGestionnaire()
-    {
-        $req = $this->bd->prepare("
-        SELECT 
-                nom_client, 
-                co.nom_composante, 
-                bdl.annee, 
-                bdl.mois, 
-                bdl.commentaire, 
-                bdl.heures, 
-                COALESCE(p.nom, 'Aucun') AS nom_prestataire, 
-                COALESCE(p.prenom, 'Aucun') AS prenom_prestataire
-            FROM 
-                 bdl
-            JOIN 
-                Composante co ON bdl.id_composante = co.id_composante
-            JOIN 
-                Client cl ON co.id_client = cl.id_client
-            LEFT JOIN 
-                Personne p ON bdl.id_prestataire = p.id_personne
-            LEFT JOIN 
-                Prestataire pr ON p.id_personne = pr.id_personne
-            ");
-        $req->execute();
-        return $req->fetchAll(PDO::FETCH_ASSOC);
-    }
+    // public function getDashboardGestionnaire()
+    // {
+    //     $req = $this->bd->prepare("
+    //     SELECT 
+    //             nom_client, 
+    //             co.nom_composante, 
+    //             bdl.annee, 
+    //             bdl.mois, 
+    //             bdl.commentaire, 
+    //             bdl.heures, 
+    //             COALESCE(p.nom, 'Aucun') AS nom_prestataire, 
+    //             COALESCE(p.prenom, 'Aucun') AS prenom_prestataire
+    //         FROM 
+    //              bdl
+    //         JOIN 
+    //             Composante co ON bdl.id_composante = co.id_composante
+    //         JOIN 
+    //             Client cl ON co.id_client = cl.id_client
+    //         LEFT JOIN 
+    //             Personne p ON bdl.id_prestataire = p.id_personne
+    //         LEFT JOIN 
+    //             Prestataire pr ON p.id_personne = pr.id_personne
+    //         ");
+    //     $req->execute();
+    //     return $req->fetchAll(PDO::FETCH_ASSOC);
+    // }
 
 
     /* -------------------------------------------------------------------------
@@ -100,16 +100,16 @@ class Model
      * Méthode permettant de récupérer la liste des composantes
      * @return array|string
      */
-    public function getAllComposantes()
-    {
-        $req = $this->bd->prepare('SELECT id_composante AS id, nom_composante, nom_client FROM Client JOIN Composante USING(id_client);');
-        $req->execute();
-        $result = $req->fetchAll();
-        if (empty($result)) {
-            return 'Il n\'y a aucune composante.';
-        }
-        return $result;
-    }
+    // public function getAllComposantes()
+    // {
+    //     $req = $this->bd->prepare('SELECT id_composante AS id, nom_composante, nom_client FROM Client JOIN Composante USING(id_client);');
+    //     $req->execute();
+    //     $result = $req->fetchAll();
+    //     if (empty($result)) {
+    //         return 'Il n\'y a aucune composante.';
+    //     }
+    //     return $result;
+    // }
 
 
     /**
@@ -1831,7 +1831,7 @@ class Model
         }
     }
 
-//     public function getBdlPrestataireBybdlId($id_bdl)
+    //     public function getBdlPrestataireBybdlId($id_bdl)
 // {
 //     $req = $this->bd->prepare("
 //         SELECT bdl.*, prestataire.nom AS nom_prestataire
@@ -1843,6 +1843,41 @@ class Model
 //     $req->execute();
 //     return $req->fetch(PDO::FETCH_ASSOC);
 // }
+
+
+    public function addAbsenceForPrestataire($id_personne, $date_absence, $motif)
+    {
+        $req = $this->bd->prepare('INSERT INTO Absences(id_personne, date_absence, motif) VALUES(:id_personne, :date_absence, :motif);');
+        $req->bindValue(':id_personne', $id_personne, PDO::PARAM_INT);
+        $req->bindValue(':date_absence', $date_absence);
+        $req->bindValue(':motif', $motif);
+        $req->execute();
+        return (bool) $req->rowCount(); // Retourne true si au moins une ligne a été affectée
+    }
+
+    public function getAbsencesByPersonId($id_personne)
+    {
+        $req = $this->bd->prepare('SELECT id, date_absence, motif FROM Absences WHERE id_personne = :id_personne ORDER BY date_absence DESC');
+        $req->bindValue(':id_personne', $id_personne, PDO::PARAM_INT);
+        $req->execute();
+        $absences = $req->fetchAll(PDO::FETCH_ASSOC);
+        // var_dump($absences); // Ajouter ceci pour débogage
+        return $absences;
+    }
+    public function getAbsenceById($id_absence)
+    {
+        $req = $this->bd->prepare('
+            SELECT A.id, A.date_absence, A.motif, P.prenom, P.nom
+            FROM Absences A
+            JOIN Personne P ON A.id_personne = P.id_personne
+            WHERE A.id = :id_absence
+        ');
+        $req->bindValue(':id_absence', $id_absence, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetch(PDO::FETCH_ASSOC);
+    }
+
+
 
 
 }

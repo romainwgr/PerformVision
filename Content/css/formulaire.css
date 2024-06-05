@@ -579,6 +579,13 @@ h3 {
 }
 
 /* Boutons */
+.btne{
+  background-color: #5db0cf;
+}
+.btne:hover{
+  background-color: #188fb3;
+
+}
 .btn {
   padding: 12px 20px;
   border: none;

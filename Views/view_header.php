@@ -24,12 +24,14 @@
 
                     <?php elseif ($m['name'] == 'Gestionnaires'): ?>
                         <span class="material-symbols-outlined">supervisor_account</span>
-                    <?php elseif ($m['name'] == 'Mes prestataires'): ?>
+                    <?php elseif ($m['name'] == 'Mes prestataires' || $m['name'] == 'Mes Prestataires'): ?>
                         <span class="material-symbols-outlined">work</span>
                     <?php elseif ($m['name'] == 'Bons de livraison'): ?>
                         <span class="material-symbols-outlined">local_shipping</span>
                     <?php elseif ($m['name'] == 'Clients'): ?>
                         <span class="material-symbols-outlined">person</span>
+                    <?php elseif ($m['name'] == 'Declaration absence'): ?>
+                        <span class="material-symbols-outlined">event_busy</span>
                     <?php else: ?>
                         <span class="material-symbols-outlined">help</span> <!-- Icône par défaut -->
                     <?php endif; ?>

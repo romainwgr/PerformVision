@@ -21,25 +21,32 @@ require 'Views/view_header.php';
             <!-- Steps -->
             <div class="form-step form-step-active">
                 <h2>Informations personnelles</h2>
-                <div class="input-group">
-                    <label for="prenom">Prénom</label>
-                    <input type="text" placeholder="Prénom" id="prenom" name="prenom" class="input-case" required>
-                </div>
-                <div class="input-group">
-                    <label for="nom">Nom</label>
-                    <input type="text" placeholder="Nom" id="nom" name="nom" class="input-case" required>
+                <div class="form-names ensemble">
+                    <div class="input-group">
+                        <label for="prenom">Prénom</label>
+                        <input type="text" placeholder="Prénom" id="prenom" name="prenom" class="input-case" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="nom">Nom</label>
+                        <input type="text" placeholder="Nom" id="nom" name="nom" class="input-case" required>
+                    </div>
                 </div>
                 <div class="input-group">
                     <label for="email-gestionnaire">Email</label>
-                    <input type="email" placeholder="Adresse email" id="email-gestionnaire" name="email-gestionnaire" class="input-case" required>
+                    <input type="email" placeholder="Adresse email" id="email-gestionnaire" name="email-gestionnaire"
+                        class="input-case" required>
                 </div>
-                <div class="input-group">
-                    <label for="mot_de_passe">Mot de passe</label>
-                    <input type="password" placeholder="Mot de passe" id="mot_de_passe" name="mot_de_passe" class="input-case" required>
-                </div>
-                <div class="input-group">
-                    <label for="telephone">Téléphone</label>
-                    <input type="tel" placeholder="Numéro de téléphone" id="telephone" name="telephone" class="input-case">
+                <div class="form-names ensemble">
+                    <div class="input-group">
+                        <label for="mot_de_passe">Mot de passe</label>
+                        <input type="password" placeholder="Mot de passe" id="mot_de_passe" name="mot_de_passe"
+                            class="input-case" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="telephone">Téléphone</label>
+                        <input type="tel" placeholder="Numéro de téléphone" id="telephone" name="telephone"
+                            class="input-case">
+                    </div>
                 </div>
             </div>
             <div class="btns-group">

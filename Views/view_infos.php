@@ -13,7 +13,7 @@ require 'view_header.php';
                 <input type="text" placeholder="<?= $_SESSION['prenom'] ?>" name="prenom" class="input-case">
                 <input type="text" placeholder="<?= $_SESSION['nom'] ?>" name="nom" class="input-case">
             </div>
-            <input type="email" placeholder="<?= $_SESSION['email'] ?>" name='email' id='mail-1' class="input-case">
+            <input type="email" placeholder="<?= $_SESSION['mail'] ?>" name='email' id='mail-1' class="input-case">
             <h2>Mot de passe</h2>
             <input type="text" placeholder='Changer de mot de passe' name='mdp' id='sté' class="input-case">
             <div class="btns-group">
