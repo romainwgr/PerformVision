@@ -7,14 +7,6 @@ require 'view_header.php';
 <!-- Vue pour afficher les interlocuteurs et les composantes -->
 <section class="main">
     <div class="main-body">
-        <div class="search_bar">
-            <form action="#" method="GET" class="search_form">
-                <input type="search" name="search" id="search" class="search_input" placeholder="Rechercher...">
-                <button type="submit" class="search_button">
-                    <i class="fas fa-search"></i>
-                </button>
-            </form>
-        </div>
         <div class="composante-container">
             <h2 class="marge">Informations sur la Société</h2>
             <a href="#caheaffiche" class="job-card-link">

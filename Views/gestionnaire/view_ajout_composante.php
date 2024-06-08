@@ -1,11 +1,11 @@
 <!-- Formulaire permettant d'ajouter une nouvelle composante  -->
 <?php
-require 'Views/view_begin.php'; 
+require 'Views/view_begin.php';
 require 'Views/view_header.php';
 ?>
 <div class="add-container">
     <div class="form-abs">
-        <span class="close-icon" id="close-form" onclick="closeFormajout()"> <!-- Ajout de l'ID -->
+        <span class="close-icon" id="close-form" onclick="closeForm()"> <!-- Ajout de l'ID -->
             <i class="fas fa-times"></i>
         </span>
         <h1 class="text-center">Ajout Composante</h1>
@@ -152,8 +152,6 @@ require 'Views/view_header.php';
         </form>
     </div>
 </div>
-<div class="footer">
-    <?php
-    require 'Views/view_end.php';
-    ?>
-</div>
+<?php
+require 'Views/view_end.php';
+?>

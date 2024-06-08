@@ -5,7 +5,7 @@
  * 
  * Pas encore fonctionnelle
  * 
-*/
+ */
 class Controller_commercial extends Controller
 {
 
@@ -14,40 +14,133 @@ class Controller_commercial extends Controller
      */
     public function action_default()
     {
-        $this->action_accueil();
+        $this->action_prestataires();
     }
-
-    /**
-     * 
-     * Action qui retourne le tableau de bord du commercial
-     * @return void
-     */
-    public function action_accueil()
+    public function action_prestataires()
     {
-        sessionstart(); // Fonction dans Utils pour lancer la session si elle n'est pas lancée 
-        if (isset($_SESSION['role'])) {
-            unset($_SESSION['role']);
-        }
-        $_SESSION['role'] = 'gestionnaire';
+        sessionstart();
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             $data = [
-                'menu' => $this->action_get_navbar(),
-                'bdlLink' => '?controller=gestionnaire&action=mission_bdl',
-                'buttonLink' => '?controller=gestionnaire&action=ajout_mission_form',
-                'header' => [
-                    'Société',
-                    'Composante',
-                    'Nom Mission',
-                    'Préstataire assigné',
-                    'Bon de livraison'
-                ],
-               // 'dashboard' => $bd->getDashboardCommercial($_SESSION['id'])
+                'title' => 'Prestataires',
+                'rechercheLink' => '?controller=commercial&action=rechercher&role=prestataire',
+                'cardLink' => '?controller=commercial&action=infos_client',
+                'person' => $bd->getPrestataireForCommercial($_SESSION['id']),
+                'menu' => $this->action_get_navbar()
             ];
-            $this->render('accueil', $data);
+            $this->render("prestataire", $data, "commercial");
         }
-        $this->render('accueil');
     }
+    /**
+     * Renvoie la liste de toutes les clients avec leurs différentes composantes et les prestataires assigné avec la possibilité d'ajouter des prestataires
+     * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
+     * @return void
+     */
+    public function action_composantes()
+    {
+        session_start();
+        if (isset($_SESSION['id'])) {
+            $bd = Model::getModel();
+
+            // Récupérer tous les clients
+            $clients = $bd->getClientsForCommercial($_SESSION['id']);
+
+            // Organiser les données hiérarchiquement
+            $clientsData = [];
+            foreach ($clients as $client) {
+                $clientId = $client['id_client'];
+                $composantes = $bd->getComposantesSociete($clientId); // GetComposanteByClientId
+
+                // Vérifier que $composantes est un tableau
+                if (!is_array($composantes)) {
+                    $composantes = [];
+                }
+
+                foreach ($composantes as &$composante) {
+                    $composanteId = $composante['id_composante'];
+                    $interlocuteurs = $bd->getInterlocuteursComposante($composanteId); // GetPrestataireByIdComposante
+
+                    // Vérifier que $prestataires est un tableau
+                    if (!is_array($interlocuteurs)) {
+                        $interlocuteurs = [];
+                    }
+
+                    $composante['interlocuteurs'] = $interlocuteurs;
+                }
+
+                // Assurer que 'composantes' est toujours un tableau
+                $client['composantes'] = $composantes;
+                $clientsData[] = $client;
+            }
+
+            // Préparer les données pour la vue
+            $data = [
+                'title' => 'Composantes',
+                'person' => $clientsData,
+                // TODO a faire 
+                'buttonLink' => '?controller=commercial&action=ajout_interlocuteur_form',
+                'rechercheLink' => '?controller=commercial&action=rechercher&role=client&composante=t',
+                'cardLink' => '?controller=commercial&action=infos_composante',
+                'menu' => $this->action_get_navbar()
+            ];
+
+            // Rendre la vue avec les données
+            $this->render("composante", $data, 'commercial');
+        }
+    }
+    /**
+     * Renvoie la liste de tous les clients
+     * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
+     * @return void
+     */
+    public function action_clients()
+    {
+        sessionstart();
+        if (isset($_SESSION['id'])) {
+            $bd = Model::getModel();
+            $data = [
+                'title' => 'Société',
+                'buttonLink' => '?controller=commercial&action=ajout_client_form',
+                'rechercheLink' => '?controller=commercial&action=rechercher&role=client&composante=f',
+                'cardLink' => '?controller=commercial&action=infos_client',
+                'person' => $bd->getClientsForCommercial($_SESSION['id']),
+                'menu' => $this->action_get_navbar()
+            ];
+            $this->render("client", $data, 'commercial');
+        }
+    }
+
+    // /**
+    //  * 
+    //  * Action qui retourne le tableau de bord du commercial
+    //  * @return void
+    //  */
+    // public function action_accueil()
+    // {
+    //     sessionstart(); // Fonction dans Utils pour lancer la session si elle n'est pas lancée 
+    //     if (isset($_SESSION['role'])) {
+    //         unset($_SESSION['role']);
+    //     }
+    //     $_SESSION['role'] = 'gestionnaire';
+    //     if (isset($_SESSION['id'])) {
+    //         $bd = Model::getModel();
+    //         $data = [
+    //             'menu' => $this->action_get_navbar(),
+    //             'bdlLink' => '?controller=gestionnaire&action=mission_bdl',
+    //             'buttonLink' => '?controller=gestionnaire&action=ajout_mission_form',
+    //             'header' => [
+    //                 'Société',
+    //                 'Composante',
+    //                 'Nom Mission',
+    //                 'Préstataire assigné',
+    //                 'Bon de livraison'
+    //             ],
+    //            // 'dashboard' => $bd->getDashboardCommercial($_SESSION['id'])
+    //         ];
+    //         $this->render('accueil', $data);
+    //     }
+    //     $this->render('accueil');
+    // }
 
     // public function action_missions()
     // {
@@ -94,9 +187,8 @@ class Controller_commercial extends Controller
     public function action_get_navbar()
     {
         return [
-            ['link' => '?controller=commercial&action=dashboard', 'name' => 'Missions'],
-            ['link' => '?controller=commercial&action=composantes', 'name' => 'Composantes'],
             ['link' => '?controller=commercial&action=clients', 'name' => 'Clients'],
+            ['link' => '?controller=commercial&action=composantes', 'name' => 'Composantes'],
             ['link' => '?controller=commercial&action=prestataires', 'name' => 'Prestataires'],
         ];
     }
@@ -151,15 +243,15 @@ class Controller_commercial extends Controller
         $this->action_infos_personne();
     }
 
-    /**
-     * Met à jour les informations de la composante
-     * @return void
-     */
-    public function action_maj_infos_composante()
-    {
-        maj_infos_composante(); // fonction dans Utils
-        $this->action_infos_composante();
-    }
+    // /**
+    //  * Met à jour les informations de la composante
+    //  * @return void
+    //  */
+    // public function action_maj_infos_composante()
+    // {
+    //     maj_infos_composante(); // fonction dans Utils
+    //     $this->action_infos_composante();
+    // }
 
     // /**
     //  * Vérifie qu'il existe dans l'url l'id qui fait référence au bon de livraison et renvoie la vue qui permet de consulter le bon de livraison
@@ -193,26 +285,26 @@ class Controller_commercial extends Controller
     //     }
     // }
 
-    /**
-     * Renvoie la liste de tous les clients
-     * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
-     * @return void
-     */
-    public function action_clients()
-    {
-        sessionstart();
-        if (isset($_SESSION['id'])) {
-            $bd = Model::getModel();
-            $data = [
-                'title' => 'Société',
-                'buttonLink' => '?controller=commercial&action=ajout_interlocuteur_form',
-                'cardLink' => '?controller=commercial&action=infos_client',
-                'person' => $bd->getClientForCommercial(),
-                'menu' => $this->action_get_navbar()
-            ];
-            $this->render("liste", $data);
-        }
-    }
+    // /**
+    //  * Renvoie la liste de tous les clients
+    //  * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
+    //  * @return void
+    //  */
+    // public function action_clients()
+    // {
+    //     sessionstart();
+    //     if (isset($_SESSION['id'])) {
+    //         $bd = Model::getModel();
+    //         $data = [
+    //             'title' => 'Société',
+    //             'buttonLink' => '?controller=commercial&action=ajout_interlocuteur_form',
+    //             'cardLink' => '?controller=commercial&action=infos_client',
+    //             'person' => $bd->getClientForCommercial($id),
+    //             'menu' => $this->action_get_navbar()
+    //         ];
+    //         $this->render("liste", $data);
+    //     }
+    // }
 
     // /**
     //  * Renvoie la liste de toutes les composantes
@@ -389,26 +481,26 @@ class Controller_commercial extends Controller
         }
     }
 
-    /**
-     * Action qui renvoie la vue qui affiche les informations de la composante
-     * @return void
-     */
-    public function action_infos_composante()
-    {
-        sessionstart();
-        if (isset($_GET['id'])) {
-            $bd = Model::getModel();
-            $data = [
-                'infos' => $bd->getInfosComposante(e($_GET['id'])),
-                'prestataires' => $bd->getPrestatairesComposante(e($_GET['id'])),
-                'commerciaux' => $bd->getCommerciauxComposante(e($_GET['id'])),
-                'interlocuteurs' => $bd->getInterlocuteursComposante(e($_GET['id'])),
-                'bdl' => $bd->getBdlComposante(e($_GET['id'])),
-                'menu' => $this->action_get_navbar()
-            ];
-            $this->render('infos_composante', $data);
-        }
-    }
+    // /**
+    //  * Action qui renvoie la vue qui affiche les informations de la composante
+    //  * @return void
+    //  */
+    // public function action_infos_composante()
+    // {
+    //     sessionstart();
+    //     if (isset($_GET['id'])) {
+    //         $bd = Model::getModel();
+    //         $data = [
+    //             'infos' => $bd->getInfosComposante(e($_GET['id'])),
+    //             'prestataires' => $bd->getPrestatairesComposante(e($_GET['id'])),
+    //             'commerciaux' => $bd->getCommerciauxComposante(e($_GET['id'])),
+    //             'interlocuteurs' => $bd->getInterlocuteursComposante(e($_GET['id'])),
+    //             'bdl' => $bd->getBdlComposante(e($_GET['id'])),
+    //             'menu' => $this->action_get_navbar()
+    //         ];
+    //         $this->render('infos_composante', $data);
+    //     }
+    // }
     // TODO Ajouter la fonction de recherche mais il faut ajouter des contraintes car il ne peut voir que ceux qui sont relié a lui
 
 }

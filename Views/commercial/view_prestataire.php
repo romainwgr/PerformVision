@@ -5,48 +5,36 @@ require 'Views/view_header.php';
 ?>
 <section class="main">
     <div class="main-body">
-        <div class="search-box">
+        <div class="box">
             <form action="<?= $rechercheLink ?>" method="post" class="search_form">
-                <input name="recherche" type="text" placeholder="Rechercher une <?= strtolower($title) ?>..." value="<?php if (isset($val_rech)) {
-                      echo htmlspecialchars($val_rech);
-                  } ?>">
-                <div class="search-icon">
-                    <i class="fas fa-search"></i>
-                </div>
-                <div class="cancel-icon">
-                    <i class="fas fa-times"></i>
-                </div>
-                <div class="search-data">
+                <input type="checkbox" id="check">
+                <div class="search-box">
+                    <?php if (!empty($buttonLink)): ?>
+                        <button type="button" class="button-primary font"
+                            onclick="window.location='<?= htmlspecialchars($buttonLink) ?>'">Ajouter</button>
+                    <?php endif; ?>
+                    <input name="recherche" type="text" placeholder="Rechercher une <?= strtolower($title) ?>..." value="<?php if (isset($val_rech)) {
+                          echo htmlspecialchars($val_rech);
+                      } ?>">
+                    <label for="check" class="icon">
+                        <i class="fas fa-search"></i>
+                    </label>
                 </div>
             </form>
-            <?php if (!empty($buttonLink)): ?>
-                <button type="button" class="button-primary font"
-                    onclick="window.location='<?= htmlspecialchars($buttonLink) ?>'">Ajouter</button>
-            <?php endif; ?>
         </div>
     </div>
 
-    <!-- <h1><?php if (isset($title)) {
-        echo $title;
-    } ?></h1> -->
+    <h1><?php if(isset($title)){echo $title;}?></h1>
 
     <div class="row">
         <p>Il y a plus de <span><?= count($person) ?></span> <?= strtolower($title) ?></p>
     </div>
-    <!-- <h1>
-        < TODO Binta tu peux mettre une classe qui affiche ca un peu mieux stp --
+    <h1>
+        <!-- TODO Binta tu peux mettre une classe qui affiche ca un peu mieux stp -->
         <?php if (isset($message)) {
             echo $message;
         } ?>
-    </h1> -->
-    <!-- Popup Container -->
-    <div id="messagePopup" class="popup2" data-message="<?php if (isset($message))
-        echo htmlspecialchars($message); ?>">
-        <div class="popup-content">
-            <span class="close-btn">&times;</span>
-            <h1 id="popupMessage"></h1>
-        </div>
-    </div>
+    </h1>
 
     <div class="element-block">
         <?php if (is_string($person)): ?>
@@ -84,27 +72,9 @@ require 'Views/view_header.php';
                         </span>
                     </div>
                     <div class="job_salary">
-                        <!-- <a href="?controller=gestionnaire&action=consulterBDLs">
-                            <i class="fa fa-eye" aria-hidden="true"></i>
-                            <span>Voir BDL</span>
-                        </a><br>
-                        <a href="?controller=gestionnaire&action=consulterAbsences">
-                            <i class="fa fa-eye" aria-hidden="true"></i>
-                            <span>Absences</span>
-                        </a> -->
-                        <a
-                            href='?controller=gestionnaire&action=consulterBDLPrestataire&id_prestataire=<?= htmlspecialchars($p['id_personne']) ?>'>
-                            <i class="fa fa-eye" aria-hidden="true"></i>
-                            <span>Voir BDL</span>
-                        </a><br>
-                        <a
-                            href='?controller=gestionnaire&action=consulterAbsencesPrestataire&id_prestataire=<?= htmlspecialchars($p['id_personne']) ?>'>
-                            <i class="fa fa-eye" aria-hidden="true"></i>
-                            <span>Absences</span>
-                        </a>
-
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                        <span>Voir BDL</span>
                     </div>
-
 
                 </div>
 
@@ -120,6 +90,7 @@ require 'Views/view_header.php';
     </div>
     </div>
 </section>
+
 <?php
 require 'Views/view_end.php';
 ?>

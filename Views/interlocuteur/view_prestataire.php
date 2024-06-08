@@ -23,7 +23,7 @@ require 'Views/view_header.php';
     </div>
 
     <div class="row">
-        <p>Il y a  <span><?= isset($person) && is_array($person) ? count($person) : 0 ?></span>
+        <p>Il y a <span><?= isset($person) && is_array($person) ? count($person) : 0 ?></span>
             <?= htmlspecialchars($title) ?></p>
     </div>
     <div id="errorMessage" style="display: none;"></div>
@@ -38,18 +38,29 @@ require 'Views/view_header.php';
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="text">
-                            <div  class="block">
-                                <h2>
-                                <?= htmlspecialchars($p['nom'] . '' . $p['prenom']); ?>
-                                </h2>
-                                <span>
-                                    <?= htmlspecialchars('mail : '. $p['mail']); ?>
-                                    </br>
-                                    <?= htmlspecialchars('téléphone : ' . $p['telephone']); ?>
-                                </span>
-                                </div>
-
+                        <h2>
+                            <?= htmlspecialchars($p['nom'] . ' ' . $p['prenom']); ?>
+                        </h2>
+                        <span>
+                            <?= htmlspecialchars($p['mail']); ?>
+                        </span>
                     </div>
+                </div>
+                <div class="job_action">
+                    <span>
+                        <?php if (isset($p['telephone'])): ?>
+                            <?= htmlspecialchars($p['telephone']); ?>
+                        <?php endif; ?>
+                    </span>
+                </div>
+                <div class="job_salary">
+                    <?php if (isset($p['id_personne'])): ?>
+                        <a
+                            href='?controller=interlocuteur&action=consulterAbsencesPrestataire&id_prestataire=<?= htmlspecialchars($p['id_personne']) ?>'>
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+                            <span>Absences</span>
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
         <?php endforeach; ?>

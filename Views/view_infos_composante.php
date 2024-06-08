@@ -4,171 +4,165 @@ require 'view_begin.php';
 require 'view_header.php';
 ?>
 <section class="main">
-    <div class="main-body">
-        <div class="search_bar">
-            <form action="#" method="GET" class="search_form">
-                <input type="search" name="search" id="search" class="search_input" placeholder="Rechercher...">
-                <button type="submit" class="search_button">
-                    <i class="fas fa-search"></i>
-                </button>
-            </form>
-        </div>
-        <div class="composante-container">
-            <h2 class="marge">Informations composante</h2>
-            <a href="#caheaffiche" class="job-card-link">
-                <div class="job_card">
-                    <div class="job_details">
-                        <div class="img">
-                            <i class="fas fa-building"></i>
-                        </div>
-                        <div class="text">
-                            <h2><?= $infos['nom_composante'] ?></h2>
-                            <span><?= $infos['nom_client'] ?></span>
-                        </div>
+    <div class="composante-container">
+        <h2 class="marge">Informations composante</h2>
+        <a href="#caheaffiche" class="job-card-link">
+            <div class="job_card">
+                <div class="job_details">
+                    <div class="img">
+                        <i class="fas fa-building"></i>
                     </div>
-                    <div class="job_action">
+                    <div class="text">
+                        <h2><?= $infos['nom_composante'] ?></h2>
+                        <span><?= $infos['nom_client'] ?></span>
                     </div>
                 </div>
+                <div class="job_action">
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="infos-container">
+        <div class="infos__colonne">
+            <h2>Interlocuteurs</h2>
+            <a href="?controller=<?= $_GET['controller'] ?>&action=ajout_interlocuteur_form&id=<?= $_GET['id'] ?>"
+                class="ajout">
+                <i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter
             </a>
+            <table>
+                <tr>
+                    <?php if (!empty($interlocuteurs) && is_array($interlocuteurs)): ?>
+                        <?php foreach ($interlocuteurs as $i): ?>
+                            <td>
+                                <a href='?controller=<?= $_SESSION['role'] ?>&action=infos_personne&id=<?= $i['id_personne'] ?>'
+                                    class="block">
+                                    <h3><?= $i['nom'] . ' ' . $i['prenom'] ?></h3>
+                                </a>
+                            </td>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <table class="diffencice">
+                            <tr>
+                                <td>
+                                    <p>Aucun Interlocuteurs trouvé.</p>
+                                </td>
+                            </tr>
+                        </table>
+                    <?php endif; ?>
+                </tr>
+            </table>
+
         </div>
 
-        <div class="infos-container">
-            <div class="infos__colonne">
-                <h2>Interlocuteurs</h2>
-                <table>
-                    <tr>
-                        <?php if (!empty($interlocuteurs) && is_array($interlocuteurs)): ?>
-                            <?php foreach ($interlocuteurs as $i): ?>
+        <div class="infos__colonne">
+            <h2>Commerciaux</h2>
+            <?php if (!str_contains($_GET['controller'], 'commercial')): ?>
+                <a href="<?= $cardLink ?>&action=ajout_commercial_form&id=<?= $_GET['id'] ?>" class="ajout">
+                    <i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter
+                </a>
+            <?php else: ?>
+                <a class="ajout"> &nbsp;</a>
+            <?php endif; ?>
+            <table>
+                <tr>
+                    <?php if (!empty($commerciaux) && is_array($commerciaux)): ?>
+                        <?php foreach ($commerciaux as $c): ?>
+                            <td>
+                                <a href='?controller=<?= $_GET['controller'] ?>&action=infos_personne&id=<?= $c['id_personne'] ?>'
+                                    class="block">
+                                    <h3><?= $c['nom'] . ' ' . $c['prenom'] ?></h3>
+                                </a>
+                            </td>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <table class="diffencice">
+                            <tr>
                                 <td>
-                                    <a href='?controller=<?= $_SESSION['role'] ?>&action=infos_personne&id=<?= $i['id_personne'] ?>'
-                                        class="block">
-                                        <h3><?= $i['nom'] . ' ' . $i['prenom'] ?></h3>
-                                    </a>
+                                    <p>Aucun Commerciaux trouvé.</p>
                                 </td>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <table class="diffencice">
-                                <tr>
-                                    <td>
-                                        <p>Aucun Interlocuteurs trouvé.</p>
-                                    </td>
-                                </tr>
-                            </table>
-                        <?php endif; ?>
-                    </tr>
-                </table>
-                <a href="?controller=<?= $_GET['controller'] ?>&action=ajout_interlocuteur_form&id=<?= $_GET['id'] ?>"
+                            </tr>
+                        </table>
+                    <?php endif; ?>
+                </tr>
+            </table>
+
+        </div>
+
+        <div class="infos__colonne">
+            <h2>Prestataires</h2>
+            <?php if (!str_contains($_GET['controller'], 'commercial')): ?>
+                <a href="?controller=<?= $_GET['controller'] ?>&action=ajout_prestataire_form&id=<?= $_GET['id'] ?>"
                     class="ajout">
                     <i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter
                 </a>
-            </div>
-
-            <div class="infos__colonne">
-                <h2>Commerciaux</h2>
-                <table>
-                    <tr>
-                        <?php if (!empty($commerciaux) && is_array($commerciaux)): ?>
-                            <?php foreach ($commerciaux as $c): ?>
+            <?php else: ?>
+                <a class="ajout"> &nbsp;</a>
+            <?php endif; ?>
+            <table>
+                <tr>
+                    <?php
+                    $uniquePrestataires = [];
+                    if (!empty($prestataires) && is_array($prestataires)): ?>
+                        <?php foreach ($prestataires as $p):
+                            $nom = htmlspecialchars($p['nom'] . ' ' . $p['prenom']);
+                            if (!in_array($nom, $uniquePrestataires)) {
+                                $uniquePrestataires[] = $nom; ?>
                                 <td>
-                                    <a href='?controller=<?= $_GET['controller'] ?>&action=infos_personne&id=<?= $c['id_personne'] ?>'
+                                    <a href="?controller=<?= htmlspecialchars($_GET['controller']) ?>&action=infos_personne&id=<?= htmlspecialchars($p['id_personne']) ?>"
                                         class="block">
-                                        <h3><?= $c['nom'] . ' ' . $c['prenom'] ?></h3>
+                                        <h3><?= $nom; ?></h3>
                                     </a>
                                 </td>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <table class="diffencice">
-                                <tr>
-                                    <td>
-                                        <p>Aucun Commerciaux trouvé.</p>
-                                    </td>
-                                </tr>
-                            </table>
-                        <?php endif; ?>
-                    </tr>
-                </table>
-                <?php if (!str_contains($_GET['controller'], 'commercial')): ?>
-                    <a href="<?= $cardLink ?>&action=ajout_commercial_form&id=<?= $_GET['id'] ?>" class="ajout">
-                        <i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter
-                    </a>
-                <?php else: ?>
-                    <a class="ajout"> &nbsp;</a>
-                <?php endif; ?>
-            </div>
-
-            <div class="infos__colonne">
-                <h2>Prestataires</h2>
-                <table>
-                    <tr>
-                        <?php
-                        $uniquePrestataires = [];
-                        if (!empty($prestataires) && is_array($prestataires)): ?>
-                            <?php foreach ($prestataires as $p):
-                                $nom = htmlspecialchars($p['nom'] . ' ' . $p['prenom']);
-                                if (!in_array($nom, $uniquePrestataires)) {
-                                    $uniquePrestataires[] = $nom; ?>
-                                    <td>
-                                        <a href="?controller=<?= htmlspecialchars($_GET['controller']) ?>&action=infos_personne&id=<?= htmlspecialchars($p['id_personne']) ?>"
-                                            class="block">
-                                            <h3><?= $nom; ?></h3>
-                                        </a>
-                                    </td>
-                                <?php }endforeach; ?>
-                        <?php else: ?>
-                            <table class="diffencice">
-                                <tr>
-                                    <td>
-                                        <p>Aucun prestataires trouvé.</p>
-                                    </td>
-                                </tr>
-                            </table>
-                        <?php endif; ?>
-                    </tr>
-                </table>
-                <?php if (!str_contains($_GET['controller'], 'commercial')): ?>
-                    <a href="?controller=<?= $_GET['controller'] ?>&action=ajout_prestataire_form&id=<?= $_GET['id'] ?>"
-                        class="ajout">
-                        <i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter
-                    </a>
-                <?php else: ?>
-                    <a class="ajout"> &nbsp;</a>
-                <?php endif; ?>
-            </div>
-
-            <div class="infos__colonne">
-                <h2>Bons de livraison</h2>
-                <table>
-                    <tr>
-                        <?php if (isset($b['id_bdl'], $b['nom'], $b['prenom'], $b['mois'])): ?>
-                            <?php foreach ($bdl as $b): ?>
+                            <?php }endforeach; ?>
+                    <?php else: ?>
+                        <table class="diffencice">
+                            <tr>
                                 <td>
-                                    <a href="?controller=<?= $_GET['controller'] ?>&action=consulter_bdl&id=<?= $b['id_bdl'] ?>"
-                                        class="block">
-                                        <h3><?= htmlspecialchars($b['nom']) . ' ' . htmlspecialchars($b['prenom']) . '<br>' . htmlspecialchars($b['mois']) ?>
-                                        </h3>
-                                    </a>
+                                    <p>Aucun prestataires trouvé.</p>
                                 </td>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <table class="diffencice">
-                                <tr>
-                                    <td>
-                                        <p>Aucun bons de livraison pour ce composante</p>
-                                    </td>
-                                </tr>
-                            </table>
-                        <?php endif; ?>
-                    </tr>
-                </table>
-                <?php if (!str_contains($_GET['controller'], 'commercial')): ?>
-                    <a href="<?= $cardLink ?>&action=ajout_bdl&id=<?= $_GET['id'] ?>" class="ajout">
-                        <i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter
-                    </a>
-                <?php else: ?>
-                    <a class="ajout"> &nbsp;</a>
-                <?php endif; ?>
-            </div>
+                            </tr>
+                        </table>
+                    <?php endif; ?>
+                </tr>
+            </table>
+
         </div>
+
+        <div class="infos__colonne">
+            <h2>Bons de livraison</h2>
+            <table>
+                <tr>
+                    <?php if (isset($b['id_bdl'], $b['nom'], $b['prenom'], $b['mois'])): ?>
+                        <?php foreach ($bdl as $b): ?>
+                            <td>
+                                <a href="?controller=<?= $_GET['controller'] ?>&action=consulter_bdl&id=<?= $b['id_bdl'] ?>"
+                                    class="block">
+                                    <h3><?= htmlspecialchars($b['nom']) . ' ' . htmlspecialchars($b['prenom']) . '<br>' . htmlspecialchars($b['mois']) ?>
+                                    </h3>
+                                </a>
+                            </td>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <table class="diffencice">
+                            <tr>
+                                <td>
+                                    <p>Aucun bons de livraison pour ce composante</p>
+                                </td>
+                            </tr>
+                        </table>
+                    <?php endif; ?>
+                </tr>
+            </table>
+            <!-- <?php if (!str_contains($_GET['controller'], 'commercial')): ?>
+                <a href="<?= $cardLink ?>&action=ajout_bdl&id=<?= $_GET['id'] ?>" class="ajout">
+                    <i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter
+                </a>
+            <?php else: ?>
+                <a class="ajout"> &nbsp;</a>
+            <?php endif; ?> -->
+        </div>
+    </div>
     </div>
 
     <div class="add-container" id="caheaffiche" style="display: none;">

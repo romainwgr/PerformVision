@@ -4,7 +4,7 @@ require 'Views/view_header.php';
 ?>
 <div class="add-container">
     <div class="form-abs">
-        <span class="close-icon" id="close-form" onclick="closeFormajout()"> <!-- Ajout de l'ID -->
+        <span class="close-icon" id="close-form" onclick="closeForm()"> <!-- Ajout de l'ID -->
             <i class="fas fa-times"></i>
         </span>
         <h1 class="text-center">Ajout Gestionnaire</h1>

@@ -8,7 +8,6 @@
     <div class="info-entreprise"><a href="#">Informations sur l'entreprise</a></div>
 </footer> -->
 <script src="Content/js/formulaire.js"></script>
-<!-- <script src="Content/js/validation_bdl.js"></script> -->
 
 
 </body>

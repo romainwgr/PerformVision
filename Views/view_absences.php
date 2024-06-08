@@ -40,12 +40,13 @@ require 'view_header.php';
         <p>Il y a plus de <span><?= isset($absences) && is_array($absences) ? count($absences) : 0 ?></span> absences
             déclarées</p>
     </div>
-    <h1>
-        <!-- < TODO Binta tu peux mettre une classe qui affiche ca un peu mieux stp -- -->
-        <?php if (isset($message)) {
-            echo $message;
-        } ?>
-    </h1>
+    <div id="messagePopup" class="popup2" data-message="<?php if (isset($message))
+        echo htmlspecialchars($message); ?>">
+        <div class="popup-content">
+            <span class="close-btn">&times;</span>
+            <h1 id="popupMessage"></h1>
+        </div>
+    </div>
     <?php if (is_string($absences)): ?>
         <p class=""><?= htmlspecialchars($absences); ?></p>
     <?php elseif (isset($absences) && !empty($absences)): ?>

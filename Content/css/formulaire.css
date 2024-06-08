@@ -470,6 +470,7 @@ h3 {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
   position: relative; /* Retirer l'absolu pour permettre la réactivité */
+  /* width: 115%; */
 }
 
 .gauche{
@@ -1301,22 +1302,6 @@ h2.mise2 span {
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .bdl-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -1378,3 +1363,67 @@ h2.mise2 span {
   margin-bottom: 10px;
 }
 
+.error-input {
+  border: 1px solid red;
+}
+
+.error-message {
+  color: red;
+  display: none; /* Les messages d'erreur sont cachés par défaut */
+}
+.large-checkbox {
+  width: 20px; /* Ajustez la largeur selon vos besoins */
+  height: 20px; /* Ajustez la hauteur selon vos besoins */
+  transform: scale(1.5); /* Ajustez l'échelle selon vos besoins */
+  margin: 10px; /* Ajustez l'espacement selon vos besoins */
+}
+
+/* Pour aligner les cases à cocher au centre verticalement */
+.commercial-item {
+  display: flex;
+  align-items: center;
+}
+
+.commercial-item span {
+  margin-left: 10px; /* Ajustez l'espacement entre la case à cocher et le texte */
+}
+
+.slideshow-container {
+  position: relative;
+  max-width: 600px;
+  margin: auto;
+  overflow: hidden;
+}
+
+.slide {
+  display: none;
+  text-align: center;
+  padding: 20px;
+}
+
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 16px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.prev {
+  left: 0;
+}
+
+.next {
+  right: 0;
+}

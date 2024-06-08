@@ -103,18 +103,26 @@ require 'Views/view_header.php';
                         <?php endif; ?>
                     </div>
                 </div>
+                <div class="job_action">
+                    <a
+                        href='?controller=interlocuteur&action=afficher_bdl&id_bdl=<?= htmlspecialchars($p['id_bdl'] ?? $p['id']) ?>'>
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                        <span>Voir PDF</span>
+                    </a>
+                </div>
                 <div class="button-container">
-                <?php if ($p['signature_interlocuteur']): ?>
-                    <p>BDL Validé</p>
-                <?php else: ?>
-                    <form id="form-validate-bdl" action="?controller=interlocuteur&action=validerbdl" method="post" onsubmit="return confirmSubmit()">
-                        <input type="hidden" name="id_bdl" value="<?= htmlspecialchars($p["id_bdl"]) ?>">
-                        <div>
-                            <button type="submit">Valider le bon de livraison</button>
-                        </div>
-                    </form>
-                <?php endif; ?>
-            </div>
+                    <?php if ($p['signature_interlocuteur']): ?>
+                        <p>BDL Validé</p>
+                    <?php else: ?>
+                        <form id="form-validate-bdl" action="?controller=interlocuteur&action=validerbdl" method="post"
+                            onsubmit="return confirmSubmit()">
+                            <input type="hidden" name="id_bdl" value="<?= htmlspecialchars($p["id_bdl"]) ?>">
+                            <div>
+                                <button type="submit" class="button-primary">Valider le BDL</button><br>
+                            </div>
+                        </form>
+                    <?php endif; ?>
+                </div>
 
             </div>
         <?php endforeach; ?>
@@ -135,4 +143,4 @@ require 'Views/view_header.php';
     <?php endif; ?>
 </script>
 
-<?php require 'Views/view_end.php';?>
+<?php require 'Views/view_end.php'; ?>

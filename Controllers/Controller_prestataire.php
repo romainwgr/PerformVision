@@ -176,7 +176,7 @@ class Controller_prestataire extends Controller
                 // Détails du bon de livraison
                 $pdf->SetFont('FreeSerif', 'B', 12);
                 $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Bon de livraison N°: ') . htmlspecialchars($bdl['id_bdl']), 0, 0);
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Composante'), 0, 1);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Destinataire'), 0, 1);
                 $pdf->SetFont('FreeSerif', '', 12);
                 $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Date : ') . date('d/m/Y'), 0, 0);
                 $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['nom_client'])), 0, 1);
@@ -202,8 +202,10 @@ class Controller_prestataire extends Controller
                 $pdf->SetFont('FreeSerif', '', 12);
                 $pdf->Cell(90, 10, htmlspecialchars($bdl['heures']), 1, 0, 'C');
                 $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['commentaire'])), 1, 1, 'C');
+                $pdf->Ln(10);
+
                 // Ajouter un espacement avant les signatures
-                $pdf->Ln(30);
+                $pdf->Ln(20);
                 // Vérifiez si le prestataire a signé
                 $signature_prestataire = $bdl['signature_prestataire'] ? htmlspecialchars($bdl['nom_client']) : '__________________';
                 // $signature_gestionnaire = $bdl['signature_gestionnaire'] ? htmlspecialchars($bdl['nom_client']) : '__________________';
@@ -212,6 +214,7 @@ class Controller_prestataire extends Controller
                 $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du client:  ') . $signature_prestataire, 0, 0);
                 $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du fournisseur: __________________'), 0, 1);
                 $pdf->Ln(20);
+
 
 
 
@@ -245,6 +248,7 @@ class Controller_prestataire extends Controller
             echo "ID du bon de livraison ou prestataire manquant.";
         }
     }
+
 
 
 
