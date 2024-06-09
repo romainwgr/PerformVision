@@ -1139,10 +1139,68 @@ class Model
         $req->execute();
         return $req->fetch(PDO::FETCH_ASSOC);
     }
-    // public function setSignTruePrestataireId($id_bdl)
-    // {
-    //     update BDL set signature_prestataire = false 
-    // }
+    public function getInterlocuteurByIdBDL($id_bdl){
+        $req = $this->bd->prepare("SELECT personne.prenom, personne.nom, personne.telephone ,personne.mail from personne join BDL on bdl.id_interlocuteur = personne.id_personne where id_bdl= :id");
+        $req->bindValue(':id',$id_bdl);
+        $req->execute();
+        return $req->fetch(PDO::FETCH_ASSOC); 
+    }
+
+    public function getPrestataireByIdBDL($id_bdl){
+        $req = $this->bd->prepare("SELECT personne.prenom, personne.nom, personne.telephone ,personne.mail from personne join BDL on bdl.id_prestataire = personne.id_personne where id_bdl= :id");
+        $req->bindValue(':id',$id_bdl);
+        $req->execute();
+        return $req->fetch(PDO::FETCH_ASSOC);
+    }
+    public function getGestionnaireById($id_bdl){
+        $req = $this->bd->prepare("SELECT personne.prenom, personne.nom, personne.telephone ,personne.mail from personne join BDL on bdl.id_gestionnaire = personne.id_personne where id_bdl= :id");
+        $req->bindValue(':id',$id_bdl);
+        $req->execute();
+        return $req->fetch(PDO::FETCH_ASSOC);
+    }
+    
+    public function getBdlInterlocuteurBybdlId($id_bdl)
+    {
+        $req = $this->bd->prepare(" SELECT * FROM BDL
+        JOIN interlocuteur ON BDL.id_interlocuteur = Interlocuteur.id_personne
+        JOIN Composante USING (id_composante)
+        join Client Using(id_client)
+        Join Personne On Interlocuteur.id_personne = Personne.id_personne
+        WHERE BDL.id_bdl = :idb");
+        $req->bindValue(':idb', $id_bdl, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function setSignTruePrestataireId($id_bdl)
+    {
+        $req = $this->bd->prepare("UPDATE BDL SET signature_prestataire = true WHERE id_bdl = :id");
+
+        $req->bindValue(':id', $id_bdl, PDO::PARAM_INT);
+        $req->execute();
+
+        if ($req->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setSignTrueInterlocuteurId($id_bdl)
+    {
+        $req = $this->bd->prepare("UPDATE BDL SET signature_interlocuteur = true WHERE id_bdl = :id");
+    
+        $req->bindValue(':id', $id_bdl, PDO::PARAM_INT);
+        $req->execute();
+        
+        if ($req->rowCount() > 0) {
+            return true; 
+        } else {
+            return false; 
+        }
+    }
+    
+
 
     /**
      * Méthode récupérant les heures réalisées à partir de l'identifiant du bon de livraison
@@ -2029,33 +2087,9 @@ class Model
     //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
     // }
 
-    public function setSignTruePrestataireId($id_bdl)
-    {
-        $req = $this->bd->prepare("UPDATE BDL SET signature_prestataire = true WHERE id_bdl = :id");
+   
 
-        $req->bindValue(':id', $id_bdl, PDO::PARAM_INT);
-        $req->execute();
-
-        if ($req->rowCount() > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function setSignTrueInterlocuteurId($id_bdl)
-    {
-        $req = $this->bd->prepare("UPDATE BDL SET signature_interlocuteur = true WHERE id_bdl = :id");
-
-        $req->bindValue(':id', $id_bdl, PDO::PARAM_INT);
-        $req->execute();
-
-        if ($req->rowCount() > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+ 
 
     public function getAllBdlInterlocuteur($id_pr)
     {
@@ -2117,18 +2151,7 @@ class Model
     }
 
 
-    public function getBdlInterlocuteurBybdlId($id_bdl)
-    {
-        $req = $this->bd->prepare(" SELECT * FROM BDL
-        JOIN interlocuteur ON BDL.id_interlocuteur = Interlocuteur.id_personne
-        JOIN Composante USING (id_composante)
-        join Client Using(id_client)
-        Join Personne On Interlocuteur.id_personne = Personne.id_personne
-        WHERE BDL.id_bdl = :idb");
-        $req->bindValue(':idb', $id_bdl, PDO::PARAM_INT);
-        $req->execute();
-        return $req->fetch(PDO::FETCH_ASSOC);
-    }
+   
 
     public function getInterlocuteurNameById($id_interlocuteur)
     {
