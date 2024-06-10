@@ -1185,6 +1185,20 @@ class Model
             return false;
         }
     }
+    public function makeCommentBDL($id_bdl,$com)
+    {
+        $req = $this->bd->prepare("UPDATE BDL SET commentaire= :com WHERE id_bdl = :id");
+
+        $req->bindValue(':id', $id_bdl, PDO::PARAM_INT);
+        $req->bindValue(':com', $com);
+        $req->execute();
+
+        if ($req->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public function setSignTrueInterlocuteurId($id_bdl)
     {

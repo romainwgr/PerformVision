@@ -235,8 +235,8 @@ class Controller_interlocuteur extends Controller
                     $pdf->Cell(40, 10, $hour['hours_worked'], 1, 1, 'C');
                 }
                 $pdf->Ln(10);
-                $pdf->Cell(90, 10, htmlspecialchars($bdl['heures']), 1, 0, 'C');
-                $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['commentaire'])), 1, 1, 'C');
+                $pdf->Cell(0, 10, 'Total des heures : ' . htmlspecialchars($bdl['heures']), 0, 1, 'L');
+                $pdf->Cell(0, 10, 'Commentaire : ' . iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['commentaire'])), 0, 1, 'L');
 
     
                 // Ajouter un espacement avant les signatures
@@ -585,6 +585,31 @@ class Controller_interlocuteur extends Controller
             $this->render('listeBDL_interlocuteur', ['error' => 'ID de bon de livraison non défini.'], "interlocuteur");
         }
     }
+    public function action_ajouter_commentaire()
+{
+    session_start();
+    $bd = Model::getModel();
+
+    if (isset($_POST['id_bdl']) && isset($_POST['commentaire'])) {
+        $id_bdl = $_POST['id_bdl'];
+        $commentaire = $_POST['commentaire'];
+
+        // Vérifier que l'ID est défini et est un entier valide
+        if (!empty($id_bdl) && !empty($commentaire)) {
+            $result = $bd->makeCommentBDL($id_bdl, $commentaire);
+            if ($result) {
+                $this->action_liste_bdl();
+            } else {
+                $this->render('listeBDL_interlocuteur', ['error' => 'Une erreur est survenue lors de l\'ajout du commentaire.'], "interlocuteur");
+            }
+        } else {
+            $this->render('listeBDL_interlocuteur', ['error' => 'ID de bon de livraison ou commentaire non valide.'], "interlocuteur");
+        }
+    } else {
+        $this->render('listeBDL_interlocuteur', ['error' => 'ID de bon de livraison ou commentaire non défini.'], "interlocuteur");
+    }
+}
+
 
 
 

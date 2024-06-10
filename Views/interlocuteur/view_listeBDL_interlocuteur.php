@@ -123,6 +123,9 @@ require 'Views/view_header.php';
                         </form>
                     <?php endif; ?>
                 </div>
+                <div class="button-container">
+                    <button type="button" class="button-primary" onclick="openCommentPopup(<?= htmlspecialchars($p['id_bdl']) ?>)">Ajouter un commentaire</button>
+                </div>
 
             </div>
         <?php endforeach; ?>
@@ -133,14 +136,42 @@ require 'Views/view_header.php';
         || ((strstr($_GET['controller'], 'prestataire') && isset($person[0]['id_bdl'])))
     ): ?>
     <?php endif; ?>
-    </div>
 </section>
 
+<!-- Fenêtre pop-up pour ajouter un commentaire -->
+<div id="commentPopup" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background-color:white; padding:20px; box-shadow:0px 0px 10px rgba(0,0,0,0.5); z-index:1000;">
+    <form id="commentForm" action="?controller=interlocuteur&action=ajouter_commentaire" method="post">
+        <input type="hidden" id="popup-id_bdl" name="id_bdl" value="">
+        <label for="commentaire">Commentaire:</label><br>
+        <textarea id="commentaire" name="commentaire" rows="4" cols="50"></textarea><br><br>
+        <button type="button" onclick="submitCommentForm()">Ajouter</button>
+        <button type="button" onclick="closeCommentPopup()">Fermer</button>
+    </form>
+</div>
+
 <script>
-    <?php if (count($bdl) == 0): ?>
-        document.getElementById('errorMessage').innerHTML = 'Aucun BDL trouvé pour cet ID.';
-        document.getElementById('errorMessage').style.display = 'block';
-    <?php endif; ?>
+function openCommentPopup(id_bdl) {
+    console.log("openCommentPopup called with id_bdl:", id_bdl);
+    var popup = document.getElementById('commentPopup');
+    var bdlIdField = document.getElementById('popup-id_bdl');
+    bdlIdField.value = id_bdl;
+    popup.style.display = 'block';
+}
+
+function closeCommentPopup() {
+    var popup = document.getElementById('commentPopup');
+    popup.style.display = 'none';
+}
+
+function submitCommentForm() {
+    var form = document.getElementById('commentForm');
+    form.submit();
+}
+
+<?php if (isset($bdl) && count($bdl) == 0): ?>
+    document.getElementById('errorMessage').innerHTML = 'Aucun BDL trouvé pour cet ID.';
+    document.getElementById('errorMessage').style.display = 'block';
+<?php endif; ?>
 </script>
 
 <?php require 'Views/view_end.php'; ?>

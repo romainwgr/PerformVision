@@ -212,8 +212,8 @@ class Controller_prestataire extends Controller
                 $signature_prestataire = $bdl['signature_prestataire'] ? htmlspecialchars($bdl['nom_client']) : '__________________';
     
                 // Signatures
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du client:  ') . $signature_prestataire, 0, 0);
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du fournisseur: __________________'), 0, 1);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du prestataire:  ') . $signature_prestataire, 0, 0);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', "Signature de l'interlocuteur: __________________"), 0, 1);
                 $pdf->Ln(20);
     
                 // Sauvegarder le PDF dans une variable
