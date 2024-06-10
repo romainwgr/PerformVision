@@ -27,6 +27,8 @@ Commercial: clark.kent@dailyplanet.com et safe999
 
 Interlocuteur : jane.smith@example.com et mdp456
 
+Administrateur : admin.user@example.com et adminPass
+
 ## Ressources
 VisualStudio : https://code.visualstudio.com/docs
 
