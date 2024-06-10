@@ -21,11 +21,11 @@ Pour vous connecter, vous avez plusieurs comptes de différents rôles disponibl
 
 Prestataire : romain.wagner@example.com et mdp123
 
-Commercial : paul.moreau@example.com et password101
+Gestionnaire : bruce.wayne@wayneenterprises.com et superSecure
 
-Gestionnaire : thomas.blanc@example.com et password113
+Commercial: clark.kent@dailyplanet.com et safe999
 
-Interlocuteur de composantes: clark.kent@dailyplanet.com et safe999
+Interlocuteur : jane.smith@example.com et mdp456
 
 ## Ressources
 VisualStudio : https://code.visualstudio.com/docs
