@@ -6,30 +6,25 @@ require 'view_header.php';
 <section class="main">
     <div class="composante-container">
         <h2 class="marge">Informations composante</h2>
-        <a href="#caheaffiche" class="job-card-link">
-            <div class="job_card">
-                <div class="job_details">
-                    <div class="img">
-                        <i class="fas fa-building"></i>
-                    </div>
-                    <div class="text">
-                        <h2><?= $infos['nom_composante'] ?></h2>
-                        <span><?= $infos['nom_client'] ?></span>
-                    </div>
+        <div class="job_card">
+            <div class="job_details">
+                <div class="img">
+                    <i class="fas fa-building"></i>
                 </div>
-                <div class="job_action">
+                <div class="text">
+                    <h2><?= $infos['nom_composante'] ?></h2>
+                    <span><?= $infos['nom_client'] ?></span>
                 </div>
             </div>
-        </a>
+            <div class="job_action">
+            </div>
+        </div>
     </div>
 
     <div class="infos-container">
         <div class="infos__colonne">
             <h2>Interlocuteurs</h2>
-            <a href="?controller=<?= $_GET['controller'] ?>&action=ajout_interlocuteur_form&id=<?= $_GET['id'] ?>"
-                class="ajout">
-                <i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter
-            </a>
+
             <table>
                 <tr>
                     <?php if (!empty($interlocuteurs) && is_array($interlocuteurs)): ?>
@@ -154,52 +149,8 @@ require 'view_header.php';
                     <?php endif; ?>
                 </tr>
             </table>
-            <!-- <?php if (!str_contains($_GET['controller'], 'commercial')): ?>
-                <a href="<?= $cardLink ?>&action=ajout_bdl&id=<?= $_GET['id'] ?>" class="ajout">
-                    <i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter
-                </a>
-            <?php else: ?>
-                <a class="ajout"> &nbsp;</a>
-            <?php endif; ?> -->
         </div>
     </div>
-    </div>
-
-    <div class="add-container" id="caheaffiche" style="display: none;">
-        <div class="form-abs">
-            <span class="close-icon" onclick="closeForm()"> <!-- Ajout de l'icône de fermeture -->
-                <i class="fas fa-times"></i>
-            </span>
-            <h1 class="text-center">Modifier la composante</h1>
-            <form
-                action="?controller=<?= $_GET['controller'] ?>&action=<?= isset($_GET['id']) ? 'maj_infos_composante&id=' . $_GET['id'] : 'ajout_composante'; ?>"
-                method="post" class="form">
-                <!-- Steps -->
-                <div class="form-step form-step-active">
-                    <div class="input-group">
-                        <label for="composante">Nom de la composante</label>
-                        <input type="text" placeholder="<?= $infos['nom_composante'] ?>" name='composante'
-                            id='composante' class="input-case">
-                    </div>
-                    <h4>Adresse</h4>
-                    <div class="form-address">
-                        <input type="text" placeholder="<?= $infos['adresse'] ?>" name="numero-voie"
-                            class="input-case form-num-voie">
-                        <input type="text" placeholder="<?= $infos['type_de_voie'] ?>" name="type-voie"
-                            class="input-case form-type-voie">
-                    </div>
-                    <div class="form-address">
-                        <input type="number" placeholder="<?= $infos['code_postal'] ?>" name="cp"
-                            class="input-case form-cp">
-                        <input type="text" placeholder="<?= $infos['ville'] ?>" name="ville"
-                            class="input-case form-ville">
-                    </div>
-                    <div class="btns-group">
-                        <input type="submit" value="Enregistrer" class="btn">
-                    </div>
-                </div>
-            </form>
-        </div>
     </div>
 </section>
 

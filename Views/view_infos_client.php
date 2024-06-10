@@ -9,22 +9,20 @@ require 'view_header.php';
     <div class="main-body">
         <div class="composante-container">
             <h2 class="marge">Informations sur la Société</h2>
-            <a href="#caheaffiche" class="job-card-link">
-                <div class="job_card">
-                    <div class="job_details">
-                        <div class="img">
-                            <i class="fas fa-building"></i>
-                        </div>
-                        <div class="text">
-                            <h2><?= $infos['nom_client'] ?></h2>
-                            <span><?= $infos['telephone_client'] ?></span>
-                        </div>
+            <div class="job_card">
+                <div class="job_details">
+                    <div class="img">
+                        <i class="fas fa-building"></i>
                     </div>
-                    <div class="job_action">
-                        <!-- Actions supplémentaires peuvent être ajoutées ici si nécessaire -->
+                    <div class="text">
+                        <h2><?= $infos['nom_client'] ?></h2>
+                        <span><?= $infos['telephone_client'] ?></span>
                     </div>
                 </div>
-            </a>
+                <div class="job_action">
+                    <!-- Actions supplémentaires peuvent être ajoutées ici si nécessaire -->
+                </div>
+            </div>
         </div>
 
         <div class="infos-container">
@@ -46,8 +44,6 @@ require 'view_header.php';
                 <?php else: ?>
                     <p>Aucun interlocuteur trouvé.</p>
                 <?php endif; ?>
-                <a href="?controller=<?= $_GET['controller'] ?>&action=ajout_interlocuteur_form&id-client=<?= $_GET['id'] ?>"
-                    class="ajout"><i class="fa fa-solid fa-user-plus"></i> &nbsp; Ajouter</a>
             </div>
             <div class="infos__colonne">
                 <h2>Composantes</h2>
@@ -74,32 +70,6 @@ require 'view_header.php';
                 <?php else: ?>
                     <a href="" class="ajout"></a>
                 <?php endif; ?>
-            </div>
-            <div class="add-container" id="caheaffiche" style="display: none;">
-                <div class="form-abs">
-                    <span class="close-icon" onclick="closeForm()"> <!-- Ajout de l'icône de fermeture -->
-                        <i class="fas fa-times"></i>
-                    </span>
-                    <form action="?controller=<?= $_GET['controller'] ?>&action=maj_infos_client&id=<?= $_GET['id'] ?>"
-                        method="post" class="form">
-                        <!-- Steps -->
-                        <div class="form-step form-step-active">
-                            <h2>Modifier les informations</h2>
-                            <div class="input-group">
-                                <input type="text" placeholder="<?= $infos['nom_client'] ?>" id="sté" name="prenom"
-                                    class="input-case">
-                            </div>
-                            <div class="input-group">
-                                <input type="text"
-                                    placeholder="<?= isset($infos['telephone_client']) ? $infos['telephone_client'] : 'Numéro' ?>"
-                                    id="sté" name="nom" class="input-case">
-                            </div>
-                        </div>
-                        <div class="btns-group">
-                            <input type="submit" value="Enregistrer" class="btn">
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
     </div>

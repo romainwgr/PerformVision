@@ -19,17 +19,7 @@ require 'Views/view_header.php';
                 <div class="search-data">
                 </div>
             </form>
-            <?php if (!empty($buttonLink)): ?>
-                <button type="button" class="button-primary font"
-                    onclick="window.location='<?= htmlspecialchars($buttonLink) ?>'">Ajouter</button>
-            <?php endif; ?>
         </div>
-    </div>
-    <div class="main-body appa">
-        <?php if (!empty($buttonLink)): ?>
-            <button type="button" class="button-primary font"
-                onclick="window.location='<?= htmlspecialchars($buttonLink) ?>'">Ajouter</button>
-        <?php endif; ?>
     </div>
 
     <div class="row">

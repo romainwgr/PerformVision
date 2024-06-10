@@ -32,29 +32,6 @@ function sessionstart()
     }
 }
 
-// function maj_infos_personne()
-// {
-//     sessionstart();
-//     $id = $_SESSION['id'];
-//     if(isset($_GET['id'])){
-//         $id = $_GET['id'];
-//     }
-//     $bd = Model::getModel();
-//     if(isset($_POST['nom']) && !preg_match('/^ *$/', $_POST['nom'])){
-//         $bd->setNomPersonne($id, $_POST['nom']);
-//     }
-//     if(isset($_POST['prenom']) && !preg_match('/^ *$/', $_POST['prenom'])){
-//         $bd->setPrenomPersonne($id, $_POST['prenom']);
-//     }
-//     if(isset($_POST['email']) && !preg_match('/^ *$/', $_POST['email'])){
-//         $bd->setEmailPersonne($id, $_POST['email']);
-//     }
-//     if(isset($_POST['mdp']) && !preg_match('/^ *$/', $_POST['mdp'])){
-//         // FIXME mettre en place le chiffrage
-//         $bd->setMdpPersonne($id, $_POST['mdp']);
-//     }
-// }
-
 function maj_infos_client()
 {
     $bd = Model::getModel();
@@ -68,31 +45,6 @@ function maj_infos_client()
     }
 }
 
-// function maj_infos_composante(){
-//     $bd = Model::getModel();
-//     if(isset($_GET['id'])){
-//         if(isset($_POST['composante']) && !preg_match('/^ *$/', $_POST['composante'])){
-//             $bd->setNomComposante($_GET['id'], $_POST['composante']);
-//         }
-//         if(isset($_POST['client']) && !preg_match('/^ *$/', $_POST['client'])){
-//             $bd->setTelClient($_GET['id'], $_POST['telephone-client']);
-//         }
-//         if(isset($_POST['numero-voie']) && !preg_match('/^ *$/', $_POST['numero-voie'])){
-//             $bd->setNumeroAdresse($_GET['id'], $_POST['numero-voie']);
-//         }
-//         if(isset($_POST['type-voie']) && !preg_match('/^ *$/', $_POST['type-voie'])){
-//             $bd->setLibelleTypevoie($_GET['id'], $_POST['type-voie']);
-//         }
-//         if(isset($_POST['nom-voie']) && !preg_match('/^ *$/', $_POST['nom-voie'])){
-//             $bd->setNomVoieAdresse($_GET['id'], $_POST['nom-voie']);
-//         }
-//         if(isset($_POST['cp']) && !preg_match('/^ *$/', $_POST['cp'])){
-//             $bd->setCpLocalite($_GET['id'], $_POST['cp']);
-//         }
-//         if(isset($_POST['ville']) && !preg_match('/^ *$/', $_POST['ville'])){
-//             $bd->setVilleLocalite($_GET['id'], $_POST['ville']);
-//         }
-//     }
 /**
  * Valide le numéro de téléphone.
  *
@@ -185,6 +137,32 @@ function isValidName($name)
     // Define the regex pattern
     $pattern = '/^[\p{L}\p{M}\s\-.,&()\'"]+$/u';
     return preg_match($pattern, $name) === 1;
+}
+
+function maj_infos_personne()
+{
+    sessionstart();
+    $id = $_SESSION['id'];
+    if (isset($_GET['id'])) {
+        $id = $_GET['id'];
+    }
+    $bd = Model::getModel();
+    if (isset($_POST['nom']) && !preg_match('/^ $/', $_POST['nom'])) {
+        $bd->setNomPersonne($id, $_POST['nom']);
+        $_SESSION['nom'] = $_POST['nom'];
+    }
+    if (isset($_POST['prenom']) && !preg_match('/^$/', $_POST['prenom'])) {
+        $bd->setPrenomPersonne($id, $_POST['prenom']);
+        $_SESSION['prenom'] = $_POST['prenom'];
+    }
+    if (isset($_POST['email']) && !preg_match('/^ $/', $_POST['email'])) {
+        $bd->setEmailPersonne($id, $_POST['email']);
+        $_SESSION['email'] = $_POST['email'];
+    }
+    if (isset($_POST['mdp']) && !preg_match('/^$/', $_POST['mdp'])) {
+        $bd->setMdpPersonne($id, $_POST['mdp']);
+        $_SESSION['mdp'] = $_POST['mdp'];
+    }
 }
 
 

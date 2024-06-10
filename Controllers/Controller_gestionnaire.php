@@ -15,39 +15,6 @@ class Controller_gestionnaire extends Controller
         $this->action_clients();
     }
 
-    // /**
-    //  * Renvoie le tableau de bord du gestionnaire avec les variables adéquates
-    //  * @return void
-    //  */
-    // public function action_dashboard()
-    // {
-    //     sessionstart(); // Fonction dans Utils pour lancer la session si elle n'est pas lancée 
-    //     if (isset($_SESSION['role'])) {
-    //         unset($_SESSION['role']);
-    //     }
-    //     $_SESSION['role'] = 'gestionnaire';
-    //     if (isset($_SESSION['id'])) {
-    //         $bd = Model::getModel();
-    //         $data = [
-    //             'menu' => $this->action_get_navbar(),
-    //             'bdlLink' => '?controller=gestionnaire&action=mission_bdl',
-    //             'buttonLink' => '?controller=gestionnaire&action=ajout_mission_form',
-    //             'header' => [
-    //                 'Société',
-    //                 'Composante',
-    //                 'Nom Mission',
-    //                 'Préstataire assigné',
-    //                 'Bon de livraison'
-    //             ],
-    //             'dashboard' => $bd->getDashboardGestionnaire()
-    //         ];
-    //         return $this->render('gestionnaire_missions', $data);
-    //     } else {
-    //         // TODO Réaliser un render de l'erreur
-    //         echo 'Une erreur est survenue lors du chargement du tableau de bord';
-    //     }
-    // }
-
     /**
      * Action qui retourne les éléments du menu pour le gestionnaire
      * @return array[]
@@ -68,7 +35,6 @@ class Controller_gestionnaire extends Controller
      */
     public function action_infos()
     {
-        sessionstart();
         $this->render('infos', ['menu' => $this->action_get_navbar()]);
     }
 
@@ -76,15 +42,16 @@ class Controller_gestionnaire extends Controller
     /*                                Fonctions de mise à jour                              */
     /*--------------------------------------------------------------------------------------*/
 
-    // /**
-    //  * Met à jour les informations de l'utilisateur connecté
-    //  * @return void
-    //  */
-    // public function action_maj_infos()
-    // {
-    //     maj_infos_personne(); // fonction dans Utils
-    //     $this->action_infos();
-    // }
+    /**
+     * Met à jour les informations de l'utilisateur connecté
+     * @return void
+     */
+    public function action_maj_infos()
+    {
+        maj_infos_personne(); // fonction dans Utils
+        $this->action_infos();
+    }
+
 
     /**
      * Met à jour les informations du client
@@ -96,33 +63,12 @@ class Controller_gestionnaire extends Controller
         $this->action_infos_client();
     }
 
-    // /**
-    //  * Met à jour les informations de la personne
-    //  * @return void
-    //  */
-    // public function action_maj_infos_personne()
-    // {
-    //     maj_infos_personne(); // fonction dans Utils
-    //     $this->action_infos_personne();
-    // }
-
-    // /**
-    //  * Met à jour les informations de la composante
-    //  * @return void
-    //  */
-    // public function action_maj_infos_composante()
-    // {
-    //     maj_infos_composante(); // fonction dans Utils
-    //     $this->action_infos_composante();
-    // }
-
     /**
      * Vérifie qu'il existe un id qui fait référence à une personne de la base de données et renvoie la vue qui affiche les données
      * @return void
      */
     public function action_infos_personne()
     {
-        sessionstart();
         if (isset($_GET['id'])) {
             $bd = Model::getModel();
             $data = [
@@ -140,7 +86,7 @@ class Controller_gestionnaire extends Controller
      */
     public function action_composantes()
     {
-        sessionstart();
+
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
 
@@ -199,7 +145,7 @@ class Controller_gestionnaire extends Controller
      */
     public function action_clients()
     {
-        sessionstart();
+
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             if (isset($_POST['message'])) {
@@ -226,7 +172,7 @@ class Controller_gestionnaire extends Controller
 
     public function action_prestataires()
     {
-        sessionstart();
+
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             if (isset($_GET['message'])) {
@@ -253,7 +199,7 @@ class Controller_gestionnaire extends Controller
 
     public function action_commerciaux()
     {
-        sessionstart();
+
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
 
@@ -274,43 +220,6 @@ class Controller_gestionnaire extends Controller
     }
 
 
-    // /**
-    //  * Vérifie d'avoir les informations nécessaire pour renvoyer la vue liste avec les bonnes variables pour afficher la liste des bons de livraisons d'un prestataire en fonction de la mission
-    //  * @return void
-    //  */
-    // // TODO je ne trouve pas le render de cette action (A supprimer?)
-    // public function action_mission_bdl()
-    // {
-    //     $bd = Model::getModel();
-    //     sessionstart();
-    //     if (isset($_GET['id']) && isset($_GET['id-prestataire'])) {
-    //         $data = [
-    //             'title' => 'Bons de livraison',
-    //             'cardLink' => '?controller=gestionnaire&action=consulter_bdl',
-    //             'menu' => $this->action_get_navbar(),
-    //             'person' => $bd->getBdlsOfPrestataireByIdMission(e($_GET['id']), e($_GET['id-prestataire']))
-    //         ];
-    //         $this->render('liste', $data);
-    //     }
-    //     $this->action_dashboard();
-    // }
-
-    // /**
-    //  * Vérifie d'avoir les informations nécessaire à l'assignation d'un prestataire dans une mission
-    //  * @return void
-    //  */
-    // public function action_assigner_prestataire()
-    // {
-    //     sessionstart();
-    //     $bd = Model::getModel();
-    //     if (isset($_POST['email'])) {
-    //         // FIXME Il manque id_composante
-    //         $bd->assignerPrestataire(e($_POST['email']), e($_POST['mission']));
-    //     }
-    //     $this->action_dashboard();
-    // }
-
-
     /*--------------------------------------------------------------------------------------*/
     /*                                Formulaires d'ajout                                  */
     /*--------------------------------------------------------------------------------------*/
@@ -321,7 +230,7 @@ class Controller_gestionnaire extends Controller
      */
     public function action_ajout_interlocuteur_form()
     {
-        sessionstart();
+
         $data = [
             'menu' => $this->action_get_navbar()
         ];
@@ -354,7 +263,7 @@ class Controller_gestionnaire extends Controller
      */
     public function action_ajout_prestataire_form()
     {
-        sessionstart();
+
         $data = [
             'menu' => $this->action_get_navbar()
         ];
@@ -443,7 +352,7 @@ class Controller_gestionnaire extends Controller
      */
     public function action_ajout_mission_form()
     {
-        sessionstart();
+
         $data = [
             'menu' => $this->action_get_navbar()
         ];
@@ -456,7 +365,7 @@ class Controller_gestionnaire extends Controller
      */
     public function action_ajout_client()
     {
-        sessionstart();
+
         $bd = Model::getModel();
         $data = [
             'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=commercial',
@@ -473,7 +382,7 @@ class Controller_gestionnaire extends Controller
      */
     public function action_ajout_commercial_form()
     {
-        sessionstart();
+
         $data = [
             'menu' => $this->action_get_navbar()
         ];
@@ -516,14 +425,6 @@ class Controller_gestionnaire extends Controller
 
         echo json_encode($response);
     }
-
-
-    /**
-     * Vérifie d'avoir les informations nécessaire et que le commercial n'existe pas en tant que personne et commercial avant de l'ajouter
-     * @return void
-     */
-
-
     /**
      * Action permettant de savoir si un client existe déjà ou non, réalisée avec AJAX.
      *
@@ -538,7 +439,7 @@ class Controller_gestionnaire extends Controller
      */
     public function action_is_client()
     {
-        sessionstart();
+
         $bd = Model::getModel();
 
 
@@ -556,14 +457,6 @@ class Controller_gestionnaire extends Controller
         }
         echo json_encode($response);
     }
-
-
-
-    // public function action_is_composante()
-    // {
-    //     //TODO en ajax
-    // }
-
 
     /**
      * Action permettant de savoir si une personne existe et la créée si ce n'est pas le cas
@@ -613,7 +506,7 @@ class Controller_gestionnaire extends Controller
      */
     public function action_infos_client()
     {
-        sessionstart();
+
         if (isset($_GET['id'])) {
             $bd = Model::getModel();
             $data = [
@@ -773,26 +666,26 @@ class Controller_gestionnaire extends Controller
                 $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', 'Jour'), 1, 0, 'C', true);
                 $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', 'Nombre d\'heures'), 1, 1, 'C', true);
 
+
                 foreach ($hours as $hour) {
                     $pdf->SetFont('FreeSerif', '', 12);
                     $pdf->Cell(90, 10, htmlspecialchars($hour['jour']), 1, 0, 'C');
                     $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($hour['hours_worked'])), 1, 1, 'C');
                 }
+                $pdf->Ln(10);
+                $pdf->Cell(0, 10, 'Total des heures : ' . htmlspecialchars($bdl['heures']), 0, 1, 'L');
+                $pdf->Cell(0, 10, 'Commentaire : ' . iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['commentaire'])), 0, 1, 'L');
                 $pdf->Ln(20);
-
-
-
-
 
                 // Ajouter un espacement avant les signatures
                 // $pdf->Ln(20);
                 // Vérifiez si le prestataire a signé
-                $signature_prestataire = $bdl['signature_prestataire'] ? htmlspecialchars($bdl['nom_client']) : '__________________';
+                $signature_prestataire = $bdl['signature_prestataire'] ? htmlspecialchars($prestataire['nom']) : '__________________';
                 $signature_interlocuteur = $bdl['signature_interlocuteur'] ? htmlspecialchars($nom) : '__________________';
 
                 // Signatures
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du client:  ') . $signature_prestataire, 0, 0);
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du fournisseur:') . $signature_interlocuteur, 0, 1);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du prestataire:  ') . $signature_prestataire, 0, 0);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', "Signature de l'interlicuteur:") . $signature_interlocuteur, 0, 1);
                 $pdf->Ln(20);
 
                 // Sauvegarder le PDF dans une variable
@@ -828,77 +721,6 @@ class Controller_gestionnaire extends Controller
     }
 
 
-
-
-    /**
-     * Renvoie la liste de toutes les clients avec leurs différentes composantes et les prestataires assigné avec la possibilité d'ajouter des prestataires
-     * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
-     * @return void
-     */
-
-
-    /**
-     * Renvoie la liste de tous les clients
-     * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
-     * @return void
-     */
-
-
-    /**
-     * Renvoie la liste de tous les prestataires
-     * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
-     * @return void
-     */
-
-
-    /**
-     * Renvoie la liste de tous les commerciaux
-     * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
-     * @return void
-     */
-
-
-    // /**
-    //  * Vérifie d'avoir les informations nécessaire pour renvoyer la vue liste avec les bonnes variables pour afficher la liste des bons de livraisons d'un prestataire en fonction de la mission
-    //  * @return void
-    //  */
-    // // TODO je ne trouve pas le render de cette action (A supprimer?)
-    // public function action_mission_bdl()
-    // {
-    //     $bd = Model::getModel();
-    //     sessionstart();
-    //     if (isset($_GET['id']) && isset($_GET['id-prestataire'])) {
-    //         $data = [
-    //             'title' => 'Bons de livraison',
-    //             'cardLink' => '?controller=gestionnaire&action=consulter_bdl',
-    //             'menu' => $this->action_get_navbar(),
-    //             'person' => $bd->getBdlsOfPrestataireByIdMission(e($_GET['id']), e($_GET['id-prestataire']))
-    //         ];
-    //         $this->render('liste', $data);
-    //     }
-    //     $this->action_dashboard();
-    // }
-
-    // /**
-    //  * Vérifie d'avoir les informations nécessaire à l'assignation d'un prestataire dans une mission
-    //  * @return void
-    //  */
-    // public function action_assigner_prestataire()
-    // {
-    //     sessionstart();
-    //     $bd = Model::getModel();
-    //     if (isset($_POST['email'])) {
-    //         // FIXME Il manque id_composante
-    //         $bd->assignerPrestataire(e($_POST['email']), e($_POST['mission']));
-    //     }
-    //     $this->action_dashboard();
-    // }
-
-
-    /*--------------------------------------------------------------------------------------*/
-    /*                                Formulaires d'ajout                                  */
-    /*--------------------------------------------------------------------------------------*/
-
     /**
      * Renvoie la vue du formulaire pour l'ajout d'un interlocuteur
      * @return void
@@ -919,67 +741,11 @@ class Controller_gestionnaire extends Controller
         }
     }
 
-
-
-
-
-
-
-    /**
-     * Renvoie la vue du formulaire pour l'ajout d'une mission
-     * @return void
-     */
-
-
-    /**
-     * Renvoie la vue du formulaire pour l'ajout d'un commercial
-     * @return void
-     */
-
-    // /**
-    //  * Vérifie qu'il y'a toutes les informations nécessaire pour l'ajout d'un(e) client/société
-    //  * @return void
-    //  */
-    // public function action_ajout_client()
-    // {
-    //     $bd = Model::getModel();
-    //     if (
-    //         isset($_POST['client']) &&
-    //         isset($_POST['tel']) &&
-
-    //         isset($_POST['mission']) &&
-    //         isset($_POST['type-bdl']) &&
-    //         isset($_POST['date-mission']) &&
-    //         isset($_POST['composante']) &&
-
-    //         isset($_POST['numero-voie']) &&
-    //         isset($_POST['type-voie']) &&
-    //         isset($_POST['nom-voie']) &&
-    //         isset($_POST['cp']) &&
-    //         isset($_POST['ville']) &&
-
-    //         isset($_POST['prenom-interlocuteur']) &&
-    //         isset($_POST['nom-interlocuteur']) &&
-    //         isset($_POST['email-interlocuteur']) &&
-
-    //         isset($_POST['prenom-commercial']) &&
-    //         isset($_POST['nom-commercial']) &&
-    //         isset($_POST['email-commercial']) &&
-    //         !$bd->checkSocieteExiste(e($_POST['client']))
-    //     ) {
-
-    //         $bd->addClient(e($_POST['client']), e($_POST['tel']));
-    //         $this->action_ajout_composante();
-    //     }
-    //     $this->action_ajout_client();
-    // }
-
     /**
      * Supprime les variables de session spécifiques au formulaire.
      */
     public function clearFormSession()
     {
-        session_start();
 
         // Supprimer les variables de session spécifiques au formulaire
         unset($_SESSION['company']);
@@ -994,7 +760,6 @@ class Controller_gestionnaire extends Controller
 
     public function action_save_data()
     {
-        sessionstart();
 
         $bd = Model::getModel();
         ob_start(); // Démarrer la capture de sortie
@@ -1134,7 +899,6 @@ class Controller_gestionnaire extends Controller
 
     public function action_save_data2()
     {
-        sessionstart();
 
         $bd = Model::getModel();
         ob_start(); // Démarrer la capture de sortie
@@ -1274,7 +1038,6 @@ class Controller_gestionnaire extends Controller
 
     public function action_is_interlocuteur()
     {
-        sessionstart();
         $bd = Model::getModel();
         if (isset($_POST['mail'])) {
             if (!$bd->checkPersonneExiste($_POST['mail'])) {
@@ -1291,7 +1054,6 @@ class Controller_gestionnaire extends Controller
 
     public function action_view_after_save()
     {
-        sessionstart();
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
 
@@ -1378,7 +1140,6 @@ class Controller_gestionnaire extends Controller
     public function action_rechercher()
     {
         $m = Model::getModel();
-        session_start();
         if (isset($_GET['role'], $_POST['recherche'])) {
             $roles = ['client', 'prestataire', 'commercial'];
             if (in_array($_GET['role'], $roles)) {

@@ -1250,49 +1250,6 @@ class Model
         return $req->execute();
     }
 
-
-
-
-
-    // public function setEstValideBdl($id_bdl, $id_interlocuteur, $valide)
-    // {
-    //     $req = $this->bd->prepare("UPDATE BON_DE_LIVRAISON SET est_valide = :valide, id_interlocuteur = :id_interlocuteur WHERE id_bdl = :id_bdl");
-    //     $req->bindValue(':id_interlocuteur', $id_interlocuteur);
-    //     $req->bindValue(':id_bdl', $id_bdl);
-    //     $req->bindValue(':valide', $valide);
-    //     $req->execute();
-    //     return (bool)$req->rowCount();
-
-    // }
-
-    /**
-     * Méthode permettant de changer le nom d'une personne
-     * @param  int $id
-     * @param string $nom
-     * @return bool
-     */
-    public function setNomPersonne($id, $nom)
-    {
-        $req = $this->bd->prepare("UPDATE Personne SET nom = :nom WHERE id_personne = :id");
-        $req->bindValue(':id', $id, PDO::PARAM_INT);
-        $req->bindValue(':nom', $nom, PDO::PARAM_STR);
-        $req->execute();
-        return (bool) $req->rowCount();
-    }
-    /**
-     * Méthode permettant de changer le prénom d'une personne
-     * @param  int $id
-     * @param string $prenom
-     * @return bool
-     */
-    public function setPrenomPersonne($id, $prenom)
-    {
-        $req = $this->bd->prepare("UPDATE Personne SET prenom = :prenom WHERE id_personne = :id");
-        $req->bindValue(':id', $id, PDO::PARAM_INT);
-        $req->bindValue(':prenom', $prenom, PDO::PARAM_STR);
-        $req->execute();
-        return (bool) $req->rowCount();
-    }
     /**
      * Méthode permettant de changer le mail d'une personne
      * @param  int $id
@@ -1319,35 +1276,6 @@ class Model
         $req = $this->bd->prepare("UPDATE Personne SET mot_de_passe = :mot_de_passe WHERE id_personne = :id");
         $req->bindValue(':id', $id, PDO::PARAM_INT);
         $req->bindValue(':mot_de_passe', $mot_de_passe, PDO::PARAM_STR);
-        $req->execute();
-        return (bool) $req->rowCount();
-    }
-    /**
-     * Méthode permettant de changer le nom d'un client
-     * @param  int $id
-     * @param string $nom
-     * @return bool
-     */
-    public function setNomClient($id, $nom)
-    {
-        $req = $this->bd->prepare("UPDATE Client SET nom_client = :nom WHERE id_client = :id");
-        $req->bindValue(':id', $id, PDO::PARAM_INT);
-        $req->bindValue(':nom', $nom, PDO::PARAM_STR);
-        $req->execute();
-        return (bool) $req->rowCount();
-    }
-
-    /**
-     * Méthode permettant de changer le téléphone d'un client
-     * @param  int $id
-     * @param string $tel
-     * @return bool
-     */
-    public function setTelClient($id, $tel)
-    {
-        $req = $this->bd->prepare("UPDATE Client SET telephone_client = :tel WHERE id_client = :id");
-        $req->bindValue(':id', $id, PDO::PARAM_INT);
-        $req->bindValue(':tel', $tel, PDO::PARAM_STR);
         $req->execute();
         return (bool) $req->rowCount();
     }
@@ -2290,61 +2218,6 @@ class Model
             return false; // Gestion des erreurs
         }
     }
-
-
-    // public function addPrestataireToComposante($id_prestataire, $id_composante, $id_interlocuteur, $id_gestionnaire, $mois, $annee)
-    // {
-    //     try {
-    //         // Prepare the SQL statement to insert into BDL
-    //         $req = $this->bd->prepare('
-    //             INSERT INTO BDL (
-    //                 id_composante,
-    //                 id_prestataire,
-    //                 annee,
-    //                 mois,
-    //                 signature_interlocuteur,
-    //                 signature_prestataire,
-    //                 commentaire,
-    //                 heures,
-    //                 id_interlocuteur,
-    //                 id_gestionnaire
-    //             ) VALUES (
-    //                 :id_composante,
-    //                 :id_prestataire,
-    //                 :annee,
-    //                 :mois,
-    //                 :signature_interlocuteur,
-    //                 :signature_prestataire,
-    //                 :commentaire,
-    //                 :heures,
-    //                 :id_interlocuteur,
-    //                 :id_gestionnaire
-    //             )
-    //         ');
-
-    //         // Bind parameters
-    //         $req->bindValue(':id_composante', $id_composante, PDO::PARAM_INT);
-    //         $req->bindValue(':id_prestataire', $id_prestataire, PDO::PARAM_INT);
-    //         $req->bindValue(':annee', $annee, PDO::PARAM_INT);
-    //         $req->bindValue(':mois', $mois, PDO::PARAM_STR);
-    //         $req->bindValue(':signature_interlocuteur', false, PDO::PARAM_BOOL);
-    //         $req->bindValue(':signature_prestataire', false, PDO::PARAM_BOOL);
-    //         $req->bindValue(':commentaire', '', PDO::PARAM_STR);
-    //         $req->bindValue(':heures', 0, PDO::PARAM_STR); // Assuming decimal is treated as string for binding
-    //         $req->bindValue(':id_interlocuteur', $id_interlocuteur, PDO::PARAM_INT);
-    //         $req->bindValue(':id_gestionnaire', $id_gestionnaire, PDO::PARAM_INT);
-
-    //         $req->execute();
-
-    //         // return true; // Return true if the insertion is successful
-    //         return $req;
-    //     } catch (PDOException $e) {
-    //         // Log the error message or handle the exception as needed
-    //         echo 'Erreur lors de l\'ajout du BDL : ' . $e->getMessage();
-    //         return false; // Return false if an error occurs
-    //     }
-    // }
-
     public function addPrestataireToComposante($id_prestataire, $id_composante, $id_interlocuteur, $id_gestionnaire, $mois, $annee)
     {
         try {
@@ -2395,6 +2268,93 @@ class Model
             echo 'Erreur lors de l\'ajout du BDL : ' . $e->getMessage();
             return false; // Retourne false en cas d'erreur
         }
+    }
+
+    /**
+     * Méthode permettant de changer le nom d'une personne
+     * @param  int $id
+     * @param string $nom
+     * @return bool
+     */
+    public function setNomPersonne($id, $nom)
+    {
+        $req = $this->bd->prepare("UPDATE Personne SET nom = :nom WHERE id_personne = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':nom', $nom, PDO::PARAM_STR);
+        $req->execute();
+        return (bool) $req->rowCount();
+    }
+    /**
+     * Méthode permettant de changer le prénom d'une personne
+     * @param  int $id
+     * @param string $prenom
+     * @return bool
+     */
+    public function setPrenomPersonne($id, $prenom)
+    {
+        $req = $this->bd->prepare("UPDATE Personne SET prenom = :prenom WHERE id_personne = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':prenom', $prenom, PDO::PARAM_STR);
+        $req->execute();
+        return (bool) $req->rowCount();
+    }
+    /**
+     * Méthode permettant de changer le mail d'une personne
+     * @param  int $id
+     * @param string $mail
+     * @return bool
+     */
+    public function setEmailPersonne($id, $mail)
+    {
+        $req = $this->bd->prepare("UPDATE Personne SET mail = :mail WHERE id_personne = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':mail', $mail, PDO::PARAM_STR);
+        $req->execute();
+        return (bool) $req->rowCount();
+    }
+
+    /**
+     * Méthode permettant de changer le mot de passe d'une personne
+     * @param  int $id
+     * @param string $mot_de_passe
+     * @return bool
+     */
+    public function setMdpPersonne($id, $mot_de_passe)
+    {
+        $req = $this->bd->prepare("UPDATE Personne SET mot_de_passe = :mot_de_passe WHERE id_personne = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':mot_de_passe', $mot_de_passe, PDO::PARAM_STR);
+        $req->execute();
+        return (bool) $req->rowCount();
+    }
+    /**
+     * Méthode permettant de changer le nom d'un client
+     * @param  int $id
+     * @param string $nom
+     * @return bool
+     */
+    public function setNomClient($id, $nom)
+    {
+        $req = $this->bd->prepare("UPDATE Client SET nom_client = :nom WHERE id_client = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':nom', $nom, PDO::PARAM_STR);
+        $req->execute();
+        return (bool) $req->rowCount();
+    }
+
+    /**
+     * Méthode permettant de changer le téléphone d'un client
+     * @param  int $id
+     * @param string $tel
+     * @return bool
+     */
+    public function setTelClient($id, $tel)
+    {
+        $req = $this->bd->prepare("UPDATE Client SET telephone_client = :tel WHERE id_client = :id");
+        $req->bindValue(':id', $id, PDO::PARAM_INT);
+        $req->bindValue(':tel', $tel, PDO::PARAM_STR);
+        $req->execute();
+        return (bool) $req->rowCount();
     }
 
 }

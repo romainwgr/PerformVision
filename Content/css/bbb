@@ -1,0 +1,239 @@
+/* Styles pour tablettes */
+@media (max-width: 768px) {
+  .main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .search_form {
+    flex-direction: row; /* Garder les éléments sur la même ligne */
+    align-items: center;
+  }
+
+  .search_input {
+    flex: 1;
+    width: 100%;
+  }
+
+  .search_button {
+    width: auto;
+  }
+
+  .main-body {
+    padding: 3rem;
+    padding-left: 7rem;
+  }
+  form.search-form {
+    margin-left: 90px;
+}
+  h1.mise1{
+    margin-left: 6rem;
+  }
+  h2.mise2 {
+    font-size: 1.5rem;
+    margin-left: 90px;
+  }
+}
+
+/* Styles pour écrans en dessous de 768px */
+@media (max-width: 767px) {
+  .search_form {
+    display: none; /* Cacher la barre de recherche */
+  }
+  .job_card {
+    width: 300px;
+    padding: 10px;
+    font-size: 14px; /* Ajuster la taille de la police */
+  }
+  .infos-container table {
+    border-spacing: 5px;
+}
+}
+
+
+@media (max-width: 730px) {
+  .container .cover {
+    display: none;
+  }
+
+  .form-content .login-form,
+  .form-content .signup-form {
+    width: 100%;
+  }
+
+  .form-content .signup-form {
+    display: none;
+  }
+
+  .container #flip:checked ~ .forms .signup-form {
+    display: block;
+  }
+
+  .container #flip:checked ~ .forms .login-form {
+    display: none;
+  }
+}
+
+/* Styles pour écrans de 425px */
+@media (max-width: 425px) {
+  .main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .main-body {
+    padding: 2rem;
+    padding-left: 1rem;
+  }
+
+  h2.mise2 {
+    padding-left: 1rem;
+  }
+  /* Réduire la taille des job cards et leur contenu */
+  .job_card {
+    margin-left: 80px;
+    padding: 10px;
+    font-size: 14px; /* Ajuster la taille de la police */
+    width: 80%;
+  }
+  h2 {
+    font-size: 1rem;
+}
+.marge {
+  margin-left: 90px;
+}
+
+.infos-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.infos-container table,
+.infos-container tr,
+.infos-container td {
+  display: block;
+  width: 100%;
+  /* margin: 10px auto; Centrer chaque élément horizontalement */
+  margin: 10px 23px;
+}
+.infos__colonne h2, .infos__colonne a {
+  margin-left: 70px;
+}
+
+  .job_details .img i {
+    width: 50px; /* Ajuster la taille de l'icône */
+    font-size: 2.5rem; /* Ajuster la taille de l'icône */
+    margin-left: 0.5rem;
+    padding: 5px;
+  }
+
+  .job_details .text {
+    margin-left: 1rem;
+    font-size: 14px; /* Ajuster la taille de la police */
+  }
+
+  .job_salary {
+    font-size: 14px; /* Ajuster la taille de la police */
+  }
+}
+
+/* Styles pour écrans de 376px */
+@media (max-width: 376px) {
+  .search_bar, .row p {
+    margin-left: 90px;
+  }
+  .main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .main-body {
+    padding: 1.5rem;
+    padding-left: 1rem;
+  }
+}
+
+/* Styles pour écrans de 375px */
+@media (max-width: 375px) {
+  .main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .main-body {
+    padding: 1.5rem;
+    padding-left: 1rem;
+  }
+
+  /* Réduire la taille des job cards et leur contenu */
+  .job_card {
+    padding: 8px;
+    font-size: 12px; /* Ajuster la taille de la police */
+  }
+
+  .job_details .img i {
+    width: 40px; /* Ajuster la taille de l'icône */
+    font-size: 2rem; /* Ajuster la taille de l'icône */
+    margin-left: 0.5rem;
+    padding: 5px;
+  }
+
+  .job_details .text {
+    margin-left: 0.5rem;
+    font-size: 12px; /* Ajuster la taille de la police */
+  }
+
+  .job_salary {
+    font-size: 12px; /* Ajuster la taille de la police */
+  }
+}
+
+/* Styles pour écrans de 320px */
+@media (max-width: 320px) {
+  .main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .main-body {
+    padding: 1rem;
+    padding-left: 0.5rem;
+  }
+  .row p {
+    font-size: 0.8rem;
+}
+
+  form.search-form {
+    margin-left: 100px;
+}
+  h1.mise1{
+    font-size: 1.9rem;
+  }
+  h2.mise2 {
+    font-size: 1rem;
+  }
+  /* Réduire la taille des job cards et leur contenu */
+  .job_card {
+    padding: 5px;
+    font-size: 10px; /* Ajuster la taille de la police */
+  }
+
+  .job_details .img i {
+    width: 30px; /* Ajuster la taille de l'icône */
+    font-size: 1.5rem; /* Ajuster la taille de l'icône */
+    margin-left: 0.5rem;
+    padding: 5px;
+  }
+
+  .job_details .text {
+    margin-left: 0.5rem;
+    font-size: 10px; /* Ajuster la taille de la police */
+  }
+
+  .job_salary {
+    font-size: 10px; /* Ajuster la taille de la police */
+  }
+
+}
