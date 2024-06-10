@@ -19,15 +19,13 @@ Ce site web est développé grâce à plusieurs langages : PHP, CSS, HTML, JavaS
 Vous arrivez alors sur une page de connexion.
 Pour vous connecter, vous avez plusieurs comptes de différents rôles disponibles :
 
-Prestataire : jean@example.com et mdp1
+Prestataire : romain.wagner@example.com et mdp123
 
-Commercial : marie@example.com et mdp2
+Commercial : paul.moreau@example.com et password101
 
-Gestionnaire : ic@gmail.com et hihi
+Gestionnaire : thomas.blanc@example.com et password113
 
-Interlocuteur de composantes: hebert@exemple.com et mdp5
-
-Administrateur : aucun pour le moment
+Interlocuteur de composantes: clark.kent@dailyplanet.com et safe999
 
 ## Ressources
 VisualStudio : https://code.visualstudio.com/docs
