@@ -15,10 +15,9 @@ Ce site web doit être responsive et offrir certaines fonctionnalités aux clien
 Ces différents rôles sont visibles dans la base de données.
 
 ## Accès au projet
-Ce site web est développé grâce à plusieurs langages : PHP, CSS, HTML, JavaScript, AJAX, PL/pgSQL ainsi que la librairie fpdf pour générer les PDFs. Afin d’accéder à ce site web, vous devez passer par le serveur **Pédago Web**. 
-[explication du processus pour y accéder]
+Ce site web est développé grâce à plusieurs langages : PHP, CSS, HTML, JavaScript, AJAX, PL/pgSQL ainsi que la librairie fpdf pour générer les PDFs. Afin d’accéder à ce site web, vous devez passer accéder à **https://jupyter.univ-paris13.fr/~12202588/**. 
 Vous arrivez alors sur une page de connexion.
-Pour vous connecter, vous avez plusieurs comptes de différents rôles disponibles pour l'instant (c’est encore l’ancienne base de donnée donc ceci changera) : 
+Pour vous connecter, vous avez plusieurs comptes de différents rôles disponibles :
 
 Prestataire : jean@example.com et mdp1
 
