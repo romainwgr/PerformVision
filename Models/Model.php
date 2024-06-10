@@ -1216,6 +1216,26 @@ class Model
 
     }
 
+        public function getTotalHoursByIdBDL($id_bdl)
+    {
+        $req = $this->bd->prepare("SELECT SUM(hours_worked) as total_hours FROM dailyhours WHERE id_bdl = :id");
+        $req->bindValue(':id', $id_bdl, PDO::PARAM_INT);
+        $req->execute();
+        $result = $req->fetch(PDO::FETCH_ASSOC);
+
+        return $result['total_hours'];
+    }
+
+    public function updateHoursByIdBDL($id_bdl, $new_hours)
+
+    {
+        $req = $this->bd->prepare("UPDATE bdl SET heures = :heures WHERE id_bdl = :id");
+        $req->bindValue(':heures', $new_hours, PDO::PARAM_INT);
+        $req->bindValue(':id', $id_bdl, PDO::PARAM_INT);
+        return $req->execute();
+    }
+
+
 
 
 

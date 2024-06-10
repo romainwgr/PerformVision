@@ -137,25 +137,28 @@ class Controller_interlocuteur extends Controller
             $id_interlocuteur = $bdl['id_interlocuteur'];
             // Récupérer le nom et prenom de l'interlocuteur
             $nom = $bd->getInterlocuteurNameById($id_interlocuteur);
-
+            $interlocuteur = $bd->getInterlocuteurByIdBDL($id_bdl);
+            $prestataire = $bd->getPrestataireByIdBDL($id_bdl);
+            $gestionnaire = $bd->getGestionnaireById($id_bdl);
+    
             if ($bdl) {
                 // Inclure la bibliothèque FPDF
-                require_once ('libraries/fpdf/fpdf.php');
-
+                require_once('libraries/fpdf/fpdf.php');
+    
                 // Créer un nouvel objet FPDF
                 $pdf = new FPDF();
                 $pdf->AddPage();
                 $pdf->SetMargins(20, 20, 20);
-
+    
                 // Ajouter les polices UTF-8 compatibles
                 $pdf->AddFont('FreeSerif', '', 'FreeSerif.php');
                 $pdf->AddFont('FreeSerif', 'B', 'FreeSerifBold.php');
                 $pdf->AddFont('FreeSerif', 'I', 'FreeSerifItalic.php');
                 $pdf->SetFont('FreeSerif', '', 12);
-
+    
                 // Ajouter un logo
                 $pdf->Image('Content/images/logo3.png', 170, 10, 20);
-
+    
                 // Titre du document
                 $pdf->SetFont('FreeSerif', 'B', 24);
                 $pdf->SetTextColor(0, 153, 204); // Couleur bleue ciel
@@ -165,7 +168,7 @@ class Controller_interlocuteur extends Controller
                 $pdf->SetLineWidth(1);
                 $pdf->Line(20, 35, 190, 35);
                 $pdf->Ln(10);
-
+    
                 // Détails de l'entreprise
                 $pdf->SetFont('FreeSerif', 'B', 12);
                 $pdf->SetTextColor(0, 0, 0);
@@ -173,11 +176,11 @@ class Controller_interlocuteur extends Controller
                 $pdf->SetFont('FreeSerif', '', 12);
                 $pdf->Cell(0, 10, iconv('UTF-8', 'ISO-8859-1', 'Président: Slim ELLOUZE'), 0, 1, 'L');
                 $pdf->Ln(10);
-
+    
                 // Détails du bon de livraison
                 $pdf->SetFont('FreeSerif', 'B', 12);
                 $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Bon de livraison N°: ') . htmlspecialchars($bdl['id_bdl']), 0, 0);
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Destinataire'), 0, 1);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Composante: ') . iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['nom_composante'])), 0, 1);
                 $pdf->SetFont('FreeSerif', '', 12);
                 $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Date : ') . date('d/m/Y'), 0, 0);
                 $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['nom_client'])), 0, 1);
@@ -186,73 +189,86 @@ class Controller_interlocuteur extends Controller
                 $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Numéro de commande : ') . htmlspecialchars($bdl['id_bdl']), 0, 0);
                 $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Téléphone : ') . htmlspecialchars($bdl['telephone_client']), 0, 1);
                 $pdf->Ln(10);
-
-                // Informations supplémentaires
+    
+                // Informations sur l'interlocuteur à gauche et le prestataire à droite
                 $pdf->SetFont('FreeSerif', 'B', 12);
-                $pdf->Cell(0, 10, iconv('UTF-8', 'ISO-8859-1', 'Informations supplémentaires'), 0, 1, 'L');
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Interlocuteur'), 0, 0, 'L');
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Prestataire'), 0, 1, 'L');
                 $pdf->SetFont('FreeSerif', '', 12);
-                $pdf->Cell(0, 10, iconv('UTF-8', 'ISO-8859-1', 'Merci d\'avoir choisi SAS Perform Vision pour nos services.'), 0, 1, 'L');
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Nom: ') . htmlspecialchars($interlocuteur['prenom'] . ' ' . $interlocuteur['nom']), 0, 0, 'L');
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Nom: ') . htmlspecialchars($prestataire['prenom'] . ' ' . $prestataire['nom']), 0, 1, 'L');
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Téléphone: ') . htmlspecialchars($interlocuteur['telephone']), 0, 0, 'L');
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Téléphone: ') . htmlspecialchars($prestataire['telephone']), 0, 1, 'L');
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Email: ') . htmlspecialchars($interlocuteur['mail']), 0, 0, 'L');
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Email: ') . htmlspecialchars($prestataire['mail']), 0, 1, 'L');
                 $pdf->Ln(10);
-
-                // Tableau des heures travaillées et des commentaires
+    
+                // Informations sur le gestionnaire en dessous de l'interlocuteur
                 $pdf->SetFont('FreeSerif', 'B', 12);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Gestionnaire'), 0, 1, 'L');
+                $pdf->SetFont('FreeSerif', '', 12);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Nom: ') . htmlspecialchars($gestionnaire['prenom'] . ' ' . $gestionnaire['nom']), 0, 1, 'L');
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Téléphone: ') . htmlspecialchars($gestionnaire['telephone']), 0, 1, 'L');
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Email: ') . htmlspecialchars($gestionnaire['mail']), 0, 1, 'L');
+                $pdf->Ln(10);
+    
+                
+    
+                
+                // Récupérer les heures du BDL
+                $hours = $bd->getHoursByIdBDL($id_bdl);
+
+                // Afficher les heures dans un tableau dans le PDF
+                $pdf->SetFont('Arial', 'B', 12);
+                $pdf->SetTextColor(0, 51, 102);
+                $pdf->Cell(0, 10, 'Heures travaillées :', 0, 1, 'L');
+                $pdf->Ln(5);
+
+                $pdf->SetFont('Arial', '', 12);
+                $pdf->SetTextColor(0);
                 $pdf->SetFillColor(224, 235, 255); // Couleur de fond bleue claire
-                $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', 'Nombre d\'heures travaillées'), 1, 0, 'C', true);
-                $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', 'Commentaires'), 1, 1, 'C', true);
+                $pdf->Cell(30, 10, 'Jour', 1, 0, 'C', true);
+                $pdf->Cell(40, 10, 'Nombre d\'heures', 1, 1, 'C', true);
 
-                $pdf->SetFont('FreeSerif', '', 12);
-                $pdf->Cell(90, 10, htmlspecialchars($bdl['heures']), 1, 0, 'C');
-                $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['commentaire'])), 1, 1, 'C');
+                foreach ($hours as $hour) {
+                    $pdf->Cell(30, 10, $hour['jour'], 1, 0, 'C');
+                    $pdf->Cell(40, 10, $hour['hours_worked'], 1, 1, 'C');
+                }
                 $pdf->Ln(10);
 
-
+    
                 // Ajouter un espacement avant les signatures
                 $pdf->Ln(20);
                 // Vérifiez si le prestataire a signé
                 $signature_prestataire = $bdl['signature_prestataire'] ? htmlspecialchars($bdl['nom_client']) : '__________________';
-                $signature_interlocuteur = $bdl['signature_interlocuteur'] ? htmlspecialchars($nom) : '__________________';
-
+    
                 // Signatures
                 $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du client:  ') . $signature_prestataire, 0, 0);
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du fournisseur: ') . $signature_interlocuteur, 0, 1);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', "Signature de l/'interlocuteur: __________________"), 0, 1);
                 $pdf->Ln(20);
-
-
-
-
+    
                 // Sauvegarder le PDF dans une variable
-                $pdf_content = $pdf->Output('', 'S'); // Retourne le contenu du PDF en tant que chaîne
-
-                //             // Passer les données des BDLs et le contenu du PDF à la vue
-                //             $data = [
-                //                 'menu' => $this->action_get_navbar(),
-                //                 'title' => 'Affichage des BDLs',
-                //                 'bdl' => $bdl, // Passer les données du BDL à la vue
-                //                 'pdf_content' => $pdf_content // Passer le contenu du PDF à la vue
-                //             ];
-
-                //             // Rendre la vue avec les données
-                //             $this->render('afficher_bdl', $data);
-                //         } else {
-                //             echo "<script>alert('Aucun BDL trouvé pour cet ID.'); window.location.href = '?controller=prestataire&action=liste_bdl';</script>";
-                //             exit;
-                //         }
-                //     } else {
-                //         echo "ID BDL ou ID Prestataire non défini.";
-                //     }
-                // }
-                // Sortie du PDF
-                $pdf->Output('I', 'bon_de_livraison.pdf');
+                $pdf_content = $pdf->Output('', 'S');
+                // Retourne le contenu du PDF en tant que chaîne
+    
+                // Passer les données des BDLs et le contenu du PDF à la vue
+                $data = [
+                    'menu' => $this->action_get_navbar(),
+                    'title' => 'Affichage des BDLs',
+                    'bdl' => $bdl, // Passer les données du BDL à la vue
+                    'pdf_content' => $pdf_content // Passer le contenu du PDF à la vue
+                ];
+    
+                // Rendre la vue avec les données
+                $this->render('afficher_bdl', $data);
             } else {
-                echo "Détails du bon de livraison introuvables.";
+                echo "<script>alert('Aucun BDL trouvé pour cet ID.'); window.location.href = '?controller=prestataire&action=liste_bdl';</script>";
+                exit;
             }
         } else {
-            echo "ID du bon de livraison ou prestataire manquant.";
+            echo "ID BDL ou ID Prestataire non défini.";
         }
     }
-
-
-
 
 
 
@@ -477,6 +493,8 @@ class Controller_interlocuteur extends Controller
 
 
         $resultat = $bd->insertDailyHours($id_bdl, $jour, $heures); // Corrigez l'appel de méthode
+        $nbHours= $bd->getTotalHoursByIdBDL($id_bdl);
+        $bd->updateHoursByIdBDL($id_bdl, $nbHours);
         if ($resultat == true) {
             $message = "l'Ajout a été effectuer avec succès";
         } else {
@@ -500,7 +518,8 @@ class Controller_interlocuteur extends Controller
         $demi_journees = ($_POST['nombre_demi_journees'] * 4);
 
         $resultat = $bd->insertDailyHours($id_bdl, $jour, $demi_journees);
-
+        $nbHours= $bd->getTotalHoursByIdBDL($id_bdl);
+        $bd->updateHoursByIdBDL($id_bdl, $nbHours);
         $message = $resultat ? 'L\'ajout de la demi-journée a été effectué avec succès.' : 'Erreur lors de l\'ajout de la demi-journée.';
         // Rétablir les données pour remplir à nouveau le formulaire
         $client = $_POST['client'];
@@ -519,7 +538,8 @@ class Controller_interlocuteur extends Controller
         $heures_sans_jour = $_POST['nombre_heures_sans_jour'];
 
         $resultat = $bd->insertDailyHours($id_bdl, 0, $heures_sans_jour);
-
+        $nbHours= $bd->getTotalHoursByIdBDL($id_bdl);
+        $bd->updateHoursByIdBDL($id_bdl, $nbHours);
         $message = $resultat ? 'L\'ajout des heures sans jour a été effectué avec succès.' : 'Erreur lors de l\'ajout des heures sans jour.';
         // Rétablir les données pour remplir à nouveau le formulaire
         $client = $_POST['client'];

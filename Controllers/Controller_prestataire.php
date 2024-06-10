@@ -305,7 +305,6 @@ class Controller_prestataire extends Controller
 
         unset($_SESSION['redirect']); // Supprimer l'indicateur après l'avoir récupéré
         // unset($_SESSION['data']); // Supprimer les données après les avoir récupérées
-        var_dump($_SESSION);
 
         $bd = Model::getModel();
 
@@ -381,6 +380,8 @@ class Controller_prestataire extends Controller
 
 
         $resultat = $bd->insertDailyHours($id_bdl, $jour, $heures); // Corrigez l'appel de méthode
+        $nbHours= $bd->getTotalHoursByIdBDL($id_bdl);
+        $bd->updateHoursByIdBDL($id_bdl, $nbHours);
         if ($resultat == true) {
             $message = "l'Ajout a été effectuer avec succès";
         } else {
@@ -404,7 +405,8 @@ class Controller_prestataire extends Controller
         $demi_journees = ($_POST['nombre_demi_journees'] * 4);
 
         $resultat = $bd->insertDailyHours($id_bdl, $jour, $demi_journees);
-
+        $nbHours= $bd->getTotalHoursByIdBDL($id_bdl);
+        $bd->updateHoursByIdBDL($id_bdl, $nbHours);
         $message = $resultat ? 'L\'ajout de la demi-journée a été effectué avec succès.' : 'Erreur lors de l\'ajout de la demi-journée.';
         // Rétablir les données pour remplir à nouveau le formulaire
         $client = $_POST['client'];
@@ -423,7 +425,8 @@ class Controller_prestataire extends Controller
         $heures_sans_jour = $_POST['nombre_heures_sans_jour'];
 
         $resultat = $bd->insertDailyHours($id_bdl, 0, $heures_sans_jour);
-
+        $nbHours= $bd->getTotalHoursByIdBDL($id_bdl);
+        $bd->updateHoursByIdBDL($id_bdl, $nbHours);
         $message = $resultat ? 'L\'ajout des heures sans jour a été effectué avec succès.' : 'Erreur lors de l\'ajout des heures sans jour.';
         // Rétablir les données pour remplir à nouveau le formulaire
         $client = $_POST['client'];
