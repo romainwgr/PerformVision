@@ -235,6 +235,8 @@ class Controller_interlocuteur extends Controller
                     $pdf->Cell(40, 10, $hour['hours_worked'], 1, 1, 'C');
                 }
                 $pdf->Ln(10);
+                $pdf->Cell(90, 10, htmlspecialchars($bdl['heures']), 1, 0, 'C');
+                $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['commentaire'])), 1, 1, 'C');
 
     
                 // Ajouter un espacement avant les signatures

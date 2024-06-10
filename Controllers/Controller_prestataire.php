@@ -202,7 +202,9 @@ class Controller_prestataire extends Controller
                     $pdf->Cell(40, 10, $hour['hours_worked'], 1, 1, 'C');
                 }
                 $pdf->Ln(10);
-
+            
+                $pdf->Cell(0, 10, 'Total des heures : ' . htmlspecialchars($bdl['heures']), 0, 1, 'L');
+                $pdf->Cell(0, 10, 'Commentaire : ' . iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['commentaire'])), 0, 1, 'L');
     
                 // Ajouter un espacement avant les signatures
                 $pdf->Ln(20);
