@@ -1427,3 +1427,307 @@ h2.mise2 span {
 .next {
   right: 0;
 }
+
+.appa{
+  display: none;
+}
+
+/* Styles pour tablettes */
+@media (max-width: 768px) {
+  .main {
+    margin-left: 0;
+    width: 100%;
+  }
+  .font {
+    left: 460px;
+}
+.search_bar, .row p {
+  margin-left: 90px;
+}
+
+  .job_card {
+    margin-left: 80px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .job_details .text {
+    margin-left: 1rem;
+  }
+  
+  .button-container {
+    margin-top: 10px;
+  }
+
+  .sidebar {
+    width: 100px;
+  }
+
+  .sidebar:hover {
+    width: 200px;
+  }
+
+  .container {
+    padding: 20px;
+  }
+  
+
+  
+}
+
+/* Styles pour écrans en dessous de 768px */
+@media (max-width: 767px) {
+  .search_form {
+    flex-direction: row;
+    align-items: center;
+  }
+  .dispa {
+    display: none;
+  }
+  .font {
+    left: 200px;
+}
+
+  .search_form input {
+    flex: 1;
+    width: 100%;
+  }
+
+  .search_button {
+    width: auto;
+  }
+
+  .job_card {
+    width: 100%;
+  }
+
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .appa {
+    display: inline;
+}
+}
+
+/* Styles pour écrans en dessous de 425px */
+@media (max-width: 425px) {
+  .main-body {
+    padding: 0.5rem;
+  }
+  .font {
+    left: 300px;
+}
+  .job_card {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .job_details .text {
+    margin-left: 0.5rem;
+  }
+
+  .job_details .img i {
+    font-size: 2rem;
+    padding: 5px;
+  }
+
+  .search-bar,
+  .row p {
+    font-size: 0.9rem;
+  }
+
+  .form-abs {
+    padding: 0.5rem;
+  }
+
+  .progressbar {
+    display: none;
+  }
+
+  .input-case {
+    width: 100%;
+    padding: 0.5rem;
+  }
+
+  .form-address, .form-names {
+    flex-direction: column;
+  }
+
+  .form-address .input-group, .form-names .input-group {
+    width: 100%;
+  }
+
+  .next-btn, .prev-btn {
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .large-checkbox {
+    width: 20px;
+    height: 20px;
+  }
+
+  .job_card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .job_details .text h2 {
+    font-size: 1rem;
+  }
+
+  .job_details .text span {
+    font-size: 0.8rem;
+  }
+
+  .job_action input {
+    transform: scale(1.2);
+  }
+}
+
+/* Styles pour écrans en dessous de 375px */
+@media (max-width: 375px) {
+  .main-body {
+    padding: 0.5rem;
+  }
+  .font {
+    left: 300px;
+}
+
+  .job_card {
+    padding: 5px;
+    font-size: 12px;
+  }
+
+  .job_details .text {
+    margin-left: 0.5rem;
+    font-size: 12px;
+  }
+
+  .job_details .img i {
+    font-size: 1.5rem;
+    padding: 5px;
+  }
+
+  .search-bar,
+  .row p {
+    font-size: 0.8rem;
+  }
+
+  .add-container {
+    padding: 0.5rem;
+  }
+
+  .form-abs {
+    padding: 0.5rem;
+  }
+
+  .input-case {
+    width: 100%;
+    padding: 0.5rem;
+  }
+
+  .next-btn, .prev-btn {
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .large-checkbox {
+    width: 20px;
+    height: 20px;
+  }
+
+  .job_card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .job_details .text h2 {
+    font-size: 1rem;
+  }
+
+  .job_details .text span {
+    font-size: 0.8rem;
+  }
+
+  .job_action input {
+    transform: scale(1.2);
+  }
+}
+
+/* Styles pour écrans en dessous de 320px */
+@media (max-width: 320px) {
+  .main-body {
+    padding: 0.5rem;
+  }
+
+  .font {
+    left: 200px;
+}
+  .job_card {
+    padding: 5px;
+    font-size: 10px;
+  }
+
+  .job_details .text {
+    margin-left: 0.5rem;
+    font-size: 10px;
+  }
+
+  .job_details .img i {
+    font-size: 1.2rem;
+    padding: 5px;
+  }
+
+  .search-bar,
+  .row p {
+    font-size: 0.7rem;
+  }
+  .add-container {
+    padding: 0.5rem;
+  }
+
+  .form-abs {
+    padding: 0.5rem;
+  }
+
+  .input-case {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .next-btn, .prev-btn {
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .large-checkbox {
+    width: 20px;
+    height: 20px;
+  }
+
+  .job_card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.5rem;
+    font-size: 0.7rem;
+  }
+
+  .job_details .text h2 {
+    font-size: 1rem;
+  }
+
+  .job_details .text span {
+    font-size: 0.7rem;
+  }
+
+  .job_action input {
+    transform: scale(1.1);
+  }
+}

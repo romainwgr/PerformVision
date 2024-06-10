@@ -4,27 +4,37 @@ require 'Views/view_begin.php';
 require 'Views/view_header.php';
 ?>
 <section class="main">
-    <div class="main-body">
-        <div class="box">
+    <div class="main-body dispa">
+        <div class="search-box">
             <form action="<?= $rechercheLink ?>" method="post" class="search_form">
-                <input type="checkbox" id="check">
-                <div class="search-box">
-                    <?php if (!empty($buttonLink)): ?>
-                        <button type="button" class="button-primary font"
-                            onclick="window.location='<?= htmlspecialchars($buttonLink) ?>'">Ajouter</button>
-                    <?php endif; ?>
-                    <input name="recherche" type="text" placeholder="Rechercher une <?= strtolower($title) ?>..." value="<?php if (isset($val_rech)) {
-                          echo htmlspecialchars($val_rech);
-                      } ?>">
-                    <label for="check" class="icon">
-                        <i class="fas fa-search"></i>
-                    </label>
+                <input type="text" placeholder="Rechercher un/une <?= strtolower($title) ?>..." value="<?php if (isset($val_rech)) {
+                      echo htmlspecialchars($val_rech);
+                  } ?>">
+                <div class="search-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="cancel-icon">
+                    <i class="fas fa-times"></i>
+                </div>
+                <div class="search-data">
                 </div>
             </form>
+            <?php if (!empty($buttonLink)): ?>
+                <button type="button" class="button-primary font"
+                    onclick="window.location='<?= htmlspecialchars($buttonLink) ?>'">Ajouter</button>
+            <?php endif; ?>
         </div>
     </div>
+    <div class="main-body appa">
+        <?php if (!empty($buttonLink)): ?>
+            <button type="button" class="button-primary font"
+                onclick="window.location='<?= htmlspecialchars($buttonLink) ?>'">Ajouter</button>
+        <?php endif; ?>
+    </div>
 
-    <h1><?php if(isset($title)){echo $title;}?></h1>
+    <h1><?php if (isset($title)) {
+        echo $title;
+    } ?></h1>
 
     <div class="row">
         <p>Il y a plus de <span><?= count($person) ?></span> <?= strtolower($title) ?></p>

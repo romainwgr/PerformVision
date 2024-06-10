@@ -4,10 +4,10 @@ require 'view_header.php';
 ?>
 
 <section class="main">
-    <div class="main-body">
+    <div class="main-body dispa">
         <div class="search-box">
             <form action="<?= $rechercheLink ?>" method="post" class="search_form">
-                <input name="recherche" type="text" placeholder="Rechercher une <?= strtolower($title) ?>..." value="<?php if (isset($val_rech)) {
+                <input type="text" placeholder="Rechercher un/une <?= strtolower($title) ?>..." value="<?php if (isset($val_rech)) {
                       echo htmlspecialchars($val_rech);
                   } ?>">
                 <div class="search-icon">
@@ -19,8 +19,17 @@ require 'view_header.php';
                 <div class="search-data">
                 </div>
             </form>
-            
+            <?php if (!empty($buttonLink)): ?>
+                <button type="button" class="button-primary font"
+                    onclick="window.location='<?= htmlspecialchars($buttonLink) ?>'">Ajouter</button>
+            <?php endif; ?>
         </div>
+    </div>
+    <div class="main-body appa">
+        <?php if (!empty($buttonLink)): ?>
+            <button type="button" class="button-primary font"
+                onclick="window.location='<?= htmlspecialchars($buttonLink) ?>'">Ajouter</button>
+        <?php endif; ?>
     </div>
 
     <div class="row">

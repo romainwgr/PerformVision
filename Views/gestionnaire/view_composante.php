@@ -4,10 +4,10 @@ require 'Views/view_begin.php';
 require 'Views/view_header.php';
 ?>
 <section class="main">
-    <div class="main-body">
+    <div class="main-body dispa">
         <div class="search-box">
             <form action="<?= $rechercheLink ?>" method="post" class="search_form">
-                <input name="recherche" type="text" placeholder="Rechercher une <?= strtolower($title) ?>..." value="<?php if (isset($val_rech)) {
+                <input type="text" placeholder="Rechercher un/une <?= strtolower($title) ?>..." value="<?php if (isset($val_rech)) {
                       echo htmlspecialchars($val_rech);
                   } ?>">
                 <div class="search-icon">
@@ -23,11 +23,16 @@ require 'Views/view_header.php';
                 <button type="button" class="button-primary font"
                     onclick="window.location='<?= htmlspecialchars($buttonLink) ?>'">Ajouter</button>
             <?php endif; ?>
+
         </div>
     </div>
-    <!-- <h1><?php if (isset($title)) {
-        echo $title;
-    } ?></h1> -->
+    <div class="main-body appa">
+        <?php if (!empty($buttonLink)): ?>
+            <button type="button" class="button-primary font"
+                onclick="window.location='<?= htmlspecialchars($buttonLink) ?>'">Ajouter</button>
+        <?php endif; ?>
+    </div>
+
     <div class="row">
         <p>Il y a plus de <span><?= count($person) ?></span> <?= strtolower($title) ?></p>
     </div>
@@ -41,6 +46,10 @@ require 'Views/view_header.php';
         <?php elseif (isset($person) && !empty($person)): ?>
             <?php foreach ($person as $client): ?>
                 <h2 class="client-title">Client: <?= htmlspecialchars($client['nom_client']); ?></h2>
+                <button type="button" class="button-primary"
+                    onclick="window.location='<?= htmlspecialchars($addcomp) ?>&client=<?= $client['id_client'] ?>'">Ajouter
+                    composante</button>
+
                 <?php foreach ($client['composantes'] as $composante): ?>
                     <div class="composante-block job_card">
                         <div class="composante-details job_details">
@@ -94,9 +103,10 @@ require 'Views/view_header.php';
                             </span>
                         </div>
                         <div class="job_action">
-                            <?php if (((strstr($_GET['controller'], 'gestionnaire') || strstr($_GET['controller'], 'administrateur')) && !isset($_GET['id']))): ?>
+                            <?php if ((strstr($_GET['controller'], 'gestionnaire') || strstr($_GET['controller'], 'administrateur')) && !isset($_GET['id'])): ?>
                                 <button type="button" class="button-primary"
-                                    onclick="window.location='<?= htmlspecialchars($buttonLink) ?>'">Ajouter</button>
+                                    onclick="window.location='<?= htmlspecialchars($buttonLink) ?>&composante=<?= $composante['id_composante'] ?>'">Ajouter
+                                    prestataire</button>
                             <?php endif; ?>
                         </div>
                     </div>

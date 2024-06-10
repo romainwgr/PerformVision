@@ -6,7 +6,7 @@ require 'Views/view_header.php';
 ?>
 <div class="add-container">
     <div class="form-abs">
-        <span class="close-icon" id="close-form" onclick="closeFormajout()">
+        <span class="close-icon" id="close-form" onclick="closeForm()"> <!-- Ajout de l'ID -->
             <i class="fas fa-times"></i>
         </span>
         <h1 class="text-center">Ajouter un prestataire</h1>
@@ -19,24 +19,24 @@ require 'Views/view_header.php';
                 <h2>Informations personnelles</h2>
                 <div class="form-names ensemble">
                     <div class="input-group">
-                        <label for="prenom">Prénom: </label>
+                        <label for="prenom">Prénom </label>
                         <input type="text" placeholder="Prénom" id="prenom" name="prenom" class="input-case">
                         <div id="prenom-error" class="error-message" style="color: red; display: none;"></div>
                     </div>
                     <div class="input-group">
-                        <label for="nom">Nom: </label>
+                        <label for="nom">Nom </label>
                         <input type="text" placeholder="Nom" id="nom" name="nom" class="input-case">
                         <div id="nom-error" class="error-message" style="color: red; display: none;"></div>
                     </div>
                 </div>
                 <div class="input-group">
-                    <label for="email-prestataire">Adresse email:</label>
+                    <label for="email-prestataire">Adresse email</label>
                     <input type="email" placeholder="Adresse email" id="email-prestataire" name="email-prestataire"
                         class="input-case">
                     <div id="email-error" class="error-message" style="color: red; display: none;"></div>
                 </div>
                 <div class="input-group">
-                    <label for="tel-prestataire">Numéro de téléphone:</label>
+                    <label for="tel-prestataire">Numéro de téléphone</label>
                     <input type="telephone" placeholder="Téléphone" id="tel-prestataire" name="tel-prestataire"
                         class="input-case">
                     <div id="tel-error" class="error-message" style="color: red; display: none;"></div>
@@ -55,3 +55,4 @@ require 'Views/view_header.php';
 <?php
 require 'Views/view_end.php';
 ?>
+<!-- Formulaire permettant d'ajouter un nouveau prestataire  -->

@@ -502,12 +502,6 @@ class Model
             return 'Erreur lors de l\'ajout du commercial';
         }
     }
-    public function addPrestataireToComposante($id_personne, $id_composante)
-    {
-
-    }
-
-
 
     /**
      * Méthode permettant de récupérer la liste des interlocuteurs à partir de l'identifiant d'une composante
@@ -515,16 +509,41 @@ class Model
      * @return array|string Un tableau du résultat de la requête sinon un message d'erreur
      */
     // TODO ils ont ajouté distinct mais jsp si c utile
+    // public function getInterlocuteursComposante($id)
+    // {
+    //     // Préparation de la requête SQL
+    //     $req = $this->bd->prepare('
+    //         SELECT p.id_personne, p.nom, p.prenom
+    //         FROM Personne p
+    //         JOIN Interlocuteur i ON p.id_personne = i.id_personne
+    //         JOIN Represente r ON i.id_personne = r.id_personne
+    //         WHERE r.id_composante = :id;
+    //     ');
+
+    //     // Liaison du paramètre id pour éviter les injections SQL
+    //     $req->bindValue(':id', $id, PDO::PARAM_INT);
+
+    //     // Exécution de la requête
+    //     $req->execute();
+
+    //     // Récupération des résultats
+    //     $result = $req->fetchAll(PDO::FETCH_ASSOC);
+    //     if (empty($result)) {
+    //         return 'Aucun interlocuteur trouvé pour cette composante'; // Aucun interlocuteur trouvé
+    //     }
+    //     return $result;
+    // }
+
     public function getInterlocuteursComposante($id)
     {
         // Préparation de la requête SQL
         $req = $this->bd->prepare('
-            SELECT p.id_personne, p.nom, p.prenom
-            FROM Personne p
-            JOIN Interlocuteur i ON p.id_personne = i.id_personne
-            JOIN Represente r ON i.id_personne = r.id_personne
-            WHERE r.id_composante = :id;
-        ');
+        SELECT p.id_personne, p.nom, p.prenom
+        FROM Personne p
+        JOIN Interlocuteur i ON p.id_personne = i.id_personne
+        JOIN Represente r ON i.id_personne = r.id_personne
+        WHERE r.id_composante = :id;
+    ');
 
         // Liaison du paramètre id pour éviter les injections SQL
         $req->bindValue(':id', $id, PDO::PARAM_INT);
@@ -534,11 +553,9 @@ class Model
 
         // Récupération des résultats
         $result = $req->fetchAll(PDO::FETCH_ASSOC);
-        if (empty($result)) {
-            return 'Aucun interlocuteur trouvé pour cette composante'; // Aucun interlocuteur trouvé
-        }
         return $result;
     }
+
     /**
      * Méthode permettant d'ajouter un interlocuteur à une composante
      * @param int $id_personne
@@ -1139,26 +1156,10 @@ class Model
         $req->execute();
         return $req->fetch(PDO::FETCH_ASSOC);
     }
-    public function getInterlocuteurByIdBDL($id_bdl){
-        $req = $this->bd->prepare("SELECT personne.prenom, personne.nom, personne.telephone ,personne.mail from personne join BDL on bdl.id_interlocuteur = personne.id_personne where id_bdl= :id");
-        $req->bindValue(':id',$id_bdl);
-        $req->execute();
-        return $req->fetch(PDO::FETCH_ASSOC); 
-    }
 
-    public function getPrestataireByIdBDL($id_bdl){
-        $req = $this->bd->prepare("SELECT personne.prenom, personne.nom, personne.telephone ,personne.mail from personne join BDL on bdl.id_prestataire = personne.id_personne where id_bdl= :id");
-        $req->bindValue(':id',$id_bdl);
-        $req->execute();
-        return $req->fetch(PDO::FETCH_ASSOC);
-    }
-    public function getGestionnaireById($id_bdl){
-        $req = $this->bd->prepare("SELECT personne.prenom, personne.nom, personne.telephone ,personne.mail from personne join BDL on bdl.id_gestionnaire = personne.id_personne where id_bdl= :id");
-        $req->bindValue(':id',$id_bdl);
-        $req->execute();
-        return $req->fetch(PDO::FETCH_ASSOC);
-    }
-    
+
+
+
     public function getBdlInterlocuteurBybdlId($id_bdl)
     {
         $req = $this->bd->prepare(" SELECT * FROM BDL
@@ -1203,17 +1204,17 @@ class Model
     public function setSignTrueInterlocuteurId($id_bdl)
     {
         $req = $this->bd->prepare("UPDATE BDL SET signature_interlocuteur = true WHERE id_bdl = :id");
-    
+
         $req->bindValue(':id', $id_bdl, PDO::PARAM_INT);
         $req->execute();
-        
+
         if ($req->rowCount() > 0) {
-            return true; 
+            return true;
         } else {
-            return false; 
+            return false;
         }
     }
-    
+
 
 
     /**
@@ -1831,6 +1832,8 @@ class Model
         $req->execute();
         return $req->fetch()[0] == 't';
     }
+
+
     /**
      * Méthode vérifiant si un prestataire existe
      * @param string $mail
@@ -1997,6 +2000,36 @@ class Model
         return $req->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Méthode permettant de récupérer les informations sur un client à partir d'un identifiant
+     * @param int $id
+     * @return array
+     */
+    public function getClientById($id)
+    {
+        // Convert the id to an integer to prevent SQL injection
+        $id = intval($id);
+
+        // Prepare the SQL query to fetch client information based on the id
+        $req = $this->bd->prepare("
+        SELECT 
+            id_client, nom_client, telephone_client
+        FROM 
+            Client 
+        WHERE 
+            id_client = :id
+    ");
+
+        // Bind the id parameter to the query
+        $req->bindParam(':id', $id, PDO::PARAM_INT);
+
+        // Execute the query
+        $req->execute();
+
+        // Fetch the result as an associative array
+        return $req->fetch(PDO::FETCH_ASSOC);
+    }
+
 
 
     /**
@@ -2121,9 +2154,9 @@ class Model
     //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
     // }
 
-   
 
- 
+
+
 
     public function getAllBdlInterlocuteur($id_pr)
     {
@@ -2185,7 +2218,7 @@ class Model
     }
 
 
-   
+
 
     public function getInterlocuteurNameById($id_interlocuteur)
     {
@@ -2203,6 +2236,164 @@ class Model
             return $interlocuteur['nom'] . ' ' . $interlocuteur['prenom'];
         } else {
             return null; // ou une valeur par défaut si l'interlocuteur n'existe pas
+        }
+    }
+
+    public function getInterlocuteurByIdBDL($id_bdl)
+    {
+        $req = $this->bd->prepare("SELECT personne.prenom, personne.nom, personne.telephone ,personne.mail from personne join BDL on bdl.id_interlocuteur = personne.id_personne where id_bdl= :id");
+        $req->bindValue(':id', $id_bdl);
+        $req->execute();
+        return $req->fetch(PDO::FETCH_ASSOC);
+    }
+    public function getPrestataireByIdBDL($id_bdl)
+    {
+        $req = $this->bd->prepare("SELECT personne.prenom, personne.nom, personne.telephone ,personne.mail from personne join BDL on bdl.id_prestataire = personne.id_personne where id_bdl= :id");
+        $req->bindValue(':id', $id_bdl);
+        $req->execute();
+        return $req->fetch(PDO::FETCH_ASSOC);
+    }
+    public function getGestionnaireById($id_bdl)
+    {
+        $req = $this->bd->prepare("SELECT personne.prenom, personne.nom, personne.telephone ,personne.mail from personne join BDL on bdl.id_gestionnaire = personne.id_personne where id_bdl= :id");
+        $req->bindValue(':id', $id_bdl);
+        $req->execute();
+        return $req->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Méthode permettant de récupérer la liste des prestataires qui ne sont pas dans une composante spécifique
+     * @param int $id_composante identifiant de la composante
+     * @return array|string Un tableau du résultat de la requête sinon un message d'erreur
+     */
+    public function getPrestatairesToAdd($id_composante)
+    {
+        try {
+            $req = $this->bd->prepare('
+                SELECT p.id_personne, p.nom, p.prenom
+                FROM Personne p
+                JOIN Prestataire pr ON p.id_personne = pr.id_personne
+                WHERE pr.id_personne NOT IN (
+                    SELECT bdl.id_prestataire
+                    FROM BDL bdl
+                    WHERE bdl.id_composante = :id_composante
+                );
+            ');
+            $req->bindValue(':id_composante', $id_composante, PDO::PARAM_INT);
+            $req->execute();
+            $result = $req->fetchAll(PDO::FETCH_ASSOC);
+            if (empty($result)) {
+                return false; // Aucun prestataire disponible
+            }
+            return $result;
+        } catch (PDOException $e) {
+            return false; // Gestion des erreurs
+        }
+    }
+
+
+    // public function addPrestataireToComposante($id_prestataire, $id_composante, $id_interlocuteur, $id_gestionnaire, $mois, $annee)
+    // {
+    //     try {
+    //         // Prepare the SQL statement to insert into BDL
+    //         $req = $this->bd->prepare('
+    //             INSERT INTO BDL (
+    //                 id_composante,
+    //                 id_prestataire,
+    //                 annee,
+    //                 mois,
+    //                 signature_interlocuteur,
+    //                 signature_prestataire,
+    //                 commentaire,
+    //                 heures,
+    //                 id_interlocuteur,
+    //                 id_gestionnaire
+    //             ) VALUES (
+    //                 :id_composante,
+    //                 :id_prestataire,
+    //                 :annee,
+    //                 :mois,
+    //                 :signature_interlocuteur,
+    //                 :signature_prestataire,
+    //                 :commentaire,
+    //                 :heures,
+    //                 :id_interlocuteur,
+    //                 :id_gestionnaire
+    //             )
+    //         ');
+
+    //         // Bind parameters
+    //         $req->bindValue(':id_composante', $id_composante, PDO::PARAM_INT);
+    //         $req->bindValue(':id_prestataire', $id_prestataire, PDO::PARAM_INT);
+    //         $req->bindValue(':annee', $annee, PDO::PARAM_INT);
+    //         $req->bindValue(':mois', $mois, PDO::PARAM_STR);
+    //         $req->bindValue(':signature_interlocuteur', false, PDO::PARAM_BOOL);
+    //         $req->bindValue(':signature_prestataire', false, PDO::PARAM_BOOL);
+    //         $req->bindValue(':commentaire', '', PDO::PARAM_STR);
+    //         $req->bindValue(':heures', 0, PDO::PARAM_STR); // Assuming decimal is treated as string for binding
+    //         $req->bindValue(':id_interlocuteur', $id_interlocuteur, PDO::PARAM_INT);
+    //         $req->bindValue(':id_gestionnaire', $id_gestionnaire, PDO::PARAM_INT);
+
+    //         $req->execute();
+
+    //         // return true; // Return true if the insertion is successful
+    //         return $req;
+    //     } catch (PDOException $e) {
+    //         // Log the error message or handle the exception as needed
+    //         echo 'Erreur lors de l\'ajout du BDL : ' . $e->getMessage();
+    //         return false; // Return false if an error occurs
+    //     }
+    // }
+
+    public function addPrestataireToComposante($id_prestataire, $id_composante, $id_interlocuteur, $id_gestionnaire, $mois, $annee)
+    {
+        try {
+            // Préparation de la requête SQL pour insérer dans BDL
+            $req = $this->bd->prepare('
+            INSERT INTO BDL (
+                id_composante,
+                id_prestataire,
+                annee,
+                mois,
+                signature_interlocuteur,
+                signature_prestataire,
+                commentaire,
+                heures,
+                id_interlocuteur,
+                id_gestionnaire
+            ) VALUES (
+                :id_composante,
+                :id_prestataire,
+                :annee,
+                :mois,
+                :signature_interlocuteur,
+                :signature_prestataire,
+                :commentaire,
+                :heures,
+                :id_interlocuteur,
+                :id_gestionnaire
+            )
+        ');
+
+            // Liaison des paramètres
+            $req->bindValue(':id_composante', $id_composante, PDO::PARAM_INT);
+            $req->bindValue(':id_prestataire', $id_prestataire, PDO::PARAM_INT);
+            $req->bindValue(':annee', $annee, PDO::PARAM_INT);
+            $req->bindValue(':mois', $mois, PDO::PARAM_STR);
+            $req->bindValue(':signature_interlocuteur', false, PDO::PARAM_BOOL);
+            $req->bindValue(':signature_prestataire', false, PDO::PARAM_BOOL);
+            $req->bindValue(':commentaire', '', PDO::PARAM_STR);
+            $req->bindValue(':heures', 0, PDO::PARAM_STR); // En supposant que le type decimal soit traité comme une chaîne pour la liaison
+            $req->bindValue(':id_interlocuteur', $id_interlocuteur, PDO::PARAM_INT);
+            $req->bindValue(':id_gestionnaire', $id_gestionnaire, PDO::PARAM_INT);
+
+            $req->execute();
+
+            return true; // Retourne true si l'insertion est réussie
+        } catch (PDOException $e) {
+            // Log the error message or handle the exception as needed
+            echo 'Erreur lors de l\'ajout du BDL : ' . $e->getMessage();
+            return false; // Retourne false en cas d'erreur
         }
     }
 

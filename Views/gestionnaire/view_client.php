@@ -4,7 +4,7 @@ require 'Views/view_begin.php';
 require 'Views/view_header.php';
 ?>
 <section class="main">
-    <div class="main-body">
+    <div class="main-body dispa">
         <div class="search-box">
             <form action="<?= $rechercheLink ?>" method="post" class="search_form">
                 <input type="text" placeholder="Rechercher un/une <?= strtolower($title) ?>..." value="<?php if (isset($val_rech)) {
@@ -19,15 +19,18 @@ require 'Views/view_header.php';
                 <div class="search-data">
                 </div>
             </form>
-            <?php if (!empty($buttonLink)): ?>
+            <!-- <?php if (!empty($buttonLink)): ?>
                 <button type="button" class="button-primary font"
                     onclick="window.location='<?= htmlspecialchars($buttonLink) ?>'">Ajouter</button>
-            <?php endif; ?>
+            <?php endif; ?> -->
         </div>
     </div>
-    <!-- <h1><?php if (isset($title)) {
-        echo $title;
-    } ?></h1> -->
+    <!-- <div class="main-body appa">
+        <?php if (!empty($buttonLink)): ?>
+            <button type="button" class="button-primary font"
+                onclick="window.location='<?= htmlspecialchars($buttonLink) ?>'">Ajouter</button>
+        <?php endif; ?>
+    </div> -->
 
     <div class="row">
         <p>Il y a plus de <span><?= count($person) ?></span> <?= strtolower($title) ?></p>

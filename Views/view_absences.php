@@ -4,7 +4,7 @@ require 'view_header.php';
 ?>
 
 <section class="main">
-    <div class="main-body">
+    <div class="main-body dispa">
         <div class="search-box">
             <form action="<?= $rechercheLink ?>" method="post" class="search_form">
                 <input name="recherche" type="text" placeholder="Rechercher une absence..." value="<?php if (isset($val_rech)) {
@@ -25,6 +25,14 @@ require 'view_header.php';
             </a>
         </div>
     </div>
+    <div class="main-body appa">
+        <a href="#caheaffiche" class="job-card-link">
+            <button type="button" class="button-primary font">
+                Ajouter
+            </button>
+        </a>
+    </div>
+
     <?php
     // Fonction de comparaison pour trier les absences par leur ID
     function compareAbsences($a, $b)

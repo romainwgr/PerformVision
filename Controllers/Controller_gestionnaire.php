@@ -140,7 +140,7 @@ class Controller_gestionnaire extends Controller
      */
     public function action_composantes()
     {
-        // session_start();
+        sessionstart();
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
 
@@ -183,6 +183,7 @@ class Controller_gestionnaire extends Controller
                 'buttonLink' => '?controller=gestionnaire&action=ajout_composante_form',
                 'rechercheLink' => '?controller=gestionnaire&action=rechercher&role=client&composante=t',
                 'cardLink' => '?controller=gestionnaire&action=infos_composante',
+                'addcomp' => '?controller=gestionnaire&action=ajout_autre_composante',
                 'menu' => $this->action_get_navbar()
             ];
 
@@ -190,7 +191,6 @@ class Controller_gestionnaire extends Controller
             $this->render("composante", $data, 'gestionnaire');
         }
     }
-
 
     /**
      * Renvoie la liste de tous les clients
@@ -223,9 +223,10 @@ class Controller_gestionnaire extends Controller
      * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
      * @return void
      */
+
     public function action_prestataires()
     {
-        // sessionstart();
+        sessionstart();
         if (isset($_SESSION['id'])) {
             $bd = Model::getModel();
             if (isset($_GET['message'])) {
@@ -244,7 +245,6 @@ class Controller_gestionnaire extends Controller
             $this->render("prestataire", $data, 'gestionnaire');
         }
     }
-
     /**
      * Renvoie la liste de tous les commerciaux
      * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
@@ -272,6 +272,7 @@ class Controller_gestionnaire extends Controller
             $this->render("commercial", $data, 'gestionnaire');
         }
     }
+
 
     // /**
     //  * Vérifie d'avoir les informations nécessaire pour renvoyer la vue liste avec les bonnes variables pour afficher la liste des bons de livraisons d'un prestataire en fonction de la mission
@@ -333,7 +334,6 @@ class Controller_gestionnaire extends Controller
      */
     public function action_ajout_composante_form()
     {
-        sessionstart();
         $bd = Model::getModel();
 
         if (isset($_GET['composante'])) {
@@ -341,13 +341,13 @@ class Controller_gestionnaire extends Controller
         }
         $data = [
             'menu' => $this->action_get_navbar(),
-            'prestataire' => $bd->getAllPrestataires(),
+            'prestataire' => $bd->getPrestatairesToAdd($_GET['composante']),
             'form' => '?controller=gestionnaire&action=ajouter_prestataire_a_comp',
+            'cardLink' => '',
             "composante" => $composante
         ];
-        $this->render('ajout_prestataire', $data, 'gestionnaire');
+        $this->render('ajout_prestataireacomp', $data, 'gestionnaire');
     }
-
     /**
      * Renvoie la vue du formulaire pour l'ajout d'un prestataire
      * @return void
@@ -362,15 +362,79 @@ class Controller_gestionnaire extends Controller
     }
     public function action_ajouter_prestataire_a_comp()
     {
-        $bd = Model::getModel();
+        if (isset($_SESSION['id'])) {
+            $_SESSION['redirect'] = true;
+            $bd = Model::getModel();
+            $id_composante = $_POST['composante'];
+            $interlocuteurs = $bd->getInterlocuteursComposante($id_composante);
 
-        if (isset($_POST['id_personnes'], $_POST['id_composante']) && !empty($_POST['id_personnes'])) {
-            foreach ($_POST['id_personnes'] as $ids) {
-                $bd->addPrestataireToComposante($ids, $_POST['id_composante']);
+            if (!is_array($interlocuteurs) || empty($interlocuteurs)) {
+                $data = [
+                    'title' => 'Erreur de données',
+                    'message' => 'Aucun interlocuteur trouvé pour cette composante.'
+                ];
+                $this->render('message', $data);
+                return;
             }
 
+            // Choisir le premier interlocuteur trouvé
+            $id_interlocuteur = null;
+            foreach ($interlocuteurs as $interlocuteur) {
+                if (isset($interlocuteur['id_personne'])) {
+                    $id_interlocuteur = $interlocuteur['id_personne'];
+                    break;
+                }
+            }
+
+            if (is_null($id_interlocuteur)) {
+                $data = [
+                    'title' => 'Erreur de données',
+                    'message' => 'Aucun ID d\'interlocuteur valide trouvé pour cette composante.'
+                ];
+                $this->render('message', $data);
+                return;
+            }
+
+            if (isset($_POST['id_personne'], $_POST['composante']) && !empty($_POST['id_personne'])) {
+                $errorMessages = [];
+
+                foreach ($_POST['id_personne'] as $ids) {
+                    try {
+                        $bdl = $bd->addPrestataireToComposante($ids, $id_composante, $id_interlocuteur, $_SESSION['id'], date('F'), date('Y'));
+
+                        if ($bdl === true) {
+                            continue; // Ajout réussi, continuer à l'itération suivante
+                        } else {
+                            $errorMessages[] = "Erreur lors de l'ajout du BDL pour le prestataire $ids et la composante $id_composante.";
+                        }
+                    } catch (Exception $e) {
+                        $errorMessages[] = $e->getMessage();
+                    }
+                }
+
+                if (empty($errorMessages)) {
+                    $this->action_composantes(); // Rediriger ou afficher la page de succès
+                } else {
+                    $data = [
+                        'title' => 'Erreurs lors de l\'ajout',
+                        'message' => implode("<br>", $errorMessages)
+                    ];
+                    $this->render('message', $data);
+                }
+            } else {
+                $data = [
+                    'title' => 'Erreur de données',
+                    'message' => 'Les données du formulaire ne sont pas valides.'
+                ];
+                $this->render('message', $data);
+            }
+        } else {
+            $data = [
+                'title' => 'Erreur de session',
+                'message' => 'Session non valide.'
+            ];
+            $this->render('message', $data);
         }
-        $this->action_composantes();
     }
 
     /**
@@ -409,7 +473,7 @@ class Controller_gestionnaire extends Controller
      */
     public function action_ajout_commercial_form()
     {
-        // sessionstart();
+        sessionstart();
         $data = [
             'menu' => $this->action_get_navbar()
         ];
@@ -452,6 +516,425 @@ class Controller_gestionnaire extends Controller
 
         echo json_encode($response);
     }
+
+
+    /**
+     * Vérifie d'avoir les informations nécessaire et que le commercial n'existe pas en tant que personne et commercial avant de l'ajouter
+     * @return void
+     */
+
+
+    /**
+     * Action permettant de savoir si un client existe déjà ou non, réalisée avec AJAX.
+     *
+     * Cette méthode vérifie si les informations du client sont fournies via une requête POST.
+     * Si le client n'existe pas, il ajoute les informations du client à la session et retourne un succès.
+     * Sinon, il retourne un message indiquant que le client existe déjà.
+     * Si les informations du client sont manquantes, un message d'erreur est retourné.
+     *
+     * @return void La méthode retourne une réponse JSON contenant :
+     * - `success` : Booléen indiquant le succès ou l'échec de l'opération.
+     * - `message` : Un message d'erreur en cas d'échec.
+     */
+    public function action_is_client()
+    {
+        sessionstart();
+        $bd = Model::getModel();
+
+
+        if (isset($_POST['client'], $_POST['tel'])) {
+            if (!$bd->checkSocieteExiste($_POST['client'])) {
+                // $bd->addClient($_POST['client'], $_POST['tel']);
+                $_SESSION['company'] = ['client' => $_POST['client'], 'tel' => $_POST['tel']];
+
+                $response = ['success' => true];
+            } else {
+                $response = ['success' => false, 'message' => 'La société existe déjà.'];
+            }
+        } else {
+            $response = ['success' => false, 'message' => 'Informations manquantes.'];
+        }
+        echo json_encode($response);
+    }
+
+
+
+    // public function action_is_composante()
+    // {
+    //     //TODO en ajax
+    // }
+
+
+    /**
+     * Action permettant de savoir si une personne existe et la créée si ce n'est pas le cas
+     * @param $nom
+     * @param $prenom
+     * @param $email
+     * @return void
+     */
+    public function action_ajout_personne($nom, $prenom, $email, $tel)
+    {
+        $bd = Model::getModel();
+        if (!$bd->checkPersonneExiste($email)) {
+            // FIXME chiffrer le mot de passe et ucfirst sur nom prenom
+            $bd->createPersonne($nom, $prenom, $email, genererMdp(), $tel);
+        }
+        // TODO que faire si elle existe dejà?
+    }
+
+    /**
+     * Vérifie d'avoir un id dans l'url qui fait référence à la composante et renvoie la vue qui affiche les informations de la composante
+     * @return void
+     */
+    public function action_infos_composante()
+    {
+        if (isset($_SESSION['role'])) {
+            unset($_SESSION['role']);
+        }
+        $_SESSION['role'] = 'gestionnaire';
+        if (isset($_GET['id'])) {
+            $bd = Model::getModel();
+            $data = [
+                'infos' => $bd->getInfosComposante(e($_GET['id'])),
+                'prestataires' => $bd->getPrestatairesComposante(e($_GET['id'])),
+                'commerciaux' => $bd->getCommerciauxComposante(e($_GET['id'])),
+                'interlocuteurs' => $bd->getInterlocuteursComposante(e($_GET['id'])),
+                'bdl' => $bd->getBdlComposante(e($_GET['id'])),
+                'cardLink' => '?controller=gestionnaire',
+                'menu' => $this->action_get_navbar()
+            ];
+            $this->render('infos_composante', $data);
+        }
+    }
+
+    /**
+     * Vérifie qu'il existe dans l'url l'id qui fait référence au client et renvoie la vue qui affiche les informations sur le client
+     * @return void
+     */
+    public function action_infos_client()
+    {
+        sessionstart();
+        if (isset($_GET['id'])) {
+            $bd = Model::getModel();
+            $data = [
+                'infos' => $bd->getInfosSociete(e($_GET['id'])),
+                'composantes' => $bd->getComposantesSociete(e($_GET['id'])),
+                'interlocuteurs' => $bd->getInterlocuteursSociete(e($_GET['id'])),
+                'menu' => $this->action_get_navbar()
+            ];
+            $this->render('infos_client', $data);
+        }
+    }
+    // public function getCommercial()
+    // {
+
+    // }
+
+    // Méthode pour consulter les BDLs des prestataires
+    public function action_consulterBDLPrestataire()
+    {
+        $m = Model::getModel();
+        $id_prestataire = $_GET['id_prestataire'] ?? null;
+
+        if ($id_prestataire) {
+            $bdls = $m->getBDLsByPrestataireId($id_prestataire);
+            $this->render('afficher_bdl_prestataire', [
+                'bdls' => $bdls,
+                'menu' => $this->action_get_navbar()
+            ], 'gestionnaire');
+        } else {
+            echo "ID du prestataire manquant.";
+        }
+    }
+
+    public function action_consulterAbsencesPrestataire()
+    {
+        $m = Model::getModel();
+        $id_prestataire = $_GET['id_prestataire'] ?? null;
+
+        if ($id_prestataire) {
+            $absences = $m->getAbsencesByPersonId($id_prestataire);
+            $this->render('afficher_absences_prestataire', ['absences' => $absences, 'menu' => $this->action_get_navbar()], 'gestionnaire');
+        } else {
+            echo "ID du prestataire manquant.";
+        }
+    }
+
+    public function action_afficher_bdl()
+    {
+        $bd = Model::getModel();
+        // Vérifiez si l'ID du BDL est passé en GET
+        if (isset($_GET['id_bdl'])) {
+            // Stockez l'ID du BDL dans la session
+            $_SESSION['id_bdl'] = $_GET['id_bdl'];
+        }
+
+        // Récupérez l'ID du BDL et du prestataire depuis la session
+        $id_bdl = isset($_SESSION['id_bdl']) ? $_SESSION['id_bdl'] : null;
+        $id_prestataire = isset($_SESSION['id']) ? $_SESSION['id'] : null;
+
+
+        if ($id_bdl !== null && $id_prestataire !== null) {
+            // Récupérez les détails du BDL en utilisant l'ID du prestataire et l'ID du BDL
+            $bdl = $bd->getBdlPrestataireBybdlId($id_bdl);
+            $interlocuteur = $bd->getInterlocuteurByIdBDL($id_bdl);
+            $prestataire = $bd->getPrestataireByIdBDL($id_bdl);
+            $gestionnaire = $bd->getGestionnaireById($id_bdl);
+            $id_interlocuteur = $bdl['id_interlocuteur'];
+            // Récupérer le nom et prenom de l'interlocuteur
+            $nom = $bd->getInterlocuteurNameById($id_interlocuteur);
+
+            if ($bdl) {
+                // Inclure la bibliothèque FPDF
+                require_once ('libraries/fpdf/fpdf.php');
+
+                // Créer un nouvel objet FPDF
+                $pdf = new FPDF();
+                $pdf->AddPage();
+                $pdf->SetMargins(20, 20, 20);
+
+                // Ajouter les polices UTF-8 compatibles
+                $pdf->AddFont('FreeSerif', '', 'FreeSerif.php');
+                $pdf->AddFont('FreeSerif', 'B', 'FreeSerifBold.php');
+                $pdf->AddFont('FreeSerif', 'I', 'FreeSerifItalic.php');
+                $pdf->SetFont('FreeSerif', '', 12);
+
+                // Ajouter un logo
+                $pdf->Image('Content/images/logo3.png', 170, 10, 20);
+
+                // Titre du document
+                $pdf->SetFont('FreeSerif', 'B', 24);
+                $pdf->SetTextColor(0, 153, 204); // Couleur bleue ciel
+                $pdf->Cell(0, 20, iconv('UTF-8', 'ISO-8859-1', 'Bon de livraison'), 0, 1, 'L');
+                $pdf->Ln(5);
+                $pdf->SetDrawColor(0, 153, 204);
+                $pdf->SetLineWidth(1);
+                $pdf->Line(20, 35, 190, 35);
+                $pdf->Ln(10);
+
+                // Détails de l'entreprise
+                $pdf->SetFont('FreeSerif', 'B', 12);
+                $pdf->SetTextColor(0, 0, 0);
+                $pdf->Cell(0, 10, iconv('UTF-8', 'ISO-8859-1', 'SAS Perform Vision'), 0, 1, 'L');
+                $pdf->SetFont('FreeSerif', '', 12);
+                $pdf->Cell(0, 10, iconv('UTF-8', 'ISO-8859-1', 'Président: Slim ELLOUZE'), 0, 1, 'L');
+                $pdf->Ln(10);
+
+                // Détails du bon de livraison
+                $pdf->SetFont('FreeSerif', 'B', 12);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Bon de livraison N°: ') . htmlspecialchars($bdl['id_bdl']), 0, 0);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['nom_composante'])), 0, 1);
+                $pdf->SetFont('FreeSerif', '', 12);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Date : ') . date('d/m/Y'), 0, 0);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['nom_client'])), 0, 1);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Lieu : ') . iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['adresse_livraison'])), 0, 0);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['adresse_livraison'])), 0, 1);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Numéro de commande : ') . htmlspecialchars($bdl['id_bdl']), 0, 0);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Téléphone : ') . htmlspecialchars($bdl['telephone_client']), 0, 1);
+                $pdf->Ln(10);
+
+                // Informations sur l'interlocuteur à gauche et le prestataire à droite
+                $pdf->SetFont('FreeSerif', 'B', 12);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Interlocuteur'), 0, 0, 'L');
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Prestataire'), 0, 1, 'L');
+                $pdf->SetFont('FreeSerif', '', 12);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Nom: ') . htmlspecialchars($interlocuteur['prenom'] . ' ' . $interlocuteur['nom']), 0, 0, 'L');
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Nom: ') . htmlspecialchars($prestataire['prenom'] . ' ' . $prestataire['nom']), 0, 1, 'L');
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Téléphone: ') . htmlspecialchars($interlocuteur['telephone']), 0, 0, 'L');
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Téléphone: ') . htmlspecialchars($prestataire['telephone']), 0, 1, 'L');
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Email: ') . htmlspecialchars($interlocuteur['mail']), 0, 0, 'L');
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Email: ') . htmlspecialchars($prestataire['mail']), 0, 1, 'L');
+                $pdf->Ln(10);
+
+                // Informations sur le gestionnaire en dessous de l'interlocuteur
+                $pdf->SetFont('FreeSerif', 'B', 12);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Gestionnaire'), 0, 1, 'L');
+                $pdf->SetFont('FreeSerif', '', 12);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Nom: ') . htmlspecialchars($gestionnaire['prenom'] . ' ' . $gestionnaire['nom']), 0, 1, 'L');
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Téléphone: ') . htmlspecialchars($gestionnaire['telephone']), 0, 1, 'L');
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Email: ') . htmlspecialchars($gestionnaire['mail']), 0, 1, 'L');
+                $pdf->Ln(10);
+
+
+
+
+                // Récupérer les heures du BDL
+                $hours = $bd->getHoursByIdBDL($id_bdl);
+
+                // Afficher les heures dans un tableau dans le PDF
+                $pdf->SetFont('Arial', 'B', 12);
+                $pdf->SetTextColor(0, 51, 102);
+                // Ajuster la cellule pour couvrir la largeur du tableau et centrer le texte
+                $pdf->Cell(180, 10, iconv('UTF-8', 'ISO-8859-1', 'Heures travaillées'), 0, 1, 'C');
+                $pdf->Ln(5);
+                // Tableau des heures travaillées et des commentaires
+                $pdf->SetFont('FreeSerif', 'B', 12);
+                $pdf->SetFillColor(224, 235, 255); // Couleur de fond bleue claire
+                $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', 'Jour'), 1, 0, 'C', true);
+                $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', 'Nombre d\'heures'), 1, 1, 'C', true);
+
+                foreach ($hours as $hour) {
+                    $pdf->SetFont('FreeSerif', '', 12);
+                    $pdf->Cell(90, 10, htmlspecialchars($hour['jour']), 1, 0, 'C');
+                    $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($hour['hours_worked'])), 1, 1, 'C');
+                }
+                $pdf->Ln(20);
+
+
+
+
+
+                // Ajouter un espacement avant les signatures
+                // $pdf->Ln(20);
+                // Vérifiez si le prestataire a signé
+                $signature_prestataire = $bdl['signature_prestataire'] ? htmlspecialchars($bdl['nom_client']) : '__________________';
+                $signature_interlocuteur = $bdl['signature_interlocuteur'] ? htmlspecialchars($nom) : '__________________';
+
+                // Signatures
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du client:  ') . $signature_prestataire, 0, 0);
+                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du fournisseur:') . $signature_interlocuteur, 0, 1);
+                $pdf->Ln(20);
+
+                // Sauvegarder le PDF dans une variable
+                // $pdf_content = $pdf->Output('', 'S');
+                // Retourne le contenu du PDF en tant que chaîne
+
+                // Passer les données des BDLs et le contenu du PDF à la vue
+                //             $data = [
+                //                 'menu' => $this->action_get_navbar(),
+                //                 'title' => 'Affichage des BDLs',
+                //                 'bdl' => $bdl, // Passer les données du BDL à la vue
+                //                 'pdf_content' => $pdf_content // Passer le contenu du PDF à la vue
+                //             ];
+
+                //             // Rendre la vue avec les données
+                //             $this->render('afficher_bdl', $data);
+                //         } else {
+                //             echo "<script>alert('Aucun BDL trouvé pour cet ID.'); window.location.href = '?controller=prestataire&action=liste_bdl';</script>";
+                //             exit;
+                //         }
+                //     } else {
+                //         echo "ID BDL ou ID Prestataire non défini.";
+                //     }
+                // }
+                // Sortie du PDF
+                $pdf->Output('I', 'bon_de_livraison.pdf');
+            } else {
+                echo "Détails du bon de livraison introuvables.";
+            }
+        } else {
+            echo "ID du bon de livraison ou prestataire manquant.";
+        }
+    }
+
+
+
+
+    /**
+     * Renvoie la liste de toutes les clients avec leurs différentes composantes et les prestataires assigné avec la possibilité d'ajouter des prestataires
+     * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
+     * @return void
+     */
+
+
+    /**
+     * Renvoie la liste de tous les clients
+     * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
+     * @return void
+     */
+
+
+    /**
+     * Renvoie la liste de tous les prestataires
+     * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
+     * @return void
+     */
+
+
+    /**
+     * Renvoie la liste de tous les commerciaux
+     * La vérification de l'identifiant de Session permet de s'assurer que la personne est connectée en faisant partie de la base de données
+     * @return void
+     */
+
+
+    // /**
+    //  * Vérifie d'avoir les informations nécessaire pour renvoyer la vue liste avec les bonnes variables pour afficher la liste des bons de livraisons d'un prestataire en fonction de la mission
+    //  * @return void
+    //  */
+    // // TODO je ne trouve pas le render de cette action (A supprimer?)
+    // public function action_mission_bdl()
+    // {
+    //     $bd = Model::getModel();
+    //     sessionstart();
+    //     if (isset($_GET['id']) && isset($_GET['id-prestataire'])) {
+    //         $data = [
+    //             'title' => 'Bons de livraison',
+    //             'cardLink' => '?controller=gestionnaire&action=consulter_bdl',
+    //             'menu' => $this->action_get_navbar(),
+    //             'person' => $bd->getBdlsOfPrestataireByIdMission(e($_GET['id']), e($_GET['id-prestataire']))
+    //         ];
+    //         $this->render('liste', $data);
+    //     }
+    //     $this->action_dashboard();
+    // }
+
+    // /**
+    //  * Vérifie d'avoir les informations nécessaire à l'assignation d'un prestataire dans une mission
+    //  * @return void
+    //  */
+    // public function action_assigner_prestataire()
+    // {
+    //     sessionstart();
+    //     $bd = Model::getModel();
+    //     if (isset($_POST['email'])) {
+    //         // FIXME Il manque id_composante
+    //         $bd->assignerPrestataire(e($_POST['email']), e($_POST['mission']));
+    //     }
+    //     $this->action_dashboard();
+    // }
+
+
+    /*--------------------------------------------------------------------------------------*/
+    /*                                Formulaires d'ajout                                  */
+    /*--------------------------------------------------------------------------------------*/
+
+    /**
+     * Renvoie la vue du formulaire pour l'ajout d'un interlocuteur
+     * @return void
+     */
+
+
+    public function action_ajout_autre_composante()
+    {
+        if (isset($_GET['client'])) {
+            $bd = Model::getModel();
+            $data = [
+                'client' => $_GET['client'],
+                'gestionnaire' => $bd->getAllCommerciaux(),
+                'menu' => $this->action_get_navbar(),
+                'cardLink' => ''
+            ];
+            $this->render('ajout_autrecomp', $data, 'gestionnaire');
+        }
+    }
+
+
+
+
+
+
+
+    /**
+     * Renvoie la vue du formulaire pour l'ajout d'une mission
+     * @return void
+     */
+
+
+    /**
+     * Renvoie la vue du formulaire pour l'ajout d'un commercial
+     * @return void
+     */
 
     // /**
     //  * Vérifie qu'il y'a toutes les informations nécessaire pour l'ajout d'un(e) client/société
@@ -509,44 +992,9 @@ class Controller_gestionnaire extends Controller
         echo json_encode(['success' => true]);
     }
 
-    /**
-     * Action permettant de savoir si un client existe déjà ou non, réalisée avec AJAX.
-     *
-     * Cette méthode vérifie si les informations du client sont fournies via une requête POST.
-     * Si le client n'existe pas, il ajoute les informations du client à la session et retourne un succès.
-     * Sinon, il retourne un message indiquant que le client existe déjà.
-     * Si les informations du client sont manquantes, un message d'erreur est retourné.
-     *
-     * @return void La méthode retourne une réponse JSON contenant :
-     * - `success` : Booléen indiquant le succès ou l'échec de l'opération.
-     * - `message` : Un message d'erreur en cas d'échec.
-     */
-    public function action_is_client()
-    {
-        sessionstart();
-        $bd = Model::getModel();
-
-
-        if (isset($_POST['client'], $_POST['tel'])) {
-            if (!$bd->checkSocieteExiste($_POST['client'])) {
-                // $bd->addClient($_POST['client'], $_POST['tel']);
-                $_SESSION['company'] = ['client' => $_POST['client'], 'tel' => $_POST['tel']];
-
-                $response = ['success' => true];
-            } else {
-                $response = ['success' => false, 'message' => 'La société existe déjà.'];
-            }
-        } else {
-            $response = ['success' => false, 'message' => 'Informations manquantes.'];
-        }
-        echo json_encode($response);
-    }
-
     public function action_save_data()
     {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+        sessionstart();
 
         $bd = Model::getModel();
         ob_start(); // Démarrer la capture de sortie
@@ -684,152 +1132,145 @@ class Controller_gestionnaire extends Controller
         echo json_encode($response);
     }
 
+    public function action_save_data2()
+    {
+        sessionstart();
 
+        $bd = Model::getModel();
+        ob_start(); // Démarrer la capture de sortie
 
-    // public function action_save_data()
-    // {
-    //     ini_set('display_errors', 1);
-    //     ini_set('display_startup_errors', 1);
-    //     error_reporting(E_ALL);
+        $step = $_POST['step'] ?? null;
+        $response = ['success' => false, 'message' => 'Données manquantes ou invalides'];
 
-    //     session_start();
-    //     $bd = Model::getModel();
-    //     ob_start(); // Démarrer la capture de sortie
+        if ($step) {
+            switch ($step) {
+                case 1:
+                    if (isset($_POST['societe'], $_POST['composante']) && isValidName($_POST['composante'])) {
+                        $_SESSION['company'] = ['societe' => $_POST['societe']];
+                        $_SESSION['composante'] = $_POST['composante'];
+                        $response = ['success' => true];
+                    } else {
+                        $response['message'] = 'Nom de la société ou composante invalide';
+                    }
+                    break;
 
-    //     $step = $_POST['step'] ?? null;
-    //     $response = ['success' => false, 'message' => 'Données manquantes ou invalides'];
+                case 2:
+                    if (
+                        isset($_POST['adresse'], $_POST['voie'], $_POST['cp'], $_POST['ville']) &&
+                        isValidAdresse($_POST['adresse']) &&
+                        isValidName($_POST['voie']) &&
+                        isValidCp($_POST['cp']) &&
+                        isValidName($_POST['ville'])
+                    ) {
+                        $_SESSION['adresse'] = [
+                            'adresse' => $_POST['adresse'],
+                            'voie' => $_POST['voie'],
+                            'cp' => $_POST['cp'],
+                            'ville' => $_POST['ville']
+                        ];
+                        $response = ['success' => true];
+                    } else {
+                        $response['message'] = 'Adresse, voie, code postal ou ville invalide';
+                    }
+                    break;
 
-    //     if ($step) {
-    //         switch ($step) {
-    //             case 1:
-    //                 if (isset($_POST['client'], $_POST['tel'])) {
-    //                     $_SESSION['company'] = ['client' => $_POST['client'], 'tel' => $_POST['tel']];
-    //                     $response = ['success' => true];
-    //                 } else {
-    //                     $response['message'] = 'Nom de la société ou numéro de téléphone invalide';
-    //                 }
-    //                 break;
+                case 3:
+                    if (
+                        isset($_POST['prenom_int'], $_POST['nom_int'], $_POST['mail_int'], $_POST['tel_int']) &&
+                        isValidName($_POST['prenom_int']) &&
+                        isValidName($_POST['nom_int']) &&
+                        isValidEmail($_POST['mail_int']) &&
+                        isValidPhoneNumber($_POST['tel_int'])
+                    ) {
+                        $_SESSION['interlocuteur'] = [
+                            'prenom_int' => $_POST['prenom_int'],
+                            'nom_int' => $_POST['nom_int'],
+                            'mail_int' => $_POST['mail_int'],
+                            'tel_int' => $_POST['tel_int']
+                        ];
+                        $response = ['success' => true];
+                    } else {
+                        $response['message'] = 'Prénom, nom, email ou téléphone de l\'interlocuteur invalide';
+                    }
+                    break;
 
-    //             case 2:
-    //                 if (isset($_POST['composante']) && isValidName($_POST['composante'])) {
-    //                     $_SESSION['composante'] = $_POST['composante'];
-    //                     $response = ['success' => true];
-    //                 } else {
-    //                     $response['message'] = 'Nom de la composante invalide';
-    //                 }
-    //                 break;
+                case 4:
+                    if (isset($_POST['idsCommerciaux']) && !empty($_POST['idsCommerciaux'])) {
+                        $_SESSION['commerciaux'] = [];
+                        foreach ($_POST['idsCommerciaux'] as $idCommercial) {
+                            if (!in_array($idCommercial, $_SESSION['commerciaux'])) {
+                                $_SESSION['commerciaux'][] = $idCommercial;
+                            }
+                        }
 
-    //             case 3:
-    //                 if (
-    //                     isset($_POST['adresse'], $_POST['voie'], $_POST['cp'], $_POST['ville']) &&
-    //                     isValidAdresse($_POST['adresse']) &&
-    //                     isValidName($_POST['voie']) &&
-    //                     isValidCp($_POST['cp']) &&
-    //                     isValidName($_POST['ville'])
-    //                 ) {
-    //                     $_SESSION['adresse'] = [
-    //                         'adresse' => $_POST['adresse'],
-    //                         'voie' => $_POST['voie'],
-    //                         'cp' => $_POST['cp'],
-    //                         'ville' => $_POST['ville']
-    //                     ];
-    //                     $response = ['success' => true];
-    //                 } else {
-    //                     $response['message'] = 'Adresse, voie, code postal ou ville invalide';
-    //                 }
-    //                 break;
+                        try {
+                            $bd->beginTransaction();
 
-    //             case 4:
-    //                 if (
-    //                     isset($_POST['prenom_int'], $_POST['nom_int'], $_POST['mail_int'], $_POST['tel_int']) &&
-    //                     isValidName($_POST['prenom_int']) &&
-    //                     isValidName($_POST['nom_int']) &&
-    //                     isValidEmail($_POST['mail_int']) &&
-    //                     isValidPhoneNumber($_POST['tel_int'])
-    //                 ) {
-    //                     $_SESSION['interlocuteur'] = [
-    //                         'prenom_int' => $_POST['prenom_int'],
-    //                         'nom_int' => $_POST['nom_int'],
-    //                         'mail_int' => $_POST['mail_int'],
-    //                         'tel_int' => $_POST['tel_int']
-    //                     ];
-    //                     $response = ['success' => true];
-    //                 } else {
-    //                     $response['message'] = 'Prénom, nom, email ou téléphone de l\'interlocuteur invalide';
-    //                 }
-    //                 break;
+                            // Ensure the client exists
+                            $client = $bd->getClientById($_SESSION['company']['societe']);
+                            if (!$client) {
+                                throw new Exception('Client not found');
+                            }
 
-    //             case 5:
-    //                 if (isset($_POST['idsCommerciaux']) && !empty($_POST['idsCommerciaux'])) {
-    //                     $_SESSION['commerciaux'] = [];
-    //                     foreach ($_POST['idsCommerciaux'] as $idCommercial) {
-    //                         if (!in_array($idCommercial, $_SESSION['commerciaux'])) {
-    //                             $_SESSION['commerciaux'][] = $idCommercial;
-    //                         }
-    //                     }
+                            $idAdresse = $bd->addAdresse(
+                                $_SESSION['adresse']['adresse'],
+                                $_SESSION['adresse']['cp'],
+                                $_SESSION['adresse']['ville'],
+                                $_SESSION['adresse']['voie']
+                            );
 
+                            $id_comp = $bd->addComposante($_SESSION['composante'], $idAdresse, $client['id_client']);
 
-    //                     try {
-    //                         $bd->beginTransaction();
+                            $bd->createPersonne(
+                                $_SESSION['interlocuteur']['nom_int'],
+                                $_SESSION['interlocuteur']['prenom_int'],
+                                $_SESSION['interlocuteur']['mail_int'],
+                                genererMdp(),
+                                $_SESSION['interlocuteur']['tel_int']
+                            );
 
-    //                         $bd->addClient($_SESSION['company']['client'], $_SESSION['company']['tel']);
-    //                         $client = $bd->getClientByName($_SESSION['company']['client']);
-    //                         $idAdresse = $bd->addAdresse(
-    //                             $_SESSION['adresse']['adresse'],
-    //                             $_SESSION['adresse']['cp'],
-    //                             $_SESSION['adresse']['ville'],
-    //                             $_SESSION['adresse']['voie']
-    //                         );
-    //                         $id_comp = $bd->addComposante($_SESSION['composante'], $idAdresse, $client['id_client']);
-    //                         $bd->createPersonne(
-    //                             $_SESSION['interlocuteur']['nom_int'],
-    //                             $_SESSION['interlocuteur']['prenom_int'],
-    //                             $_SESSION['interlocuteur']['mail_int'],
-    //                             genererMdp(),
-    //                             $_SESSION['interlocuteur']['tel_int']
-    //                         );
-    //                         $bd->addInterlocuteur($_SESSION['interlocuteur']['mail_int']);
-    //                         $id_int = $bd->getInterlocuteurIdByEmail($_SESSION['interlocuteur']['mail_int']);
-    //                         $bd->addInterlocuteurToComposante($id_int, $id_comp);
+                            $bd->addInterlocuteur($_SESSION['interlocuteur']['mail_int']);
+                            $id_int = $bd->getInterlocuteurIdByEmail($_SESSION['interlocuteur']['mail_int']);
+                            $bd->addInterlocuteurToComposante($id_int, $id_comp);
 
-    //                         foreach ($_SESSION['commerciaux'] as $comm) {
-    //                             $bd->addCommercialToComposante($comm, $id_comp);
-    //                         }
+                            foreach ($_SESSION['commerciaux'] as $comm) {
+                                $bd->addCommercialToComposante($comm, $id_comp);
+                            }
 
-    //                         $bd->commit();
+                            $bd->commit();
 
-    //                         unset($_SESSION['company']);
-    //                         unset($_SESSION['composante']);
-    //                         unset($_SESSION['adresse']);
-    //                         unset($_SESSION['interlocuteur']);
-    //                         unset($_SESSION['commerciaux']);
+                            // Clear session data after successful transaction
+                            unset($_SESSION['company']);
+                            unset($_SESSION['composante']);
+                            unset($_SESSION['adresse']);
+                            unset($_SESSION['interlocuteur']);
+                            unset($_SESSION['commerciaux']);
 
-    //                         $response = ['success' => true, 'message' => 'Données enregistrées avec succès'];
-    //                     } catch (Exception $e) {
-    //                         $bd->rollBack();
-    //                         $response = ['success' => false, 'message' => 'Erreur lors de l\'enregistrement des données'];
-    //                     }
-    //                 } else {
-    //                     $response['message'] = 'IDs commerciaux manquants ou invalides';
-    //                 }
-    //                 break;
+                            $response = ['success' => true, 'message' => 'Données enregistrées avec succès'];
+                        } catch (Exception $e) {
+                            $bd->rollBack();
+                            $response = ['success' => false, 'message' => 'Erreur lors de l\'enregistrement des données: ' . $e->getMessage()];
+                        }
+                    } else {
+                        $response['message'] = 'IDs commerciaux manquants ou invalides';
+                    }
+                    break;
 
-    //             default:
-    //                 $response['message'] = 'Étape invalide';
-    //                 break;
-    //         }
-    //     }
-    //     $output = ob_get_clean(); // Récupérer et nettoyer la sortie
+                default:
+                    $response['message'] = 'Étape invalide';
+                    break;
+            }
+        }
 
-    //     if (!empty($output)) {
-    //         error_log("Unexpected output: $output");
-    //     }
-    //     header('Content-Type: application/json');
+        $output = ob_get_clean(); // Récupérer et nettoyer la sortie
 
+        if (!empty($output)) {
+            error_log("Unexpected output: $output");
+        }
 
-    //     echo json_encode($response);
-
-    // }
+        header('Content-Type: application/json');
+        echo json_encode($response);
+    }
 
     public function action_is_interlocuteur()
     {
@@ -872,82 +1313,6 @@ class Controller_gestionnaire extends Controller
     // public function action_is_composante()
     // {
     //     //TODO en ajax
-    // }
-
-
-    /**
-     * Action permettant de savoir si une personne existe et la créée si ce n'est pas le cas
-     * @param $nom
-     * @param $prenom
-     * @param $email
-     * @return void
-     */
-    public function action_ajout_personne($nom, $prenom, $email, $tel)
-    {
-        $bd = Model::getModel();
-        if (!$bd->checkPersonneExiste($email)) {
-            // FIXME chiffrer le mot de passe et ucfirst sur nom prenom
-            $bd->createPersonne($nom, $prenom, $email, genererMdp(), $tel);
-        }
-        // TODO que faire si elle existe dejà?
-    }
-
-    // /**
-    //  * Fonction qui créée une composante, son interlocuteur, commercial et les assigne a elle, et créée la mission.
-    //  * @return void
-    //  */
-    // public function action_ajout_composante()
-    // {
-    //     $bd = Model::getModel();
-    //     if (
-    //         isset($_POST['composante']) &&
-    //         isset($_POST['numero-voie']) &&
-    //         isset($_POST['type-voie']) &&
-    //         isset($_POST['nom-voie']) &&
-    //         isset($_POST['cp']) &&
-    //         isset($_POST['ville']) &&
-    //         !$bd->checkComposanteExiste($_POST['composante'], $_POST['client'])
-    //     ) {
-    //         $bd->addComposante(
-    //             $_POST['type-voie'],
-    //             $_POST['cp'],
-    //             $_POST['numero-voie'],
-    //             $_POST['nom-voie'],
-    //             $_POST['client'],
-    //             $_POST['composante']
-    //         );
-    //         $this->action_ajout_interlocuteur_dans_composante();
-    //         $this->action_ajout_commercial_dans_composante();
-    //         $this->action_ajout_mission();
-    //     }
-    //     if (isset($_POST['tel'])) {
-    //         $this->action_ajout_client();
-    //     } else {
-    //         $this->action_ajout_composante_form();
-    //     }
-    // }
-
-    // /**
-    //  * Vérifie que la mission n'existe pas pour ensuite la créer
-    //  * @return void
-    //  */
-    // public function action_ajout_mission()
-    // {
-
-    //     $bd = Model::getModel();
-    //     if (
-    //         !$bd->checkMissionExiste(e($_POST['mission']), e($_POST['composante']))
-    //     ) {
-    //         $bd->addMission(
-    //             e($_POST['type-bdl']),
-    //             e($_POST['mission']),
-    //             e($_POST['date-mission']),
-    //             e($_POST['composante']),
-    //             e($_POST['client'])
-    //         );
-
-
-    //     }
     // }
 
     /**
@@ -998,131 +1363,6 @@ class Controller_gestionnaire extends Controller
     }
 
 
-    // /**
-    //  * Vérifie d'avoir toutes les informations nécessaires pour l'ajout d'un interlocuteur dans une composante
-    //  * @return void
-    //  */
-    // public function action_ajout_interlocuteur_dans_composante()
-    // {
-    //     $bd = Model::getModel();
-    //     if (
-    //         isset($_GET['id-composante']) &&
-    //         isset($_POST['email-interlocuteur']) &&
-    //         isset($_POST['nom-interlocuteur']) &&
-    //         isset($_POST['prenom-interlocuteur'])
-    //     ) {
-    //         if (!$bd->checkInterlocuteurExiste(e($_POST['email-interlocuteur']))) {
-    //             $this->action_ajout_personne(e($_POST['nom-interlocuteur']), e($_POST['prenom-interlocuteur']), e($_POST['email-interlocuteur']));
-    //             $bd->addInterlocuteur(e($_POST['email-interlocuteur']));
-    //         }
-    //         $bd->assignerInterlocuteurComposanteByIdComposante(e($_GET['id-composante']), e($_POST['email-interlocuteur']));
-    //         $this->action_composantes();
-    //     }
-    //     if (
-    //         isset($_GET['id-client']) &&
-    //         isset($_POST['email-interlocuteur']) &&
-    //         isset($_POST['nom-interlocuteur']) &&
-    //         isset($_POST['prenom-interlocuteur']) &&
-    //         isset($_POST['composante'])
-    //     ) {
-    //         if (!$bd->checkInterlocuteurExiste(e($_POST['email-interlocuteur']))) {
-    //             $this->action_ajout_personne(e($_POST['nom-interlocuteur']), e($_POST['prenom-interlocuteur']), e($_POST['email-interlocuteur']));
-    //             $bd->addInterlocuteur(e($_POST['email-interlocuteur']));
-    //         }
-    //         $bd->assignerInterlocuteurComposanteByIdClient(e($_GET['id-client']), e($_POST['email-interlocuteur']), e($_POST['composante']));
-    //         $this->action_clients();
-    //     }
-    //     if (isset($_POST['client']) && isset($_POST['composante'])) {
-    //         $id = $bd->getIdComposante(e($_POST['composante']), e($_POST['client']));
-    //         $bd->assignerInterlocuteurComposanteByIdComposante($id['id_composante'], e($_POST['email-interlocuteur']));
-    //     }
-    // }
-
-    // /**
-    //  * Vérifie d'avoir les informations nécessaires pour l'ajout d'un prestataire dans une misison
-    //  * @return void
-    //  */
-    // public function action_ajout_prestataire_dans_mission()
-    // {
-    //     $bd = Model::getModel();
-    //     if (
-    //         isset($_POST['mission']) &&
-    //         isset($_POST['email-prestataire']) &&
-    //         $_GET['id'] &&
-    //         $bd->checkPrestataireExiste(e($_POST['email-prestataire']))
-    //     ) {
-    //         $bd->assignerPrestataire(e($_POST['email-prestataire']), e($_POST['mission']), e($_GET['id']));
-    //     }
-    //     $this->action_ajout_prestataire_form();
-    // }
-
-    // /**
-    //  * Vérifie d'avoir les informations nécessaires pour l'ajout d'un commercial dans une composante
-    //  * @return void
-    //  */
-    // public function action_ajout_commercial_dans_composante()
-    // {
-    //     $bd = Model::getModel();
-    //     if (
-    //         isset($_POST['composante']) &&
-    //         isset($_POST['email-commercial']) &&
-    //         isset($_POST['client'])
-    //     ) {
-    //         $this->action_ajout_commercial();
-    //         $bd->assignerCommercial(e($_POST['email-commercial']), e($_POST['composante']), e($_POST['client']));
-
-    //     } elseif (isset($_POST['email-commercial']) && isset($_GET['id-composante'])) {
-    //         $this->action_ajout_commercial();
-    //         $bd->assignerCommercialByIdComposante(e($_POST['email-commercial']), e($_GET['id-composante']));
-    //         $this->action_ajout_commercial_form();
-    //     }
-    // }
-
-    /**
-     * Vérifie d'avoir un id dans l'url qui fait référence à la composante et renvoie la vue qui affiche les informations de la composante
-     * @return void
-     */
-    public function action_infos_composante()
-    {
-        if (isset($_SESSION['role'])) {
-            unset($_SESSION['role']);
-        }
-        $_SESSION['role'] = 'gestionnaire';
-        if (isset($_GET['id'])) {
-            $bd = Model::getModel();
-            $data = [
-                'infos' => $bd->getInfosComposante(e($_GET['id'])),
-                'prestataires' => $bd->getPrestatairesComposante(e($_GET['id'])),
-                'commerciaux' => $bd->getCommerciauxComposante(e($_GET['id'])),
-                'interlocuteurs' => $bd->getInterlocuteursComposante(e($_GET['id'])),
-                'bdl' => $bd->getBdlComposante(e($_GET['id'])),
-                'cardLink' => '?controller=gestionnaire',
-                'menu' => $this->action_get_navbar()
-            ];
-            var_dump($_SESSION['role']);
-            $this->render('infos_composante', $data);
-        }
-    }
-
-    /**
-     * Vérifie qu'il existe dans l'url l'id qui fait référence au client et renvoie la vue qui affiche les informations sur le client
-     * @return void
-     */
-    public function action_infos_client()
-    {
-        sessionstart();
-        if (isset($_GET['id'])) {
-            $bd = Model::getModel();
-            $data = [
-                'infos' => $bd->getInfosSociete(e($_GET['id'])),
-                'composantes' => $bd->getComposantesSociete(e($_GET['id'])),
-                'interlocuteurs' => $bd->getInterlocuteursSociete(e($_GET['id'])),
-                'menu' => $this->action_get_navbar()
-            ];
-            $this->render('infos_client', $data);
-        }
-    }
-
 
     // Ajout d'une fonction pour rechercher un prestataire 10/05 Romain
     // ca recherche pas un gestionnaire mais obligé de mettre ça car leur site est cassé
@@ -1138,7 +1378,7 @@ class Controller_gestionnaire extends Controller
     public function action_rechercher()
     {
         $m = Model::getModel();
-        // session_start();
+        session_start();
         if (isset($_GET['role'], $_POST['recherche'])) {
             $roles = ['client', 'prestataire', 'commercial'];
             if (in_array($_GET['role'], $roles)) {
@@ -1249,233 +1489,7 @@ class Controller_gestionnaire extends Controller
         }
 
     }
-    public function getCommercial()
-    {
 
-    }
-    //     public function action_rechercherAJAX()
-// {
-//     $m = Model::getModel();
-//     session_start();
-//     header('Content-Type: application/json'); // Définir le type de contenu comme JSON
-
-    //     if (isset($_GET['role'], $_POST['recherche'])) {
-//         $roles = ['client', 'prestataire', 'commercial'];
-//         if (in_array($_GET['role'], $roles)) {
-
-    //             $recherche = '';
-//             $role = ucfirst($_GET['role']);
-
-    //             $fonction_recherche = "recherche{$role}";
-//             $fonction_recuperation = "get{$role}ByIds";
-
-    //             $recherche = ucfirst(strtolower($_POST['recherche']));
-
-    //             $resultat = $m->$fonction_recherche($recherche);
-
-    //             if($_GET['role'] == 'commercial' || $_GET['role'] == 'prestataire'){
-//                 $ids = array_column($resultat, 'id_personne');
-//             }
-//             else{
-//                 $ids = array_column($resultat, 'id_client');
-//             }
-//             $users = $m->$fonction_recuperation($ids);
-
-    //             echo json_encode($users); // Retourner les résultats sous forme de JSON
-//         } else {
-//             echo json_encode(['error' => 'Rôle invalide.']);
-//         }
-//     } else {
-//         echo json_encode(['error' => 'Paramètres de recherche invalides.']);
-//     }
-//     exit; // Terminer le script après l'envoi de la réponse JSON
-// }
-
-    // public function saveData2(){
-    //     $m = Model::getModel();
-    //     session_id('creer_client');
-    //     session_start();
-    //     if(isset($_SESSION['personne'])){
-    //         session_unset();
-    //         session_destroy();
-    //     }
-    //     else{
-    //         if(isset($_POST['client'], $_POST['tel'])){
-    //             if(isValidName($_POST['client'] && isValidPhoneNumber($_POST['tel']))){
-    //                 // Réinitialiser l'ID de session pour plus de sécurité
-    //                 session_regenerate_id(true);
-
-    //                 // Enregistrer les données dans la session
-    //                 $_SESSION['personne']['societe'] = $_POST['client'];
-    //                 $_SESSION['personne']['tel'] = $_POST['tel'];
-    //             }
-    //             // Vérifier que les données sont valides
-
-    //         }
-    //     }
-    // }
-
-
-    // Méthode pour consulter les BDLs des prestataires
-    public function action_consulterBDLPrestataire()
-    {
-        $m = Model::getModel();
-        $id_prestataire = $_GET['id_prestataire'] ?? null;
-
-        if ($id_prestataire) {
-            $bdls = $m->getBDLsByPrestataireId($id_prestataire);
-            $this->render('afficher_bdl_prestataire', [
-                'bdls' => $bdls,
-                'menu' => $this->action_get_navbar()
-            ], 'gestionnaire');
-        } else {
-            echo "ID du prestataire manquant.";
-        }
-    }
-
-    public function action_consulterAbsencesPrestataire()
-    {
-        $m = Model::getModel();
-        $id_prestataire = $_GET['id_prestataire'] ?? null;
-
-        if ($id_prestataire) {
-            $absences = $m->getAbsencesByPersonId($id_prestataire);
-            $this->render('afficher_absences_prestataire', ['absences' => $absences, 'menu' => $this->action_get_navbar()], 'gestionnaire');
-        } else {
-            echo "ID du prestataire manquant.";
-        }
-    }
-
-    public function action_afficher_bdl()
-    {
-        $bd = Model::getModel();
-
-        // Vérifiez si l'ID du BDL est passé en GET
-        if (isset($_GET['id_bdl'])) {
-            // Stockez l'ID du BDL dans la session
-            $_SESSION['id_bdl'] = $_GET['id_bdl'];
-        }
-
-        // Récupérez l'ID du BDL et du prestataire depuis la session
-        $id_bdl = isset($_SESSION['id_bdl']) ? $_SESSION['id_bdl'] : null;
-        $id_prestataire = isset($_SESSION['id']) ? $_SESSION['id'] : null;
-
-        if ($id_bdl !== null && $id_prestataire !== null) {
-            // Récupérez les détails du BDL en utilisant l'ID du prestataire et l'ID du BDL
-            $bdl = $bd->getBdlPrestataireBybdlId($id_bdl);
-
-
-            if ($bdl) {
-                // Inclure la bibliothèque FPDF
-                require_once ('libraries/fpdf/fpdf.php');
-
-                // Créer un nouvel objet FPDF
-                $pdf = new FPDF();
-                $pdf->AddPage();
-                $pdf->SetMargins(20, 20, 20);
-
-                // Ajouter les polices UTF-8 compatibles
-                $pdf->AddFont('FreeSerif', '', 'FreeSerif.php');
-                $pdf->AddFont('FreeSerif', 'B', 'FreeSerifBold.php');
-                $pdf->AddFont('FreeSerif', 'I', 'FreeSerifItalic.php');
-                $pdf->SetFont('FreeSerif', '', 12);
-
-                // Ajouter un logo
-                $pdf->Image('Content/images/logo3.png', 170, 10, 20);
-
-                // Titre du document
-                $pdf->SetFont('FreeSerif', 'B', 24);
-                $pdf->SetTextColor(0, 153, 204); // Couleur bleue ciel
-                $pdf->Cell(0, 20, iconv('UTF-8', 'ISO-8859-1', 'Bon de livraison'), 0, 1, 'L');
-                $pdf->Ln(5);
-                $pdf->SetDrawColor(0, 153, 204);
-                $pdf->SetLineWidth(1);
-                $pdf->Line(20, 35, 190, 35);
-                $pdf->Ln(10);
-
-                // Détails de l'entreprise
-                $pdf->SetFont('FreeSerif', 'B', 12);
-                $pdf->SetTextColor(0, 0, 0);
-                $pdf->Cell(0, 10, iconv('UTF-8', 'ISO-8859-1', 'SAS Perform Vision'), 0, 1, 'L');
-                $pdf->SetFont('FreeSerif', '', 12);
-                $pdf->Cell(0, 10, iconv('UTF-8', 'ISO-8859-1', 'Président: Slim ELLOUZE'), 0, 1, 'L');
-                $pdf->Ln(10);
-
-                // Détails du bon de livraison
-                $pdf->SetFont('FreeSerif', 'B', 12);
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Bon de livraison N°: ') . htmlspecialchars($bdl['id_bdl']), 0, 0);
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Destinataire'), 0, 1);
-                $pdf->SetFont('FreeSerif', '', 12);
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Date : ') . date('d/m/Y'), 0, 0);
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['nom_client'])), 0, 1);
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Lieu : ') . iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['adresse_livraison'])), 0, 0);
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['adresse_livraison'])), 0, 1);
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Numéro de commande : ') . htmlspecialchars($bdl['id_bdl']), 0, 0);
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Téléphone : ') . htmlspecialchars($bdl['telephone_client']), 0, 1);
-                $pdf->Ln(10);
-
-                // Informations supplémentaires
-                $pdf->SetFont('FreeSerif', 'B', 12);
-                $pdf->Cell(0, 10, iconv('UTF-8', 'ISO-8859-1', 'Informations supplémentaires'), 0, 1, 'L');
-                $pdf->SetFont('FreeSerif', '', 12);
-                $pdf->Cell(0, 10, iconv('UTF-8', 'ISO-8859-1', 'Merci d\'avoir choisi SAS Perform Vision pour nos services.'), 0, 1, 'L');
-                $pdf->Ln(10);
-
-                // Tableau des heures travaillées et des commentaires
-                $pdf->SetFont('FreeSerif', 'B', 12);
-                $pdf->SetFillColor(224, 235, 255); // Couleur de fond bleue claire
-                $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', 'Nombre d\'heures travaillées'), 1, 0, 'C', true);
-                $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', 'Commentaires'), 1, 1, 'C', true);
-
-                $pdf->SetFont('FreeSerif', '', 12);
-                $pdf->Cell(90, 10, htmlspecialchars($bdl['heures']), 1, 0, 'C');
-                $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', htmlspecialchars($bdl['commentaire'])), 1, 1, 'C');
-                $pdf->Ln(10);
-
-                // Ajouter un espacement avant les signatures
-                $pdf->Ln(20);
-                // Vérifiez si le prestataire a signé
-                $signature_prestataire = $bdl['signature_prestataire'] ? htmlspecialchars($bdl['nom_client']) : '__________________';
-                // $signature_gestionnaire = $bdl['signature_gestionnaire'] ? htmlspecialchars($bdl['nom_client']) : '__________________';
-
-                // Signatures
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du client:  ') . $signature_prestataire, 0, 0);
-                $pdf->Cell(95, 10, iconv('UTF-8', 'ISO-8859-1', 'Signature du fournisseur: __________________'), 0, 1);
-                $pdf->Ln(20);
-
-
-
-
-                // Sauvegarder le PDF dans une variable
-                $pdf_content = $pdf->Output('', 'S'); // Retourne le contenu du PDF en tant que chaîne
-
-                //             // Passer les données des BDLs et le contenu du PDF à la vue
-                //             $data = [
-                //                 'menu' => $this->action_get_navbar(),
-                //                 'title' => 'Affichage des BDLs',
-                //                 'bdl' => $bdl, // Passer les données du BDL à la vue
-                //                 'pdf_content' => $pdf_content // Passer le contenu du PDF à la vue
-                //             ];
-
-                //             // Rendre la vue avec les données
-                //             $this->render('afficher_bdl', $data);
-                //         } else {
-                //             echo "<script>alert('Aucun BDL trouvé pour cet ID.'); window.location.href = '?controller=prestataire&action=liste_bdl';</script>";
-                //             exit;
-                //         }
-                //     } else {
-                //         echo "ID BDL ou ID Prestataire non défini.";
-                //     }
-                // }
-                // Sortie du PDF
-                $pdf->Output('I', 'bon_de_livraison.pdf');
-            } else {
-                echo "Détails du bon de livraison introuvables.";
-            }
-        } else {
-            echo "ID du bon de livraison ou prestataire manquant.";
-        }
-    }
 
 }
 

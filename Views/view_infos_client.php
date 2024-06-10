@@ -68,9 +68,9 @@ require 'view_header.php';
                     <p>Aucun composante trouvé.</p>
                 <?php endif; ?>
                 <?php if (!str_contains('commercial', $_GET['controller'])): ?>
-                    <a href="?controller=<?= $_GET['controller'] ?>&action=ajout_composante_form" class="ajout"><i
-                            class="fa fa-solid fa-user-plus"></i>
-                        &nbsp; Ajouter</a>
+                    <a href="?controller=<?= $_GET['controller'] ?>&action=ajout_autre_composante&client=<?= $infos['id_client'] ?>"
+                        class="ajout"><i class="fa fa-solid fa-user-plus"></i>
+                        &nbsp; Ajouter composante</a>
                 <?php else: ?>
                     <a href="" class="ajout"></a>
                 <?php endif; ?>
