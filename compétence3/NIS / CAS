@@ -1,0 +1,47 @@
+Le protocole NIS (Network Information Service)
+Qu’est ce que le NIS ?
+
+Le protocole NIS soit Network Information Service, est un protocole client/serveur développé par Sun Microsystems et introduisant la notion d’annuaire (“pages jaunes”). Il permet de centraliser les informations des utilisateurs tels que les noms d'utilisateur, les mots de passe, les groupes et bien plus, sur un serveur. Le serveur NIS utilise des tables de BD (des “maps”) à simple clé unique, calculées à partir des fichiers systèmes. Le client peut alors récupérer les informations en interrogeant le serveur à partir d'appels RPC (Remote Procedure Call). NIS est surtout adapté pour les réseaux Unix et Linux. Ce protocole est souvent utilisé comme un serveur d’authentification.
+
+Comment fonctionne l’authentification ?
+
+Au départ, les informations utilisateur sont stockées sur le serveur NIS dans des fichiers spécifiques (par exemple, /etc/passwd, /etc/shadow, /etc/group). Ces fichiers sont convertis en "maps" NIS que le serveur peut alors distribuer aux clients. Ensuite, lorsqu'un utilisateur tente de se connecter à un client, le client envoie une requête au serveur pour vérifier les informations d'identification de l'utilisateur. Le serveur NIS répond avec les données correspondantes (par exemple, le mot de passe crypté) que le client utilise pour authentifier l'utilisateur. Le serveur NIS recherche alors dans ses "maps" et renvoie les informations correspondantes au client. Le mot de passe fourni par l'utilisateur est ensuite comparé au mot de passe crypté reçu du serveur NIS. Enfin, soit l'utilisateur est authentifié et peut accéder à la machine cliente si les deux correspondent ou l'accès est rejeté.
+
+Quels sont les points positifs et négatifs de NIS ?
+
+NIS a plusieurs avantages. Il évite la mise en place d’un petit DNS local en fournissant des hosts et est plutôt simple à configurer pour des réseaux de taille moyenne ou petite. De plus, en centralisant la gestion des utilisateurs, NIS facilite la maintenance et les mises à jour. Ce protocole à aussi quelques inconvénients. En effet, les informations sont transmises de manière transparente sur le réseau, ce qui n’est pas sécurisé. NIS ne prend pas en charge les protocoles de chiffrement contemporains et peut également rencontrer des problèmes de performance et de gestion dans les réseaux de grande taille. Enfin, aujourd’hui NIS est progressivement abandonné pour LDAP.
+
+Le protocole CAS (Central Authentication Service)
+Qu’est ce que le CAS ?
+
+Le protocole CAS soit Central Authentication Service, est un protocole développé par Shawn Bayern de l'Université Yale. C'est un protocole d’authentification unique (SSO) qui permet aux sites web d’authentifier les utilisateurs une seule fois afin qu’ils puissent accéder à plusieurs systèmes sans avoir à se reconnecter. CAS emploie des protocoles sécurisés afin de transmettre ces données d'authentification. Cependant, c’est un moyen d'authentification d'un utilisateur, ce qui ne signifie pas qu'il peut accéder à une application. L'accord est spécifique à l'application en question. Ce protocole repose sur une idée d'échange de tickets. Ces tickets sont considérés comme des « opaques » car ils ne contiennent aucune information. Il y a deux tickets nécessaires au fonctionnement de base, plus deux autres tickets dans le cas d'utilisation de proxy CAS : ticket-granting cookie (TGC soit cookie de session), service ticket (ST), proxy-granting-ticket (PGT) et proxy-ticket (PT). CAS est utile dans des environnements où plusieurs applications Web différentes partagent un groupe d'utilisateurs communs, c’est pourquoi ce protocole est souvent utilisé dans les environnements académiques et d'entreprise.
+
+Comment fonctionne l’authentification ?
+
+CAS a un fonctionnement de base non proxy et un fonctionnement en mode proxy qui garantit une sécurité renforcée entre autres. Dans le fonctionnement de base, il y a une requête initiale lorsque le client web accède à une appli web qui nécessite authentification. Cette appli redirige alors  la requête vers l'url login du serveur CAS, en https. En paramètre du GET est passé l'ID du service (c'est en fait l'URL de retour). Après, le serveur CAS vérifie les informations d'identification de l'utilisateur grâce au mécanisme local d'authentification. Il redirige la requête vers l'application initiale et si le client web accepte les cookies, le TGC est positionné. Une fois l'authentification réussie, CAS génère un ST. L'application vérifie ce ticket auprès du serveur CAS avant d'accorder l'accès. Dans le cas en mode proxy, après avoir généré un ST, le serveur retourne l'identifiant de l'utilisateur si le ST est valide, et un PGT-id ( index permettant de valider le PGT). Le PGT est alors envoyé et le proxy CAS fait appel à un service tiers nécessitant une authentification. Si le PGT est valide, le CAS retourne un PT. Le proxy CAS passe le PT au service tiers et le service utilise le PT comme un ST. Le serveur CAS vérifie ensuite la validité du ticket, il retourne l'identifiant de la personne et le proxy ou la liste de proxies traversé(s). Le CAS accorde enfin l'accès.
+
+Quels sont les points positifs et négatifs de CAS ?
+
+Le protocole CAS a de nombreux avantages. Il est sécurisé car il utilise des protocoles sécurisés (comme HTTPS) pour protéger les informations d'authentification et les applications web n’ont pas accès aux identifiants de connexion, ni aux mots de passe. De plus, le SSO simplifie grandement l'expérience utilisateur car il ne doivent se connecter qu’une seule fois au serveur CAS au cours d’une session pour accéder à plusieurs applications web. CAS simplifie la procédure d'authentification et est très bien adapté aux grandes organisations. Il a tout de même quelques défauts. Il est assez complexe à mettre en place et à configurer. De plus, Il est nécessaire de modifier les applications afin d'intégrer le support de CAS, ce qui peut demander du temps et des ressources.
+Comparaison des mécanismes d’authentification
+Pour savoir quel mécanisme choisir, il faut prendre en compte les avantages, les désavantages et les contextes. Concernant la sécurité, NIS ne prend pas en charge les protocoles de chiffrement contemporains et transmet les données en clair donc ces données sont vulnérables. Ce protocole est donc peut sécurisé comparé à CAS qui utilise des protocoles sécurisés et qui permet d'intégrer des mécanismes d'authentification modernes. Concernant la portabilité, NIS est principalement utilisé dans les réseaux Unix/Linux de petite à moyenne taille. Quant à CAS, Il est utilisé dans différents contextes académiques et professionnels afin d'intégrer de multiples services web et applications. Concernant la mise en place et l’utilisation, cette fois c’est NIS qui a l’avantage. En effet, NIS est plus facile à configurer pour des réseaux de petite à moyenne taille alors que CAS est complexe à mettre en place. Cependant, il est à noter qu'aujourd'hui NIS est peu à peu délaissé et que, bien que CAS soit difficile à mettre en place, il offre une administration centralisée et simplifiée pour les grands environnements. Pour finir, concernant l’expérience utilisateur, CAS est bien plus confortable pour l’utilisateur qui n’as pas besoin de se connecter à chaque changement d’applications. 
+Conclusion
+CAS semble être un mécanisme d'authentification plus robuste que NIS mais selon le contexte NIS peut être plus intéressant. Dans le cas d’organisation avec des petits ou moyen réseaux et ayant besoin de sécurité moins lourde, NIS est un bon choix. En effet, sa facilité de mise en place et d’utilisation est intéressante. Cependant, dans le cas d’organisations avec de grands réseaux, avec un grand besoin de sécurité et avec des moyens, CAS est sans doute le plus intéressant.  Il offre une meilleure sécurité et une meilleure expérience utilisateur. En conclusion, le choix entre CAS et NIS dépendant de nombreuses factures et nécessités de savoir clairement quelles sont les attentes.
+
+Sources
+Pour NIS : 
+https://fr.wikipedia.org/wiki/Network_Information_Service
+https://www.ibm.com/docs/fr/aix/7.3?topic=services-network-information-service-nis-overview
+https://docs.oracle.com/en/operating-systems/oracle-linux/6/security/ol_nisauth_sec.html#:~:text=NIS%20 stores%20administrative%20information%20such,from%20one%20machine%20to%20another 
+https://www-info.iutv.univ-paris13.fr/~butelle/Polys/R4.08/Cours/cours3-RPC.pdf
+https://jean-luc-massat.pedaweb.univ-amu.fr/ens/asr/cours-linux/nis-linux.html
+https://docs.oracle.com/en/operating-systems/oracle-linux/6/admin/about-nisauth.html
+
+Pour CAS :
+https://fr.wikipedia.org/wiki/Central_Authentication_Service#:~:text=CAS%20est%20essentiellement%20un%20protocole,ils%20ne%20transportent%20aucune%20information.
+https://www.okta.com/fr/identity-101/central-authentication-service/
+https://docs.moodle.org/4x/fr/Utiliser_un_serveur_CAS_(SSO)#:~:text=Le%20Service%20central%20d'authentification,un%20ensemble%20d'utilisateurs%20communs.
+https://www.esup-portail.org/consortium/espace/SSO_1B/cas/
+https://apereo.github.io/cas/6.6.x/protocol/CAS-Protocol.html
+https://apereo.github.io/cas/7.0.x/planning/Architecture.html
+https://www.fortinet.com/fr/resources/cyberglossary/proxy-server#:~:text=Les%20proxys%20ont%20plusieurs%20atouts,votre%20ordinateur%20ou%20votre%20r%C3%A9seau.
