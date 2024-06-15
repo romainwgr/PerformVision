@@ -1,0 +1,91 @@
+sudo mkdir -p /var/www/html/cgi-bin
+
+sudo nano /var/www/html/cgi-bin/hello.sh 
+# (normalement c’est /usr/lib/cgi-bin mais les pc de l’IUT en des problèmes de réseaux)
+
+# Fichier hello.sh
+
+#!/bin/bash
+echo "Content-type: text/html"
+echo ""
+echo "<html><head><title>CGI Script</title></head><body>"
+echo "<h1>Hello, World!</h1>"
+echo "<p>PHP Output:</p>"
+
+# Appel du script PHP
+php_output=$(php /var/www/html/cgi-bin/process.php)
+echo "<p>$php_output</p>"
+
+# Afficher le nombre de lignes dans process.php
+line_count=$(cat /var/www/html/cgi-bin/process.php | wc -l)
+echo "<p>Le script process.php contient $line_count lignes.</p>"
+
+# Afficher la date et l'heure actuelle
+current_date=$(date)
+echo "<p>Date et heure actuelle : $current_date</p>"
+
+# Liste des fichiers dans /var/www/html/cgi-bin
+file_list=$(ls /var/www/html/cgi-bin)
+echo "<p>Fichiers dans /var/www/html/cgi-bin :</p><pre>$file_list</pre>"
+
+# Affichage de l'utilisation de l'espace disque
+disk_usage=$(df -h /)
+echo "<p>Utilisation de l'espace disque :</p><pre>$disk_usage</pre>"
+
+# Affichage de l'utilisation de la mémoire
+memory_usage=$(free -h)
+echo "<p>Utilisation de la mémoire :</p><pre>$memory_usage</pre>"
+
+# Afficher l'adresse IP du serveur
+ip_address=$(hostname -I | awk '{print $1}')
+echo "<p>Adresse IP du serveur : $ip_address</p>"
+
+echo "</body></html>"
+
+sudo chmod +x /var/www/html/cgi-bin/hello.sh
+
+sudo nano /var/www/html/cgi-bin/process.php
+
+# Fichier process.php
+
+<?php
+echo "Bonjour, nous sommes les <strong>cinqpetales</strong>, une equipe composées de Camelia Antoine, Boutajar Houssna, Wagner Romain, Tandian Binta et Azzouagh Safiya. Voici notre script Shell/PHP ";
+?>
+
+sudo chmod +x /var/www/html/cgi-bin/process.php
+
+# ca ne fonctionne pas car il faut modifier la version d'apache : 
+
+sudo a2enmod cgi
+sudo systemctl restart apache2 
+
+# vérifier la configuration d'apache :
+/var/www/html/cgi-bin
+
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+    <Directory /var/www>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+        php_value error_log /var/log/php_errors.log
+    </Directory>
+
+    <Directory "/var/www/html/cgi-bin">
+        Options +ExecCGI
+        AddHandler cgi-script .cgi .sh
+        Require all granted
+    </Directory>
+
+    # Include CGI configuration if not already included
+    Include conf-available/serve-cgi-bin.conf
+</VirtualHost>
+
+# redémarrer apache : 
+sudo systemctl restart apache2
+http://<adresse IP machine virtuelle>/cgi-bin/hello.sh
